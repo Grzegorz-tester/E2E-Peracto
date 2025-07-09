@@ -1,0 +1,10 @@
+{
+  "Email": "//input[@id='email']",
+  "First name": "//input[@id='firstName']",
+  "Last name": "//input[@id='lastName']",
+  "Contact number": "//input[@id='telephone']",
+  "Company Name": "//input[@id='companyName']",
+  "Account Number": "//input[@id='accountNumber']",
+  "Currency": "//input[@id='currency']",
+  "Save Changes": "//button[text()='Save Changes']"
+}

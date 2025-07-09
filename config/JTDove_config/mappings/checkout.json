@@ -1,0 +1,7 @@
+{
+  "Continue": "button:has-text('CONTINUE')",
+  "Continue To Payment": "button:has-text('CONTINUE TO PAYMENT')",
+  "Delivery Address": "[data-testid='checkout__delivery-details-address__address-0']",
+  "Billing Address": "[data-testid='checkout__billing-address__address-0']",
+  "Phone": "[id='telephone']"
+}

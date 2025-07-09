@@ -1,0 +1,74 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "portal": {
+    "route": "/portal",
+    "regex": "^/portal$"
+  },
+  "portal-profile": {
+    "route": "/portal/profile",
+    "regex": "^/portal/profile$"
+  },
+  "portal-address-book": {
+    "route": "/portal/address-book",
+    "regex": "^/portal/address-book$"
+  },
+  "portal-quotes": {
+    "route": "/portal/quotes",
+    "regex": "^/portal/quotes$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
+  },
+  "thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "trade-account-application": {
+    "route": "/trade-account-application",
+    "regex": "^/trade-account-application$"
+  },
+  "quote": {
+    "route": "/quote",
+    "regex": "^/quote$"
+  },
+  "samples": {
+    "route": "/samples",
+    "regex": "^/samples$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "design-facilities": {
+    "route": "/design-facilities",
+    "regex": "^/design-facilities$"
+  },
+  "why-panelco": {
+    "route": "/why-panelco",
+    "regex": "^/our-company$"
+  },
+  "contact-us": {
+    "route": "/about/contact-us",
+    "regex": "^/about/contact-us$"
+  },
+  "egger-glacier-white": {
+    "route": "/products/w1300",
+    "regex": "^/products/w1300$"
+  }
+}

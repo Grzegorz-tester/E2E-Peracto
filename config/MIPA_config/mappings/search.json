@@ -1,0 +1,6 @@
+{
+  "title": "//h1",
+  "products amount": "//h1//span",
+  "products cards": "[data-testid='algolia-list-page__hits']",
+  "no results message": "//h2/following-sibling::p"
+}

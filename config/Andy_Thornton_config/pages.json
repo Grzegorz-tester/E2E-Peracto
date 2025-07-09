@@ -1,0 +1,54 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "basket-success": {
+    "route": "/basket/success",
+    "regex": "^/basket/success$"
+  },
+  "quotes": {
+    "route": "/account/quotes",
+    "regex": "^/account/quotes$"
+  },
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
+  },
+  "thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "pdp": {
+    "route": "/products/harrow_bar_stool_atfuvf1369",
+    "regex": "^/products/harrow_bar_stool_atfuvf1369$"
+  }
+}

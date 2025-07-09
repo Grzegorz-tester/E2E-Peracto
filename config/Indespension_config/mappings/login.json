@@ -1,0 +1,6 @@
+{
+  "Email address": "[id='login-form__email-input']",
+  "Password": "[id='login-form__password-input']",
+  "Sign In": "button:has-text('Sign In')",
+  "Forgotten your password?": "[data-testid='login-form__forgotten-password-link']"
+}

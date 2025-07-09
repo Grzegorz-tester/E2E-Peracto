@@ -1,0 +1,43 @@
+{
+  "header logo": "[data-testid='brand-bar__logo--desktop']",
+  "category page title": "//*[@data-testid='category-page']//h2",
+  "page title": "//h1",
+
+
+
+  "Products draw menu item": "//h2[text()='Products']",
+  "Inspiration draw menu item": "//h2[text()='Inspiration']",
+  "About draw menu item": "//h2[text()='About']",
+  "Support draw menu item": "//h2[text()='Support']",
+  "News draw menu item": "//h2[text()='News']",
+  "Careers draw menu item": "//h2[text()='Careers']",
+  "Products menu item": "[data-testid='navigation-bar__items-item-5']",
+  "Inspiration menu item": "[data-testid='navigation-bar__items-item-9']",
+  "About menu item": "[data-testid='navigation-bar__items-item-10']",
+
+
+
+
+  "first search result": "(//div[@data-testid='search__hits__hit'])[1]",
+  "first search result image": "(//div[@data-testid='search__hits__hit_image'])[1]",
+  "second search result": "(//div[@data-testid='search__hits__hit'])[2]",
+  "No results found message": "//p[text()='No results found.']",
+  "first variant": "[data-testid='product-variant-options__lozenge-0']",
+  "second variant": "[data-testid='product-variant-options__lozenge-1']",
+
+
+  "basket": "//a[contains(@href, 'place-order')]",
+
+  "Find a Retailer": "[data-testid='brand-bar__branches-button']",
+
+  "Subscribe": "//button[text()='Subscribe']",
+  "Sort By": "[data-testid='sort-by__dropdown']",
+  "A-Z": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — A to Z')]",
+  "Z-A": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — Z to A')]",
+  "Filter": "[data-testid='filters-button']",
+  "SUBMIT": "//button[text()='Submit']",
+  "Add to basket": "//button[text()='Add to basket']",
+  "Place Order": "//button[text()='Place Order']",
+  "validation message": "//p[contains(@class, 'danger')]",
+  "X": "//div[@id='closeButton']"
+}

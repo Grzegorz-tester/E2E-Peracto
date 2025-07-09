@@ -1,0 +1,8 @@
+{
+  "Dashboard": "//div[@href='/account']",
+  "Profile": "//div[@href='/account/profile']",
+  "Address book": "//div[@href='/account/address-book']",
+  "Invoices": "//div[@href='/account/invoices']",
+  "My List": "//div[@href='/account/wishlists']",
+  "Make a Payment": "//div[@href='/account/make-a-payment']"
+}

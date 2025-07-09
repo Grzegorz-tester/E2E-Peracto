@@ -1,0 +1,9 @@
+{
+  "page title": "//h1",
+  "Mirrors card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-mirrors']",
+  "Cabinets card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-cabinets']",
+  "Furniture card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-furniture']",
+  "Lighting card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-lighting']",
+  "Accessories card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-accessories']",
+  "Ventilation card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-ventilation']"
+}

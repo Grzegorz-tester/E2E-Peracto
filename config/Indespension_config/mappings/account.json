@@ -1,0 +1,7 @@
+{
+  "DASHBOARD": "[data-value='Dashboard']",
+  "PROFILE": "[data-value='Profile']",
+  "ADDRESS BOOK": "[data-value='Address Book']",
+  "ORDERS": "[data-value='Order History']",
+  "Orders table": "//tbody"
+}

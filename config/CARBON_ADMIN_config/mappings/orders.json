@@ -1,0 +1,9 @@
+{
+  "Order Reference": "[data-testid='text-filter-order-reference']",
+  "Email": "[data-testid='text-filter-email']",
+  "Status": "[data-testid='select-filter-status']",
+  "First order": "[data-testid='row-0-order-reference']",
+  "Export Order Data": "[data-testid='export-order-data']",
+  "Entries amount number": "[data-testid='rowcount-picker']",
+  "order": "//tbody/tr"
+}

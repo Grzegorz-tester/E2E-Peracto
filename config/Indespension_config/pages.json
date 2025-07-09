@@ -1,0 +1,62 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "place-order": {
+    "route": "/place-order",
+    "regex": "^/place-order$"
+  },
+  "finalise-order": {
+    "route": "/finalise-order",
+    "regex": "^/finalise-order$"
+  },
+  "thank-you": {
+    "route": "/finalise-order/thank-you",
+    "regex": "^/finalise-order/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "branches": {
+    "route": "/branches",
+    "regex": "^/branches$"
+  },
+  "download-catalogue": {
+    "route": "/download-catalogue",
+    "regex": "^/download-catalogue$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "about": {
+    "route": "/about",
+    "regex": "^/about$"
+  }
+}

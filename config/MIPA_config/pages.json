@@ -1,0 +1,82 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "quotes": {
+    "route": "/quotes",
+    "regex": "^/quotes$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "account-wishlist": {
+    "route": "/account/wishlists",
+    "regex": "^/account/wishlists$"
+  },
+  "finalise-order": {
+    "route": "/finalise-order",
+    "regex": "^/finalise-order$"
+  },
+  "thank-you": {
+    "route": "/finalise-order/thank-you",
+    "regex": "^/finalise-order/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "test-paint": {
+    "route": "/products/second-test-paint-sku12345",
+    "regex": "^/products/second-test-paint-sku12345$"
+  },
+  "brochure": {
+    "route": "/brochure",
+    "regex": "^/brochure$"
+  },
+  "samples": {
+    "route": "/samples",
+    "regex": "^/samples$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "inspiration": {
+    "route": "/inspiration",
+    "regex": "^/inspiration$"
+  },
+  "about": {
+    "route": "/about",
+    "regex": "^/about$"
+  },
+  "support": {
+    "route": "/support",
+    "regex": "^/support$"
+  },
+  "news": {
+    "route": "/articles/news",
+    "regex": "^/articles/news$"
+  }
+}

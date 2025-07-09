@@ -1,0 +1,16 @@
+{
+  "Checkout securely": "button:has-text('CHECKOUT SECURELY')",
+  "basket item": "[data-testid='basket__product-card']",
+  "Quantity selector": "[data-testid='basket__quantity-input_input']",
+  "Update": "[data-testid='basket__quantity-input__update']",
+  "Remove items": "[data-testid='basket__quantity-input__delete']",
+  "product's total price": "[data-testid='basket__total__price']",
+  "product's price": "[data-testid='basket__product-price__price']",
+  "order total price": "[data-testid='price']",
+  "Products you may also need": "button:has-text('Products you may also need')",
+  "Specification": "button:has-text('Specification')",
+  "specification draw": "//h3[text()='Specification']/../..",
+  "you may also need draw": "//h3[text()='You may also need']/../..",
+  "close": "button:has-text('Close')",
+  "Back to Portal": "[data-testid='basket__header__back-link']"
+}
