@@ -1,0 +1,7 @@
+{
+  "Email address": "[data-testid='email']",
+  "Sign In": "[data-testid='sign-in']",
+  "Reset": "[data-testid='reset-filter-button']",
+  "Apply": "[data-testid='apply-filter-button']",
+  "Back to Navigation": "//a[text()='Back to Navigation']"
+}

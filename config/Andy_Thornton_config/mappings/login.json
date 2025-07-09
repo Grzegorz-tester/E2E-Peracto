@@ -1,0 +1,7 @@
+{
+  "Email address": "[id='email']",
+  "Password": "[id='password']",
+  "Sign In": "button:has-text('Sign In')",
+  "Forgotten your password?": "//div[@data-testid='login-form']/a",
+  "validation message": "//div[@data-testid='login-form']/p"
+}

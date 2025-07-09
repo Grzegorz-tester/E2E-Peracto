@@ -1,0 +1,15 @@
+{
+  "product image": "[data-testid='product-media__image']",
+  "product name": "//h1",
+  "product SKU": "",
+  "product features": "(//div[@data-testid='product_concent__description'])[1]  ",
+  "product specifications": "//button[@id='technical-specifications']",
+  "product price": "",
+  "stock level": "",
+  "delivery time": "",
+  "warranty time": "",
+  "View details": "",
+  "quantity picker": "//input[@id='quantity']",
+  "Add to basket": "[data-testid='add-to-basket']",
+  "Add to quotes": "[data-testid='add-to-quotes']"
+}

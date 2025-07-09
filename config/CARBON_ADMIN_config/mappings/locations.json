@@ -1,0 +1,6 @@
+{
+  "Export Location Data": "[data-testid='export-locations']",
+  "Import Location Data": "[data-testid='']",
+  "Add Location": "[data-testid='add-location']",
+  "Name": "[data-testid='text-filter-name']"
+}

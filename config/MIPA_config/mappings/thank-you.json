@@ -1,0 +1,5 @@
+{
+  "basket header title": "[data-testid='basket__header__title']",
+  "order total price": "[data-testid='order_total']",
+  "delivery price": "[data-testid='order_shipping-total']"
+}

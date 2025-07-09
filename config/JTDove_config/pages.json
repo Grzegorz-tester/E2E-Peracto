@@ -1,0 +1,54 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-invoices": {
+    "route": "/account/invoices",
+    "regex": "^/account/invoices$"
+  },
+  "wishlists": {
+    "route": "/account/wishlists",
+    "regex": "^/account/wishlists$"
+  },
+  "make-a-payment": {
+    "route": "/account/make-a-payment",
+    "regex": "^/account/make-a-payment$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
+  },
+  "thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "Oatmeal brick": {
+    "route": "/products/65mm-oatmeal-textured-brick-ibstock-519340",
+    "regex": "^/products/65mm-oatmeal-textured-brick-ibstock-519340$"
+  }
+}

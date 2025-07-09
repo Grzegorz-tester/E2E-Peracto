@@ -1,0 +1,8 @@
+{
+  "Email": "//input[@id='email']",
+  "First name": "//input[@id='firstName']",
+  "Last name": "//input[@id='lastName']",
+  "Contact number": "//input[@id='telephone']",
+  "Branch": "//select[@name='defaultBranch']",
+  "Save Changes": "//button[text()='Save Changes']"
+}

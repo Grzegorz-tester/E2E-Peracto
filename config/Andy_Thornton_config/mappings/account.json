@@ -1,0 +1,7 @@
+{
+  "Dashboard": "//div[@href='/account']",
+  "Profile": "//div[@href='/account/profile']",
+  "Address book": "//div[@href='/account/address-book']",
+  "Orders": "//div[@href='/account/orders']",
+  "Quotes": "//div[@href='/account/quotes']"
+}

@@ -1,0 +1,130 @@
+{
+  "dashboard": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "forgotten-password": {
+    "route": "/forgotten-password",
+    "regex": "^/forgotten-password$"
+  },
+  "orders": {
+    "route": "/orders",
+    "regex": "^/orders$"
+  },
+  "products": {
+    "route": "/products",
+    "regex": "^/products$"
+  },
+  "variants": {
+    "route": "/variants",
+    "regex": "^/variants$"
+  },
+  "categories": {
+    "route": "/categories",
+    "regex": "^/categories$"
+  },
+  "attributes": {
+    "route": "/attributes",
+    "regex": "^/attributes$"
+  },
+  "attribute-groups": {
+    "route": "/attribute-groups",
+    "regex": "^/attribute-groups$"
+  },
+  "attribute-sets": {
+    "route": "/attribute-sets",
+    "regex": "^/attribute-sets$"
+  },
+  "promotions": {
+    "route": "/promotions",
+    "regex": "^/promotions$"
+  },
+  "pages": {
+    "route": "/pages",
+    "regex": "^/pages$"
+  },
+  "articles": {
+    "route": "/articles",
+    "regex": "^/articles$"
+  },
+  "article-categories": {
+    "route": "/article-categories",
+    "regex": "^/article-categories$"
+  },
+  "templates": {
+    "route": "/templates",
+    "regex": "^/templates$"
+  },
+  "elements": {
+    "route": "/elements",
+    "regex": "^/elements$"
+  },
+  "element-areas": {
+    "route": "/element-areas",
+    "regex": "^/element-areas$"
+  },
+  "forms": {
+    "route": "/forms",
+    "regex": "^/forms$"
+  },
+  "form-fields": {
+    "route": "/form-fields",
+    "regex": "^/form-fields$"
+  },
+  "form-submissions": {
+    "route": "/form-submissions",
+    "regex": "^/form-submissions$"
+  },
+  "locations": {
+    "route": "/locations",
+    "regex": "^/locations$"
+  },
+  "users": {
+    "route": "/users",
+    "regex": "^/users$"
+  },
+  "user-groups": {
+    "route": "/user-groups",
+    "regex": "^/user-groups$"
+  },
+  "settings": {
+    "route": "/settings",
+    "regex": "^/settings$"
+  },
+  "navigation": {
+    "route": "/menus",
+    "regex": "^/menus$"
+  },
+  "redirects": {
+    "route": "/redirects",
+    "regex": "^/redirects$"
+  },
+  "shipping-services": {
+    "route": "/shipping-services",
+    "regex": "^/shipping-services$"
+  },
+  "tasks": {
+    "route": "/tasks",
+    "regex": "^/tasks$"
+  },
+  "countries": {
+    "route": "/countries",
+    "regex": "^/countries$"
+  },
+  "orphaned-pages": {
+    "route": "/menus/orphaned_pages",
+    "regex": "^/menus/orphaned_pages$"
+  },
+  "main-menu": {
+    "route": "/menus/main_menu",
+    "regex": "^/menus/main_menu$"
+  },
+  "footer": {
+    "route": "/menus/footer",
+    "regex": "^/menus/footer$"
+  }
+}

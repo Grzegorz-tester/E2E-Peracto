@@ -1,0 +1,4 @@
+{
+  "Delivery Address": "//div[@data-testid='address-book__delivery']//div[@data-testid='address-book__address-0']",
+  "Billing Address": "//div[@data-testid='address-book__billing']//div[@data-testid='address-book__address-0']"
+}

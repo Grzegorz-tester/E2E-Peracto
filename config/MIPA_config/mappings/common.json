@@ -1,0 +1,17 @@
+{
+  "header logo": "[data-testid='brand-bar__logo--desktop']",
+  "contact phone number": "//a[contains(@href, 'tel')]",
+  "contact email": "//a[contains(@href, 'mailto')]",
+  "Sign In": "[data-testid='utility-bar__content--logged-out__sign-in']",
+  "Sign Out": "//a[contains(@href, '/logout')]",
+  "Quotes": "[data-testid='brand-bar__quotes-button']",
+  "Account": "[data-testid='brand-bar__account-button']",
+  "Basket": "[data-testid='brand-bar__basket-button']",
+  "header search box": "(//input[@placeholder='Search Products'])[1]",
+  "menu draw search box": "(//input[@placeholder='Search Products'])[2]",
+  "magnifier glass": "(//button)[1]",
+  "search results": "[data-testid='algolia-search-bar__hits']",
+  "first search result": "//div[@data-testid='algolia-search-bar__hits']//a[1]",
+  "Menu": "[data-testid='navigation-bar__nav-menu-button']",
+  "menu draw": "[data-testid='nav-menu__popup-list']"
+}

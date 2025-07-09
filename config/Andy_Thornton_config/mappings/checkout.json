@@ -1,0 +1,21 @@
+{
+  "PROCEED": "button:has-text('Proceed')",
+  "Add address": "//a[@data-testid='header__right-link' and contains(text(), 'Add Address')]",
+  "First Name": "//input[@label='First Name']",
+  "Last Name": "//input[@label='Last Name']",
+  "Address Line 1": "//input[@label='Address line 1']",
+  "Town/City": "//input[@label='Town / City']",
+  "Postcode": "//input[@label='Postcode']",
+  "Start typing postcode, street or address": "//input[@data-testid='loqate__input-field']",
+  "Enter your contact number": "//input[@label='Enter your contact number']",
+  "Delivery instructions": "//input[@label='Enter delivery instruction here (optional)']",
+  "Manually enter your address": "p:has-text('Manually enter your address')",
+  "first address" :"(//div[@data-testid='address'])[1]",
+  "ADD ADDRESS": "button:has-text('Add Address')",
+  "Continue To Payment": "button:has-text('CONTINUE TO PAYMENT')",
+  "Delivery Address": "[data-testid='checkout__delivery-details-address__address-0']",
+  "Delivery Options ( free )": "//div[@data-testid='options']//p[contains(text(), 'FREE')]",
+  "Billing Address": "[data-testid='checkout__billing-address__address-0']",
+  "Same as Delivery Address": "//div[@data-testid='billing-details']//div",
+  "I accept the terms and conditions": "//div[p[contains(text(), 'I accept the')]]/preceding-sibling::*[1]"
+}

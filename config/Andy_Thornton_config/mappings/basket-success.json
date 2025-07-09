@@ -1,0 +1,3 @@
+{
+  "Proceed to checkout": "[data-testid='added-to-basket__checkout-link']"
+}

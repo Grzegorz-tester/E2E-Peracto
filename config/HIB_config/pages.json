@@ -1,0 +1,102 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "place-order": {
+    "route": "/place-order",
+    "regex": "^/place-order$"
+  },
+  "finalise-order": {
+    "route": "/finalise-order",
+    "regex": "^/finalise-order$"
+  },
+  "thank-you": {
+    "route": "/finalise-order/thank-you",
+    "regex": "^/finalise-order/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "find-a-retailer": {
+    "route": "/find-a-retailer",
+    "regex": "^/find-a-retailer$"
+  },
+  "brochure": {
+    "route": "/brochure",
+    "regex": "^/brochure$"
+  },
+  "samples": {
+    "route": "/samples",
+    "regex": "^/samples$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "inspiration": {
+    "route": "/inspiration",
+    "regex": "^/inspiration$"
+  },
+  "about": {
+    "route": "/about",
+    "regex": "^/about$"
+  },
+  "support": {
+    "route": "/support",
+    "regex": "^/support$"
+  },
+  "news": {
+    "route": "/articles/news",
+    "regex": "^/articles/news$"
+  },
+  "solas": {
+    "route": "/products/solas-round-illuminated-bathroom-mirror-black",
+    "regex": "^/products/solas-round-illuminated-bathroom-mirror-black$"
+  },
+  "bathroom-mirrors": {
+    "route": "/category/bathroom-mirrors",
+    "regex": "^/category/bathroom-mirrors$"
+  },
+  "bathroom-cabinets": {
+    "route": "/category/bathroom-cabinets",
+    "regex": "^/category/bathroom-cabinets$"
+  },
+  "bathroom-furniture": {
+    "route": "/bathroom-furniture",
+    "regex": "^/bathroom-furniture$"
+  },
+  "bathroom-lightning": {
+    "route": "/category/bathroom-lighting",
+    "regex": "^/category/bathroom-lighting$"
+  },
+  "bathroom-accessories": {
+    "route": "/category/bathroom-accessories",
+    "regex": "^/category/bathroom-accessories$"
+  },
+  "bathroom-ventilation": {
+    "route": "/category/bathroom-ventilation",
+    "regex": "^/category/bathroom-ventilation$"
+  }
+}

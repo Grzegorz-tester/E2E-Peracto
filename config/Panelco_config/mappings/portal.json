@@ -1,0 +1,10 @@
+{
+  "Dashboard": "//div[contains(@href, 'portal')]",
+  "Profile": "//div[contains(@href, 'profile')]",
+  "Address Book": "//div[contains(@href, 'address-book')]",
+  "Quotes": "//div[contains(@href, 'quotes')]",
+  "Orders table": "//tbody",
+  "Delivery Addresses": "//div[@data-testid='address-card']",
+  "View all": "//a[contains(text(), 'View all')]",
+  "first order": "//td[1]"
+}

@@ -1,0 +1,5 @@
+{
+  "Password": "[data-testid='password']",
+  "Forgotten your password?": "[data-testid='forgotten-password']",
+  "validation message": "//p[@class='text-danger']"
+}
