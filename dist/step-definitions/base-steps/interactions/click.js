@@ -38,27 +38,23 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   }
   return result;
 });
-(0, _cucumber.When)(/^I click the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" (?:button|link|element)$/, async function (elementPosition, elementKey) {
+(0, _cucumber.When)(/^I click on the "(\d+(?:st|nd|rd|th))" "([^"]+)" (?:button|link|element)$/, async function (elementPosition, elementKey) {
   const {
     screen: {
       page
     },
     globalConfig
   } = this;
-
-  // Get the element locator
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
 
-  // Extract the numeric part of the position and convert to zero-based index
-  const pageIndex = Number(elementPosition.match(/\d+/)?.[0]) - 1;
-
-  // Wait for the element to be visible and click it
+  // Extract number from "2nd", "3rd", "10th", etc.
+  const index = Number(elementPosition.match(/\d+/)?.[0]) - 1;
   await (0, _waitForBehaviour.waitFor)(async () => {
     const result = await page.waitForSelector(elementIdentifier, {
-      state: 'visible'
+      state: "visible"
     });
     if (result) {
-      await (0, _htmlBehaviour.clickElementAtIndex)(page, elementIdentifier, pageIndex);
+      await (0, _htmlBehaviour.clickElementAtIndex)(page, elementIdentifier, index);
     }
     return result;
   });

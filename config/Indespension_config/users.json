@@ -1,5 +1,8 @@
 {
   "admin": { "email": "admin@example.com", "password": "AdminPass123" },
-  "logged in": { "email": "logged-in-user@example.com", "password": "REDACTED_PASSWORD!" },
+  "logged in": {
+    "email": "REDACTED_EMAIL",
+    "password": "REDACTED_PASSWORD"
+  },
   "guest": {}
 }
