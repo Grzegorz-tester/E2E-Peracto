@@ -23,17 +23,9 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
-  "place-order": {
-    "route": "/place-order",
-    "regex": "^/place-order$"
-  },
-  "finalise-order": {
-    "route": "/finalise-order",
-    "regex": "^/finalise-order$"
-  },
   "thank-you": {
-    "route": "/finalise-order/thank-you",
-    "regex": "^/finalise-order/thank-you$"
+    "route": "/thank-you",
+    "regex": "^/thank-you$"
   },
   "reset-password": {
     "route": "/reset-password",
@@ -43,9 +35,9 @@
     "route": "/branches",
     "regex": "^/branches$"
   },
-  "download-catalogue": {
-    "route": "/download-catalogue",
-    "regex": "^/download-catalogue$"
+  "technical-documents": {
+    "route": "/technical-documents",
+    "regex": "^/technical-documents$"
   },
   "search": {
     "route": "/search",
@@ -55,8 +47,28 @@
     "route": "/basket",
     "regex": "^/basket$"
   },
-  "about": {
-    "route": "/about",
-    "regex": "^/about$"
+  "trailers": {
+    "route": "/trailers",
+    "regex": "^/trailers$"
+  },
+  "used-trailers": {
+    "route": "/category/used-trailers",
+    "regex": "^/category/used-trailers$"
+  },
+  "trailer-parts": {
+    "route": "/trailer-parts",
+    "regex": "^/trailer-parts$"
+  },
+  "towbars": {
+    "route": "/towbars",
+    "regex": "^/towbars$"
+  },
+  "contact": {
+    "route": "/contact",
+    "regex": "^/contact$"
+  },
+  "coasterNanoMarineTrailer": {
+    "route": "/products/indespension-coaster-nano-350kg-marine-trailer",
+    "regex": "^/products/indespension-coaster-nano-350kg-marine-trailer$"
   }
 }

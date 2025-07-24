@@ -6,7 +6,7 @@ var _test = require("@playwright/test");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // the element should contain the text ( text content of the element)
-(0, _cucumber.Then)(/^the "([^"]*)" should( not)? contain the text "([^"]*)"$/, async function (elementKey, negate, expectedElementText) {
+(0, _cucumber.Then)(/^the "([^"]*)" should( not)? contain the text ["']([^"']+)["']$/, async function (elementKey, negate, expectedElementText) {
   const {
     screen: {
       page
@@ -78,9 +78,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     },
     globalConfig
   } = this;
-  console.log(`the ${elementPosition} ${elementKey} should ${negate ? 'not ' : ''}contain the text ${expectedElementText}`);
+  console.log(`the ${elementPosition} ${elementKey} should ${negate ? "not " : ""}contain the text ${expectedElementText}`);
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
-  const index = Number(elementPosition.match(/\d/g)?.join('')) - 1;
+  const index = Number(elementPosition.match(/\d/g)?.join("")) - 1;
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(`${elementIdentifier}>>nth=${index}`);
     return elementText?.includes(expectedElementText) === !negate;

@@ -1,7 +1,7 @@
 @regression
 Feature: Home page
 
-  @dev
+
   Scenario: Verify page elements
     Given I am on the "home" page
     Then the "header logo" should be displayed
