@@ -1,0 +1,78 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "thank-you": {
+    "route": "/thank-you",
+    "regex": "^/thank-you$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "branches": {
+    "route": "/branches",
+    "regex": "^/branches$"
+  },
+  "about-us": {
+    "route": "/about-us",
+    "regex": "^/about-us$"
+  },
+  "inspiration": {
+    "route": "/inspiration",
+    "regex": "^/inspiration$"
+  },
+  "help-and-advice": {
+    "route": "/help-and-advice",
+    "regex": "^/help-and-advice$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "shop": {
+    "route": "/shop",
+    "regex": "^/shop$"
+  },
+  "food-waste-disposers": {
+    "route": "/shop/food-waste-disposers",
+    "regex": "^/shop/food-waste-disposers$"
+  },
+  "instant-hot-water-taps": {
+    "route": "/shop/instant-hot-water-taps",
+    "regex": "^/shop/instant-hot-water-taps$"
+  },
+  "accessories": {
+    "route": "/shop/accessories",
+    "regex": "^/shop/accessories$"
+  }
+}

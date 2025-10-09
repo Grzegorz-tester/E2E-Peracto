@@ -9,7 +9,7 @@
     "clean": "rimraf dist reports",
     "precucumber": "rimraf reports && mkdir reports",
     "transpile": "rimraf dist && babel --extensions .ts --out-dir dist src",
-    "cucumber-compile": "yarn transpile && cucumber-js src/features/Indespension_features --require dist/steps/**/*.js --format json:reports/report.json",
+    "cucumber-compile": "yarn transpile && cucumber-js src/features/**/*.feature --require dist/steps/**/*.js --format json:reports/report.json",
     "cucumber": "cross-env COMMON_CONFIG_FILE=env/common.env yarn cucumber-compile",
     "postcucumber": "cross-env COMMON_CONFIG_FILE=env/common.env ts-node ./src/reporter/cucumber-report.ts",
     "test": "yarn cucumber && yarn postcucumber",

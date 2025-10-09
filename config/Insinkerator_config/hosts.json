@@ -1,0 +1,5 @@
+{
+  "release_branch": "",
+  "staging": "https://staging.insinkerator.work/",
+  "dev": "http://localhost:3001"
+}
