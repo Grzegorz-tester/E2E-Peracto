@@ -1,6 +1,14 @@
 @Andy_Thornton_regression
 
 Feature: Header functionality
+ 
+  Scenario: Verify presence of header elements for a Guest user
+    Given I am navigating the page as a "guest" user
+    Then the "Contact Us email" should be displayed
+    And the "contact phone number" should be displayed
+    And the "Sign In button" should be displayed
+    And the "user name" should not be displayed
+    And the "Sign Out button" should not be displayed
 
 
   Scenario: Verify menu elements

@@ -1,0 +1,49 @@
+{
+  "contact phone number": "[data-testid='utility-bar__phone-link']",
+
+  "Sign In button": "[data-testid='utility-bar__sign-in-link']",
+  "Sign Out button": "[data-testid='utility-bar__sign-out-link']",
+  "user name": "[data-testid='utility-bar__user-name']",
+  "header logo": "[data-testid='brand-bar__logo-link']",
+
+  "Search bar": "[data-testid='algolia-autocomplete__input']",
+  "magnifier glass": "[data-testid='algolia-autocomplete__search-button']",
+  "search results": "[data-testid='algolia-autocomplete-hits']",
+  "search result": "[data-testid='algolia-autocomplete-hit-product']",
+
+  "title": "//h1",
+
+  "Branch Finder": "[data-testid='brand-bar__branches-link']",
+  "Download Catalogue": "[data-testid='brand-bar__catalogue-link']",
+  "Basket": "[data-testid='brand-bar__basket-link']",
+
+  "Menu button": "[data-testid='navigation-drawer-sheet__menu-button']",
+  "menu draw": "[data-testid='nav-menu']",
+
+  "Trailers - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-0']",
+  "Used Trailers - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-1']",
+  "Trailer Parts - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-2']",
+  "Towbars - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-3']",
+
+  "Trailers": "[data-testid='navigation-drawer-sheet__link-0']",
+  "Used Trailers": "[data-testid='navigation-drawer-sheet__link-1']",
+  "Trailer Parts": "[data-testid='navigation-drawer-sheet__link-2']",
+  "Towbars": "[data-testid='navigation-drawer-sheet__link-3']",
+
+  "first search result image": "(//div[@data-testid='search__hits__hit_image'])[1]",
+  "second search result": "(//div[@data-testid='search__hits__hit'])[2]",
+  "No results found message": "//p[text()='No results found.']",
+  "first variant": "[data-testid='product-variant-options__lozenge-0']",
+  "second variant": "[data-testid='product-variant-options__lozenge-1']",
+
+  "Subscribe": "//button[text()='Subscribe']",
+  "Sort By": "[data-testid='sort-by__dropdown']",
+  "A-Z": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — A to Z')]",
+  "Z-A": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — Z to A')]",
+  "Filter": "[data-testid='filters-button']",
+  "SUBMIT": "//button[text()='Submit']",
+  "Add to basket": "//button[text()='Add to basket']",
+  "Place Order": "//button[text()='Place Order']",
+  "validation message": "//p[contains(@class, 'danger')]",
+  "X": "//div[@id='closeButton']"
+}

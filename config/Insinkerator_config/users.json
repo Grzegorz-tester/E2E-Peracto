@@ -1,0 +1,8 @@
+{
+  "admin": { "email": "admin@example.com", "password": "AdminPass123" },
+  "logged in": {
+    "email": "grzegorz.hajduk@velstar.co.uk",
+    "password": "Testing123"
+  },
+  "guest": {}
+}
