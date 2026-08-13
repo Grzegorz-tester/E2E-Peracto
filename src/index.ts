@@ -9,11 +9,22 @@ import {
 import fs from "fs";
 
 dotenv.config({path: env('COMMON_CONFIG_FILE')})
+dotenv.config() // optional local .env (gitignored) for real login credentials
 
 const hostsConfig: HostsConfig = getJsonFromFile(env('HOSTS_URL_PATH'));
 const pagesConfig: PagesConfig = getJsonFromFile(env('PAGES_URL_PATH'));
 const mappingFiles = fs.readdirSync(`${process.cwd()}${env('PAGE_ELEMENTS_PATH')}`);
 const usersConfig = getJsonFromFile<{ [key: string]: { email?: string; password?: string } }>(env('USERS_CONFIG_PATH'));
+
+// users.json only defines which user types exist; real credentials come from env vars
+// (see .env.example) so they never end up committed to config/*/users.json.
+for (const userType of Object.keys(usersConfig)) {
+    const envPrefix = userType.toUpperCase().replace(/[^A-Z0-9]+/g, '_');
+    const emailOverride = process.env[`${envPrefix}_EMAIL`];
+    const passwordOverride = process.env[`${envPrefix}_PASSWORD`];
+    if (emailOverride) usersConfig[userType].email = emailOverride;
+    if (passwordOverride) usersConfig[userType].password = passwordOverride;
+}
 
 const pageElementMappings: PageElementMappings = mappingFiles.reduce(
     (pageElementConfigAcc, file) => {
