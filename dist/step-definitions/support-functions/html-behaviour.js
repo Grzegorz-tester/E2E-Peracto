@@ -4,11 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.selectDropdownOption = exports.getValue = exports.enterValue = exports.clickElementAtIndex = exports.clickElement = exports.checkElement = void 0;
-const clickElement = async (page, elementIdentifier) => {
-  await page.click(elementIdentifier);
+const clickElement = async (page, elementIdentifier, options) => {
+  await page.click(elementIdentifier, options);
 };
 exports.clickElement = clickElement;
-const clickElementAtIndex = async (page, elementIdentifier, elementPosition) => {
+const clickElementAtIndex = async (page, elementIdentifier, elementPosition, options) => {
   // Locate all elements matching the identifier
   const elements = await page.$$(elementIdentifier);
 
@@ -19,7 +19,7 @@ const clickElementAtIndex = async (page, elementIdentifier, elementPosition) => 
 
   // Click the specific instance of the element by its index
   const element = elements[elementPosition];
-  await element.click();
+  await element.click(options);
 };
 exports.clickElementAtIndex = clickElementAtIndex;
 const enterValue = async (page, elementIdentifier, inputText) => {

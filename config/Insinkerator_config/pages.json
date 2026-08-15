@@ -7,6 +7,10 @@
     "route": "/login",
     "regex": "^/login$"
   },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
   "account": {
     "route": "/account",
     "regex": "^/account$"
@@ -23,56 +27,64 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
-  "thank-you": {
-    "route": "/thank-you",
-    "regex": "^/thank-you$"
-  },
-  "reset-password": {
-    "route": "/reset-password",
-    "regex": "^/reset-password$"
-  },
-  "branches": {
-    "route": "/branches",
-    "regex": "^/branches$"
-  },
-  "about-us": {
-    "route": "/about-us",
-    "regex": "^/about-us$"
-  },
-  "inspiration": {
-    "route": "/inspiration",
-    "regex": "^/inspiration$"
-  },
-  "help-and-advice": {
-    "route": "/help-and-advice",
-    "regex": "^/help-and-advice$"
-  },
-  "contact-us": {
-    "route": "/contact-us",
-    "regex": "^/contact-us$"
-  },
-  "search": {
-    "route": "/search",
-    "regex": "^/search$"
+  "account-order-detail": {
+    "route": "/account/orders",
+    "regex": "^/account/orders/\\d+$"
   },
   "basket": {
     "route": "/basket",
     "regex": "^/basket$"
   },
-  "shop": {
-    "route": "/shop",
-    "regex": "^/shop$"
+  "sink-flange-pdp": {
+    "route": "/products/sink-flange-oil-rubbed-bronze",
+    "regex": "^/products/sink-flange-oil-rubbed-bronze$"
   },
-  "food-waste-disposers": {
-    "route": "/shop/food-waste-disposers",
-    "regex": "^/shop/food-waste-disposers$"
+  "pdp": {
+    "route": "/products/sink-flange-oil-rubbed-bronze",
+    "regex": "^/products/[^/]+$"
   },
-  "instant-hot-water-taps": {
-    "route": "/shop/instant-hot-water-taps",
-    "regex": "^/shop/instant-hot-water-taps$"
+  "checkout-sign-in": {
+    "route": "/checkout/sign-in",
+    "regex": "^/checkout/sign-in$"
   },
-  "accessories": {
-    "route": "/shop/accessories",
-    "regex": "^/shop/accessories$"
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-billing": {
+    "route": "/checkout/billing",
+    "regex": "^/checkout/billing$"
+  },
+  "checkout-review": {
+    "route": "/checkout/review-and-payment",
+    "regex": "^/checkout/review-and-payment$"
+  },
+  "checkout-thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "accessories-plp": {
+    "route": "/category/accessories",
+    "regex": "^/category/accessories$"
+  },
+  "shop-plp": {
+    "route": "/category/shop",
+    "regex": "^/category/shop$"
+  },
+  "search-results": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "warranty-finder": {
+    "route": "/warranty-finder",
+    "regex": "^/warranty-finder$"
+  },
+  "product-registration": {
+    "route": "/product-registration",
+    "regex": "^/product-registration$"
   }
 }

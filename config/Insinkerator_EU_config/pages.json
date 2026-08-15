@@ -1,0 +1,94 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "account-order-detail": {
+    "route": "/account/orders",
+    "regex": "^/account/orders/\\d+$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "sink-flange-pdp": {
+    "route": "/products/sink-flange-oil-rubbed-bronze",
+    "regex": "^/products/sink-flange-oil-rubbed-bronze$"
+  },
+  "pdp": {
+    "route": "/products/sink-flange-oil-rubbed-bronze",
+    "regex": "^/products/[^/]+$"
+  },
+  "checkout-sign-in": {
+    "route": "/checkout/sign-in",
+    "regex": "^/checkout/sign-in$"
+  },
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-billing": {
+    "route": "/checkout/billing",
+    "regex": "^/checkout/billing$"
+  },
+  "checkout-review": {
+    "route": "/checkout/review-and-payment",
+    "regex": "^/checkout/review-and-payment$"
+  },
+  "checkout-thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "accessories-landing": {
+    "route": "/our-accessories",
+    "regex": "^/our-accessories$"
+  },
+  "accessories-plp": {
+    "route": "/category/accessories",
+    "regex": "^/category/accessories$"
+  },
+  "shop-plp": {
+    "route": "/category/shop",
+    "regex": "^/category/shop$"
+  },
+  "search-results": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "warranty-finder": {
+    "route": "/warranty-finder",
+    "regex": "^/warranty-finder$"
+  },
+  "product-registration": {
+    "route": "/en-gb/product-registration",
+    "regex": "^/[a-z]{2}(-[a-z]{2})?/product-registration$"
+  }
+}

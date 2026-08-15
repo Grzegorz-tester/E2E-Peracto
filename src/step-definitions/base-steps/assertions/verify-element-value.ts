@@ -1,4 +1,4 @@
-import { Then } from "@cucumber/cucumber";
+import { Then, When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
 import { ElementKey, PageId } from "../../../env/global";
 import { getElementLocator } from "../../support-functions/web-element-helper";
@@ -6,9 +6,38 @@ import { expect } from "@playwright/test";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { getValue } from "../../support-functions/html-behaviour";
 
+// Sources the expected email from users.json/env vars instead of literal
+// Gherkin text, so real account emails never need to be hardcoded in a
+// .feature file.
+Then(
+  /^the "([^"]*)" should contain the "([^"]*)" user's email$/,
+  async function (
+    this: ScenarioWorld,
+    elementKey: ElementKey,
+    userType: string
+  ) {
+    const {
+      screen: { page },
+      globalConfig,
+    } = this;
+
+    const user = globalConfig.usersConfig[userType.trim().toLowerCase()];
+    if (!user?.email) {
+      throw new Error(`Missing email for user type "${userType}". Check your users.json and env vars.`);
+    }
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await waitFor(async () => {
+      const elementText = await page.textContent(elementIdentifier);
+      return elementText?.includes(user.email as string);
+    });
+  }
+);
+
 // the element should contain the text ( text content of the element)
 Then(
-  /^the "([^"]*)" should( not)? contain the text ["']([^"']+)["']$/,
+  /^the "([^"]*)" should( not)? contain the text "(.*)"$/,
   async function (
     this: ScenarioWorld,
     elementKey: ElementKey,
@@ -133,5 +162,92 @@ Then(
       );
       return elementText?.includes(expectedElementText) === !negate;
     });
+  }
+);
+
+// Remembers live text instead of a hardcoded value, so tests against content
+// that changes over time (e.g. which product sorts first) can assert "this
+// changed" rather than asserting a specific snapshot-in-time value.
+When(
+  /^I remember the text of "([^"]*)" as "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const text = await page.textContent(elementIdentifier);
+    this.globalVariables[variableName] = text ?? "";
+  }
+);
+
+// For a value that renders with an extra prefix in one place but not
+// another (e.g. a PDP shows "SKU 12345" while the basket line for the same
+// product shows plain "12345") - stripping the prefix at remember-time
+// means a later "should contain the remembered" assertion compares the two
+// on equal footing instead of always failing in one direction.
+When(
+  /^I remember the text of "([^"]*)" with the prefix "([^"]*)" stripped, as "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, prefix: string, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const text = await page.textContent(elementIdentifier);
+    const stripped = (text ?? "").replace(new RegExp(`^${prefix}\\s*`), "");
+    this.globalVariables[variableName] = stripped;
+  }
+);
+
+Then(
+  /^the "([^"]*)" text should( not)? equal the remembered "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+      throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." must run first.`);
+    }
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await waitFor(async () => {
+      const currentText = await page.textContent(elementIdentifier);
+      return (currentText === remembered) === !negate;
+    });
+  }
+);
+
+// A "contains" variant of the above - for cases where the remembered text is
+// only a substring of what the target element ends up showing (e.g. a PDP's
+// "SKU 12345" vs a basket line's plain "12345"), where an exact match would
+// never hold even though the value is genuinely the same.
+Then(
+  /^the "([^"]*)" should( not)? contain the remembered "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+      throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." must run first.`);
+    }
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await waitFor(async () => {
+      const currentText = await page.textContent(elementIdentifier);
+      return (currentText?.includes(remembered) ?? false) === !negate;
+    });
+  }
+);
+
+// Eventually-consistent check that EVERY matching element contains the given
+// substring - for a list whose items settle asynchronously (e.g. a debounced
+// search result set), rather than a single-shot read that can catch a
+// mid-render/transitional state.
+Then(
+  /^the "([^"]*)" should all contain the text "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, expectedText: string) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { state: "visible", timeout: 15000 });
+    await waitFor(async () => {
+      const elements = await page.$$(elementIdentifier);
+      if (elements.length === 0) return false;
+      const texts = await Promise.all(elements.map((el) => el.textContent()));
+      return texts.every((text) => text?.toLowerCase().includes(expectedText.toLowerCase()));
+    }, { timeout: 15000, wait: 500 });
   }
 );

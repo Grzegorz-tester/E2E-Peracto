@@ -6,6 +6,7 @@ Feature: Menu side draw
   - a Logged in User
   - a Guest User
     Given I am navigating the page as a "<user type>" user
+    And I dismiss the newsletter popup if present
     And I click on the "Menu" icon
     Then the "Products draw menu item" should be displayed
     And the "Inspiration draw menu item" should be displayed

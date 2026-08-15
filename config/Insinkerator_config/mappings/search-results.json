@@ -1,0 +1,5 @@
+{
+  "search hits heading": "[data-testid=\"algolia-hits-heading\"]",
+  "search hit count": "[data-testid=\"algolia-hit-count\"]",
+  "search result names": "[data-testid=\"product-card__name\"]"
+}

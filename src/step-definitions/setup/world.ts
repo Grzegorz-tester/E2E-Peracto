@@ -35,7 +35,13 @@ export class ScenarioWorld extends World {
         await this.closeScreen();
 
         const browser = await this.newBrowser();
-        const context = await browser.newContext(contextOptions);
+        // Explicitly deny permissions (geolocation, etc.) rather than
+        // leaving them unset - Chromium shows a real native prompt for an
+        // undecided permission, which auto-denies invisibly in headless
+        // mode but blocks indefinitely in headed mode waiting for a human
+        // to click it (found via the "Find a Retailer" page, which
+        // requests geolocation and already handles a denial gracefully).
+        const context = await browser.newContext({ permissions: [], ...contextOptions });
         const page = await context.newPage();
 
 

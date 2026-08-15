@@ -1,0 +1,1053 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 13,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 669941165
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1161644749
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8004038625
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Mirrors card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 19957666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Mirrors card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1238515750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-mirrors\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1444415
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 29589250
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 14,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 269789707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 645005249
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8004192708
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Cabinets card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12432624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Cabinets card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1649108207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-cabinets\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 770500
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 25559709
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 15,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 237679417
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 601730248
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8004269958
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Furniture card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10965417
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Furniture card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1171114334
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-furniture\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 213082
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 29039457
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 16,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 249637875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 562182000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8003823624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Basins card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16872331
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Basins card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1685598333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-basins\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 321375
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 28172957
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 17,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 235675209
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1798747415
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8003868832
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Accessories card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11729748
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Accessories card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1183708167
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-accessories\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 306373
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 32266624
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 18,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 245688457
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 654813875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8005630124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Ventilation card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4940541
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Ventilation card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 474114040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-ventilation\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 213624
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 19379167
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 19,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 228374916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 683304582
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8001174207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Lighting card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10257000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Lighting card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1595950876
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-lightning\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 471709
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 27684041
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;verify-the-products-hub-page-lists-every-category-and-links-to-the-right-page",
+        "keyword": "Scenario Outline",
+        "line": 20,
+        "name": "Verify the Products hub page lists every category and links to the right page",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 263798749
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 6,
+            "name": "I am on the \"products\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 752969582
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8000034374
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "the \"Brassware card\" should be displayed",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5211998
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I click on the \"Brassware card\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1209061498
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 10,
+            "name": "I should be redirected to the \"bathroom-brassware\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 230082
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 24093916
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;filtering-products,-then-clearing-the-filter-with-\"clear-all\"",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "Filtering products, then clearing the filter with \"Clear all\"",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 238621042
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 24,
+            "name": "I am on the \"bathroom-cabinets\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 737910666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8001535750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "I remember the number of \"product card\" elements as \"unfiltered count\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:57"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17102417
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "I click on the \"Filter\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 364172207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "I click on the \"Apex checkbox\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 326284999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "the current URL should contain \"refinementList\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-page.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2002283040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "the number of \"product card\" elements should be fewer than the remembered \"unfiltered count\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:69"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 23273876
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 31,
+            "name": "I click on the \"Clear all\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 370716207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 32,
+            "name": "the number of \"product card\" elements should equal the remembered \"unfiltered count\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-visibility.ts:69"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 45251372
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 23725583
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "products-page-functionality;sorting-products",
+        "keyword": "Scenario",
+        "line": 35,
+        "name": "Sorting products",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 233949916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 36,
+            "name": "I am on the \"bathroom-mirrors\" page",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/navigation.ts:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 675136876
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "I dismiss the newsletter popup if present",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/newsletter-popup.ts:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8004244374
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 38,
+            "name": "I remember the text of \"first product name\" as \"name before sort\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-value.ts:171"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8622832
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "I click on the \"Sort By\" dropdown",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 376289833
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 40,
+            "name": "I click on the \"A-Z\" element",
+            "match": {
+              "location": "src/step-definitions/base-steps/interactions/click.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 345046624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "the \"first product name\" text should not equal the remembered \"name before sort\"",
+            "match": {
+              "location": "src/step-definitions/base-steps/assertions/verify-element-value.ts:181"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2010151915
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 47135915
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@regression",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "products-page-functionality",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Products page functionality",
+    "tags": [
+      {
+        "name": "@regression",
+        "line": 1
+      }
+    ],
+    "uri": "src/features/HIB_features/products.feature"
+  }
+]

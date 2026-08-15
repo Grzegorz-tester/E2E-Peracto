@@ -1,6 +1,6 @@
 export const waitFor = async <T>(
     predicate: () => T | Promise<T>,
-    options?: { timeout?: number; wait?: number, state: string }
+    options?: { timeout?: number; wait?: number; state?: string }
 ): Promise<T> => {
     const {timeout = 15000, wait = 2000} = options || {};
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

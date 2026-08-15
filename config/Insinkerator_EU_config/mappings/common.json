@@ -1,0 +1,40 @@
+{
+  "Sign Out": "[data-testid=\"utility-bar__sign-out-link\"]",
+  "welcome message": "[data-testid=\"utility-bar__user-name\"]",
+  "Select Portugal": "role=button[name=\"Select Portugal\" s]",
+  "Menu": "[data-testid=\"brand-bar__menu-button\"]",
+  "product card": "[data-testid=\"product-card__link\"]",
+  "Add to basket": ":nth-match([data-testid=\"product-add-to-basket__button\"]:visible, 1)",
+  "added to basket confirmation": "[data-testid=\"product-added-to-basket__added-to-basket-heading\"]",
+  "Continue shopping": "[data-testid=\"product-added-to-basket__continue-button\"]",
+  "basket count": "[data-testid=\"brand-bar__basket-link\"] span",
+  "sign-in confirmation continue": "[data-testid=\"checkout-sign-in-content__continue\"]",
+  "Accept cookies": "#onetrust-accept-btn-handler",
+
+  "brand bar": "[data-testid=\"brand-bar\"]",
+  "Select Poland": "role=button[name=\"Select Poland\" s]",
+  "Select Germany": "role=button[name=\"Select Germany\" s]",
+  "utility bar country picker": ":nth-match([data-testid=\"utility-bar\"] button, 1)",
+
+  "product name": ":nth-match([data-testid=\"product-info__name\"]:visible, 1)",
+  "product sku": ":nth-match([data-testid=\"product-info__sku\"]:visible, 1)",
+  "where to buy button": ":nth-match([data-testid=\"product-stockists__open\"]:visible, 1)",
+  "PDP price": ":nth-match([data-testid=\"product-price__now-price\"]:visible, 1)",
+
+  "sitemap link": "[data-testid=\"stripped-footer__sitemap-link\"]",
+  "View All accessories": "[data-testid=\"navigation-drawer-sheet__view-all-link-our-accessories\"]",
+
+  "newsletter form": "[data-testid=\"newsletter-form\"]",
+  "newsletter email input": "[data-testid=\"newsletter-form__input\"]",
+  "newsletter submit button": "[data-testid=\"newsletter-form__submit-button\"]",
+  "newsletter privacy policy link": "[data-testid=\"newsletter-form__privacy-policy-link\"]",
+  "newsletter alert": "[data-testid=\"newsletter-form__alert\"]",
+
+  "search drawer open button": "[data-testid=\"brand-bar__search-button\"]",
+  "search drawer": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"])",
+  "search drawer input": "[data-testid=\"algolia-autocomplete__input\"]",
+  "search drawer recommended products": "[data-testid=\"navigation-drawer-sheet__recommended-products\"]",
+  "search drawer results": "[data-testid=\"algolia-autocomplete-hit-product__name\"]",
+  "search drawer no results message": "[data-testid=\"algolia-autocomplete-hits__no-results\"]",
+  "search drawer close button": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"]) >> role=button[name=\"Close\"]"
+}

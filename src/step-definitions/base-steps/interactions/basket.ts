@@ -1,0 +1,50 @@
+import { When } from "@cucumber/cucumber";
+import { ScenarioWorld } from "../../setup/world";
+import { waitFor } from "../../support-functions/wait-for-behaviour";
+import { getElementLocator } from "../../support-functions/web-element-helper";
+
+// Currency-symbol-agnostic and decimal/thousands-separator-agnostic: this
+// framework's projects render prices as "58,00 €" (comma decimal, symbol
+// last) on some storefronts and "£58.00" (period decimal, symbol first) on
+// others - whichever of "." or "," appears LAST in the numeric run is the
+// real decimal separator, the other (if present) is a thousands separator.
+const parsePrice = (text: string | null): number => {
+    const match = text?.match(/[\d.,]*\d/);
+    if (!match) return 0;
+    const raw = match[0];
+    const lastComma = raw.lastIndexOf(",");
+    const lastDot = raw.lastIndexOf(".");
+    const normalized = lastComma > lastDot
+        ? raw.replace(/\./g, "").replace(",", ".")
+        : raw.replace(/,/g, "");
+    return parseFloat(normalized);
+};
+
+// Derives the expected total from the CURRENT unit price rather than a
+// hardcoded value, so this keeps working if the product's price ever
+// changes - a literal-value assertion would need updating by hand whenever
+// that happens, and silently drift from meaningless (no longer possible to
+// tell "feature broke" from "price changed") in the meantime. Also immune
+// to exact-text-formatting gotchas (e.g. a non-breaking space before the
+// currency symbol) since it parses to a number rather than string-matching
+// the raw text. Reads "quantity input" / "quantity plus" / "quantity
+// minus" / "basket total" from the current page's own element mappings,
+// same as every other step in this framework - any project can reuse this
+// step by defining those four keys in its own basket mapping file.
+When(/^I (increment|decrement) the basket quantity and the total should update correctly$/, async function (this: ScenarioWorld, direction: "increment" | "decrement") {
+    const { screen: { page }, globalConfig } = this;
+
+    const quantityInput = getElementLocator(page, "quantity input", globalConfig);
+    const quantityButton = getElementLocator(page, direction === "increment" ? "quantity plus" : "quantity minus", globalConfig);
+    const basketTotal = getElementLocator(page, "basket total", globalConfig);
+
+    const qtyBefore = Number(await page.inputValue(quantityInput));
+    const totalBefore = parsePrice(await page.textContent(basketTotal));
+    const unitPrice = totalBefore / qtyBefore;
+    const qtyAfter = direction === "increment" ? qtyBefore + 1 : qtyBefore - 1;
+
+    await page.click(quantityButton);
+
+    await waitFor(async () => (await page.inputValue(quantityInput)) === String(qtyAfter));
+    await waitFor(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
+});

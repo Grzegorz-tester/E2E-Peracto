@@ -1,0 +1,3 @@
+{
+  "Shop (accessories landing)": "a[href=\"/category/accessories\"]:has-text(\"Shop\")"
+}

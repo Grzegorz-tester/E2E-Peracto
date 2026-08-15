@@ -16,7 +16,18 @@ const navigateToPage = async (page, pageId, _ref) => {
   const url = new URL(hostPath);
   const pageConfigItem = pagesConfig[pageId];
   url.pathname = pageConfigItem.route;
-  await page.goto(url.href);
+
+  // waitUntil: "load" (Playwright's default) blocks until every
+  // subresource finishes, including flaky third-party embeds (newsletter
+  // popups, reCAPTCHA, analytics, etc.) - one project's "load" event was
+  // observed hanging past 60s on some navigations even though the page
+  // itself was fully usable within seconds. "domcontentloaded" only
+  // waits for HTML parsing, which is all navigation needs here since
+  // every step already waits for its own specific element afterward.
+  await page.goto(url.href, {
+    waitUntil: "domcontentloaded",
+    timeout: 60000
+  });
 };
 exports.navigateToPage = navigateToPage;
 const pathMatchesPageId = (path, pageId, _ref2) => {

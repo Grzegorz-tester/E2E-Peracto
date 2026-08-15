@@ -1,0 +1,10 @@
+{
+  "sitemap heading": "[data-testid=\"sitemaps\"] h1",
+  "products tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/products\"]",
+  "categories tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/categories\"]",
+  "content tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/content\"]",
+  "articles tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/articles\"]",
+  "article images tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/article_images\"]",
+  "product images tab": "[data-testid=\"sitemaps\"] a[href=\"/sitemap/product_images\"]",
+  "sitemap category item": ":nth-match([data-testid=\"sitemaps\"] a:not([href^=\"/sitemap/\"]):visible, 1)"
+}

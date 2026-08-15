@@ -43,6 +43,10 @@
     "route": "/find-a-retailer",
     "regex": "^/find-a-retailer$"
   },
+  "retailer-page": {
+    "route": "/find-a-retailer",
+    "regex": "^/find-a-retailer/[a-z0-9-]+$"
+  },
   "brochure": {
     "route": "/brochure",
     "regex": "^/brochure$"
@@ -50,6 +54,10 @@
   "samples": {
     "route": "/samples",
     "regex": "^/samples$"
+  },
+  "careers": {
+    "route": "/careers",
+    "regex": "^/careers$"
   },
   "search": {
     "route": "/search",
@@ -72,8 +80,24 @@
     "regex": "^/articles/news$"
   },
   "solas": {
-    "route": "/products/solas-round-illuminated-bathroom-mirror-black",
-    "regex": "^/products/solas-round-illuminated-bathroom-mirror-black$"
+    "route": "/products/solas-round-illuminated-bathroom-chrome",
+    "regex": "^/products/solas-round-illuminated-bathroom-.*$"
+  },
+  "auryn-cabinet": {
+    "route": "/products/auryn-led-aluminium-cabinet-black-aucrobk",
+    "regex": "^/products/auryn-led-aluminium-cabinet-black-aucrobk$"
+  },
+  "products": {
+    "route": "/products",
+    "regex": "^/products$"
+  },
+  "bathroom-basins": {
+    "route": "/category/bathroom-basins",
+    "regex": "^/category/bathroom-basins$"
+  },
+  "bathroom-brassware": {
+    "route": "/category/bathroom-brassware",
+    "regex": "^/category/bathroom-brassware$"
   },
   "bathroom-mirrors": {
     "route": "/category/bathroom-mirrors",

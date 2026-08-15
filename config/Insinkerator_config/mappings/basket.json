@@ -1,0 +1,16 @@
+{
+  "Secure Checkout": "[data-testid=\"basket-summary__checkout-button\"]",
+  "quantity input": "[data-testid=\"quantity-picker__input\"]",
+  "quantity minus": "[data-testid=\"quantity-picker__minus-button\"]",
+  "quantity plus": "[data-testid=\"quantity-picker__plus-button\"]",
+  "basket total": "[data-testid=\"basket-summary__total\"]",
+  "promo code toggle": "[data-testid=\"add-promotion-form__button\"]",
+  "promo code input": "[data-testid=\"add-promotion-form__input\"]",
+  "promo code error": "[data-testid=\"add-promotion-form\"] :text-is(\"This is not a valid promo code.\")",
+
+  "basket main product name": ":nth-match([data-testid=\"basket-items__available-line-0__name\"], 1)",
+  "basket main product sku": ":nth-match([data-testid=\"basket-items__available-line-0__sku\"], 1)",
+  "basket line total price": "[data-testid=\"basket-items__available-line-0__total-price\"]",
+  "basket line extra names": ":nth-match([data-testid=\"basket-items__available-line-0__extra-options\"], 1) [data-testid=\"basket-items__available-line-0__name\"]",
+  "basket line extra prices": ":nth-match([data-testid=\"basket-items__available-line-0__extra-options\"], 1) [data-testid=\"basket-items__available-line-0__price\"]"
+}

@@ -1,0 +1,15 @@
+{
+  "accordion trigger": "[data-testid=\"product-accordion__trigger\"]",
+  "faq accordion trigger": "[data-testid=\"product-accordion-faqs__trigger\"]",
+
+  "product features carousel heading": ":text-is(\"Product Features\")",
+
+  "comparison table view product links": "table a[href^=\"/products/\"]",
+
+  "Expand image": ":nth-match([aria-label^=\"Expand image\"]:visible, 1)",
+  "Minimize image": ":nth-match([aria-label=\"Minimize image\"]:visible, 1)",
+  "image zoom modal": ":nth-match([data-rmiz-modal-content]:visible, 1)",
+
+  "configurator options": "[data-testid^=\"radio-select_option-\"]:visible",
+  "configurator total value": ":nth-match(:text-is(\"Total\") + *:visible, 1)"
+}

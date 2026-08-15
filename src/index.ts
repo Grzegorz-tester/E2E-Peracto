@@ -18,10 +18,16 @@ const usersConfig = getJsonFromFile<{ [key: string]: { email?: string; password?
 
 // users.json only defines which user types exist; real credentials come from env vars
 // (see .env.example) so they never end up committed to config/*/users.json.
+// Project-specific vars (PROJECT=insinkerator_eu -> INSINKERATOR_EU_..._EMAIL) win over
+// the generic ..._EMAIL fallback, since each storefront's real test account is a
+// distinct plus-aliased address rather than one identity shared across every client.
+const projectPrefix = env('PROJECT', '')
+    ? env('PROJECT').toUpperCase().replace(/[^A-Z0-9]+/g, '_') + '_'
+    : '';
 for (const userType of Object.keys(usersConfig)) {
-    const envPrefix = userType.toUpperCase().replace(/[^A-Z0-9]+/g, '_');
-    const emailOverride = process.env[`${envPrefix}_EMAIL`];
-    const passwordOverride = process.env[`${envPrefix}_PASSWORD`];
+    const typePrefix = userType.toUpperCase().replace(/[^A-Z0-9]+/g, '_');
+    const emailOverride = process.env[`${projectPrefix}${typePrefix}_EMAIL`] || process.env[`${typePrefix}_EMAIL`];
+    const passwordOverride = process.env[`${projectPrefix}${typePrefix}_PASSWORD`] || process.env[`${typePrefix}_PASSWORD`];
     if (emailOverride) usersConfig[userType].email = emailOverride;
     if (passwordOverride) usersConfig[userType].password = passwordOverride;
 }

@@ -1,0 +1,12 @@
+{
+  "hits heading": "[data-testid=\"algolia-hits-heading\"]",
+  "hit count": "[data-testid=\"algolia-hit-count\"]",
+  "product card price": "[data-testid=\"product-card__now-price\"]",
+  "Filter & Sort": "[data-testid=\"algolia-facet-drawer__open-button\"]",
+  "facet checkboxes": "[data-testid^=\"algolia-refinement-list__checkbox-\"]:visible",
+  "sort by options": ":nth-match([data-testid=\"algolia-sort-by\"]:visible, 1) >> role=radio",
+  "filter drawer close button": "[role=\"dialog\"]:has-text(\"Filters\") >> role=button[name=\"Close\"]",
+  "load more button": "[data-testid=\"algolia-infinite-pagination__load-more\"]",
+  "current items count": "[data-testid=\"algolia-infinite-pagination__current-items\"]",
+  "total items count": "[data-testid=\"algolia-infinite-pagination__total-items\"]"
+}

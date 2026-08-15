@@ -1,6 +1,7 @@
 {
   "PLACE ORDER": "//button[text()='PLACE ORDER']",
   "basket item": "[data-testid='basket__product-card']",
+  "second basket item": ":nth-match([data-testid='basket__product-card'], 2)",
   "Quantity selector": "[data-testid='basket__quantity-input_input']",
   "Update": "[data-testid='basket__quantity-input__update']",
   "Remove items": "[data-testid='basket__quantity-input__delete']",

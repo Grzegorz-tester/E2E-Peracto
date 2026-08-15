@@ -1,0 +1,10 @@
+{
+  "Mirrors card": "[data-testid='content-menu-items__link'][href='/category/bathroom-mirrors']",
+  "Cabinets card": "[data-testid='content-menu-items__link'][href='/category/bathroom-cabinets']",
+  "Furniture card": "[data-testid='content-menu-items__link'][href='/bathroom-furniture']",
+  "Basins card": "[data-testid='content-menu-items__link'][href='/category/bathroom-basins']",
+  "Accessories card": "[data-testid='content-menu-items__link'][href='/category/bathroom-accessories']",
+  "Ventilation card": "[data-testid='content-menu-items__link'][href='/category/bathroom-ventilation']",
+  "Lighting card": "[data-testid='content-menu-items__link'][href='/category/bathroom-lighting']",
+  "Brassware card": "[data-testid='content-menu-items__link'][href='/category/bathroom-brassware']"
+}

@@ -1,0 +1,4 @@
+{
+  "order reference": "[data-testid=\"orders-details__reference\"]",
+  "order confirmation email": "[data-testid=\"orders-details__email\"]"
+}

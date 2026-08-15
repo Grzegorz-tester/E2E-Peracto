@@ -5,8 +5,29 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
 var _test = require("@playwright/test");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _htmlBehaviour = require("../../support-functions/html-behaviour");
+// Sources the expected email from users.json/env vars instead of literal
+// Gherkin text, so real account emails never need to be hardcoded in a
+// .feature file.
+(0, _cucumber.Then)(/^the "([^"]*)" should contain the "([^"]*)" user's email$/, async function (elementKey, userType) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const user = globalConfig.usersConfig[userType.trim().toLowerCase()];
+  if (!user?.email) {
+    throw new Error(`Missing email for user type "${userType}". Check your users.json and env vars.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    const elementText = await page.textContent(elementIdentifier);
+    return elementText?.includes(user.email);
+  });
+});
+
 // the element should contain the text ( text content of the element)
-(0, _cucumber.Then)(/^the "([^"]*)" should( not)? contain the text ["']([^"']+)["']$/, async function (elementKey, negate, expectedElementText) {
+(0, _cucumber.Then)(/^the "([^"]*)" should( not)? contain the text "(.*)"$/, async function (elementKey, negate, expectedElementText) {
   const {
     screen: {
       page
@@ -84,5 +105,37 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(`${elementIdentifier}>>nth=${index}`);
     return elementText?.includes(expectedElementText) === !negate;
+  });
+});
+
+// Remembers live text instead of a hardcoded value, so tests against content
+// that changes over time (e.g. which product sorts first) can assert "this
+// changed" rather than asserting a specific snapshot-in-time value.
+(0, _cucumber.When)(/^I remember the text of "([^"]*)" as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const text = await page.textContent(elementIdentifier);
+  this.globalVariables[variableName] = text ?? "";
+});
+(0, _cucumber.Then)(/^the "([^"]*)" text should( not)? equal the remembered "([^"]*)"$/, async function (elementKey, negate, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." must run first.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    const currentText = await page.textContent(elementIdentifier);
+    return currentText === remembered === !negate;
   });
 });

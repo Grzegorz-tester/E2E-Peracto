@@ -1,3 +1,6 @@
 {
-
+  "postcode search input": "#react-google-places-autocomplete-input",
+  "retailer search button": "[data-testid='branch-finder'] .google-places-autocomplete button",
+  "retailer results": "a[href^='/find-a-retailer/']",
+  "first retailer result": ":nth-match(a[href^='/find-a-retailer/'], 1)"
 }

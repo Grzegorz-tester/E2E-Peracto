@@ -5,13 +5,15 @@ import {ElementLocator} from "../../env/global";
 export const clickElement = async (
     page: Page,
     elementIdentifier: ElementLocator,
+    options?: { timeout?: number, force?: boolean },
 ) => {
-    await page.click(elementIdentifier);
+    await page.click(elementIdentifier, options);
 }
 export const clickElementAtIndex = async (
     page: Page,
     elementIdentifier: ElementLocator,
-    elementPosition: number
+    elementPosition: number,
+    options?: { timeout?: number, force?: boolean },
 ): Promise<void> => {
     // Locate all elements matching the identifier
     const elements = await page.$$(elementIdentifier);
@@ -23,7 +25,7 @@ export const clickElementAtIndex = async (
 
     // Click the specific instance of the element by its index
     const element = elements[elementPosition];
-    await element.click();
+    await element.click(options);
 };
 
 

@@ -13,12 +13,3 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _navigationBehaviour.navigateToPage)(page, pageId, globalConfig);
   await (0, _waitForBehaviour.waitFor)(() => (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig));
 });
-(0, _cucumber.Then)(/^I should be redirected to the "([^"]*)" page$/, async function (pageId) {
-  const {
-    screen: {
-      page
-    },
-    globalConfig
-  } = this;
-  await (0, _waitForBehaviour.waitFor)(() => (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig));
-});

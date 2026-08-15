@@ -1,0 +1,6 @@
+{
+  "Guest checkout": "[data-testid=\"radio-select_option-Guest checkout\"]",
+  "Existing customer": "[data-testid=\"radio-select_option-Existing customer\"]",
+  "Guest email": "[data-testid=\"guest-checkout-form__email-input\"]",
+  "Guest continue": "[data-testid=\"guest-checkout-form__submit-button\"]"
+}

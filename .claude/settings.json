@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nvm use*)",
+      "Bash(export NVM_DIR=\"$HOME/.nvm\")",
+      "Bash(source ~/.nvm/nvm.sh)",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_network_requests",
+      "mcp__playwright__browser_find",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_network_request"
+    ]
+  }
+}

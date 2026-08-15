@@ -1,17 +1,16 @@
 {
   "page title": "[data-testid='text-component']",
-  "Mirrors card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-mirrors']",
-  "Cabinets card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-cabinets']",
-  "Furniture card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-furniture']",
-  "Lighting card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-lighting']",
-  "Accessories card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-accessories']",
-  "Ventilation card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-ventilation']",
+  "Mirrors card": "[data-testid='content-menu-items__link'][href='/category/bathroom-mirrors']",
+  "Cabinets card": "[data-testid='content-menu-items__link'][href='/category/bathroom-cabinets']",
+  "Furniture card": "[data-testid='content-menu-items__link'][href='/bathroom-furniture']",
+  "Lighting card": "[data-testid='content-menu-items__link'][href='/category/bathroom-lighting']",
+  "Accessories card": "[data-testid='content-menu-items__link'][href='/category/bathroom-accessories']",
+  "Ventilation card": "[data-testid='content-menu-items__link'][href='/category/bathroom-ventilation']",
   "slider": "[data-testid='carousel-component']",
   "first slide": "//button[@aria-label='Go to slide 1']",
   "second slide": "//button[@aria-label='Go to slide 2']",
   "third slide": "//button[@aria-label='Go to slide 3']",
-  "fourth slide": "//button[@aria-label='Go to slide 4']",
   "View all posts": "//a[text()='View all posts']",
-  "FIND A RETAILER": "//a[text()='FIND A RETAILER']",
-  "REQUEST A BROCHURE": "//a[text()='REQUEST A BROCHURE']"
+  "FIND A RETAILER": ":nth-match(a[href='/find-a-retailer'], 1)",
+  "REQUEST A BROCHURE": ":nth-match(a[href='/brochure'], 1)"
 }

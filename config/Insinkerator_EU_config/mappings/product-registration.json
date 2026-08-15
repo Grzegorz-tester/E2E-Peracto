@@ -1,0 +1,15 @@
+{
+  "registration first name input": "[data-testid=\"product-registration-form__first-name\"]",
+  "registration last name input": "[data-testid=\"product-registration-form__last-name\"]",
+  "registration email input": "[data-testid=\"product-registration-form__email\"]",
+  "registration place of purchase input": "[data-testid=\"product-registration-form__place-of-purchase\"]",
+  "registration place of purchase label": "[data-testid=\"product-registration-form\"] label[for=\"placeOfPurchase\"]",
+  "registration serial number input": "[data-testid=\"product-registration-form__serial-number\"]",
+  "registration date of purchase button": "#dateOfPurchase",
+  "registration product model combobox": "[data-testid=\"product-registration-form__product-name-and-model\"] [role=\"combobox\"]",
+  "Standard 460 model option": "role=option[name=\"Standard 460\"]",
+  "registration installed by combobox": "[data-testid=\"product-registration-form__who-installed\"] [role=\"combobox\"]",
+  "registration installed by select": "[data-testid=\"product-registration-form__who-installed\"] select",
+  "Submit": ":nth-match([data-testid=\"product-registration-form__submit-button\"], 1)",
+  "success icon": "svg[data-icon=\"circle-check\"]"
+}

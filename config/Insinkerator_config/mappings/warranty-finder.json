@@ -1,0 +1,8 @@
+{
+  "warranty last name input": "[data-testid=\"warranty-lookup-form__last-name\"]",
+  "warranty serial number input": "[data-testid=\"warranty-lookup-form__serial-number\"]",
+  "warranty submit button": "[data-testid=\"warranty-lookup-form__submit-button\"]",
+  "warranty not found alert": "[data-testid=\"warranty-lookup-form__alert\"]",
+  "warranty get in touch link": "[data-testid=\"warranty-lookup-form\"] a[href=\"/contact-us\"]",
+  "warranty success result": "[data-testid=\"warranty-lookup-form__result\"]"
+}
