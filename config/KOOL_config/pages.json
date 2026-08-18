@@ -43,6 +43,14 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
+  "staff-quotes": {
+    "route": "/account/staff-quotes",
+    "regex": "^/account/staff-quotes$"
+  },
+  "staff-quote-detail": {
+    "route": "/account/staff-quotes",
+    "regex": "^/account/staff-quotes/[^/]+$"
+  },
   "reset-password": {
     "route": "/reset-password",
     "regex": "^/reset-password$"

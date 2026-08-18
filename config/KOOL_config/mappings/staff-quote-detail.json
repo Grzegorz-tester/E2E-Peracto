@@ -1,0 +1,21 @@
+{
+  "quote detail reference": "p:has(span:text-is(\"Reference:\"))",
+  "quote kebab menu button": "button[aria-haspopup=\"menu\"]:visible",
+  "products tab": "role=tab[name=\"Products\"]",
+  "details tab": "role=tab[name=\"Details\"]",
+  "quote total": ":nth-match(:text(\"TOTAL:\"):visible, 1)",
+  "create section name input": ":nth-match(:text-is(\"Create New Section\") ~ input:visible, 1)",
+  "create section button": ":nth-match(button:has-text(\"CREATE SECTION\"):visible, 1)",
+  "apply additional discount button": ":nth-match(button:has-text(\"APPLY ADDITIONAL DISCOUNT\"):visible, 1)",
+  "discount modal input": "[role=\"dialog\"] input[name=\"discount\"]",
+  "discount modal submit button": "[role=\"dialog\"] button:has-text(\"APPLY ADDITIONAL DISCOUNT\")",
+  "custom item name input": "input[placeholder=\"Enter Name...\"]:visible",
+  "save button": ":nth-match(button:has-text(\"SAVE\"):visible, 1)",
+  "unsaved changes message": ":text(\"You have unsaved changes\")",
+  "product edit modal discount input": "[role=\"dialog\"] :text-is(\"Discount %\") ~ input",
+  "product edit modal close button": "[role=\"dialog\"] h3:has-text(\"Edit Product\") ~ div button:has(svg[data-icon=\"xmark\"])",
+  "duplicate quote company input": "[role=\"dialog\"] input[placeholder=\"Please select a company\"]",
+  "duplicate quote confirm button": "button:has-text(\"DUPLICATE QUOTE\")",
+  "add note textarea": "[role=\"dialog\"] textarea",
+  "add note submit button": "[role=\"dialog\"] button:has-text(\"ADD NOTE\"), [role=\"dialog\"] button:has-text(\"SAVE\")"
+}

@@ -29,5 +29,9 @@
   "search drawer recommended products": "[data-testid=\"navigation-drawer-sheet__recommended-products\"]",
   "search drawer results": "[data-testid=\"algolia-autocomplete-hit-product__name\"]",
   "search drawer no results message": "[data-testid=\"algolia-autocomplete-hits__no-results\"]",
-  "search drawer close button": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"]) >> role=button[name=\"Close\"]"
+  "search drawer close button": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"]) >> role=button[name=\"Close\"]",
+
+  "search drawer no recent searches message": ":text-is(\"No recent searches\")",
+  "search drawer recent search links": ":nth-match(:text-is(\"Your recent searches\") + div a.search-history-link, 1)",
+  "search drawer clear history button": "button.search-history-clear"
 }

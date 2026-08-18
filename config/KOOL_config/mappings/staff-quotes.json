@@ -1,0 +1,12 @@
+{
+  "quote table headers": "[data-testid=\"staff_quote__table\"] thead tr",
+  "quote table company name cells": "[data-testid=\"staff_quote__table\"] tbody tr td:first-child",
+  "quote table first row reference": ":nth-match([data-testid=\"staff_quote__table\"] tbody tr td:nth-child(2) a, 1)",
+  "quote filter company name input": ":text-is(\"Company Name\") + input",
+  "quote filter button": "button:has-text(\"Filter\")",
+  "quote created column sort icon": "[data-testid=\"staff_quote__table\"] th:has(span:text-is(\"Created\")) svg",
+  "quote pagination next button": "div:has(> svg[data-icon=\"chevron-right\"])",
+  "quote pagination indicator": ":text(\"Page\")",
+  "Create a New Quote": "button:has-text(\"Create a New Quote\")",
+  "create quote submit button": "[role=\"dialog\"] button:has-text(\"CREATE QUOTE\")"
+}
