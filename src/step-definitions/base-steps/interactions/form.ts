@@ -66,6 +66,28 @@ When(/^I wait for the search results to update$/, async function () {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 });
 
+// For a search box (or any input) whose submit action is pressing Enter
+// rather than clicking a separate button - e.g. Watco's header search,
+// which navigates straight to a /search results page on Enter.
+When(/^I press Enter in the "([^"]*)" input field$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    await page.press(elementIdentifier, "Enter");
+});
+
+// A leading "<digits><st|nd|rd|th>" option (e.g. "2nd") selects by
+// POSITION instead of matching text - for a dropdown whose option text is
+// translated per-market (e.g. a title select showing "Mr"/"Herr"/"M."/
+// etc. depending on locale) where the exact wording of any one specific
+// option isn't worth hardcoding/guessing per market. Same choice the
+// source Playwright suite this was migrated from deliberately makes for
+// exactly this reason. "1st" is index 0, "2nd" is index 1, etc. One step
+// definition (not two) - a separate ordinal-only regex would be
+// ambiguous with this one, since "2nd" also matches `[^"]*`.
 When(/^I select the "([^"]*)" option from the "([^"]*)" dropdown$/, async function (option: string, elementKey: ElementKey) {
     const {
         screen: {page},
@@ -74,7 +96,13 @@ When(/^I select the "([^"]*)" option from the "([^"]*)" dropdown$/, async functi
     } = this;
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
-
     await page.waitForSelector(elementIdentifier, { state: "visible", timeout: 15000 });
-    await selectDropdownOption(page, elementIdentifier, option);
+
+    const ordinalMatch = option.match(/^(\d+)(?:st|nd|rd|th)$/);
+    if (ordinalMatch) {
+        await page.focus(elementIdentifier);
+        await page.selectOption(elementIdentifier, { index: Number(ordinalMatch[1]) - 1 });
+    } else {
+        await selectDropdownOption(page, elementIdentifier, option);
+    }
 });

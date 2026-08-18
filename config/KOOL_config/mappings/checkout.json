@@ -1,0 +1,11 @@
+{
+  "Delivery": "[data-testid='checkout__delivery__radio-button']",
+  "Telephone": "[id='telephone']",
+  "Delivery Note": "[id='deliveryNotes']",
+  "delivery options": "[data-testid='delivery-options']",
+  "first delivery option": "[data-testid='options'] > div",
+  "billing address": "[data-testid='checkout__billing__billing-address__address-0']",
+  "PROCEED": "button:has-text('PROCEED')",
+  "PAY ON ACCOUNT": "button:has(span:text('PAY ON ACCOUNT'))",
+  "PAY ON CARD": "button:has(span:text('PAY ON CARD'))"
+}

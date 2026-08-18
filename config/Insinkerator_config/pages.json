@@ -67,10 +67,6 @@
     "route": "/sitemap",
     "regex": "^/sitemap$"
   },
-  "accessories-plp": {
-    "route": "/category/accessories",
-    "regex": "^/category/accessories$"
-  },
   "shop-plp": {
     "route": "/category/shop",
     "regex": "^/category/shop$"

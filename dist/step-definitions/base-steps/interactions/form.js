@@ -29,6 +29,23 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   });
   await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, value);
 });
+
+// For a field that just needs to be non-empty and collision-free (e.g. a
+// warranty lookup's serial number), rather than a real email address - see
+// "... with a unique guest email" above for the email-shaped equivalent.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique value$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, `qa-${Date.now()}`);
+});
 (0, _cucumber.When)(/^I fill in the "([^"]*)" input field with "([^"]*)"$/, async function (elementKey, inputText) {
   const {
     screen: {
@@ -51,6 +68,30 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
 (0, _cucumber.When)(/^I wait for the search results to update$/, async function () {
   await new Promise(resolve => setTimeout(resolve, 1500));
 });
+
+// For a search box (or any input) whose submit action is pressing Enter
+// rather than clicking a separate button - e.g. Watco's header search,
+// which navigates straight to a /search results page on Enter.
+(0, _cucumber.When)(/^I press Enter in the "([^"]*)" input field$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.press(elementIdentifier, "Enter");
+});
+
+// A leading "<digits><st|nd|rd|th>" option (e.g. "2nd") selects by
+// POSITION instead of matching text - for a dropdown whose option text is
+// translated per-market (e.g. a title select showing "Mr"/"Herr"/"M."/
+// etc. depending on locale) where the exact wording of any one specific
+// option isn't worth hardcoding/guessing per market. Same choice the
+// source Playwright suite this was migrated from deliberately makes for
+// exactly this reason. "1st" is index 0, "2nd" is index 1, etc. One step
+// definition (not two) - a separate ordinal-only regex would be
+// ambiguous with this one, since "2nd" also matches `[^"]*`.
 (0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" dropdown$/, async function (option, elementKey) {
   const {
     screen: {
@@ -63,5 +104,13 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     state: "visible",
     timeout: 15000
   });
-  await (0, _htmlBehaviour.selectDropdownOption)(page, elementIdentifier, option);
+  const ordinalMatch = option.match(/^(\d+)(?:st|nd|rd|th)$/);
+  if (ordinalMatch) {
+    await page.focus(elementIdentifier);
+    await page.selectOption(elementIdentifier, {
+      index: Number(ordinalMatch[1]) - 1
+    });
+  } else {
+    await (0, _htmlBehaviour.selectDropdownOption)(page, elementIdentifier, option);
+  }
 });

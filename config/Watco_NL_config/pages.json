@@ -1,0 +1,38 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "register": {
+    "route": "/registreren",
+    "regex": "^/registreren$"
+  },
+  "register-confirmed": {
+    "route": "/registratie-geldig",
+    "regex": "^/registratie-geldig$"
+  },
+  "basket": {
+    "route": "/winkelmandje",
+    "regex": "^/winkelmandje$"
+  },
+  "checkout": {
+    "route": "/de-bestelling-valideren",
+    "regex": "^/de-bestelling-valideren$"
+  },
+  "checkout-delivery": {
+    "route": "/de-bestelling-valideren/delivery",
+    "regex": "^/de-bestelling-valideren/delivery$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "pdp": {
+    "route": "/producten/",
+    "regex": "^/producten/[^/]+$"
+  },
+  "added-to-basket": {
+    "route": "/added-to-basket",
+    "regex": "^/added-to-basket$"
+  }
+}

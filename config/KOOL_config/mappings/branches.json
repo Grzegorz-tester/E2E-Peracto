@@ -1,0 +1,7 @@
+{
+  "branch finder": "[data-testid='branch-finder']",
+  "branch search": "[id='react-google-places-autocomplete-input']",
+  "address autocomplete listbox": "#react-google-places-autocomplete-input-listbox",
+  "address autocomplete options": "#react-google-places-autocomplete-input-listbox [id^='react-google-places-autocomplete-input-option']",
+  "branch result": "[data-testid='branch-finder'] [data-testid*='branch' i]"
+}

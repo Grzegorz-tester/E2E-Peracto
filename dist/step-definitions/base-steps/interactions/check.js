@@ -27,7 +27,10 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // For a checkbox that doesn't always register as checked on the first
 // click (a real, documented site quirk on some projects) - retries the
 // click itself, not just the wait, until the checkbox genuinely reports
-// checked.
+// checked. page.check() itself THROWS (rather than returning falsy) when a
+// click doesn't change the checkbox's state - left uncaught, that exception
+// would abort this loop on its very first attempt instead of retrying, the
+// same class of bug already documented on the plain "I check" step above.
 (0, _cucumber.When)(/^I check the "([^"]*)", retrying until it is checked$/, async function (elementKey) {
   const {
     screen: {
@@ -37,7 +40,12 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   } = this;
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
   await (0, _waitForBehaviour.waitFor)(async () => {
-    await (0, _htmlBehaviour.checkElement)(page, elementIdentifier);
+    try {
+      await (0, _htmlBehaviour.checkElement)(page, elementIdentifier);
+    } catch {
+      // Swallowed - a failed click attempt just means "not checked
+      // yet", which the isChecked() check below already reports.
+    }
     return page.isChecked(elementIdentifier);
   });
 });

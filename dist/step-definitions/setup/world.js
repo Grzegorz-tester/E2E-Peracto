@@ -7,11 +7,12 @@ exports.ScenarioWorld = void 0;
 var _playwright = _interopRequireDefault(require("playwright"));
 var _parseEnv = require("../../env/parseEnv");
 var _cucumber = require("@cucumber/cucumber");
+var _loadGlobalConfig = require("../../env/loadGlobalConfig");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 class ScenarioWorld extends _cucumber.World {
   constructor(options) {
     super(options);
-    this.globalConfig = options.parameters;
+    this.globalConfig = (0, _loadGlobalConfig.loadGlobalConfig)();
     this.globalVariables = {};
   }
 

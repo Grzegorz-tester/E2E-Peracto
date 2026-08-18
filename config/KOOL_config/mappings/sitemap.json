@@ -1,0 +1,4 @@
+{
+  "sitemap heading": "//h1",
+  "first sitemap product link": ":nth-match(a[href^='/products/'], 1)"
+}

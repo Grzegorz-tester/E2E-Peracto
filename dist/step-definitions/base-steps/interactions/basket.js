@@ -3,9 +3,19 @@
 var _cucumber = require("@cucumber/cucumber");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _webElementHelper = require("../../support-functions/web-element-helper");
+// Currency-symbol-agnostic and decimal/thousands-separator-agnostic: this
+// framework's projects render prices as "58,00 €" (comma decimal, symbol
+// last) on some storefronts and "£58.00" (period decimal, symbol first) on
+// others - whichever of "." or "," appears LAST in the numeric run is the
+// real decimal separator, the other (if present) is a thousands separator.
 const parsePrice = text => {
-  const match = text?.match(/([\d.,]+)\s*€/);
-  return match ? parseFloat(match[1].replace(/\./g, "").replace(",", ".")) : 0;
+  const match = text?.match(/[\d.,]*\d/);
+  if (!match) return 0;
+  const raw = match[0];
+  const lastComma = raw.lastIndexOf(",");
+  const lastDot = raw.lastIndexOf(".");
+  const normalized = lastComma > lastDot ? raw.replace(/\./g, "").replace(",", ".") : raw.replace(/,/g, "");
+  return parseFloat(normalized);
 };
 
 // Derives the expected total from the CURRENT unit price rather than a
@@ -36,4 +46,26 @@ const parsePrice = text => {
   await page.click(quantityButton);
   await (0, _waitForBehaviour.waitFor)(async () => (await page.inputValue(quantityInput)) === String(qtyAfter));
   await (0, _waitForBehaviour.waitFor)(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
+});
+
+// For a logged-in account's basket, which is server-side and persists
+// across every prior test run rather than a guest's always-fresh session -
+// an order-completing test needs a known, single-item basket first, not
+// whatever a previous run left behind. Re-queries "remove basket line"
+// fresh on each loop iteration since removing one reflows the DOM (a
+// stale locator captured once up front would point at the wrong line, or
+// none, after the first removal). Assumes the current page already IS the
+// basket page - call "I am on the ... page" first.
+(0, _cucumber.When)(/^I clear the basket$/, async function () {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const removeLinkSelector = (0, _webElementHelper.getElementLocator)(page, "remove basket line", globalConfig);
+  while ((await page.locator(removeLinkSelector).count()) > 0) {
+    await page.locator(removeLinkSelector).first().click();
+    await page.waitForLoadState("load");
+  }
 });

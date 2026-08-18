@@ -1,0 +1,54 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
+  },
+  "register-confirmed": {
+    "route": "/register-confirmed",
+    "regex": "^/register-confirmed$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
+  },
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-thanks": {
+    "route": "/checkout/thanks",
+    "regex": "^/checkout/thanks$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "pdp": {
+    "route": "/products/",
+    "regex": "^/products/[^/]+$"
+  },
+  "added-to-basket": {
+    "route": "/added-to-basket",
+    "regex": "^/added-to-basket$"
+  }
+}

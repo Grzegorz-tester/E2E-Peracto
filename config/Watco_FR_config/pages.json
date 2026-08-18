@@ -1,0 +1,38 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "register": {
+    "route": "/senregistrer",
+    "regex": "^/senregistrer$"
+  },
+  "register-confirmed": {
+    "route": "/enregistrement-valide",
+    "regex": "^/enregistrement-valide$"
+  },
+  "basket": {
+    "route": "/panier",
+    "regex": "^/panier$"
+  },
+  "checkout": {
+    "route": "/valider-la-commande",
+    "regex": "^/valider-la-commande$"
+  },
+  "checkout-delivery": {
+    "route": "/valider-la-commande/delivery",
+    "regex": "^/valider-la-commande/delivery$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "pdp": {
+    "route": "/produits/",
+    "regex": "^/produits/[^/]+$"
+  },
+  "added-to-basket": {
+    "route": "/added-to-basket",
+    "regex": "^/added-to-basket$"
+  }
+}

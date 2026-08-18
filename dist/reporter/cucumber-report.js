@@ -5,7 +5,7 @@ var _cucumberHtmlReporter = _interopRequireDefault(require("cucumber-html-report
 var _parseEnv = require("../env/parseEnv");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 _dotenv.default.config({
-  path: (0, _parseEnv.env)('COMMON_CONFIG_FILE')
+  path: (0, _parseEnv.env)('COMMON_CONFIG_FILE', 'env/common.env')
 });
 const options = {
   theme: 'bootstrap',

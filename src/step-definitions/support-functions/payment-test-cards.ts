@@ -25,3 +25,54 @@ export const CYBERSOURCE_TEST_CARDS: Record<string, TestCard> = {
         securityCode: "123",
     },
 };
+
+export type VerifoneTestCard = {
+    number: string;
+    // Verifone's hosted card form (cst.checkout.vficloud.net) takes expiry
+    // as a single combined "MM/YY" field, unlike CyberSource's separate
+    // month/year selects above - hence a distinct shape here rather than
+    // reusing TestCard.
+    expiry: string;
+    securityCode: string;
+};
+
+// Barclays/Verifone test cards. "declined" and "expired" are from
+// KOOL-2026-08-17.json's Barclays Verifone Payment Integration suite
+// (KOOL-553/554/565/570's failure-path scenarios) - ordinary test numbers,
+// no 3DS involved since the payment is expected to fail before that point.
+//
+// "visa"/"mastercard"/"amex" are NOT the source suite's documented numbers
+// (4111111111111111 etc.) - those trigger real 3D Secure via Cardinal
+// Commerce on this integration, which stalls indefinitely in headless
+// automation after the ThreatMetrix device-fingerprinting step (confirmed
+// live: 40+s with no resolution, no error). These three are Cardinal's own
+// published "successful frictionless" 3DS test numbers instead - confirmed
+// live to complete the full flow (payment-transactions -> lookupThreeDS ->
+// complete -> /payment-return/checkout -> /checkout/thank-you) in ~15-20s.
+export const VERIFONE_TEST_CARDS: Record<string, VerifoneTestCard> = {
+    visa: {
+        number: "4000000000001000",
+        expiry: "12/28",
+        securityCode: "123",
+    },
+    mastercard: {
+        number: "5200000000001005",
+        expiry: "12/28",
+        securityCode: "123",
+    },
+    amex: {
+        number: "340000000001007",
+        expiry: "12/28",
+        securityCode: "1234",
+    },
+    declined: {
+        number: "4000000000000002",
+        expiry: "12/28",
+        securityCode: "123",
+    },
+    expired: {
+        number: "4111111111111111",
+        expiry: "01/20",
+        securityCode: "123",
+    },
+};

@@ -1,0 +1,44 @@
+{
+  "First name": "#delivery_address_firstname",
+  "Last name": "#delivery_address_lastname",
+  "Telephone": "#delivery_address_telephone",
+  "Enter address manually": "a.js-enter-address-manually",
+  "Address line 1": "#delivery_address_address_line_2",
+  "City": "#delivery_address_city",
+  "Postcode": "#delivery_address_postcode",
+  "Country": "#delivery_address_country",
+  "accordion continue": "button.btn.btn-dark.btn-block:visible",
+  "saved delivery address": "input[name='checkout_address']",
+  "first shipping option": ":nth-match(input[name='shipping_option'], 1)",
+
+  "VAT number": "#payment_customer_vat_number",
+  "VAT number label": "//*[text()='VAT number']",
+  "VAT apply": ".js-vat-apply-group:has(#payment_customer_vat_number) button.js-vat-apply",
+  "validation message": ".js-vat-apply-group:has(#payment_customer_vat_number) .js-vat-apply-error",
+  "VAT number comment": ".js-vat-apply-group:has(#payment_customer_vat_number) .vat-form-group__comment",
+  "VAT form group": ".js-vat-apply-group:has(#payment_customer_vat_number)",
+
+  "NIP number": "#payment_customer_nip_number",
+  "NIP apply": ".js-vat-apply-group:has(#payment_customer_nip_number) button.js-vat-apply",
+  "NIP validation message": ".js-vat-apply-group:has(#payment_customer_nip_number) .js-vat-apply-error",
+  "NIP number comment": ".js-vat-apply-group:has(#payment_customer_nip_number) .vat-form-group__comment",
+  "NIP form group": ".js-vat-apply-group:has(#payment_customer_nip_number)",
+
+  "order reference": "#payment_customer_notes",
+  "Pay by card": "#payment_payment_method_0",
+  "Pay on Account": "#payment_payment_method_1",
+  "Adyen terms": "#adyenTCs",
+  "Pay on Account terms": "#nonAdyenTCs",
+  "Pay on Account terms label": "label[for='nonAdyenTCs']",
+  "Adyen terms label": "label[for='adyenTCs']",
+  "Pay now": ".payment__button-proceed",
+  "payment on account minimum order notice": "//p[contains(text(),'minimum value for a Pay on account order')]",
+
+  "Adyen dropin ready": ".adyen-checkout__dropin--ready",
+  "Adyen cardholder name": "input[name='holderName']",
+  "Adyen pay button": "button.adyen-checkout__button--pay",
+
+  "VAT summary amount": ".basket-summary__row.basket-summary__tax .basket-summary__price",
+  "VAT summary row": ".basket-summary__row.basket-summary__tax",
+  "order summary total": ".basket-summary__row--total .basket-summary__total"
+}

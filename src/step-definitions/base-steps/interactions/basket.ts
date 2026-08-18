@@ -48,3 +48,21 @@ When(/^I (increment|decrement) the basket quantity and the total should update c
     await waitFor(async () => (await page.inputValue(quantityInput)) === String(qtyAfter));
     await waitFor(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
 });
+
+// For a logged-in account's basket, which is server-side and persists
+// across every prior test run rather than a guest's always-fresh session -
+// an order-completing test needs a known, single-item basket first, not
+// whatever a previous run left behind. Re-queries "remove basket line"
+// fresh on each loop iteration since removing one reflows the DOM (a
+// stale locator captured once up front would point at the wrong line, or
+// none, after the first removal). Assumes the current page already IS the
+// basket page - call "I am on the ... page" first.
+When(/^I clear the basket$/, async function (this: ScenarioWorld) {
+    const { screen: { page }, globalConfig } = this;
+    const removeLinkSelector = getElementLocator(page, "remove basket line", globalConfig);
+
+    while (await page.locator(removeLinkSelector).count() > 0) {
+        await page.locator(removeLinkSelector).first().click();
+        await page.waitForLoadState("load");
+    }
+});

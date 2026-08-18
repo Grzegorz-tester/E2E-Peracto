@@ -11,5 +11,8 @@
   "image zoom modal": ":nth-match([data-rmiz-modal-content]:visible, 1)",
 
   "configurator options": "[data-testid^=\"radio-select_option-\"]:visible",
-  "configurator total value": ":nth-match(:text-is(\"Total\") + *:visible, 1)"
+  "configurator total value": ":nth-match(:text-is(\"Total\") + *:visible, 1)",
+
+  "finish options": ":nth-match([data-testid=\"radio-select_options\"]:visible, 1) button",
+  "optional extra checkboxes": ":nth-match([data-testid=\"product-relation-selection\"]:visible, 1) button[role=\"checkbox\"]"
 }

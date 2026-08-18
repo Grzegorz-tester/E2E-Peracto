@@ -1,58 +1,25 @@
 import dotenv from 'dotenv'
-import { env, getJsonFromFile } from './env/parseEnv'
-import {
-    GlobalConfig,
-    HostsConfig,
-    PagesConfig,
-    PageElementMappings,
-} from './env/global';
-import fs from "fs";
+import { env } from './env/parseEnv'
 
-dotenv.config({path: env('COMMON_CONFIG_FILE')})
+dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 dotenv.config() // optional local .env (gitignored) for real login credentials
 
-const hostsConfig: HostsConfig = getJsonFromFile(env('HOSTS_URL_PATH'));
-const pagesConfig: PagesConfig = getJsonFromFile(env('PAGES_URL_PATH'));
-const mappingFiles = fs.readdirSync(`${process.cwd()}${env('PAGE_ELEMENTS_PATH')}`);
-const usersConfig = getJsonFromFile<{ [key: string]: { email?: string; password?: string } }>(env('USERS_CONFIG_PATH'));
+// Hosts/pages/mappings/users config is loaded per-scenario by ScenarioWorld
+// (src/step-definitions/setup/world.ts) from the env vars set above, rather
+// than being embedded here as JSON via --world-parameters: cucumber
+// re-tokenizes the whole profile string with string-argv, which doesn't
+// understand JSON's `\"` escaping and mis-splits any selector value that
+// contains an escaped quote followed by a space (e.g. Insinkerator's
+// `:text-is(\"Reset Password\")` mappings), corrupting the JSON.
 
-// users.json only defines which user types exist; real credentials come from env vars
-// (see .env.example) so they never end up committed to config/*/users.json.
-// Project-specific vars (PROJECT=insinkerator_eu -> INSINKERATOR_EU_..._EMAIL) win over
-// the generic ..._EMAIL fallback, since each storefront's real test account is a
-// distinct plus-aliased address rather than one identity shared across every client.
-const projectPrefix = env('PROJECT', '')
-    ? env('PROJECT').toUpperCase().replace(/[^A-Z0-9]+/g, '_') + '_'
-    : '';
-for (const userType of Object.keys(usersConfig)) {
-    const typePrefix = userType.toUpperCase().replace(/[^A-Z0-9]+/g, '_');
-    const emailOverride = process.env[`${projectPrefix}${typePrefix}_EMAIL`] || process.env[`${typePrefix}_EMAIL`];
-    const passwordOverride = process.env[`${projectPrefix}${typePrefix}_PASSWORD`] || process.env[`${typePrefix}_PASSWORD`];
-    if (emailOverride) usersConfig[userType].email = emailOverride;
-    if (passwordOverride) usersConfig[userType].password = passwordOverride;
-}
-
-const pageElementMappings: PageElementMappings = mappingFiles.reduce(
-    (pageElementConfigAcc, file) => {
-        const key = file.replace('.json', '');
-        const elementMappings = getJsonFromFile(`${env('PAGE_ELEMENTS_PATH')}${file}`);
-        return { ...pageElementConfigAcc, [key]: elementMappings };
-    },
-    {}
-);
-
-const worldParameters: GlobalConfig = {
-    hostsConfig,
-    pagesConfig,
-    pageElementMappings,
-    usersConfig,
-};
-
-const common = `./src/features/**/*.feature \
+// FEATURE_PATH (set per-project in env/<Project>.env) scopes a run to that
+// project's own feature folder, so the same @smoke/@regression tags used
+// across every project don't pull in every other project's scenarios too.
+// Falls back to every feature file when a project doesn't set it.
+const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
                 -f json:./reports/report.json \
-                --world-parameters ${JSON.stringify(worldParameters)} \
                 --format progress-bar \
                 --parallel ${env('PARALLEL')} \
                 --retry ${env('RETRY')}`;

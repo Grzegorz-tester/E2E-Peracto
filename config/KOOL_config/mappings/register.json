@@ -1,0 +1,16 @@
+{
+  "First name": "[id='firstName']",
+  "Last name": "[id='lastName']",
+  "Email address": "[id='email']",
+  "Telephone": "[id='telephone']",
+  "Mobile": "[id='mobile']",
+  "Password": "[id='password']",
+  "Confirm password": "[id='confirmPassword']",
+  "Address line 1": "[id='addressLine1']",
+  "Address line 2": "[id='addressLine2']",
+  "City": "[id='city']",
+  "County": "[id='county']",
+  "Postcode": "[id='postcode']",
+  "F-Gas number": "[id='fGasNumber']",
+  "Register": "[data-testid='register-form'] button[type='submit']"
+}

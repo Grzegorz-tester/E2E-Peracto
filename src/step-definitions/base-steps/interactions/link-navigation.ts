@@ -88,3 +88,31 @@ Then(/^a heading with the text "([^"]*)" should be displayed$/, async function (
     const { screen: { page } } = this;
     await expect(page.getByRole("heading", { name: text, exact: true })).toBeVisible({ timeout: 15000 });
 });
+
+// CONFIRMED SITE BUG (Watco, staging): every search-result product link's
+// href is an absolute URL pointing at an internal Bloomreach content host
+// (e.g. https://1-69-0.uk.watco.pub/...) that doesn't resolve publicly -
+// a plain click navigates the browser straight into an NXDOMAIN dead end.
+// The product itself loads fine on the current storefront origin, so this
+// reads the href and rewrites only the protocol+host onto the page's own
+// current origin before navigating, leaving the path/query untouched.
+// Reusable by any project hitting the same class of "correct path, wrong
+// host" link bug - not written narrowly around Watco's markup.
+When(/^I click on the "([^"]*)" (?:link|element) via its href on this origin$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const element = page.locator(elementIdentifier).first();
+    await element.waitFor({ state: "visible", timeout: 30000 });
+
+    const href = await element.getAttribute("href");
+    if (!href) {
+        throw new Error(`"${elementKey}" has no href to rewrite and navigate to.`);
+    }
+
+    const currentOrigin = new URL(page.url());
+    const rewritten = new URL(href);
+    rewritten.protocol = currentOrigin.protocol;
+    rewritten.hostname = currentOrigin.hostname;
+
+    await page.goto(rewritten.toString(), { timeout: 45000 });
+});

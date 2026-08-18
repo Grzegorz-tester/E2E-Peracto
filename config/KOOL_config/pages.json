@@ -1,0 +1,70 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
+  },
+  "branches": {
+    "route": "/branches",
+    "regex": "^/branches$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  },
+  "account-profile": {
+    "route": "/account/profile",
+    "regex": "^/account/profile$"
+  },
+  "account-address-book": {
+    "route": "/account/address-book",
+    "regex": "^/account/address-book$"
+  },
+  "account-orders": {
+    "route": "/account/orders",
+    "regex": "^/account/orders$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
+  "air-conditioning-plp": {
+    "route": "/category/air-conditioning",
+    "regex": "^/category/air-conditioning$"
+  },
+  "hose-set-pdp": {
+    "route": "/products/jav-1071-javac-edge-72-safe-seal-hose-set-x-3-1-4-x-1-4",
+    "regex": "^/products/jav-1071-javac-edge-72-safe-seal-hose-set-x-3-1-4-x-1-4$"
+  },
+  "cable-pdp": {
+    "route": "/products/1-5mm-x-4-core-sy-cable-x-1-metre",
+    "regex": "^/products/1-5mm-x-4-core-sy-cable-x-1-metre$"
+  },
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
+  },
+  "thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  }
+}

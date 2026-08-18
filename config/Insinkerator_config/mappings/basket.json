@@ -12,5 +12,6 @@
   "basket main product sku": ":nth-match([data-testid=\"basket-items__available-line-0__sku\"], 1)",
   "basket line total price": "[data-testid=\"basket-items__available-line-0__total-price\"]",
   "basket line extra names": ":nth-match([data-testid=\"basket-items__available-line-0__extra-options\"], 1) [data-testid=\"basket-items__available-line-0__name\"]",
-  "basket line extra prices": ":nth-match([data-testid=\"basket-items__available-line-0__extra-options\"], 1) [data-testid=\"basket-items__available-line-0__price\"]"
+  "basket line extra prices": ":nth-match([data-testid=\"basket-items__available-line-0__extra-options\"], 1) [data-testid=\"basket-items__available-line-0__price\"]",
+  "basket line variant": "[data-testid=\"basket-items__available-line-0__colour\"]"
 }

@@ -1,2 +1,8 @@
 node_modules
 .env
+
+# Regenerated on every test run - not worth tracking
+reports/screenshots/
+reports/videos/
+reports/cucumber-html-report.html
+reports/cucumber-pdf-report.pdf

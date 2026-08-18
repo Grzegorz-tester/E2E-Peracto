@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import reporter, { Options } from 'cucumber-html-reporter'
 import { env } from '../env/parseEnv'
 
-dotenv.config({path: env('COMMON_CONFIG_FILE')})
+dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 
 const options: Options = {
     theme: 'bootstrap',

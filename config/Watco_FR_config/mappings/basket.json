@@ -1,0 +1,6 @@
+{
+  "Checkout now": "form[action='/panier'] input[type='submit']",
+  "basket line quantity": ".basket-item-qty",
+  "Update basket": "form[action='/panier/update'] input[type='submit']",
+  "remove basket line": "a[href*='/remove/']"
+}

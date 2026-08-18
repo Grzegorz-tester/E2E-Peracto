@@ -1,0 +1,38 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "register": {
+    "route": "/rejestracja",
+    "regex": "^/rejestracja$"
+  },
+  "register-confirmed": {
+    "route": "/potwierdzenie-rejestracji",
+    "regex": "^/potwierdzenie-rejestracji$"
+  },
+  "basket": {
+    "route": "/koszyk",
+    "regex": "^/koszyk$"
+  },
+  "checkout": {
+    "route": "/realizacja-transakcji",
+    "regex": "^/realizacja-transakcji$"
+  },
+  "checkout-delivery": {
+    "route": "/realizacja-transakcji/delivery",
+    "regex": "^/realizacja-transakcji/delivery$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "pdp": {
+    "route": "/produkt/",
+    "regex": "^/produkt/[^/]+$"
+  },
+  "added-to-basket": {
+    "route": "/added-to-basket",
+    "regex": "^/added-to-basket$"
+  }
+}

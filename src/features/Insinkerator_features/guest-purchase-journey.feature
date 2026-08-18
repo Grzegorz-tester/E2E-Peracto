@@ -54,8 +54,8 @@ Feature: Guest purchase journey
     And I click on the "Delivery method continue" button
     Then I should be redirected to the "checkout-billing" page
 
-    When I check the "same as delivery checkbox", retrying until it is checked
-    And I click on the "Accept cookies" button if present
+    When I click on the "Accept cookies" button if present
+    And I check the "same as delivery checkbox", retrying until it is checked
     And I click on the "Billing continue" button
     Then I should be redirected to the "checkout-review" page
     And the "review content" should be displayed

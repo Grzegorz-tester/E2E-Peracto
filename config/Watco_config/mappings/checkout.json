@@ -1,0 +1,18 @@
+{
+  "guest checkout toggle": ".checkout-welcome__option:has(input[value='guest']) .js-checkout-option-header",
+  "guest email": "#login_email",
+  "guest email submit": ".checkout-welcome__option:has(input[value='guest']) button[type='submit']",
+
+  "express checkout container": ".checkout-welcome__option:has(input[name='checkout_method'])",
+  "express checkout toggle": ".checkout-welcome__option:has(input[name='checkout_method']) .checkout-welcome__option__header",
+  "express VAT number": "#express_customer_vat_number",
+  "express VAT apply": ".js-vat-apply-group:has(#express_customer_vat_number) button.js-vat-apply",
+  "express validation message": ".js-vat-apply-group:has(#express_customer_vat_number) .js-vat-apply-error",
+  "express terms": "#expressTCs",
+  "express Google Pay": "#gpay-button-online-api-id",
+  "express NIP number": "#express_customer_nip_number",
+  "express NIP apply": ".js-vat-apply-group:has(#express_customer_nip_number) button.js-vat-apply",
+  "express NIP validation message": ".js-vat-apply-group:has(#express_customer_nip_number) .js-vat-apply-error",
+
+  "Pay on Account label": "//*[text()='Pay on Account']"
+}

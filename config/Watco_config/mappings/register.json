@@ -1,0 +1,15 @@
+{
+  "Email address": "#user_registration_email",
+  "Title": "#user_registration_title",
+  "First name": "#user_registration_firstname",
+  "Last name": "#user_registration_lastname",
+  "Telephone": "#user_registration_telephone",
+  "VAT number": "#user_registration_customer_vat_number",
+  "Password": "#user_registration_plain_password_first",
+  "Confirm password": "#user_registration_plain_password_second",
+  "Marketing agreement": "label[for='user_registration_marketing_agreement']",
+  "Register": "form:has(#user_registration_email) button[type='submit']",
+  "validation message": "#user_registration_customer_vat_number ~ .alert-danger",
+  "VAT number comment": ".form-group:has(#user_registration_customer_vat_number) .vat-form-group__comment",
+  "VAT number label": "//*[text()='VAT number']"
+}
