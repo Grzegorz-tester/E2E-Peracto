@@ -1,0 +1,13 @@
+{
+  "delivery address card": ":nth-match([data-testid='address-book'], 1) [data-testid='address']",
+  "Add delivery address link": ":nth-match([data-testid='address-book'] [data-testid='header__right-link'], 1)",
+  "new address first name": "input[name='address.firstName']",
+  "new address last name": "input[name='address.lastName']",
+  "new address line 1": "input[name='address.addressLine1']",
+  "new address city": "input[name='address.city']",
+  "new address postcode": "input[name='address.postcode']",
+  "new address telephone": "input[name='address.telephone']",
+  "Add Address submit button": "button:has-text('Add Address')",
+  "TestAuto delete link": "[data-testid='address']:has-text('TestAuto') a:has-text('Delete')",
+  "Delete Address confirm button": "[data-testid='modal__action-button']"
+}

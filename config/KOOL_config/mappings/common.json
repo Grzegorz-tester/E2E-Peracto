@@ -6,6 +6,12 @@
   "first search result": ":nth-match([data-testid='search__hits__hit'], 1)",
   "second search result": ":nth-match([data-testid='search__hits__hit'], 2)",
   "Portal": "[data-testid='utility-bar__content--logged-out__sign-in']",
+  "Sign In": ":nth-match([data-testid='utility-bar__content--logged-out__sign-in'], 1)",
+  "Register utility link": ":nth-match([data-testid='utility-bar__content--logged-out__sign-in'], 2)",
+  "Sign Out": "[data-testid='utility-bar__content--logged-in'] a[href='/logout']",
+  "logged in welcome message": "[data-testid='utility-bar__content--logged-in']",
+  "Contact Us link": "[data-testid='utility-bar__email-link']",
+  "tel link": "[data-testid='utility-bar__tel-link']",
   "Menu": "[data-testid='navigation-bar']",
   "product card": "[data-testid='product-card']",
   "product name": "[data-testid='product-card__name']",
@@ -27,6 +33,36 @@
   "Profile menu item": "[data-testid='account-menu-item']:has-text('Profile')",
   "Address Book menu item": "[data-testid='account-menu-item']:has-text('Address Book')",
   "Orders menu item": "[data-testid='account-menu-item']:has-text('Orders')",
+  "Make a Payment menu item": "[data-testid='account-menu-item']:has-text('Make a Payment')",
+  "Invoices menu item": "[data-testid='account-menu-item']:has-text('Invoices')",
   "address card": "[data-testid='address-card']",
-  "recent orders": "[data-testid='recent-orders']"
+  "recent orders": "[data-testid='recent-orders']",
+
+  "footer": "[data-testid='footer']",
+  "newsletter form": "[data-testid='newsletter-sign-up-form']",
+  "newsletter email input": "[data-testid='newsletter-sign-up-form'] input[data-testid='newsletter-sign-up-form-input--email']",
+  "newsletter submit button": "[data-testid='newsletter-sign-up-form'] button[type='submit']",
+  "newsletter error message": "[data-testid='newsletter-sign-up-form'] p.text-brand-danger",
+
+  "VAT toggle": ":nth-match([data-testid='switch__checkbox']:visible, 1)",
+  "Inc VAT button": ":nth-match(button:has-text('Inc VAT'):visible, 1)",
+  "Ex VAT button": ":nth-match(button:has-text('Ex VAT'):visible, 1)",
+
+  "make a payment online section": "[data-testid='make-a-payment-online']:visible",
+  "make a payment amount input": ":nth-match([data-testid='make-a-payment-online']:visible input[type='number'], 2)",
+
+  "recently viewed section": "[data-testid='recently-viewed']:visible",
+  "recently viewed items": "[data-testid^='recently-viewed__items-']:visible",
+
+  "mobile menu button": ":nth-match([data-testid='brand-bar__menu-items__item']:has-text('Menu'), 1)",
+  "navigation bar": "[data-testid='navigation-bar']:visible",
+  "mobile navigation drawer": "[data-testid='nav-tier-one']:visible",
+  "mobile navigation drawer backdrop": "[id^='headlessui-dialog-overlay-']",
+  "AC category link": "[data-testid='navigation-bar'] a:text-is('AC')",
+  "Gas category link": "[data-testid='navigation-bar'] a:text-is('Gas')",
+  "Account menu item": ":nth-match([data-testid='brand-bar__menu-items__item']:has-text('Account'), 1)",
+  "Branches menu item": ":nth-match([data-testid='brand-bar__menu-items__item']:has-text('Branches'), 1)",
+
+  "F-Gas registration warning": ":nth-match(.border-brand-orange:visible, 1)",
+  "F-Gas confirm registration link": ":nth-match(.border-brand-orange:visible a[href='/login'], 1)"
 }

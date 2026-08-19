@@ -1,0 +1,4 @@
+{
+  "orders table": "[data-testid='orders']",
+  "order number search input": "input[placeholder='Order no.']"
+}

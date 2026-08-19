@@ -7,5 +7,11 @@
   "billing address": "[data-testid='checkout__billing__billing-address__address-0']",
   "PROCEED": "button:has-text('PROCEED')",
   "PAY ON ACCOUNT": "button:has(span:text('PAY ON ACCOUNT'))",
-  "PAY ON CARD": "button:has(span:text('PAY ON CARD'))"
+  "PAY ON CARD": "button:has(span:text('PAY ON CARD'))",
+
+  "review and payment content": "[data-testid='checkout__checkout-section']:visible:has-text('REVIEW')",
+  "edit delivery address link": ":text('Delivery is to') >> xpath=following::*[text()=\"Edit\"][1]",
+  "delivery type options": "[data-testid='checkout__delivery__delivery_types']:visible",
+
+  "payment iframe": "iframe[src*='vficloud.net']"
 }

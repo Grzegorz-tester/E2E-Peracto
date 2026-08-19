@@ -1,0 +1,9 @@
+{
+  "account email field": "input#email",
+  "Change Password link": "[data-testid='my-details__reset-password-form-btn']",
+  "existing password field": "input#existingPassword",
+  "new password field": "input#newPassword",
+  "repeat new password field": "input#repeatNewPassword",
+  "Save Changes button": "[data-testid='save-changes-button']",
+  "password mismatch error": ":text('Passwords must match')"
+}

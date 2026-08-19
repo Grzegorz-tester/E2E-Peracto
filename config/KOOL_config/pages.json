@@ -43,6 +43,10 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
+  "make-a-payment": {
+    "route": "/account/make-a-payment",
+    "regex": "^/account/make-a-payment$"
+  },
   "staff-quotes": {
     "route": "/account/staff-quotes",
     "regex": "^/account/staff-quotes$"
@@ -66,6 +70,10 @@
   "cable-pdp": {
     "route": "/products/1-5mm-x-4-core-sy-cable-x-1-metre",
     "regex": "^/products/1-5mm-x-4-core-sy-cable-x-1-metre$"
+  },
+  "gas-pdp": {
+    "route": "/products/r407f",
+    "regex": "^/products/r407f$"
   },
   "checkout": {
     "route": "/checkout",

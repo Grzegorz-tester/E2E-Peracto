@@ -234,3 +234,46 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     timeout: 55000
   });
 });
+
+// For a card expected to FAIL (declined/expired) rather than succeed - the
+// "successful" step above waits for the redirect to thank-you, which never
+// happens here, so it can't be reused as-is. No 3D Secure is involved for
+// these (confirmed in payment-test-cards.ts), so this is expected to
+// resolve quickly and isn't subject to the same fraud-detection/Cardinal
+// Commerce concerns as a real payment attempt. Confirmed live: a declined
+// card doesn't render an explicit visible error message anywhere in the DOM
+// - the observable signal is that Worldpay/Verifone drops the user back to
+// its own payment-method-selection screen instead of redirecting away, so
+// that's what's waited for here rather than a message that doesn't exist.
+(0, _cucumber.When)(/^I attempt to pay with the "([^"]*)" Verifone test card$/, {
+  timeout: 30000
+}, async function (cardName) {
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  const card = _paymentTestCards.VERIFONE_TEST_CARDS[cardName];
+  if (!card) {
+    throw new Error(`Unknown Verifone test card "${cardName}". Add it to payment-test-cards.ts.`);
+  }
+  const cardFrame = page.frameLocator("iframe[src*='vficloud.net']");
+  const cardNumberInput = cardFrame.locator("#inputcc-number");
+  await cardNumberInput.waitFor({
+    state: "visible",
+    timeout: 20000
+  });
+  await cardNumberInput.fill(card.number);
+  await cardFrame.locator("#inputcc-exp").fill(card.expiry);
+  const cvvInput = cardFrame.locator("#inputnew-password");
+  await cvvInput.click();
+  await new Promise(resolve => setTimeout(resolve, 400));
+  await cvvInput.type(card.securityCode, {
+    delay: 120
+  });
+  await cardFrame.locator('[data-e2e="card-form-submit"]').click();
+  await cardFrame.locator(':text("Select a payment method")').first().waitFor({
+    state: "visible",
+    timeout: 20000
+  });
+});

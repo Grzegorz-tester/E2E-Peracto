@@ -4,5 +4,12 @@
   "Quantity selector": "[data-testid='basket__quantity-input_input']",
   "Update": "[data-testid='basket__quantity-input__update']",
   "product's total price": "[data-testid='basket__total__price']",
-  "CHECKOUT SECURELY": "[data-testid='basket__summary__checkout-button']"
+  "CHECKOUT SECURELY": "[data-testid='basket__summary__checkout-button']",
+
+  "basket quantity input": "[data-testid='basket__quantity-input_input']:visible input#quantity",
+  "remove item button": ":nth-match([data-testid='basket__quantity-input__delete']:visible, 1)",
+  "promo code toggle": ":nth-match(:text('Add a promo code?'):visible, 1)",
+  "promo code input": "[data-testid='basket__promotion-code']:visible input#code",
+  "promo code apply button": ":nth-match([data-testid='basket__promotion-code']:visible button[type='submit'], 1)",
+  "promo code error": ":nth-match([data-testid='basket__promotion-code']:visible, 1)"
 }
