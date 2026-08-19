@@ -1,0 +1,5 @@
+{
+  "Orphaned pages": "[data-testid='row-0-name'] a",
+  "Main menu": "[data-testid='row-1-name'] a",
+  "Footer": "[data-testid='row-2-name'] a"
+}

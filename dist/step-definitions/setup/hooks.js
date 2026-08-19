@@ -14,23 +14,9 @@ function sanitize(name) {
   console.log(`🥒 Running cucumber step: "${scenario.pickleStep.text}"`);
 });
 (0, _cucumber.Before)(async function (scenario) {
-  const scenarioName = sanitize(scenario.pickle.name);
   console.log(`🥒 Running cucumber "${scenario.pickle.name}"`);
-
-  // Ensure the video directory exists
-  const videoDir = _path.default.join((0, _parseEnv.env)('VIDEO_PATH'), scenarioName);
-  if (!_fs.default.existsSync(videoDir)) {
-    _fs.default.mkdirSync(videoDir, {
-      recursive: true
-    });
-  }
-  const contextOptions = {
-    recordVideo: {
-      dir: videoDir
-    }
-  };
   try {
-    const ready = await this.init(contextOptions);
+    const ready = await this.init();
     return ready;
   } catch (err) {
     console.error('Error during scenario setup:', err);

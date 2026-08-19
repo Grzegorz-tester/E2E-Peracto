@@ -17,23 +17,10 @@ BeforeStep(async function (this: ScenarioWorld, scenario: ITestStepHookParameter
 });
 
 Before(async function (this: ScenarioWorld, scenario: ITestCaseHookParameter) {
-    const scenarioName = sanitize(scenario.pickle.name);
     console.log(`🥒 Running cucumber "${scenario.pickle.name}"`);
 
-    // Ensure the video directory exists
-    const videoDir = path.join(env('VIDEO_PATH'), scenarioName);
-    if (!fs.existsSync(videoDir)) {
-        fs.mkdirSync(videoDir, { recursive: true });
-    }
-
-    const contextOptions = {
-        recordVideo: {
-            dir: videoDir,
-        },
-    };
-
     try {
-        const ready = await this.init(contextOptions);
+        const ready = await this.init();
         return ready;
     } catch (err) {
         console.error('Error during scenario setup:', err);
