@@ -5,6 +5,31 @@ import { expect } from "@playwright/test";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { ElementKey } from "../../../env/global";
 
+// For a list page where "no rows" can mean two very different things: a
+// genuine empty result set (the site's own "no results" message renders) or
+// the data silently failing to load (a heading/shell renders, but nothing
+// underneath it - e.g. a 500 fetching the list). Checking only that a
+// heading is present can't tell these apart; this requires ACTUAL content
+// (either real rows or the confirmed-genuine empty-state message), so a
+// broken/empty-by-accident page still fails.
+Then(
+  /^the "([^"]*)" should be displayed or the "([^"]*)" should be displayed$/,
+  async function (this: ScenarioWorld, firstElementKey: string, secondElementKey: string) {
+    const {
+      screen: { page },
+      globalConfig,
+    } = this;
+    const firstIdentifier = getElementLocator(page, firstElementKey, globalConfig);
+    const secondIdentifier = getElementLocator(page, secondElementKey, globalConfig);
+
+    await waitFor(async () => {
+      const firstVisible = (await page.$(firstIdentifier)) != null;
+      const secondVisible = (await page.$(secondIdentifier)) != null;
+      return firstVisible || secondVisible;
+    });
+  },
+);
+
 // this regex \s*(not)?\s* allows to use it in the Examples when there is an empty string
 Then(
   /^the "([^"]*)" should\s*(not)?\s*be displayed$/,

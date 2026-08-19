@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.kooltech.pub"
+  "staging": "https://staging-peracto.kooltech.pub",
+  "production": "https://peracto.kooltech.co.uk"
 }

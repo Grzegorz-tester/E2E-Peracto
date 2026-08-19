@@ -2,11 +2,25 @@
 Feature: Admin Tabs Contain Expected Data
 
   # Sweeps every nav tab in the KOOL Peracto admin and confirms it lands on
-  # the right page (correct heading) and actually shows data (at least one
-  # table row), rather than an empty or broken page. Reused across the whole
-  # nav via generic "page heading" (//h1) and "table row" (//tbody/tr) keys
-  # in common.json - every one of these list pages renders a plain HTML
-  # table, so these two selectors work unmodified for all of them.
+  # the right page (correct heading) and shows real content or the site's
+  # own genuine empty-state message - never just a heading on its own.
+  # Reused across the whole nav via generic "page heading" (//h1), "table
+  # row" (//tbody/tr) and "no results message" keys in common.json - every
+  # one of these list pages renders a plain HTML table with the same
+  # "No results found for the filters applied" empty state, so the same
+  # three selectors work unmodified for all of them.
+  #
+  # CONFIRMED (live, 2026-08-19): checking only "the 'table row' should be
+  # displayed" would wrongly fail a page that's genuinely, legitimately
+  # empty (e.g. Orders with no orders yet). Checking only the heading would
+  # wrongly pass a page whose content silently failed to load (e.g. a 500
+  # fetching the list) while its heading/shell still rendered. Requiring
+  # EITHER real rows OR the confirmed-genuine empty message catches both:
+  # a broken page satisfies neither and correctly fails. Row/order counts
+  # for some sections (Product Variants, Orders) also genuinely differ
+  # between staging and production, and change over time even within one
+  # environment - this check is agnostic to that rather than asserting a
+  # specific state per environment.
   #
   # CONFIRMED SITE QUIRK (live, 2026-08-19): a nested nav item (anything
   # under the Products/Content/Users/Configuration groups) renders with a
@@ -20,11 +34,10 @@ Feature: Admin Tabs Contain Expected Data
   # don't drop those steps thinking they're redundant.
   #
   # Top-level items (Promotions, Locations, Orders) have no parent group and
-  # don't need this. Dashboard, Orders and Settings are excluded from the
-  # data-outlines below and covered by their own scenarios instead: Dashboard
-  # and Settings aren't list pages at all (no table), and Orders' table is
-  # genuinely empty on this environment right now (confirmed live, not a
-  # selector miss).
+  # don't need this. Dashboard and Settings are excluded from the
+  # data-outlines below and covered by their own scenarios instead - neither
+  # is a list page at all (no table, so the row-or-empty-message check
+  # doesn't apply).
   #
   # Remember: every click on this admin frontend must be "click precisely"
   # (non-forced) - force-clicking silently does nothing here (see
@@ -33,23 +46,24 @@ Feature: Admin Tabs Contain Expected Data
   Background:
     Given I am navigating the page as a "admin" user
 
-  Scenario Outline: A top-level tab loads with its expected heading and at least one row of data
+  Scenario Outline: A top-level tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
     And the "page heading" should contain the text "<heading>"
-    And the "table row" should be displayed
+    And the "table row" should be displayed or the "no results message" should be displayed
 
     Examples:
       | nav item   | page id    | heading    |
       | Promotions | promotions | Promotions |
       | Locations  | locations  | Locations  |
+      | Orders     | orders     | Orders     |
 
-  Scenario Outline: A one-level-nested tab loads with its expected heading and at least one row of data
+  Scenario Outline: A one-level-nested tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
     And the "page heading" should contain the text "<heading>"
-    And the "table row" should be displayed
+    And the "table row" should be displayed or the "no results message" should be displayed
 
     Examples:
       | parent        | nav item           | page id            | heading            |
@@ -70,13 +84,13 @@ Feature: Admin Tabs Contain Expected Data
       | Configuration | Tasks              | tasks              | Tasks              |
       | Configuration | Countries          | countries          | Countries          |
 
-  Scenario Outline: A two-level-nested tab loads with its expected heading and at least one row of data
+  Scenario Outline: A two-level-nested tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<grandparent>" element
     And I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
     And the "page heading" should contain the text "<heading>"
-    And the "table row" should be displayed
+    And the "table row" should be displayed or the "no results message" should be displayed
 
     Examples:
       | grandparent | parent     | nav item         | page id          | heading          |
@@ -89,15 +103,6 @@ Feature: Admin Tabs Contain Expected Data
 
   Scenario: The Dashboard tab loads with its own recent-orders widget rather than a list table
     Then the "page heading" should contain the text "Dashboard"
-
-  # CONFIRMED (live, 2026-08-19): the Orders list is genuinely empty on this
-  # environment right now - asserted as-is so a future real order is caught
-  # as a change here rather than assumed broken.
-  Scenario: The Orders tab loads with its filters, currently showing no orders
-    When I click precisely on the "Orders" element
-    Then I should be redirected to the "orders" page
-    And the "page heading" should contain the text "Orders"
-    And the "table row" should not be displayed
 
   Scenario: The Settings tab loads as a configuration form rather than a list table
     When I click precisely on the "Configuration" element
