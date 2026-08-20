@@ -22,6 +22,7 @@ Feature: Account Area Gaps
   Scenario: Adding a delivery address makes it appear in the list, and it can be removed again
     Given I am navigating the page as a "quotes user 2" user
     And I am on the "account-address-book" page
+    And I click on the "Accept cookies" button if present
     When I remember the number of "delivery address card" elements as "delivery count before"
 
     And I click on the "Add delivery address link" element
@@ -46,6 +47,7 @@ Feature: Account Area Gaps
   Scenario: Searching Orders by order number filters to that order, and a nonexistent one shows no results
     Given I am navigating the page as a "logged in" user
     And I am on the "account-orders" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "order number search input" input field with "000522"
     Then the "orders table" should contain the text "000522"
 
@@ -56,11 +58,13 @@ Feature: Account Area Gaps
   Scenario: The account email address cannot be edited
     Given I am navigating the page as a "quotes user 2" user
     And I am on the "account-profile" page
+    And I click on the "Accept cookies" button if present
     Then the "account email field" should not be enabled
 
   Scenario: Changing password is rejected when the new password and its confirmation don't match
     Given I am navigating the page as a "quotes user 2" user
     And I am on the "account-profile" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Change Password link" element
     And I fill in the "existing password field" input field with "wrong-on-purpose"
     And I fill in the "new password field" input field with "NewPassword123!"

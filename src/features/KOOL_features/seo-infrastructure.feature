@@ -10,6 +10,7 @@ Feature: SEO & Infrastructure
 
   Scenario: Sitemap - URLs are accessible and linked pages load
     Given I am on the "sitemap" page
+    And I click on the "Accept cookies" button if present
     Then the "sitemap heading" should be displayed
     When I click on the "first sitemap product link" element and note the response status
     Then the noted response status should be less than 400

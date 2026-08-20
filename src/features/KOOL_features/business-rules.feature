@@ -24,6 +24,7 @@ Feature: User Group Business Rules
 
   Scenario: A guest sees the F-Gas registration warning and cannot add a gas product to basket
     Given I am on the "gas-pdp" page
+    And I click on the "Accept cookies" button if present
     Then the "F-Gas registration warning" should contain the text "F Gas Registration Required"
     And the "Add to basket" should not be enabled
 
@@ -31,6 +32,7 @@ Feature: User Group Business Rules
   Scenario: A logged-in, non-F-Gas-registered user sees the same warning and gating
     Given I am navigating the page as a "logged in" user
     And I am on the "gas-pdp" page
+    And I click on the "Accept cookies" button if present
     Then the "F-Gas registration warning" should contain the text "F Gas Registration Required"
     And the "Add to basket" should not be enabled
 
@@ -46,10 +48,12 @@ Feature: User Group Business Rules
   Scenario: The Invoices account menu link is visible for the staff/quote-builder account
     Given I am navigating the page as a "logged in" user
     And I am on the "account" page
+    And I click on the "Accept cookies" button if present
     Then the "Invoices menu item" should be displayed
 
   @smoke
   Scenario: The Invoices account menu link is not visible for a plain trade account
     Given I am navigating the page as a "quotes user 2" user
     And I am on the "account" page
+    And I click on the "Accept cookies" button if present
     Then the "Invoices menu item" should not be displayed

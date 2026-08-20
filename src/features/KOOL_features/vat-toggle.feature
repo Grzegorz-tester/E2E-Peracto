@@ -11,6 +11,7 @@ Feature: Header VAT toggle
   Background:
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
 
   @smoke
   Scenario: Toggling Inc VAT / Ex VAT changes the displayed price, and toggling back restores it

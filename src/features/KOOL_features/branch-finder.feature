@@ -12,6 +12,7 @@ Feature: Branch Finder
 
   Scenario: Branch Finder - Search returns closest branches
     Given I am on the "branches" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "branch search" input field with "Glasgow"
     And I wait for the search results to update
     And I click on the "1st" "address autocomplete options" element

@@ -24,6 +24,7 @@ Feature: Barclays Verifone Payment Integration
   Scenario: The Delivery step's PROCEED button stays disabled until a phone number is entered
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button
@@ -42,6 +43,7 @@ Feature: Barclays Verifone Payment Integration
   Scenario: A declined card is not charged, and the user is returned to try again
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button
@@ -64,6 +66,7 @@ Feature: Barclays Verifone Payment Integration
   Scenario: The Make a Payment amount field clears its 0 placeholder on click
     Given I am navigating the page as a "logged in" user
     And I am on the "account" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Make a Payment menu item" element
     Then the "make a payment online section" should be displayed
     And the "make a payment amount input" should equal the value "0"

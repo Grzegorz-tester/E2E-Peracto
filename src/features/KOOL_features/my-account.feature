@@ -15,6 +15,7 @@ Feature: My Account & Authentication
   # add a file-upload step) only once that's confirmed acceptable.
   Scenario: User registration - empty submission is rejected with validation
     Given I am on the "register" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Register" button
     Then the "validation message" should be displayed
 
@@ -23,6 +24,7 @@ Feature: My Account & Authentication
   Scenario: My Account - Manage profile, addresses and orders
     Given I am navigating the page as a "quotes user 2" user
     And I am on the "account" page
+    And I click on the "Accept cookies" button if present
     Then the "welcome message" should be displayed
     And the "address card" should be displayed
 
@@ -37,6 +39,7 @@ Feature: My Account & Authentication
 
   Scenario: Password reset - From the Reset Password page
     Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Forgotten your password?" link
     Then I should be redirected to the "reset-password" page
     When I fill in the "Email address" input field with the "logged in" user's email

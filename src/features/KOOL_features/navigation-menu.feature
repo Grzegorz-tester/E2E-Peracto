@@ -20,6 +20,7 @@ Feature: Navigation Menu
 
   Scenario Outline: Clicking a top-level category link in the navigation bar navigates to that category
     Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
     When I click on the "<category link>" element
     Then the current URL should contain "<expected path>"
 
@@ -43,6 +44,7 @@ Feature: Navigation Menu
   # is used here instead, and doesn't carry that risk.
   Scenario: The mobile hamburger menu opens a category drawer that closes on Escape
     Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
     When I resize the browser to a "mobile" viewport
     Then the "mobile navigation drawer" should not be displayed
 
@@ -55,10 +57,12 @@ Feature: Navigation Menu
   @smoke
   Scenario: The header Account link sends a guest to Sign In and a logged-in user straight to their account
     Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Account menu item" element
     Then the current URL should contain "/login"
 
     Given I am navigating the page as a "logged in" user
     And I am on the "home" page
+    And I click on the "Accept cookies" button if present
     When I click on the "Account menu item" element
     Then I should be redirected to the "account" page

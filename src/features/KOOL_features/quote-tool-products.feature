@@ -20,6 +20,7 @@ Feature: Quote Tool - Products Tab
   Background:
     Given I am navigating the page as a "logged in" user
     And I navigate directly to the path "/account/staff-quotes/fa092d83-e5ed-4ceb-a2fc-edab2995944d"
+    And I click on the "Accept cookies" button if present
     And I duplicate this quote for a company matching "AEROCOOL" and use the copy
     And I switch to the "products tab" quote tab
 

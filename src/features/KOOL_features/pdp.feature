@@ -17,6 +17,7 @@ Feature: Product Detail Page (PDP)
   Scenario: PDP loads with accurate information and images
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     Then the "page title" should be displayed
     And the "page title" should contain the text "SY"
     And the "product price" should be displayed
@@ -24,6 +25,7 @@ Feature: Product Detail Page (PDP)
   Scenario: PDP - Add product to basket
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     Then the "basket header title" should be displayed
@@ -38,6 +40,7 @@ Feature: Product Detail Page (PDP)
   Scenario: PDP - Increase quantity and validate totals
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     When I fill in the "Quantity selector" input field with "3"

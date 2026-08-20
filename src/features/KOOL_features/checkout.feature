@@ -20,6 +20,7 @@ Feature: Checkout - Delivery, Billing, and Review and Payment
   Background:
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button

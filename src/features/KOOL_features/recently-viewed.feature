@@ -10,6 +10,7 @@ Feature: Recently Viewed Products
 
   Scenario: Viewing a second product adds it to Recently Viewed alongside the first, and each item links to the correct PDP
     Given I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
     When I am on the "hose-set-pdp" page
     Then the "recently viewed section" should be displayed
     And the "recently viewed items" should be displayed

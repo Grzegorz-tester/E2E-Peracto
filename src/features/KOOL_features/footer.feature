@@ -3,6 +3,7 @@ Feature: Footer newsletter sign-up and links
 
   Background:
     Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
 
   @smoke
   Scenario: Newsletter form validates the email address and confirms a successful sign-up

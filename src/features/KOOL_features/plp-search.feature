@@ -7,6 +7,7 @@ Feature: Product Listing Page (PLP) & Search
 
   Scenario: PLP loads with products displayed correctly
     Given I am on the "air-conditioning-plp" page
+    And I click on the "Accept cookies" button if present
     Then the "product card" should be displayed
     And the "product name" should be displayed
     And the "product price" should be displayed
@@ -15,6 +16,7 @@ Feature: Product Listing Page (PLP) & Search
 
   Scenario: PLP - Add product to basket from listing
     Given I am on the "air-conditioning-plp" page
+    And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     Then the "no items message" should not be displayed
@@ -24,6 +26,7 @@ Feature: Product Listing Page (PLP) & Search
   # filter checkbox generically rather than a specific named one.
   Scenario: PLP - Apply filters and confirm results update
     Given I am on the "air-conditioning-plp" page
+    And I click on the "Accept cookies" button if present
     And I remember the number of "product card" elements as "unfiltered count"
     When I click on the "1st" "refinement filters" element
     Then the number of "product card" elements should be fewer than the remembered "unfiltered count"
@@ -37,12 +40,14 @@ Feature: Product Listing Page (PLP) & Search
   # to click; confirm the real mechanism before trusting this scenario.
   Scenario: PLP - Load more results or pagination works
     Given I am on the "air-conditioning-plp" page
+    And I click on the "Accept cookies" button if present
     And I remember the number of "product card" elements as "initial count"
     When I click on the "Load more results" button if present
     Then the number of "product card" elements should be more than the remembered "initial count"
 
   Scenario Outline: Search - Search by SKU and product name
     Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "Search products" input field with "<term>"
     And I wait for the search results to update
     Then the "first search result" should be displayed

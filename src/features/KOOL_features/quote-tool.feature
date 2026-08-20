@@ -19,6 +19,7 @@ Feature: Quote Tool - Quotes List View
   Background:
     Given I am navigating the page as a "logged in" user
     And I am on the "staff-quotes" page
+    And I click on the "Accept cookies" button if present
 
   @smoke
   Scenario: Quotes list shows the expected columns

@@ -28,6 +28,8 @@
   "validation message": "//p[contains(@class, 'danger')] | //*[contains(@class,'error')]",
   "X": "[data-testid='cross-icon-0']",
 
+  "Accept cookies": "button.cky-btn-accept",
+
   "account menu": "[data-testid='account-menu']",
   "welcome message": "[data-testid='account-menu__welcome']",
   "Profile menu item": "[data-testid='account-menu-item']:has-text('Profile')",
