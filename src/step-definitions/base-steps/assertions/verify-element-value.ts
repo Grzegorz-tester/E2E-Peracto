@@ -75,10 +75,15 @@ Then(
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
+    // textContent() includes incidental whitespace from surrounding markup
+    // indentation/line breaks (confirmed live on Watco: a validation
+    // message wrapped in <ul><li> renders as "\n  text\n" via textContent
+    // even though only "text" is visually shown) - trimming both sides
+    // matches what a Gherkin author actually means by "equal text".
     await waitFor(async () => {
       const elementText = await page.textContent(elementIdentifier);
 
-      return (elementText === expectedElementText) === !negate;
+      return (elementText?.trim() === expectedElementText.trim()) === !negate;
     });
   }
 );
@@ -206,7 +211,7 @@ Then(
 
     await waitFor(async () => {
       const currentText = await page.textContent(elementIdentifier);
-      return (currentText === remembered) === !negate;
+      return (currentText?.trim() === remembered.trim()) === !negate;
     });
   }
 );

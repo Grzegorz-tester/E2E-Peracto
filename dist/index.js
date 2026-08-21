@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.Panelco_regression = exports.MIPA_regression = exports.Andy_Thornton_regression = void 0;
+exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = exports.Panelco_regression = exports.MIPA_regression = exports.Andy_Thornton_regression = void 0;
 var _dotenv = _interopRequireDefault(require("dotenv"));
 var _parseEnv = require("./env/parseEnv");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -31,11 +31,23 @@ const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.featur
                 --format progress-bar \
                 --parallel ${(0, _parseEnv.env)('PARALLEL')} \
                 --retry ${(0, _parseEnv.env)('RETRY')}`;
-const dev = exports.dev = `${common} --tags '@dev'`;
-const smoke = exports.smoke = `${common} --tags '@smoke'`;
-const regression = exports.regression = `${common} --tags '@regression'`;
-const Panelco_regression = exports.Panelco_regression = `${common} --tags '@Panelco_regression'`;
-const Andy_Thornton_regression = exports.Andy_Thornton_regression = `${common} --tags '@Andy_Thornton_regression'`;
-const MIPA_regression = exports.MIPA_regression = `${common} --tags '@MIPA_regression'`;
-const carbon_regression = exports.carbon_regression = `${common} --tags '@carbon_regression'`;
+
+// Never place a real order against a live storefront (see CLAUDE.md's
+// "Staging vs production rules"). Rather than relying on picking the right
+// profile/tags by hand for every production run, any scenario tagged
+// @places-real-order is automatically excluded from EVERY profile below
+// whenever a project's env file sets UI_AUTOMATION_HOST=production - so
+// forgetting to exclude it manually isn't possible. Tag order-completing
+// scenarios in any project's feature files with @places-real-order to get
+// this protection.
+const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order' : '';
+const tagFilter = tag => `${tag}${productionExclusion}`;
+const dev = exports.dev = `${common} --tags '${tagFilter('@dev')}'`;
+const smoke = exports.smoke = `${common} --tags '${tagFilter('@smoke')}'`;
+const regression = exports.regression = `${common} --tags '${tagFilter('@regression')}'`;
+const Panelco_regression = exports.Panelco_regression = `${common} --tags '${tagFilter('@Panelco_regression')}'`;
+const Andy_Thornton_regression = exports.Andy_Thornton_regression = `${common} --tags '${tagFilter('@Andy_Thornton_regression')}'`;
+const MIPA_regression = exports.MIPA_regression = `${common} --tags '${tagFilter('@MIPA_regression')}'`;
+const carbon_regression = exports.carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;
+const PizzaExpressLive_regression = exports.PizzaExpressLive_regression = `${common} --tags '${tagFilter('@PizzaExpressLive_regression')}'`;
 console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');

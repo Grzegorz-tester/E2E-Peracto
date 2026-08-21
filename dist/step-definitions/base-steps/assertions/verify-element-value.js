@@ -50,9 +50,15 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     globalConfig
   } = this;
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+
+  // textContent() includes incidental whitespace from surrounding markup
+  // indentation/line breaks (confirmed live on Watco: a validation
+  // message wrapped in <ul><li> renders as "\n  text\n" via textContent
+  // even though only "text" is visually shown) - trimming both sides
+  // matches what a Gherkin author actually means by "equal text".
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(elementIdentifier);
-    return elementText === expectedElementText === !negate;
+    return elementText?.trim() === expectedElementText.trim() === !negate;
   });
 });
 
@@ -154,7 +160,7 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
   await (0, _waitForBehaviour.waitFor)(async () => {
     const currentText = await page.textContent(elementIdentifier);
-    return currentText === remembered === !negate;
+    return currentText?.trim() === remembered.trim() === !negate;
   });
 });
 

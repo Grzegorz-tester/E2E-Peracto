@@ -16,6 +16,19 @@ Then(
     }
 );
 
+// A "contains" variant of the attribute check above - for an attribute
+// whose value is partly dynamic (a query string with an ID, a resize
+// param) so an exact match would break every time that part changes, e.g.
+// a booking iframe's src carrying a per-event EventInstanceId.
+Then(
+    /^the "([^"]*)" should have attribute "([^"]*)" containing "([^"]*)"$/,
+    async function (this: ScenarioWorld, elementKey: ElementKey, attribute: string, expectedSubstring: string) {
+        const { screen: { page }, globalConfig } = this;
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+        await expect(page.locator(elementIdentifier)).toHaveAttribute(attribute, new RegExp(expectedSubstring.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), { timeout: 15000 });
+    }
+);
+
 // For a CSS-class-driven state a site toggles via JS rather than a
 // dedicated data-testid/aria attribute - e.g. Watco's ".is-invalid" on a
 // rejected VAT number, or ".js-vat-apply-group--dirty" on an edited-but-

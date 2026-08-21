@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VERIFONE_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = void 0;
+exports.VERIFONE_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = void 0;
 // CyberSource Unified Checkout sandbox test cards, shared across any
 // project using the same payment provider (these are CyberSource's own
 // published test values, not tied to a specific merchant/project). Add
@@ -24,6 +24,7 @@ const CYBERSOURCE_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = {
     securityCode: "123"
   }
 };
+
 // Barclays/Verifone test cards. "declined" and "expired" are from
 // KOOL-2026-08-17.json's Barclays Verifone Payment Integration suite
 // (KOOL-553/554/565/570's failure-path scenarios) - ordinary test numbers,
@@ -37,6 +38,32 @@ const CYBERSOURCE_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = {
 // published "successful frictionless" 3DS test numbers instead - confirmed
 // live to complete the full flow (payment-transactions -> lookupThreeDS ->
 // complete -> /payment-return/checkout -> /checkout/thank-you) in ~15-20s.
+
+// GlobalPayments (js.globalpay.com v4.1.3) hosted card fields - Indespension's
+// checkout provider, confirmed live 2026-08-21. This card set is the
+// generic Visa test number commonly used across GlobalPayments/Realex
+// integrations; note the important caveat below before assuming a failure
+// here is this card's fault.
+//
+// CONFIRMED LIVE (2026-08-21): the hosted fields themselves work correctly
+// - all four (card number, expiration, CVV, cardholder name) accept input
+// and format/validate normally (Visa is correctly detected from the
+// number, no client-side validation errors) regardless of which card is
+// used. BUT submitting always currently fails with a backend
+// "Payment Error: no gateway available" - this happens before the card is
+// even evaluated, so it is NOT a card-specific decline and no test card
+// value will produce a different outcome. This looks like Indespension's
+// staging environment not having a payment gateway connected/configured
+// for this integration, not a test-authoring problem - flag to whoever
+// manages this project's staging config rather than treating a red run
+// here as a step-definition bug.
+const GLOBALPAYMENTS_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = {
+  default: {
+    number: "4263970000005262",
+    expiry: "12/28",
+    securityCode: "123"
+  }
+};
 const VERIFONE_TEST_CARDS = exports.VERIFONE_TEST_CARDS = {
   visa: {
     number: "4000000000001000",

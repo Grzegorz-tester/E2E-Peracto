@@ -277,3 +277,79 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     timeout: 20000
   });
 });
+
+// Adyen drop-in (Watco's card payment provider). Needed on markets where
+// Pay on Account isn't offered at all (PL) - the only way to get an
+// order-completing test there. The three card fields live in Adyen's own
+// hosted iframes (data-cse="encrypted...") with no project-specific
+// markup, same "irreducible, needs frameLocator" situation as the
+// CyberSource/Verifone steps above. Selectors and the test card itself
+// (4111111111111111 / 03/30 / 737) are VERIFIED live (staging,
+// 2026-08-06) - staging's Adyen client config runs in test mode, so this
+// resolves with no 3D Secure challenge. Assumes "Pay by card" has
+// already been selected and its terms checkbox checked (the same
+// two-step pattern "Pay on Account" already uses elsewhere) - this step
+// only handles the drop-in fields themselves, not clicking the final pay
+// button, so it composes with the existing "I click on the ... button"
+// step for that.
+(0, _cucumber.When)(/^I fill in the Adyen test card details$/, async function () {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const dropinReady = (0, _webElementHelper.getElementLocator)(page, "Adyen dropin ready", globalConfig);
+  await page.waitForSelector(dropinReady, {
+    state: "visible",
+    timeout: 15000
+  });
+  const cardholderName = (0, _webElementHelper.getElementLocator)(page, "Adyen cardholder name", globalConfig);
+  await page.fill(cardholderName, "Test Test");
+  await page.frameLocator('[data-cse="encryptedCardNumber"] iframe').locator('input[data-fieldtype="encryptedCardNumber"]').fill("4111111111111111");
+  await page.frameLocator('[data-cse="encryptedExpiryDate"] iframe').locator('input[data-fieldtype="encryptedExpiryDate"]').fill("03/30");
+  await page.frameLocator('[data-cse="encryptedSecurityCode"] iframe').locator('input[data-fieldtype="encryptedSecurityCode"]').fill("737");
+});
+
+// GlobalPayments (js.globalpay.com) hosted fields - Indespension's card
+// payment provider. Each field (number/expiration/cvv/holder-name/submit)
+// is its own named iframe with no data-testid, only id="secure-payment-
+// field" on the real input - confirmed live that each iframe ALSO
+// contains hidden aria-hidden autocomplete-helper inputs for the OTHER
+// three fields (for browser autofill UX), so a bare `input` locator
+// matches 4 elements per frame; `#secure-payment-field` reliably isolates
+// the one real, interactive field. Card details looked up by name from
+// payment-test-cards.ts, same convention as the CyberSource/Verifone
+// steps above.
+//
+// IMPORTANT (confirmed live, 2026-08-21): submitting currently always
+// fails with "Payment Error: no gateway available" regardless of card -
+// this is a staging environment/gateway-configuration gap, not a card or
+// selector problem (see the comment on GLOBALPAYMENTS_TEST_CARDS). This
+// step itself is verified correct up to and including the submit click;
+// only the resulting redirect is blocked. Waits for either a real
+// checkout-thank-you redirect or that specific payment-error text (a
+// scenario using this step needs to handle both outcomes explicitly
+// rather than assuming success).
+(0, _cucumber.When)(/^I pay with the "([^"]*)" GlobalPayments test card$/, {
+  timeout: 30000
+}, async function (cardName) {
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  const card = _paymentTestCards.GLOBALPAYMENTS_TEST_CARDS[cardName];
+  if (!card) {
+    throw new Error(`Unknown GlobalPayments test card "${cardName}". Add it to payment-test-cards.ts.`);
+  }
+  await page.waitForSelector('iframe[name="card-number"]', {
+    state: "visible",
+    timeout: 15000
+  });
+  await page.frameLocator('iframe[name="card-number"]').locator('#secure-payment-field').fill(card.number);
+  await page.frameLocator('iframe[name="card-expiration"]').locator('#secure-payment-field').fill(card.expiry);
+  await page.frameLocator('iframe[name="card-cvv"]').locator('#secure-payment-field').fill(card.securityCode);
+  await page.frameLocator('iframe[name="card-holder-name"]').locator('#secure-payment-field').fill("Velstar Test");
+  await page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first().click();
+});

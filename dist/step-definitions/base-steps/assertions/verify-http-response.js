@@ -1,0 +1,29 @@
+"use strict";
+
+var _cucumber = require("@cucumber/cucumber");
+var _webElementHelper = require("../../support-functions/web-element-helper");
+var _test = require("@playwright/test");
+// Checks the asset's own HTTP response rather than just "the <img> element
+// is visible" - a broken/expired CDN URL can still render an <img> element
+// with no visible layout break. Uses GET rather than HEAD since some CDNs
+// (confirmed on other projects' image hosts) don't support HEAD and 404 it
+// even when the resource itself is fine.
+(0, _cucumber.Then)(/^the "([^"]*)" image should return a 200 OK response with content-type "([^"]*)"$/, async function (elementKey, expectedContentType) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const src = await page.getAttribute(elementIdentifier, "src");
+  if (!src) {
+    throw new Error(`"${elementKey}" (${elementIdentifier}) has no "src" attribute to check.`);
+  }
+  const url = new URL(src, page.url()).toString();
+  const response = await page.request.get(url, {
+    timeout: 15000
+  });
+  (0, _test.expect)(response.status(), `${url} -> ${response.status()}`).toBe(200);
+  (0, _test.expect)(response.headers()["content-type"] ?? "").toContain(expectedContentType);
+});
