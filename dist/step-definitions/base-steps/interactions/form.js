@@ -114,3 +114,72 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     await (0, _htmlBehaviour.selectDropdownOption)(page, elementIdentifier, option);
   }
 });
+
+// For a Radix-style combobox (a <button role="combobox"> that opens a
+// role="listbox" popup of role="option" divs) rather than a native
+// <select> - confirmed live on Indespension's towbar vehicle-search
+// filter (Make/Model/Year/Body Type). The "... dropdown" step above only
+// works on a real <select> (it calls page.selectOption, which throws on
+// anything else) - there was no generic step for this combobox shape
+// anywhere in the repo before this, despite it being a common shadcn/
+// Radix UI pattern likely to recur on other projects. A leading ordinal
+// (e.g. "1st") selects by position, same convention as "... dropdown"
+// above, for a combobox whose option text varies (year ranges, per-make
+// model lists) where no specific value is worth hardcoding.
+//
+// The mapping's own selector should point directly at the
+// button[role='combobox'] itself (not a wrapping container) - confirmed
+// live this matters: Playwright's isEnabled()/isDisabled() checks the
+// exact resolved element, and a plain wrapper <div> can never be "HTML
+// disabled" regardless of an inner button's real state, which silently
+// breaks any "should/should not be enabled" assertion reusing the same
+// mapping key. If the resolved element isn't itself the combobox button,
+// this falls back to searching inside it, so a container-style mapping
+// still works for opening the listbox - just not for that enabled check.
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" listbox$/, async function (option, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const resolved = page.locator(elementIdentifier);
+  const isComboboxItself = (await resolved.getAttribute("role").catch(() => null)) === "combobox";
+  const trigger = isComboboxItself ? resolved : resolved.locator("button[role='combobox']");
+  await trigger.waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+
+  // Same hydration-race shape already confirmed elsewhere in this repo
+  // (logging-in.feature, the PDP "Add to basket" button): a click fired
+  // the instant this Radix trigger is "visible and stable" can silently
+  // no-op if its onClick handler isn't attached yet - confirmed live,
+  // this only reproduces when the click follows page navigation
+  // immediately (as a Background/Given step does), not when there's
+  // already been some delay. Retrying once against the real success
+  // signal (the listbox actually opening) rather than a fixed sleep.
+  const listbox = page.locator("[role='listbox']:visible").last();
+  const listOptions = listbox.locator("[role='option']");
+  await trigger.click();
+  const openedFirstTry = await listOptions.first().waitFor({
+    state: "visible",
+    timeout: 5000
+  }).then(() => true).catch(() => false);
+  if (!openedFirstTry) {
+    await trigger.click();
+    await listOptions.first().waitFor({
+      state: "visible",
+      timeout: 15000
+    });
+  }
+  const ordinalMatch = option.match(/^(\d+)(?:st|nd|rd|th)$/);
+  if (ordinalMatch) {
+    await listOptions.nth(Number(ordinalMatch[1]) - 1).click();
+    return;
+  }
+  await listbox.getByText(option, {
+    exact: true
+  }).click();
+});

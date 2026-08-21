@@ -1,7 +1,7 @@
 {
-  "Make dropdown": "[data-testid='search-by-model__make']",
-  "Model dropdown": "[data-testid='search-by-model__model']",
-  "Year dropdown": "[data-testid='search-by-model__year']",
-  "Body type dropdown": "[data-testid='search-by-model__body-type']",
+  "Make dropdown": "[data-testid='search-by-model__make'] button[role='combobox']",
+  "Model dropdown": "[data-testid='search-by-model__model'] button[role='combobox']",
+  "Year dropdown": "[data-testid='search-by-model__year'] button[role='combobox']",
+  "Body type dropdown": "[data-testid='search-by-model__body-type'] button[role='combobox']",
   "Search towbars button": "[data-testid='towbar-vehicle__submit-button']"
 }
