@@ -34,5 +34,25 @@
   "added-to-basket": {
     "route": "/added-to-basket",
     "regex": "^/added-to-basket$"
+  },
+  "checkout-payment": {
+    "route": "/realizacja-transakcji/payment",
+    "regex": "^/realizacja\\-transakcji/payment$"
+  },
+  "login": {
+    "route": "/logowanie",
+    "regex": "^/logowanie$"
+  },
+  "account": {
+    "route": "/konto",
+    "regex": "^/konto$"
+  },
+  "account-profile": {
+    "route": "/konto/profil-klienta",
+    "regex": "^/konto/profil\\-klienta$"
+  },
+  "checkout-thanks": {
+    "route": "/realizacja-transakcji/dziekujemy",
+    "regex": "^/realizacja\\-transakcji/dziekujemy$"
   }
 }

@@ -23,7 +23,7 @@ Feature: Express Checkout - VAT number field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
     And I click on the "express checkout toggle" element
     Then the "express VAT number" should be displayed
@@ -39,7 +39,7 @@ Feature: Express Checkout - VAT number field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
     And I click on the "express checkout toggle" element
     And I fill in the "express VAT number" input field with "GB12345"

@@ -34,5 +34,25 @@
   "added-to-basket": {
     "route": "/added-to-basket",
     "regex": "^/added-to-basket$"
+  },
+  "checkout-payment": {
+    "route": "/valider-la-commande/payment",
+    "regex": "^/valider\\-la\\-commande/payment$"
+  },
+  "login": {
+    "route": "/se-connecter",
+    "regex": "^/se\\-connecter$"
+  },
+  "account": {
+    "route": "/mon-compte",
+    "regex": "^/mon\\-compte$"
+  },
+  "account-profile": {
+    "route": "/mon-compte/informations-personnelles",
+    "regex": "^/mon\\-compte/informations\\-personnelles$"
+  },
+  "checkout-thanks": {
+    "route": "/valider-la-commande/merci",
+    "regex": "^/valider\\-la\\-commande/merci$"
   }
 }

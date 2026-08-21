@@ -1,0 +1,5 @@
+{
+  "Email address": "#login__username",
+  "Password": "#login__password",
+  "Sign In": "form[name='login'] button[type='submit']"
+}

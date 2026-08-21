@@ -1,0 +1,79 @@
+@regression
+Feature: Logged-in checkout - VAT number persistence to account (IE)
+
+  # Migrated from P3Playwright watco/tests/basket-checkout/ie/logged-in-checkout-vat-persistence.test.ts
+  # IE mirror of the UK suite. Places TWO real orders via Pay on Account
+  # against the shared "account test user with vat" account (IE1234567L
+  # baseline) - one with an edited VAT number, one restoring the
+  # original. SIMPLIFIED from the source the same way the UK file is -
+  # see that file's docblock for why the source's self-healing "place an
+  # extra order first" branch is dropped here in favour of asserting the
+  # account starts at baseline directly.
+
+  Scenario: An edited VAT number persists to the account after the order is placed
+    Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
+    When I fill in the "Email address" input field with the "account test user with vat" user's email
+    And I fill in the "Password" input field with the "account test user with vat" user's password
+    And I click on the "Sign In" button, removing the "cookie preference centre overlay" overlay if it interferes
+    Then I should be redirected to the "account" page
+
+    When I am on the "basket" page
+    And I clear the basket
+    And I am on the "home" page
+    And I fill in the "Search products" input field with "epoxy"
+    And I press Enter in the "Search products" input field
+    And I wait for the search results to update
+    And I click on the "first search result" link via its href on this origin
+    And I click on the "Add to basket" button
+    And I am on the "basket" page
+    And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
+    Then the "first shipping option" should be displayed
+    When I check the "first shipping option"
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
+    Then the "VAT number" should be displayed
+    And the "VAT number" should equal the value "IE1234567L"
+
+    When I fill in the "VAT number" input field with "IE9999999L"
+    And I click on the "VAT apply" button
+    Then the "VAT number" should not have class "is-invalid"
+    And I remember the text of "VAT summary amount" as "vat before order"
+
+    When I click on the "Pay on Account" element
+    And I check the "Pay on Account terms", retrying until it is checked
+    Then the "Pay now" should be displayed
+    When I click on the "Pay now" button
+    Then I should be redirected to the "checkout-thanks" page
+    And the "VAT summary amount" text should equal the remembered "vat before order"
+
+    When I am on the "account-profile" page
+    Then the "VAT number" should equal the value "IE9999999L"
+
+    When I am on the "basket" page
+    And I clear the basket
+    And I am on the "home" page
+    And I fill in the "Search products" input field with "epoxy"
+    And I press Enter in the "Search products" input field
+    And I wait for the search results to update
+    And I click on the "first search result" link via its href on this origin
+    And I click on the "Add to basket" button
+    And I am on the "basket" page
+    And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
+    Then the "first shipping option" should be displayed
+    When I check the "first shipping option"
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
+    Then the "VAT number" should be displayed
+    When I fill in the "VAT number" input field with "IE1234567L"
+    And I click on the "VAT apply" button
+    Then the "VAT number" should not have class "is-invalid"
+
+    When I click on the "Pay on Account" element
+    And I check the "Pay on Account terms", retrying until it is checked
+    Then the "Pay now" should be displayed
+    When I click on the "Pay now" button
+    Then I should be redirected to the "checkout-thanks" page
+
+    When I am on the "account-profile" page
+    Then the "VAT number" should equal the value "IE1234567L"

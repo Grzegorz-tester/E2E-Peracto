@@ -50,5 +50,9 @@
   "added-to-basket": {
     "route": "/added-to-basket",
     "regex": "^/added-to-basket$"
+  },
+  "checkout-payment": {
+    "route": "/checkout/payment",
+    "regex": "^/checkout/payment$"
   }
 }

@@ -1,3 +1,5 @@
 {
+  "account test user 1": { "email": "", "password": "" },
+  "account test user with vat": { "email": "", "password": "" },
   "guest": {}
 }

@@ -22,10 +22,10 @@ Feature: Registration - VAT number field (DE)
     And I fill in the "Telephone" input field with "017000000005"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     And I fill in the "VAT number" input field with "DE12"
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "validation message" should be displayed
     And the "validation message" should equal text "Die eingegebene USt-IdNr. ist ungültig. Bitte geben Sie eine Umsatzsteuer-Identifikationsnummer im Format DE123456789 ein"
 
@@ -38,7 +38,7 @@ Feature: Registration - VAT number field (DE)
     And I fill in the "Telephone" input field with "017000000006"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "register-confirmed" page

@@ -8,5 +8,6 @@
   "search result card": ".card-fresh",
   "search result card title": ".card-fresh__title",
   "Add to basket": ".pdp-atb-btn",
-  "basket header link": "#nav-basket"
+  "basket header link": "#nav-basket",
+  "View basket": ".brand-btn-checkout"
 }

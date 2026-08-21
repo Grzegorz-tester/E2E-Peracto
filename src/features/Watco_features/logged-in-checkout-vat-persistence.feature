@@ -26,9 +26,10 @@ Feature: Logged-in checkout - VAT number persistence to account
 
   Scenario: An edited VAT number persists to the account after the order is placed
     Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "Email address" input field with the "account test user with vat" user's email
     And I fill in the "Password" input field with the "account test user with vat" user's password
-    And I click on the "Sign In" button
+    And I click on the "Sign In" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "account" page
 
     When I am on the "basket" page
@@ -39,11 +40,12 @@ Feature: Logged-in checkout - VAT number persistence to account
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
     And the "VAT number" should equal the value "GB123456789"
 
@@ -73,11 +75,12 @@ Feature: Logged-in checkout - VAT number persistence to account
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
     When I fill in the "VAT number" input field with "GB123456789"
     And I click on the "VAT apply" button

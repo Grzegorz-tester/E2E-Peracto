@@ -13,16 +13,14 @@ Feature: Guest checkout - VAT number field
   # - Confirmation email content: no email-reading infrastructure exists in
   #   this repo.
   #
-  # CONFIRMED SITE BEHAVIOUR (source repo): the "Enter address manually"
-  # link's click handler is occasionally not bound yet the instant the
-  # step renders, so the first click can do nothing - the source retries
-  # with a second click ONLY if the manual fields didn't appear within 5s
-  # (this link toggles the fields open/closed, so an unconditional second
-  # click would risk closing them again). No generic "retry only if a
-  # DIFFERENT element didn't appear" step exists in this framework yet -
-  # left as a single click for now; add that retry as a bespoke step if
-  # this proves flaky live, rather than guessing at an unconditional
-  # workaround that could make it worse.
+  # CONFIRMED SITE BEHAVIOUR (source repo, and confirmed flaky live in
+  # THIS repo too): the "Enter address manually" link's click handler is
+  # occasionally not bound yet the instant the step renders, so the first
+  # click can do nothing. "..., retrying until the ... appears" (click.ts)
+  # clicks once, checks if the manual fields appeared, and clicks again
+  # ONLY if they didn't - never an unconditional double-click, since this
+  # link toggles the fields open/closed and a blind second click would
+  # risk closing them right back.
 
   Scenario: VAT field is visible with the correct label and placeholder, Apply starts disabled, and both payment methods are offered
     Given I am on the "home" page
@@ -32,7 +30,7 @@ Feature: Guest checkout - VAT number field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
     And I click on the "guest checkout toggle" element
     And I fill in the "guest email" input field with a unique guest email
@@ -42,16 +40,16 @@ Feature: Guest checkout - VAT number field
     When I fill in the "First name" input field with "Grzegorz"
     And I fill in the "Last name" input field with "Test"
     And I fill in the "Telephone" input field with "07700900000"
-    And I click on the "Enter address manually" link
+    And I click on the "Enter address manually" link, retrying until the "Address line 1" appears
     And I fill in the "Address line 1" input field with "1 Test Street"
     And I fill in the "City" input field with "London"
     And I fill in the "Postcode" input field with "SW1A 1AA"
     And I select the "United Kingdom" option from the "Country" dropdown
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
 
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
     Then the "VAT number" should have attribute "placeholder" with value "GB123456789"

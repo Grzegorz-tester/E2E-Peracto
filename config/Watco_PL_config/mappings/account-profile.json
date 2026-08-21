@@ -1,0 +1,5 @@
+{
+  "VAT number": "#user_profile_customer_vat_number",
+  "NIP number": "#user_profile_customer_nip_number",
+  "Save details": "form[name='user_profile'] button[type='submit']"
+}

@@ -34,5 +34,25 @@
   "added-to-basket": {
     "route": "/added-to-basket",
     "regex": "^/added-to-basket$"
+  },
+  "checkout-payment": {
+    "route": "/kasse/payment",
+    "regex": "^/kasse/payment$"
+  },
+  "login": {
+    "route": "/anmelden",
+    "regex": "^/anmelden$"
+  },
+  "account": {
+    "route": "/kundenkonto",
+    "regex": "^/kundenkonto$"
+  },
+  "account-profile": {
+    "route": "/kundenkonto/profil",
+    "regex": "^/kundenkonto/profil$"
+  },
+  "checkout-thanks": {
+    "route": "/kasse/danke",
+    "regex": "^/kasse/danke$"
   }
 }

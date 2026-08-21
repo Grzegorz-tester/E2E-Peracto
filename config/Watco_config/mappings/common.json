@@ -2,14 +2,12 @@
   "Accept cookies": "#onetrust-accept-btn-handler",
   "cookie preference centre overlay": ".onetrust-pc-dark-filter",
   "close cookie preference centre": "#close-pc-btn-handler",
-
   "Search products": "input[name='query']:visible",
   "category navigation": ".mega-menu-categories-desktop",
-
   "first search result": ":nth-match(a.view-product-btn, 1)",
   "search result card": ".card-fresh",
   "search result card title": ".card-fresh__title",
-
   "Add to basket": ".pdp-atb-btn",
-  "basket header link": "#nav-basket"
+  "basket header link": "#nav-basket",
+  "View basket": ".brand-btn-checkout"
 }

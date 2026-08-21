@@ -25,10 +25,10 @@ Feature: Registration - VAT number field
     And I fill in the "Telephone" input field with "07700900002"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     And I fill in the "VAT number" input field with "GB12345"
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "validation message" should be displayed
     And the "validation message" should equal text "The entered VAT number is invalid. Enter a VAT number in the format GB123456789."
 
@@ -46,7 +46,7 @@ Feature: Registration - VAT number field
     And I fill in the "Telephone" input field with "07700900002"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "register-confirmed" page

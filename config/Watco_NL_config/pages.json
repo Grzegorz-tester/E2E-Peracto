@@ -34,5 +34,25 @@
   "added-to-basket": {
     "route": "/added-to-basket",
     "regex": "^/added-to-basket$"
+  },
+  "checkout-payment": {
+    "route": "/de-bestelling-valideren/payment",
+    "regex": "^/de\\-bestelling\\-valideren/payment$"
+  },
+  "login": {
+    "route": "/inloggen",
+    "regex": "^/inloggen$"
+  },
+  "account": {
+    "route": "/mijn-account",
+    "regex": "^/mijn\\-account$"
+  },
+  "account-profile": {
+    "route": "/mijn-account/persoonlijke-informatie",
+    "regex": "^/mijn\\-account/persoonlijke\\-informatie$"
+  },
+  "checkout-thanks": {
+    "route": "/bestelling-bevestigen/bedankt",
+    "regex": "^/bestelling\\-bevestigen/bedankt$"
   }
 }

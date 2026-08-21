@@ -12,7 +12,7 @@ Feature: Guest checkout - VAT number field validation
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
     And I click on the "guest checkout toggle" element
     And I fill in the "guest email" input field with a unique guest email
@@ -21,15 +21,15 @@ Feature: Guest checkout - VAT number field validation
     When I fill in the "First name" input field with "Grzegorz"
     And I fill in the "Last name" input field with "Test"
     And I fill in the "Telephone" input field with "07700900000"
-    And I click on the "Enter address manually" link
+    And I click on the "Enter address manually" link, retrying until the "Address line 1" appears
     And I fill in the "Address line 1" input field with "1 Test Street"
     And I fill in the "City" input field with "London"
     And I fill in the "Postcode" input field with "SW1A 1AA"
     And I select the "United Kingdom" option from the "Country" dropdown
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
   Scenario: An invalid VAT number is rejected, a too-long GB number is rejected, and an XI-prefixed number is accepted
@@ -56,7 +56,7 @@ Feature: Guest checkout - VAT number field validation
     And I click on the "Pay on Account" element
     Then the "VAT form group" should have class "js-vat-apply-group--dirty"
 
-    When I click on the "Pay on Account terms" element
+    When I click on the "Pay on Account terms" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "validation message" should equal text "There are unsaved updates to this field, please apply the changes or clear the field before proceeding."
     And the "Pay on Account terms" radio button should not be checked
 
@@ -75,6 +75,6 @@ Feature: Guest checkout - VAT number field validation
     And the "VAT number" should have class "is-invalid"
 
     When I click on the "Pay on Account" element
-    And I click on the "Pay on Account terms" element
+    And I click on the "Pay on Account terms" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "validation message" should equal text "There are unsaved updates to this field, please apply the changes or clear the field before proceeding."
     And the "Pay on Account terms" radio button should not be checked

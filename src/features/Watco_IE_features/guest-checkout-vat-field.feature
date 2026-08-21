@@ -13,7 +13,7 @@ Feature: Guest checkout - VAT number field (IE)
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
     And I click on the "guest checkout toggle" element
     And I fill in the "guest email" input field with a unique guest email
@@ -23,16 +23,16 @@ Feature: Guest checkout - VAT number field (IE)
     When I fill in the "First name" input field with "Grzegorz"
     And I fill in the "Last name" input field with "Test"
     And I fill in the "Telephone" input field with "0870000000"
-    And I click on the "Enter address manually" link
+    And I click on the "Enter address manually" link, retrying until the "Address line 1" appears
     And I fill in the "Address line 1" input field with "1 Test Street"
     And I fill in the "City" input field with "Dublin"
     And I fill in the "Postcode" input field with "D01 F5P2"
     And I select the "Ireland" option from the "Country" dropdown
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
 
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
     Then the "VAT number" should have attribute "placeholder" with value "IE9999999L"

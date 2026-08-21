@@ -16,22 +16,26 @@ Feature: Logged-in checkout - VAT number field
 
   Scenario: No saved VAT number - field is empty, Apply is disabled, and Pay on Account is offered
     Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "Email address" input field with the "account test user 1" user's email
     And I fill in the "Password" input field with the "account test user 1" user's password
-    And I click on the "Sign In" button
+    And I click on the "Sign In" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "account" page
 
-    When I am on the "home" page
+    When I am on the "basket" page
+    And I clear the basket
+    And I am on the "home" page
     And I fill in the "Search products" input field with "epoxy"
     And I press Enter in the "Search products" input field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
     Then the "VAT number" should equal the value ""
@@ -40,22 +44,26 @@ Feature: Logged-in checkout - VAT number field
 
   Scenario: Has a saved VAT number - field is pre-populated and editable
     Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "Email address" input field with the "account test user with vat" user's email
     And I fill in the "Password" input field with the "account test user with vat" user's password
-    And I click on the "Sign In" button
+    And I click on the "Sign In" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "account" page
 
-    When I am on the "home" page
+    When I am on the "basket" page
+    And I clear the basket
+    And I am on the "home" page
     And I fill in the "Search products" input field with "epoxy"
     And I press Enter in the "Search products" input field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
     Then the "VAT number" should equal the value "GB123456789"
@@ -68,22 +76,26 @@ Feature: Logged-in checkout - VAT number field
 
   Scenario: Has a saved VAT number - clearing and applying persists a genuinely empty value
     Given I am on the "login" page
+    And I click on the "Accept cookies" button if present
     When I fill in the "Email address" input field with the "account test user with vat" user's email
     And I fill in the "Password" input field with the "account test user with vat" user's password
-    And I click on the "Sign In" button
+    And I click on the "Sign In" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "account" page
 
-    When I am on the "home" page
+    When I am on the "basket" page
+    And I clear the basket
+    And I am on the "home" page
     And I fill in the "Search products" input field with "epoxy"
     And I press Enter in the "Search products" input field
     And I wait for the search results to update
     And I click on the "first search result" link via its href on this origin
     And I click on the "Add to basket" button
-    And I click on the "basket header link" element
+    And I am on the "basket" page
     And I click on the "Checkout now" button
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "first shipping option" should be displayed
     When I check the "first shipping option"
-    And I click on the "accordion continue" element
+    And I click on the "accordion continue" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "VAT number" should be displayed
 
     # Explicitly (re-)apply a known VAT value regardless of the account's

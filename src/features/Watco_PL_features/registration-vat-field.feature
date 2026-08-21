@@ -33,10 +33,10 @@ Feature: Registration - NIP and NIP-EU fields (PL)
     And I fill in the "Telephone" input field with "500000005"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     And I fill in the "NIP number" input field with "123"
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "NIP validation message" should be displayed
     And the "NIP validation message" should equal text "Wprowadzony numer NIP jest nieprawidłowy. Wprowadź numer NIP w formacie 1234567890."
 
@@ -49,7 +49,7 @@ Feature: Registration - NIP and NIP-EU fields (PL)
     And I fill in the "Telephone" input field with "500000006"
     And I fill in the "Password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click precisely on the "Marketing agreement" element, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Marketing agreement" element, removing the "cookie preference centre overlay" overlay if it interferes
     Then the "Register" should be enabled
-    And I click on the "Register" button, dismissing the "close cookie preference centre" if it interferes
+    And I click on the "Register" button, removing the "cookie preference centre overlay" overlay if it interferes
     Then I should be redirected to the "register-confirmed" page
