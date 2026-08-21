@@ -1,1 +1,14 @@
-{}
+{
+  "USPs": "role=tab[name='USPs']",
+  "USP row 0 bold button": "[data-id='values[usps]_0'] >> role=button[name='Bold']",
+  "USP row 0 link button": "[data-id='values[usps]_0'] >> role=button[name='Link']",
+  "USP row 0 unlink button": "role=button[name='Unlink']",
+  "USP row 0 remove button": "[data-id='values[usps]_0'] button.btn-danger",
+  "USP add a value button": "button:has-text('Add a value')",
+  "USP row 0 content editor": "[data-id='values[usps]_0'] .ck-editor__editable",
+  "Link URL input": ".ck-link-form input",
+  "Link URL save button": ".ck-link-form .ck-button-save",
+  "Save": "[data-testid='save-form']",
+  "Browse row 0": "[data-testid='button-values[usps].0.image']",
+  "Reset changes": "button:has-text('Reset')"
+}
