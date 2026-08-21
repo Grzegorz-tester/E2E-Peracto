@@ -6,6 +6,14 @@ Feature: Purchase Journey
   # Journey" (cases 527-528). Confirmed real (test-mode) payments/orders on
   # KOOL staging are acceptable, same as Insinkerator_EU's guest/logged-in
   # purchase journeys.
+  #
+  # Both scenarios below are tagged @places-real-order: whenever a project's
+  # env file sets UI_AUTOMATION_HOST=production (e.g. env/KOOL_PROD.env),
+  # src/index.ts automatically appends "and not @places-real-order" to every
+  # profile's tag filter, so these are skipped there regardless of which
+  # profile (@smoke/@regression/etc.) is run - never placing a real order on
+  # a live storefront. Tag any other project's order-completing scenario the
+  # same way rather than relying on remembering to exclude it manually.
 
   # Verifone card payment is now CONFIRMED WORKING end-to-end (see "I pay
   # with the <card> Verifone test card" in checkout.ts) - the earlier
@@ -28,6 +36,7 @@ Feature: Purchase Journey
   # separate attempts - see pdp.feature's note on this). The delivery/
   # billing/payment structure below is otherwise identical to the
   # logged-in journey and confirmed correct.
+  @places-real-order
   Scenario: Guest user - Card payment - Complete purchase from cart to confirmation
     Given I am on the "hose-set-pdp" page
     When I slowly click on the "Add to basket" button
@@ -53,6 +62,7 @@ Feature: Purchase Journey
   # In, Delivery, Billing, Review and Payment. PROCEED stays disabled
   # until Telephone is filled (Delivery) and until the saved address is
   # explicitly clicked (Billing) - both required, not just recommended.
+  @places-real-order
   Scenario: Logged-in user - Payment on Account - Complete purchase successfully
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page

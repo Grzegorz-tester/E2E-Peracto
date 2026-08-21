@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging.kooltech.pub"
+  "staging": "https://staging.kooltech.pub",
+  "production": "https://www.kooltech.co.uk"
 }
