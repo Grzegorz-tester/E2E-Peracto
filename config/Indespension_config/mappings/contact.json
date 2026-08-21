@@ -1,0 +1,10 @@
+{
+  "Contact subject dropdown": "[data-testid='form-component'] select",
+  "Contact full name": "[data-testid='form-component'] input[placeholder='Full Name']",
+  "Contact email": "[data-testid='form-component'] input[placeholder='Email']",
+  "Contact phone": "[data-testid='form-component'] input[placeholder='Phone']",
+  "Contact postcode": "[data-testid='form-component'] input[placeholder='Postcode']",
+  "Contact message": "[data-testid='form-component'] textarea",
+  "Contact submit button": "[data-testid='form-component'] button:has-text('Submit')",
+  "Branch Finder link": "text=Branch Finder"
+}

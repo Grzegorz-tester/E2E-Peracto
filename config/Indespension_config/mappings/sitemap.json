@@ -1,0 +1,9 @@
+{
+  "sitemap heading": "//h1[text()='Sitemap']",
+  "products tab": "a[href='/sitemap/products']",
+  "categories tab": "a[href='/sitemap/categories']",
+  "content tab": "a[href='/sitemap/content']",
+  "articles tab": "a[href='/sitemap/articles']",
+  "locations tab": "a[href='/sitemap/locations']",
+  "sitemap category item": "xpath=//h1[text()='Sitemap']/following::a[@class='block'][1]"
+}

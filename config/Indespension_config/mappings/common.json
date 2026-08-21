@@ -39,5 +39,24 @@
   "Go to Checkout": "[data-testid='product-added-to-basket__checkout-button']",
   "View Basket": "[data-testid='product-added-to-basket__view-basket']",
   "Continue": "role=button[name='Continue']",
-  "validation message": "//p[contains(@class, 'danger')]"
+  "validation message": "//p[contains(@class, 'danger')]",
+
+  "newsletter form": "[data-testid='newsletter-form']",
+  "newsletter email input": "[data-testid='newsletter-form__input']",
+  "newsletter submit button": "[data-testid='newsletter-form__submit-button']",
+  "newsletter alert": "[data-testid='newsletter-form__alert']",
+
+  "footer company details": "[data-testid='stripped-footer__company-info']",
+  "Facebook footer icon": "[data-testid='main-footer__social-link-facebook']",
+  "Twitter footer icon": "[data-testid='main-footer__social-link-twitter']",
+  "Instagram footer icon": "[data-testid='main-footer__social-link-instagram']",
+  "TikTok footer icon": "[data-testid='main-footer__social-link-tiktok']",
+  "YouTube footer icon": "[data-testid='main-footer__social-link-youtube']",
+  "LinkedIn footer icon": "[data-testid='main-footer__social-link-linkedin']",
+
+  "About Us footer link": "[data-testid='main-footer'] a:has-text('About Us')",
+  "Privacy Policy footer link": "[data-testid='main-footer'] a:has-text('Privacy Policy')",
+  "Terms and Conditions footer link": "[data-testid='main-footer'] a:has-text('Terms and Conditions')",
+
+  "sitemap link": "[data-testid='stripped-footer__sitemap-link']"
 }

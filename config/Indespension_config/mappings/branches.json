@@ -1,0 +1,13 @@
+{
+  "Branch Finder heading": "//h1[text()='Branch Finder']",
+  "View all branches link": "text=View all branches",
+  "branch search input": "#react-google-places-autocomplete-input",
+  "branch search suggestion": ".pac-item",
+  "All Branches heading": "//h1[text()='All Branches']",
+  "branch list item": "[data-testid='branches_section__branch']",
+  "first branch item": "([data-testid='branches_section__branch'])[1]",
+
+  "A filter button": "[data-testid='branches_filter-bar_btn--a']",
+  "M filter button": "[data-testid='branches_filter-bar_btn--m']",
+  "All filter button": "[data-testid='branches_filter-bar_btn--All']"
+}

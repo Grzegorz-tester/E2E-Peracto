@@ -1,3 +1,7 @@
 {
-
+  "Make dropdown": "[data-testid='search-by-model__make']",
+  "Model dropdown": "[data-testid='search-by-model__model']",
+  "Year dropdown": "[data-testid='search-by-model__year']",
+  "Body type dropdown": "[data-testid='search-by-model__body-type']",
+  "Search towbars button": "[data-testid='towbar-vehicle__submit-button']"
 }

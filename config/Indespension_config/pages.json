@@ -7,6 +7,14 @@
     "route": "/login",
     "regex": "^/login$"
   },
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap(/.*)?$"
+  },
   "account": {
     "route": "/account",
     "regex": "^/account$"
@@ -66,6 +74,18 @@
   "contact": {
     "route": "/contact",
     "regex": "^/contact$"
+  },
+  "contact-success": {
+    "route": "/contact-success",
+    "regex": "^/contact-success$"
+  },
+  "privacy-policy": {
+    "route": "/privacy-policy",
+    "regex": "^/privacy-policy$"
+  },
+  "terms-and-conditions": {
+    "route": "/terms-and-conditions",
+    "regex": "^/terms-and-conditions$"
   },
   "trailer-hire": {
     "route": "/to-hire",
