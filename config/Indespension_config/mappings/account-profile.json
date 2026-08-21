@@ -1,10 +1,6 @@
 {
-  "Email": "//input[@id='email']",
-  "First name": "//input[@id='firstName']",
-  "Last name": "//input[@id='lastName']",
-  "Contact number": "//input[@id='telephone']",
-  "Company Name": "//input[@id='companyName']",
-  "Account Number": "//input[@id='accountNumber']",
-  "Currency": "//input[@id='currency']",
-  "Save Changes": "//button[text()='Save Changes']"
+  "Email": "[data-testid='account-profile__email-input']",
+  "First name": "[data-testid='account-profile__first-name-input']",
+  "Last name": "[data-testid='account-profile__last-name-input']",
+  "Contact number": "[data-testid='account-profile__contact-number-input']"
 }

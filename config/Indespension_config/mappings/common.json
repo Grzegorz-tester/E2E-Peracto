@@ -3,15 +3,18 @@
   "contact phone number": "[data-testid='utility-bar__phone-link']",
 
   "VAT toggle": "[data-testid='switch__indicator']",
-  "Sign In button": "[data-testid='utility-bar__sign-in-link']",
+  "Sign In button": "[data-testid='utility-bar__sign-in-link'] a:has-text('Sign In')",
+  "Register": "[data-testid='utility-bar__sign-in-link'] a:has-text('Register')",
   "Sign Out button": "[data-testid='utility-bar__sign-out-link']",
   "user name": "[data-testid='utility-bar__user-name']",
   "header logo": "[data-testid='brand-bar__logo-link']",
 
   "Search bar": "[data-testid='algolia-autocomplete__input']",
+  "Search products": "[data-testid='algolia-autocomplete__input']",
   "magnifier glass": "[data-testid='algolia-autocomplete__search-button']",
   "search results": "[data-testid='algolia-autocomplete-hits']",
   "search result": "[data-testid='algolia-autocomplete-hit-product']",
+  "No results found message": "//p[text()='No results found.']",
 
   "title": "//h1",
 
@@ -19,33 +22,22 @@
   "Download Catalogue": "[data-testid='brand-bar__catalogue-link']",
   "Basket": "[data-testid='brand-bar__basket-link']",
 
-  "Menu button": "[data-testid='navigation-drawer-sheet__menu-button']",
-  "menu draw": "[data-testid='nav-menu']",
-
-  "Trailers - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-0']",
-  "Used Trailers - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-1']",
-  "Trailer Parts - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-2']",
-  "Towbars - draw menu": "[data-testid='navigation-drawer-sheet__current-tier-link-3']",
+  "Menu": "[data-testid='navigation-drawer-sheet__menu-button']",
+  "menu draw": "[data-testid='navigation-drawer']",
 
   "Trailers": "[data-testid='navigation-drawer-sheet__link-0']",
-  "Used Trailers": "[data-testid='navigation-drawer-sheet__link-1']",
-  "Trailer Parts": "[data-testid='navigation-drawer-sheet__link-2']",
+  "Trailer Parts": "[data-testid='navigation-drawer-sheet__link-1']",
+  "Trailer Hire": "[data-testid='navigation-drawer-sheet__link-2']",
   "Towbars": "[data-testid='navigation-drawer-sheet__link-3']",
+  "Offers": "[data-testid='navigation-drawer-sheet__link-4']",
+  "Services": "[data-testid='navigation-drawer-sheet__current-tier-link-5']",
+  "Used Trailers": "[data-testid='navigation-drawer-sheet__link-6']",
 
-  "first search result image": "(//div[@data-testid='search__hits__hit_image'])[1]",
-  "second search result": "(//div[@data-testid='search__hits__hit'])[2]",
-  "No results found message": "//p[text()='No results found.']",
-  "first variant": "[data-testid='product-variant-options__lozenge-0']",
-  "second variant": "[data-testid='product-variant-options__lozenge-1']",
-
-  "Subscribe": "//button[text()='Subscribe']",
-  "Sort By": "[data-testid='sort-by__dropdown']",
-  "A-Z": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — A to Z')]",
-  "Z-A": "//*[contains(@data-testid, 'sort-by__dropdown__item') and contains(text(), 'Name — Z to A')]",
-  "Filter": "[data-testid='filters-button']",
-  "SUBMIT": "//button[text()='Submit']",
-  "Add to basket": "//button[text()='Add to basket']",
-  "Place Order": "//button[text()='Place Order']",
-  "validation message": "//p[contains(@class, 'danger')]",
-  "X": "//div[@id='closeButton']"
+  "Add to basket": "[data-testid='product-add-to-basket__button']",
+  "added to basket confirmation": "[data-testid='product-added-to-basket__added-to-basket-heading']",
+  "basket count": "[data-testid='brand-bar__basket-link']",
+  "Go to Checkout": "[data-testid='product-added-to-basket__checkout-button']",
+  "View Basket": "[data-testid='product-added-to-basket__view-basket']",
+  "Continue": "role=button[name='Continue']",
+  "validation message": "//p[contains(@class, 'danger')]"
 }

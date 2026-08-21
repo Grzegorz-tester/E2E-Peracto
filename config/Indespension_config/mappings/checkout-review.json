@@ -1,0 +1,7 @@
+{
+  "review content": "[data-testid='review-content']",
+  "PO Number": "[data-testid='review-content__po-number']",
+  "delivery fee acknowledgement": "[data-testid='review-content__trailer-confirmation']",
+  "receive offers": "[data-testid='review-content__receive-offers']",
+  "Place order": "[data-testid='review-content__continue-to-payment-account']"
+}

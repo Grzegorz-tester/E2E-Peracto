@@ -67,8 +67,48 @@
     "route": "/contact",
     "regex": "^/contact$"
   },
-  "coasterNanoMarineTrailer": {
-    "route": "/products/indespension-coaster-nano-350kg-marine-trailer",
-    "regex": "^/products/indespension-coaster-nano-350kg-marine-trailer$"
+  "trailer-hire": {
+    "route": "/to-hire",
+    "regex": "^/to-hire$"
+  },
+  "special-offers": {
+    "route": "/category/special-offers",
+    "regex": "^/category/special-offers$"
+  },
+  "services": {
+    "route": "/services",
+    "regex": "^/services$"
+  },
+  "catalogues": {
+    "route": "/catalogues",
+    "regex": "^/catalogues$"
+  },
+  "marineTrailerPdp": {
+    "route": "/products/indespension-super-roller-coaster-10ex-3500kg-marine-trailer",
+    "regex": "^/products/indespension-super-roller-coaster-10ex-3500kg-marine-trailer$"
+  },
+  "checkout": {
+    "route": "/checkout/sign-in",
+    "regex": "^/checkout/sign-in$"
+  },
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-billing": {
+    "route": "/checkout/billing",
+    "regex": "^/checkout/billing$"
+  },
+  "checkout-review": {
+    "route": "/checkout/review-and-payment",
+    "regex": "^/checkout/review-and-payment$"
+  },
+  "checkout-thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
+  "blueline-trailer-pdp": {
+    "route": "/products/blueline-14-x-6-box-trailer-3500kg",
+    "regex": "^/products/blueline-14-x-6-box-trailer-3500kg$"
   }
 }

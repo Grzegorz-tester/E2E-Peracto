@@ -1,4 +1,7 @@
 {
-  "Delivery Address": "//div[@data-testid='address-book__delivery']//div[@data-testid='address-book__address-0']",
-  "Billing Address": "//div[@data-testid='address-book__billing']//div[@data-testid='address-book__address-0']"
+  "Delivery Address": "[data-testid='address-book-address__name']",
+  "address name": "[data-testid='address-book-address__name']",
+  "address line 1": "[data-testid='address-book-address__line-1']",
+  "address city": "[data-testid='address-book-address__city']",
+  "address postcode": "[data-testid='address-book-address__postcode']"
 }

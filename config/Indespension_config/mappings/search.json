@@ -1,4 +1,4 @@
 {
-  "products amount": "//h2//span",
+  "products amount": "[data-testid='algolia-hits-heading']",
   "products cards": "[data-testid='algolia-hits']"
 }

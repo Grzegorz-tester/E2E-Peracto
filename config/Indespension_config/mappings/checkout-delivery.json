@@ -1,0 +1,17 @@
+{
+  "saved address": "[data-testid='checkout-select-address__addresses'] [data-testid^='radio-select_option']",
+  "Address continue": "[data-testid='checkout-select-address__continue-button']",
+
+  "address first name": "[data-testid='checkout-address-form__first-name']",
+  "address last name": "[data-testid='checkout-address-form__last-name']",
+  "address line 1": "[data-testid='checkout-address-form__address-line-1']",
+  "address line 2": "[data-testid='checkout-address-form__address-line-2']",
+  "address city": "[data-testid='checkout-address-form__city']",
+  "address county": "[data-testid='checkout-address-form__county']",
+  "address postcode": "[data-testid='checkout-address-form__postcode']",
+  "Use this address": "[data-testid='checkout-address-form__submit-button']",
+
+  "Phone number": "[data-testid='delivery-content__form-telephone']",
+  "delivery method option": "[data-testid='delivery-content__radio-select'] [data-testid^='radio-select_option']",
+  "Delivery method continue": "[data-testid='delivery-content__form-continue-button']"
+}

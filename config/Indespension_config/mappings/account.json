@@ -2,6 +2,7 @@
   "DASHBOARD": "[data-value='Dashboard']",
   "PROFILE": "[data-value='Profile']",
   "ADDRESS BOOK": "[data-value='Address Book']",
-  "ORDERS": "[data-value='Order History']",
-  "Orders table": "//tbody"
+  "ORDERS": "[data-value='Orders']",
+  "Orders table": "//tbody",
+  "Delivery Address": "[data-testid='account-card__title']"
 }

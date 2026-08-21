@@ -1,3 +1,8 @@
 {
-
+  "Sort By": "[data-testid='algolia-sort-by'] button[role='combobox']",
+  "Price low to high": "[role='option']:has-text('Price - low to high')",
+  "Price high to low": "[role='option']:has-text('Price - high to low')",
+  "product card": "[data-testid='product-card']",
+  "product card price": "[data-testid='product-card__now-price']",
+  "first product name": "[data-testid='product-card__name']:nth-of-type(1)"
 }

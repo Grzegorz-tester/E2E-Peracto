@@ -1,0 +1,7 @@
+{
+  "saved address": "[data-testid='checkout-select-address__addresses'] [data-testid^='radio-select_option']",
+  "Address continue": "[data-testid='checkout-select-address__continue-button']",
+
+  "same as delivery checkbox": "[data-testid='checkout-address-form__same-as-delivery-address']",
+  "Billing continue": "button:has-text('Continue')"
+}

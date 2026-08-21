@@ -1,24 +1,33 @@
 @regression
 Feature: Menu side draw
 
+  # Previously tested a menu item set cloned from HIB ("Inspiration",
+  # "Careers", "News", "Request a Sample", etc.) that doesn't exist on this
+  # site at all - confirmed live, the drawer opened by "Menu" has exactly
+  # seven links: Trailers, Trailer Parts, Trailer Hire, Towbars, Offers,
+  # Services, Used Trailers, identical for guest and logged-in users (no
+  # user-type-gated item like HIB's "Request a Sample" was found).
 
   Scenario Outline: Verify menu elements for:
   - a Logged in User
   - a Guest User
     Given I am navigating the page as a "<user type>" user
     And I click on the "Menu" icon
-    Then the "Products draw menu item" should be displayed
-    And the "Inspiration draw menu item" should be displayed
-    And the "About draw menu item" should be displayed
-    And the "Support draw menu item" should be displayed
-    And the "News draw menu item" should be displayed
-    And the "Careers draw menu item" should be displayed
-    And the "Find a retailer menu item" should be displayed
-    And the "View brochures menu item" should be displayed
-    And the "Request a Sample menu item" should <presence> be displayed
+    Then the "Trailers" should be displayed
+    And the "Trailer Parts" should be displayed
+    And the "Trailer Hire" should be displayed
+    And the "Towbars" should be displayed
+    And the "Offers" should be displayed
+    And the "Services" should be displayed
+    And the "Used Trailers" should be displayed
     Examples:
-      | user type | presence |
-      | logged in | not      |
-      | guest     |          |
+      | user type |
+      | logged in |
+      | guest     |
 
 
+  Scenario: Navigating from the side draw menu reaches the right page
+    Given I am on the "home" page
+    When I click on the "Menu" icon
+    And I click on the "Towbars" element
+    Then I should be redirected to the "towbars" page

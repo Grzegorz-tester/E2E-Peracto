@@ -1,0 +1,17 @@
+{
+  "no items message": ":text-is(\"You have no items in your basket.\")",
+  "basket item": "[data-testid='basket-card']",
+  "basket item name": "[data-testid='basket-card__name']",
+  "quantity input": "[data-testid='quantity-picker__input']",
+  "quantity plus": "[data-testid='quantity-picker__plus-button']",
+  "quantity minus": "[data-testid='quantity-picker__minus-button']",
+  "Remove items": "[data-testid='basket-card__remove-button']",
+  "remove basket line": "[data-testid='basket-card__remove-button']",
+  "product's total price": "[data-testid='basket-card__total-price']",
+  "product's price": "[data-testid='basket-card__price-price']",
+  "basket total": "[data-testid='basket-summary__total']",
+  "order total price": "[data-testid='basket-summary__total']",
+  "order subtotal price": "[data-testid='basket-summary__subtotal']",
+  "Go to Checkout": "[data-testid='basket-summary__checkout-button']",
+  "Continue shopping": "[data-testid='default-basket-content__continue-shopping-link']"
+}
