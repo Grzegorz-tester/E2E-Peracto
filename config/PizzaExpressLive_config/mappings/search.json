@@ -1,0 +1,4 @@
+{
+  "search results wrapper": "[data-testid=\"Hits__results-wrapper\"]",
+  "search results message": "[data-testid=\"Hits__results-msg\"]"
+}

@@ -1,0 +1,86 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "whats-on": {
+    "route": "/whats-on",
+    "regex": "^/whats-on$"
+  },
+  "pdp": {
+    "route": "/whats-on/",
+    "regex": "^/whats-on/[a-z0-9-]+$"
+  },
+  "choose-seats": {
+    "route": "/whats-on/choose-seats/",
+    "regex": "^/whats-on/choose-seats/[a-z0-9-]+/[0-9]+$"
+  },
+  "venues": {
+    "route": "/venues",
+    "regex": "^/venues$"
+  },
+  "venue-soho": {
+    "route": "/pizzaexpress-jazz-club-soho",
+    "regex": "^/pizzaexpress-jazz-club-soho$"
+  },
+  "venue-holborn": {
+    "route": "/pizzaexpress-live-holborn",
+    "regex": "^/pizzaexpress-live-holborn$"
+  },
+  "venue-chelsea": {
+    "route": "/the-pheasantry-chelsea",
+    "regex": "^/the-pheasantry-chelsea$"
+  },
+  "venue-covent-garden": {
+    "route": "/piano-lounge-covent-garden",
+    "regex": "^/piano-lounge-covent-garden$"
+  },
+  "venue-leicester-square": {
+    "route": "/piano-lounge-leicester-square",
+    "regex": "^/piano-lounge-leicester-square$"
+  },
+  "about-us": {
+    "route": "/about-us",
+    "regex": "^/about-us$"
+  },
+  "membership": {
+    "route": "/membership",
+    "regex": "^/membership$"
+  },
+  "faqs": {
+    "route": "/faqs",
+    "regex": "^/faqs$"
+  },
+  "px-records": {
+    "route": "/px-records",
+    "regex": "^/px-records$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "gift-vouchers": {
+    "route": "/gift-vouchers",
+    "regex": "^/gift-vouchers$"
+  },
+  "private-hire": {
+    "route": "/private-hire",
+    "regex": "^/private-hire$"
+  },
+  "newsletter": {
+    "route": "/newsletter",
+    "regex": "^/newsletter$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "basket": {
+    "route": "/basket",
+    "regex": "^/basket$"
+  },
+  "account": {
+    "route": "/account",
+    "regex": "^/account$"
+  }
+}

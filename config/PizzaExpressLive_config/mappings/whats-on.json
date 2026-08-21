@@ -1,0 +1,14 @@
+{
+  "filter bar": "[data-testid=\"filter_bar\"]",
+  "Grid view button": "[data-testid=\"filter_bar-grid-btn\"]",
+  "List view button": "[data-testid=\"filter_bar-list-btn\"]",
+  "Calendar view button": "[data-testid=\"filter_bar-calender-btn\"]",
+  "All Venues combobox": "[role=\"combobox\"]:has-text(\"All Venues\"):visible",
+  "All Months combobox": "[role=\"combobox\"]:has-text(\"All Months\"):visible",
+  "combobox option": "[role=\"option\"]",
+  "Soho venue combobox option": "[role=\"option\"]:has-text(\"Soho\")",
+  "event card link": "a[href^=\"/whats-on/\"]:not([href*=\"choose-seats\"])",
+  "event card image": "a[href^=\"/whats-on/\"]:not([href*=\"choose-seats\"]) img",
+  "results wrapper": "[data-testid=\"Hits__results-wrapper\"]",
+  "calendar view": "[data-testid=\"Hits__calendar\"]"
+}

@@ -1,0 +1,13 @@
+{
+  "homepage content": "[data-testid=\"home\"]",
+  "Find an Event widget": "[data-testid=\"event-finder\"]",
+  "Find an Event title": "[data-testid=\"event-finder__title\"]",
+  "Find an Event search": "[data-testid=\"event-finder__search\"]",
+  "homepage events carousel": "[data-testid=\"eventscarousel-component\"]",
+
+  "Coming Soon heading": "[data-testid=\"eventscarousel-component\"] h2",
+  "Coming Soon event card link": "[data-testid=\"eventscarousel-component\"] a[href^=\"/whats-on/\"]:not([href*=\"choose-seats\"])",
+  "Coming Soon carousel prev button": "[data-testid=\"eventscarousel-component\"] button:has(svg[data-icon=\"chevron-left\"])",
+  "Coming Soon carousel next button": "[data-testid=\"eventscarousel-component\"] button:has(svg[data-icon=\"chevron-right\"])",
+  "View all events button": "[data-testid=\"eventscarousel-component\"] a[href=\"/whats-on\"]"
+}

@@ -1,0 +1,19 @@
+{
+  "event title": "h1",
+  "Book Tickets section": "#event-dates",
+  "Book Tickets heading": "#event-dates h2",
+  "Book Tickets table": "#event-dates table",
+  "Book Tickets table row": "#event-dates tbody tr",
+  "Book Now button": "#event-dates :is(button, a):has-text(\"Book Now\"):visible",
+  "Join waiting list button": "#event-dates :is(button, a):has-text(\"Join waiting list\"):visible",
+  "Contact box office button": "#event-dates :is(button, a):has-text(\"Contact box office\"):visible",
+  "Waiting List Form modal": "[role=\"dialog\"]:has-text(\"Waiting List\")",
+  "Box Office Form modal": "[role=\"dialog\"]:has-text(\"Box Office\")",
+  "modal contact name input": "[role=\"dialog\"] input[name=\"contact-name\"]",
+  "modal email input": "[role=\"dialog\"] input[name=\"contact-email\"]",
+  "modal phone input": "[role=\"dialog\"] input[name=\"phone-number\"]",
+  "modal note to box office input": "[role=\"dialog\"] textarea[name=\"note-to-box-office\"]",
+  "modal number of tickets dropdown": "[role=\"dialog\"] select[name=\"number-ticket-required\"]",
+  "Submit Enquiry button": "[role=\"dialog\"] button:has-text(\"Submit Enquiry\")",
+  "modal confirmation message": "[role=\"dialog\"]:has-text(\"Thank you for your enquiry\")"
+}
