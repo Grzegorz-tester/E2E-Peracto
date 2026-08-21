@@ -1,3 +1,4 @@
 {
-  "Apex checkbox": "//button[text()='Apex']"
+  "Apex checkbox": "//button[text()='Apex']",
+  "first item link": "a[data-testid='row-0-name']"
 }

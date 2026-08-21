@@ -7,5 +7,6 @@
   "Stock Check & Quick Order": "//button[text()='Stock Check & Quick Order']",
   "Contact Us": "//button[text()='Contact Us']",
   "View all and search": "//a[text()='View all and search']",
-  "Orders table": "//tbody"
+  "Orders table": "//tbody",
+  "first item link": "a[data-testid='row-0-name']"
 }

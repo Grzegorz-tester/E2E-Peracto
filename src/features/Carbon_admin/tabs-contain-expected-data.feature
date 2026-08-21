@@ -1,7 +1,7 @@
 @regression
 Feature: Admin Tabs Contain Expected Data
 
-  # Sweeps every nav tab in the KOOL Peracto admin and confirms it lands on
+  # Sweeps every nav tab in the Peracto admin and confirms it lands on
   # the right page (correct heading) and shows real content or the site's
   # own genuine empty-state message - never just a heading on its own.
   # Reused across the whole nav via generic "page heading" (//h1), "table

@@ -126,5 +126,94 @@
   "footer": {
     "route": "/menus/footer",
     "regex": "^/menus/footer$"
+  },
+
+  "product-detail": {
+    "route": "/products/:id",
+    "regex": "^/products/[^/]+$"
+  },
+  "product-variant-detail": {
+    "route": "/products/:id/variants/:variantId",
+    "regex": "^/products/[^/]+/variants/[^/]+$"
+  },
+  "category-detail": {
+    "route": "/categories/:id",
+    "regex": "^/categories/[^/]+$"
+  },
+  "attribute-detail": {
+    "route": "/attributes/:id",
+    "regex": "^/attributes/[^/]+$"
+  },
+  "attribute-group-detail": {
+    "route": "/attribute-groups/:id",
+    "regex": "^/attribute-groups/[^/]+$"
+  },
+  "attribute-set-detail": {
+    "route": "/attribute-sets/:id",
+    "regex": "^/attribute-sets/[^/]+$"
+  },
+  "promotion-detail": {
+    "route": "/promotions/:id",
+    "regex": "^/promotions/[^/]+$"
+  },
+  "content-page-detail": {
+    "route": "/content/edit/page/:id",
+    "regex": "^/content/edit/page/[^/]+$"
+  },
+  "content-article-detail": {
+    "route": "/content/edit/article/:id",
+    "regex": "^/content/edit/article/[^/]+$"
+  },
+  "content-template-detail": {
+    "route": "/content/edit/template/:id",
+    "regex": "^/content/edit/template/[^/]+$"
+  },
+  "content-element-detail": {
+    "route": "/content/edit/element/:id",
+    "regex": "^/content/edit/element/[^/]+$"
+  },
+  "article-category-detail": {
+    "route": "/article-categories/:id",
+    "regex": "^/article-categories/[^/]+$"
+  },
+  "element-area-detail": {
+    "route": "/element-areas/:id",
+    "regex": "^/element-areas/[^/]+$"
+  },
+  "form-detail": {
+    "route": "/forms/:id",
+    "regex": "^/forms/[^/]+$"
+  },
+  "form-field-detail": {
+    "route": "/form-fields/:id",
+    "regex": "^/form-fields/[^/]+$"
+  },
+  "form-submission-detail": {
+    "route": "/form-submissions/:id",
+    "regex": "^/form-submissions/[^/]+$"
+  },
+  "location-detail": {
+    "route": "/locations/:id",
+    "regex": "^/locations/[^/]+$"
+  },
+  "user-detail": {
+    "route": "/users/:id",
+    "regex": "^/users/[^/]+$"
+  },
+  "user-group-detail": {
+    "route": "/user-groups/:id",
+    "regex": "^/user-groups/[^/]+$"
+  },
+  "redirect-detail": {
+    "route": "/redirects/:id",
+    "regex": "^/redirects/[^/]+$"
+  },
+  "shipping-service-detail": {
+    "route": "/shipping-services/:id",
+    "regex": "^/shipping-services/[^/]+$"
+  },
+  "task-detail": {
+    "route": "/tasks/:id",
+    "regex": "^/tasks/[^/]+$"
   }
 }

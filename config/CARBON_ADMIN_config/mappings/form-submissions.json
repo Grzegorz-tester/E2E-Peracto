@@ -13,5 +13,6 @@
   "you may also need draw": "//h3[text()='You may also need']/../..",
   "close": "button:has-text('Close')",
   "Back to Portal": "[data-testid='basket__header__back-link']",
-  "no items message": "//p[text()='You have no items in your basket.']"
+  "no items message": "//p[text()='You have no items in your basket.']",
+  "first item link": "[data-testid='row-0-name'] a"
 }

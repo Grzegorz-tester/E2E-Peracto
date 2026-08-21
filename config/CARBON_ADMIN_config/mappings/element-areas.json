@@ -1,5 +1,6 @@
 {
   "reset password message": "[data-testid='reset-password-form__success-text']",
   "Email address": "[placeholder='Email Address *']",
-  "validation message": ""
+  "validation message": "",
+  "first item link": "[data-testid='row-0-name'] a"
 }
