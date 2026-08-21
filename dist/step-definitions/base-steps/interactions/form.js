@@ -136,6 +136,15 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // mapping key. If the resolved element isn't itself the combobox button,
 // this falls back to searching inside it, so a container-style mapping
 // still works for opening the listbox - just not for that enabled check.
+//
+// "last" (alongside the numeric ordinals) is for a listbox whose option
+// COUNT varies run-to-run and where the last one specifically is what a
+// scenario needs, not just "some real option" - confirmed live need on
+// Indespension's towbar fitting date picker: only a later week's slots
+// are genuinely bookable (an imminent/current week can be entirely past
+// its own booking cutoff), and how many weeks ahead are offered shifts
+// over time, so hardcoding a numeric position would silently start
+// picking the wrong week as the list grows or shrinks.
 (0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" listbox$/, async function (option, elementKey) {
   const {
     screen: {
@@ -174,6 +183,10 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
       timeout: 15000
     });
   }
+  if (option === "last") {
+    await listOptions.last().click();
+    return;
+  }
   const ordinalMatch = option.match(/^(\d+)(?:st|nd|rd|th)$/);
   if (ordinalMatch) {
     await listOptions.nth(Number(ordinalMatch[1]) - 1).click();
@@ -182,4 +195,95 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await listbox.getByText(option, {
     exact: true
   }).click();
+});
+
+// For a listbox whose real-world availability varies not just WITHIN one
+// option but ACROSS options too - confirmed live need on Indespension's
+// towbar fitting-date picker: picking a specific week (even "the last
+// available one") isn't enough on its own, since a whole week's worth of
+// slots can become entirely booked out (this is a REAL booking flow, not
+// a mock - repeated test runs against the same week exhaust it exactly
+// like real customers would). Tries each week option from the END of the
+// list backwards (later weeks are less likely to already be exhausted
+// than nearer ones) until candidateKey has at least one enabled match,
+// re-opening the listbox between attempts since selecting an option
+// closes it. Leaves the viable option selected; actually clicking the
+// candidate is the separate "I click on the first enabled ... button"
+// step, composed with this one rather than folded into it.
+//
+// Needs its own generous step timeout (same convention as checkout.ts's
+// Verifone payment step): trying N weeks backwards, each waiting up to
+// 15s to see whether it has any enabled candidate, can comfortably
+// exceed this framework's global default step timeout (20s, from
+// SCRIPT_TIMEOUT) well before this function's own loop finishes and
+// throws its own clear error - confirmed live, that showed up as an
+// opaque "function timed out" from cucumber itself instead, well before
+// every week had even been tried.
+(0, _cucumber.When)(/^I select an option from the "([^"]*)" listbox with an enabled "([^"]*)" candidate$/, {
+  timeout: 90000
+}, async function (listboxKey, candidateKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, listboxKey, globalConfig);
+  const candidateIdentifier = (0, _webElementHelper.getElementLocator)(page, candidateKey, globalConfig);
+  const resolved = page.locator(elementIdentifier);
+  const isComboboxItself = (await resolved.getAttribute("role").catch(() => null)) === "combobox";
+  const trigger = isComboboxItself ? resolved : resolved.locator("button[role='combobox']");
+  await trigger.waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+
+  // force:true on the trigger click here specifically: confirmed live
+  // that re-opening this same combobox on a LATER iteration (after
+  // having already opened and closed it once) can leave a lingering,
+  // invisible full-page overlay intercepting pointer events at the
+  // <html> root - a leftover Radix Portal element from the previous
+  // close, not a real modal - which otherwise blocks the plain click
+  // outright (confirmed live: 60+ retries, never clearing on its own).
+  // Safe here since the trigger is a real, normal-sized button, not an
+  // oversized wrapper (the case force:true is documented elsewhere in
+  // this repo as breaking).
+  const openListbox = async () => {
+    const listbox = page.locator("[role='listbox']:visible").last();
+    const listOptions = listbox.locator("[role='option']");
+    await trigger.click({
+      force: true
+    });
+    const openedFirstTry = await listOptions.first().waitFor({
+      state: "visible",
+      timeout: 5000
+    }).then(() => true).catch(() => false);
+    if (!openedFirstTry) {
+      await trigger.click({
+        force: true
+      });
+      await listOptions.first().waitFor({
+        state: "visible",
+        timeout: 15000
+      });
+    }
+    return listOptions;
+  };
+  const optionCount = await (await openListbox()).count();
+  for (let i = optionCount - 1; i >= 0; i--) {
+    const listOptions = await openListbox();
+    await listOptions.nth(i).click();
+    const candidates = page.locator(candidateIdentifier);
+    await candidates.first().waitFor({
+      state: "visible",
+      timeout: 15000
+    });
+    const candidateCount = await candidates.count();
+    for (let c = 0; c < candidateCount; c++) {
+      if (await candidates.nth(c).isEnabled()) {
+        return;
+      }
+    }
+  }
+  throw new Error(`No option in the "${listboxKey}" listbox left an enabled "${candidateKey}" candidate.`);
 });

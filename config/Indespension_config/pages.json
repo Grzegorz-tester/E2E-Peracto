@@ -71,6 +71,18 @@
     "route": "/towbars",
     "regex": "^/towbars$"
   },
+  "towbar-comparison": {
+    "route": "/towbars/comparison",
+    "regex": "^/towbars/comparison$"
+  },
+  "towbar-booking-complete": {
+    "route": "/towbar-booking-complete",
+    "regex": "^/towbar-booking-complete$"
+  },
+  "towbar-fixed-flange-pdp": {
+    "route": "/products/ta1006",
+    "regex": "^/products/ta1006$"
+  },
   "contact": {
     "route": "/contact",
     "regex": "^/contact$"

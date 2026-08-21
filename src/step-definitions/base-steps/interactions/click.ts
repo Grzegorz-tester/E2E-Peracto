@@ -401,3 +401,36 @@ Given(
     await page.evaluate(stripAndObserve, overlaySelector).catch(() => {});
   }
 );
+
+// For a set of otherwise-identical options where some are legitimately
+// disabled (a fully-booked appointment slot, a sold-out size) and which
+// ONE is available can change between runs - confirmed live need on
+// Indespension's towbar fitting-date picker: a hardcoded specific
+// day/time slot kept failing on repeat runs because that exact slot
+// becomes unavailable after being booked once (this is a REAL booking,
+// not a mock), so a fixed testid is a one-shot selector, not a reusable
+// one. The mapping key should resolve to ALL the candidate elements (e.g.
+// a wildcard/shared-prefix selector matching every slot button), not a
+// single specific one - this step then picks whichever of them is
+// actually enabled right now. Reusable by any project with a similar
+// "several options, availability varies" shape.
+When(
+  /^I click on the first enabled "([^"]*)" (?:button|link|element)$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const candidates = page.locator(elementIdentifier);
+
+    await candidates.first().waitFor({ state: "visible", timeout: 15000 });
+    const count = await candidates.count();
+
+    for (let i = 0; i < count; i++) {
+      const candidate = candidates.nth(i);
+      if (await candidate.isEnabled()) {
+        await candidate.click();
+        return;
+      }
+    }
+    throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
+  }
+);

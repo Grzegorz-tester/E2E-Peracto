@@ -1,0 +1,4 @@
+{
+  "Centre": "//p[text()='Centre:']",
+  "Select towbar button": "role=button[name='Select']"
+}

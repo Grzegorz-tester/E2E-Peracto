@@ -1,0 +1,13 @@
+{
+  "Fitting week dropdown": "button[role='combobox']:visible",
+  "Fitting slot": "button[data-testid^='product-fitting-datepicker-week-']:visible",
+  "Continue to Booking": "[data-testid='product-towbar-fitting__button']:visible",
+
+  "Full Name": "[data-testid='product-towbar-fitting__fullname-input']:visible",
+  "Booking email": "[data-testid='product-towbar-fitting__email-input']:visible",
+  "Booking phone": "[data-testid='product-towbar-fitting__phone-input']:visible",
+  "Booking note": "[data-testid='product-towbar-fitting__message-input']:visible",
+  "Booking terms checkbox": "[data-testid='product-towbar-fitting__temrms-checkbox']:visible",
+  "Confirm Your Booking": "[data-testid='product-towbar-fitting__submit-button']:visible",
+  "Finish": "role=button[name='Finish']"
+}
