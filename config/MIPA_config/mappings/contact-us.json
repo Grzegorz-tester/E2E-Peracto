@@ -1,0 +1,10 @@
+{
+  "Name field": "[placeholder='Name']",
+  "Email address field": "[placeholder='Email Address']",
+  "Telephone number field": "[placeholder='Telephone Number']",
+  "Message field": "[data-testid='form-component'] textarea",
+  "Send button": "button:has-text('Send')",
+  "Sales email link": "a[href='mailto:sales@mipa-paints.co.uk']",
+  "Technical email link": "a[href='mailto:technical@mipa-paints.co.uk']",
+  "map": "[data-testid='map-component']"
+}

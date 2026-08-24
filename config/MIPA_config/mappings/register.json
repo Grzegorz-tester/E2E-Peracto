@@ -1,0 +1,9 @@
+{
+  "Company Name": "[data-testid='register-form__company-name']",
+  "First Name": "[data-testid='register-form__first-name']",
+  "Last Name": "[data-testid='register-form__last-name']",
+  "Register email": "[data-testid='register-form__email-address']",
+  "Register phone": "[data-testid='register-form__telephone-number']",
+  "SEND": "[data-testid='register-form__submit']",
+  "request success message": "//div[contains(@class, 'Toastify__toast-body') and contains(., 'Thank you for your account request')]"
+}

@@ -30,5 +30,13 @@
   "PLP current refinements": "[data-testid='algolia-list-page__current-refinements']",
   "PLP pagination next": "[data-testid='related-products__pagination__next']",
   "product title": "[data-testid='product-content__title']",
-  "product SKU": "[data-testid='product-content__sku']"
+  "product SKU": "[data-testid='product-content__sku']",
+  "Register": "a[href='/register']",
+  "Facebook icon": "[data-testid='footer__social__links'] a[href*='facebook.com']",
+  "Instagram icon": "[data-testid='footer__social__links'] a[href*='instagram.com']",
+  "LinkedIn icon": "[data-testid='footer__social__links'] a[href*='linkedin.com']",
+  "YouTube icon": "[data-testid='footer__social__links'] a[href*='youtube.com']",
+  "footer company details": "[data-testid='footer__company__details']",
+  "footer social links": "[data-testid='footer__social__links']",
+  "footer navigation links": "[data-testid='footer__desktop']"
 }
