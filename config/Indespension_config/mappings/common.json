@@ -30,7 +30,7 @@
   "Trailer Hire": "[data-testid='navigation-drawer-sheet__link-2']",
   "Towbars": "[data-testid='navigation-drawer-sheet__link-3']",
   "Offers": "[data-testid='navigation-drawer-sheet__link-4']",
-  "Services": "[data-testid='navigation-drawer-sheet__current-tier-link-5']",
+  "Services": "[data-testid='navigation-drawer-sheet__link-5']",
   "Used Trailers": "[data-testid='navigation-drawer-sheet__link-6']",
 
   "Add to basket": "[data-testid='product-add-to-basket__button']",

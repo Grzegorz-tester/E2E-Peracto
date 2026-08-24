@@ -11,7 +11,13 @@ Feature: Menu side draw
   Scenario Outline: Verify menu elements for:
   - a Logged in User
   - a Guest User
+    # Logging in lands on /account, a dashboard layout with no storefront
+    # hamburger menu at all (confirmed live) - unlike guest, who lands
+    # straight on the storefront homepage. Navigate back to "home"
+    # explicitly so both rows reach the same drawer regardless of where
+    # the "logged in"/"guest" step itself lands.
     Given I am navigating the page as a "<user type>" user
+    And I am on the "home" page
     And I click on the "Menu" icon
     Then the "Trailers" should be displayed
     And the "Trailer Parts" should be displayed

@@ -87,6 +87,14 @@ Feature: Header functionality
   # Previously only tested 3 of the drawer's 7 real items (Towbars was
   # commented out); the other 3 (Trailer Hire, Offers, Services) weren't
   # tested at all. Extended to the full, live nav - confirmed 2026-08-21.
+  #
+  # "Services" deliberately excluded from this outline - confirmed live it
+  # isn't a direct link like its siblings: it's a submenu-expanding button
+  # (data-testid 'navigation-drawer-sheet__link-5', a <button>, not an <a>).
+  # Clicking it opens a sub-tier (a back-button plus 4 "current-tier-link-N"
+  # items) instead of navigating anywhere, so "should be redirected to a
+  # services page" doesn't apply to it. Its own visibility is still covered
+  # by menu-draw.feature's "Verify menu elements for:" outline.
   Scenario Outline: Verify redirection from menu elements in the header
     Given I am on the "home" page
     When I click on the "Menu" icon
@@ -100,5 +108,4 @@ Feature: Header functionality
       | Trailer Hire  | trailer-hire   |
       | Towbars       | towbars        |
       | Offers        | special-offers |
-      | Services      | services       |
       | Used Trailers | used-trailers  |
