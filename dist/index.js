@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = exports.Panelco_regression = exports.MIPA_regression = exports.Andy_Thornton_regression = void 0;
+exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = exports.MIPA_regression = exports.Andy_Thornton_regression = void 0;
 var _dotenv = _interopRequireDefault(require("dotenv"));
 var _parseEnv = require("./env/parseEnv");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -45,7 +45,6 @@ const tagFilter = tag => `${tag}${productionExclusion}`;
 const dev = exports.dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = exports.smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = exports.regression = `${common} --tags '${tagFilter('@regression')}'`;
-const Panelco_regression = exports.Panelco_regression = `${common} --tags '${tagFilter('@Panelco_regression')}'`;
 const Andy_Thornton_regression = exports.Andy_Thornton_regression = `${common} --tags '${tagFilter('@Andy_Thornton_regression')}'`;
 const MIPA_regression = exports.MIPA_regression = `${common} --tags '${tagFilter('@MIPA_regression')}'`;
 const carbon_regression = exports.carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;

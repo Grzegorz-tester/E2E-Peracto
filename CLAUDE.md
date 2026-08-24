@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A multi-project E2E automation framework (Playwright + Cucumber + TypeScript) that runs the
 same generic Gherkin step library against ~20 different Shopify/Peracto storefronts (KOOL,
-Watco and its regional variants, Insinkerator, HIB, Indespension, Panelco, Andy Thornton, MIPA,
+Watco and its regional variants, Insinkerator, HIB, Indespension, Andy Thornton, MIPA,
 Russells, JTDove, Carbon Admin, ...). Each project supplies its own config and feature files;
 almost no project-specific TypeScript should be needed.
 
@@ -23,7 +23,7 @@ COMMON_CONFIG_FILE=env/KOOL.env ./run_tests.sh regression
 ```
 
 Cucumber profiles (`dev`, `smoke`, `regression`, plus a few project-specific ones like
-`Panelco_regression`) are defined in `src/index.ts`, transpiled into `dist/index.js`, and picked
+`MIPA_regression`) are defined in `src/index.ts`, transpiled into `dist/index.js`, and picked
 up via the root `cucumber.js` (`module.exports = require('./dist')`). **Editing a profile or any
 step definition requires a recompile** - `yarn cucumber` (= `cucumber-compile`) always runs
 `transpile` first; running `cucumber-js` directly against stale `dist/` will not pick up source

@@ -40,7 +40,6 @@ const tagFilter = (tag: string) => `${tag}${productionExclusion}`;
 const dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = `${common} --tags '${tagFilter('@regression')}'`;
-const Panelco_regression = `${common} --tags '${tagFilter('@Panelco_regression')}'`;
 const Andy_Thornton_regression = `${common} --tags '${tagFilter('@Andy_Thornton_regression')}'`;
 const MIPA_regression = `${common} --tags '${tagFilter('@MIPA_regression')}'`;
 const carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;
@@ -49,4 +48,4 @@ const PizzaExpressLive_regression = `${common} --tags '${tagFilter('@PizzaExpres
 
 console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');
 
-export {dev, smoke, regression, Panelco_regression, Andy_Thornton_regression, MIPA_regression, carbon_regression, PizzaExpressLive_regression};
+export {dev, smoke, regression, Andy_Thornton_regression, MIPA_regression, carbon_regression, PizzaExpressLive_regression};

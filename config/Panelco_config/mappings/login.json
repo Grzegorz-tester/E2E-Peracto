@@ -1,6 +1,0 @@
-{
-  "Email address": "[id='email']",
-  "Password": "[id='password']",
-  "Sign In": "button:has-text('Sign In')",
-  "Forgotten your password?": "[data-testid='login-form__forgotten-password-link']"
-}
