@@ -28,6 +28,7 @@ Feature: Product Detail Page (PDP)
   Scenario: PDP - Increase quantity and validate basket totals
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
+    And I wait for the basket to load
     And I clear the basket
     When I am on the "test-product" page
     And I click on the "EACH UOM" element
@@ -37,6 +38,7 @@ Feature: Product Detail Page (PDP)
     When I click on the "Add to basket" button
     And I click on the "Checkout" element
     Then I should be redirected to the "basket" page
+    And I wait for the basket to load
     And the "order total price" should contain the text "36.69"
 
 

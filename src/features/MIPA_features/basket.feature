@@ -20,6 +20,7 @@ Feature: Basket page
   Scenario: Verify empty basket elements
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
+    And I wait for the basket to load
     And I clear the basket
     Then the "no items message" should be displayed
     And the "Checkout" should not be displayed
@@ -32,6 +33,7 @@ Feature: Basket page
     And I click on the "Add to basket" button
     And I click on the "Checkout" element
     Then I should be redirected to the "basket" page
+    And I wait for the basket to load
     When I fill in the "Quantity selector" input field with "3"
     And I click on the "Update" button
     Then the "product's total price" should contain the text "36.69"
@@ -45,5 +47,6 @@ Feature: Basket page
     And I click on the "Add to basket" button
     And I click on the "Checkout" element
     Then I should be redirected to the "basket" page
+    And I wait for the basket to load
     When I click on the "Remove items" element
     Then the "no items message" should be displayed
