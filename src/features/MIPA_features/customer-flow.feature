@@ -25,7 +25,7 @@ Feature: Payment on Account purchase flow
     And I click on the "Add to basket" button
     And I click on the "Checkout" element
     Then I should be redirected to the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     When I click on the "Checkout" button
     Then I should be redirected to the "checkout" page
     When I click on the "Delivery method" element

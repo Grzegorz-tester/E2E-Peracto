@@ -48,35 +48,6 @@ const parsePrice = text => {
   await (0, _waitForBehaviour.waitFor)(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
 });
 
-// For MIPA's basket, whose id loads into client state asynchronously after
-// navigation/login - confirmed live, a fast automated click that mutates
-// the basket (Clear Basket, Quick Order CSV upload) right after landing on
-// the page can fire before that id is set, sending a PUT to
-// "/baskets/undefined" that the backend 500s on. A real user never hits
-// this because reading the page and moving the mouse already takes longer
-// than the load - this just gives automation the same headroom.
-//
-// A fixed delay alone (originally 2000ms) wasn't reliably long enough -
-// confirmed live, the 500 still recurred occasionally even with it. The
-// real condition is "the page's own background fetches (which include
-// whatever populates the basket id) have settled", which is exactly what
-// "networkidle" measures, so wait for that first and treat the fixed delay
-// as a floor rather than the whole story. Bounded and best-effort (a
-// tracker/ad request that never goes idle shouldn't hang the step) -
-// reusable by any project with a similar "id loads in after the page
-// renders" race.
-(0, _cucumber.When)(/^I wait for the basket to load$/, async function () {
-  const {
-    screen: {
-      page
-    }
-  } = this;
-  await page.waitForLoadState("networkidle", {
-    timeout: 8000
-  }).catch(() => {});
-  await new Promise(resolve => setTimeout(resolve, 1000));
-});
-
 // For a logged-in account's basket, which is server-side and persists
 // across every prior test run rather than a guest's always-fresh session -
 // an order-completing test needs a known, single-item basket first, not

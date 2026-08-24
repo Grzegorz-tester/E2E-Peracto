@@ -14,7 +14,7 @@ Feature: Quick Order - CSV Upload
   Scenario: Upload a CSV with a valid and an invalid SKU
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     And I clear the basket
     When I upload the "mipa-quick-order-valid-and-invalid-skus.csv" file to the "CSV file input" input
     Then the "CSV upload error banner" should contain the text "INVALID-SKU-999999"
@@ -25,7 +25,7 @@ Feature: Quick Order - CSV Upload
   Scenario: Upload a CSV with multiple valid SKUs loads them all into the basket
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     And I clear the basket
     When I upload the "mipa-quick-order-multiple-valid-skus.csv" file to the "CSV file input" input
     Then the "basket contents" should contain the text "229510000"
@@ -40,7 +40,7 @@ Feature: Quick Order - CSV Upload
   Scenario: Upload a CSV with a missing required field triggers an error
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     And I clear the basket
     When I upload the "mipa-quick-order-missing-fields.csv" file to the "CSV file input" input
     Then the "CSV structural error banner" should be displayed
@@ -54,7 +54,7 @@ Feature: Quick Order - CSV Upload
     And I click on the "Add to basket" button
     And I click on the "Checkout" element
     Then I should be redirected to the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     When I click on the "Clear Basket" button
     Then the "no items message" should be displayed
 
@@ -66,7 +66,7 @@ Feature: Quick Order - CSV Upload
   Scenario: An order can be placed from a basket populated via CSV upload
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I wait for the basket to load
+    And I wait for the page to settle
     And I clear the basket
     When I upload the "mipa-quick-order-valid-and-invalid-skus.csv" file to the "CSV file input" input
     And I click on the "Checkout" button
