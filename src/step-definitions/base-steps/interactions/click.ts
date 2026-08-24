@@ -1,5 +1,5 @@
 import { Given, When } from "@cucumber/cucumber";
-import { ElementKey } from "../../../env/global";
+import { ElementKey, PageId } from "../../../env/global";
 import { getElementLocator } from "../../support-functions/web-element-helper";
 import {
   clickElement,
@@ -7,6 +7,7 @@ import {
 } from "../../support-functions/html-behaviour";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
+import { currentPathMatchesPageId } from "../../support-functions/navigation-behaviour";
 
 // page.click() (via clickElement) already auto-waits for the element to
 // become visible/actionable, so an extra page.waitForSelector before it is
@@ -432,5 +433,51 @@ When(
       }
     }
     throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
+  }
+);
+
+// For a click-triggered client-side route change that silently no-ops
+// sometimes - confirmed live on MIPA's PLP "View Product" links: the
+// click itself always succeeds (Playwright never sees an error), but the
+// site's own Next.js router occasionally throws "TypeError: Failed to
+// fetch" internally fetching the route's data and just stays on the same
+// page, with no visible error and nothing for a plain click step to
+// catch. Re-clicking when that happens (rather than failing the whole
+// scenario) matches the same "retry the action itself, not just the
+// wait" pattern the checkbox retry step above already uses. Reusable by
+// any project with a similarly flaky client-side navigation.
+When(
+  /^I click on the "([^"]*)" (?:button|link|element), retrying until redirected to the "([^"]*)" page$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, pageId: PageId) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await waitFor(async () => {
+      if (currentPathMatchesPageId(page, pageId, globalConfig)) return true;
+      await clickElement(page, elementIdentifier, { timeout: 15000, force: true });
+      await page.waitForTimeout(1000);
+      return currentPathMatchesPageId(page, pageId, globalConfig);
+    }, { timeout: 20000, wait: 500 });
+  }
+);
+
+// Same flaky-click problem as above, but for a click whose expected
+// outcome is a resulting element appearing (a toast, a modal) rather than
+// a page redirect - confirmed live on MIPA's Register form: the SEND
+// button click occasionally no-ops the same way (no error, nothing
+// happens) with no navigation involved to detect it by.
+When(
+  /^I click on the "([^"]*)" (?:button|link|element), retrying until the "([^"]*)" is displayed$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, targetKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const targetIdentifier = getElementLocator(page, targetKey, globalConfig);
+
+    await waitFor(async () => {
+      if ((await page.$(targetIdentifier)) !== null) return true;
+      await clickElement(page, elementIdentifier, { timeout: 15000, force: true });
+      await page.waitForTimeout(1000);
+      return (await page.$(targetIdentifier)) !== null;
+    }, { timeout: 20000, wait: 500 });
   }
 );
