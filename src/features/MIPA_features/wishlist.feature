@@ -7,7 +7,7 @@ Feature: Wishlist ("My Lists")
   Scenario: View an existing wishlist and add its items to the basket
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I click on the "Clear Basket" button if present
+    And I clear the basket
     When I am on the "account-wishlist" page
     Then the "Wishlists table" should be displayed
     When I click on the "1st" "wishlist add to basket" element

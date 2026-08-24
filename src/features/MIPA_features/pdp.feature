@@ -28,7 +28,7 @@ Feature: Product Detail Page (PDP)
   Scenario: PDP - Increase quantity and validate basket totals
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I click on the "Clear Basket" button if present
+    And I clear the basket
     When I am on the "test-product" page
     And I click on the "EACH UOM" element
     When I click on the "Quantity increment" element

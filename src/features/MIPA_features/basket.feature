@@ -20,7 +20,7 @@ Feature: Basket page
   Scenario: Verify empty basket elements
     Given I am navigating the page as a "logged in" user
     And I am on the "basket" page
-    And I click on the "Clear Basket" button if present
+    And I clear the basket
     Then the "no items message" should be displayed
     And the "Checkout" should not be displayed
 

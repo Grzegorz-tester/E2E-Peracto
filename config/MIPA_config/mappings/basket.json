@@ -7,10 +7,14 @@
   "product's price": "[data-testid='basket__product-price__price']",
   "order total price": "[data-testid='basket__total__price']",
   "Checkout": "[data-testid='basket__summary__checkout-button']",
-  "Clear Basket": "//button[text()='Clear Basket']",
+  "Clear Basket": "//*[text()='Clear Basket']",
   "no items message": "//p[text()='You have no items in your basket.']",
   "Download sample file": "//a[text()='Download sample file']",
   "Upload CSV File": "//button[text()='UPLOAD CSV FILE']",
   "CSV file input": "input[type='file']",
-  "CSV upload error banner": "//*[contains(text(), 'could not be processed')]"
+  "CSV upload error banner": "//*[contains(text(), 'could not be processed')]",
+  "CSV structural error banner": "//*[contains(text(), 'No valid product rows found')]",
+  "basket items": "[data-testid='basket__product-card']",
+  "basket contents": "[data-testid='basket']",
+  "remove basket line": "[data-testid='basket__quantity-input__delete']"
 }
