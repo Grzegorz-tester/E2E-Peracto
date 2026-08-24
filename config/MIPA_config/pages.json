@@ -106,5 +106,9 @@
   "contact-us": {
     "route": "/contact-us",
     "regex": "^/contact-us$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
   }
 }

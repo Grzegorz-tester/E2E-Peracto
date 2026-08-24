@@ -37,6 +37,6 @@
   "LinkedIn icon": "[data-testid='footer__social__links'] a[href*='linkedin.com']",
   "YouTube icon": "[data-testid='footer__social__links'] a[href*='youtube.com']",
   "footer company details": "[data-testid='footer__company__details']",
-  "footer social links": "[data-testid='footer__social__links']",
-  "footer navigation links": "[data-testid='footer__desktop']"
+  "footer social links": "[data-testid='footer__social__links'] a",
+  "footer navigation links": "[data-testid='footer__desktop'] a"
 }

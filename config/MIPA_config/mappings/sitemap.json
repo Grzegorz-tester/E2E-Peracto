@@ -1,0 +1,6 @@
+{
+  "sitemap index links": "//*[@data-testid='sitemaps']//a[contains(@href, '/sitemap/')]",
+  "sitemap product links": "//*[@data-testid='sitemaps']//a[contains(@href, '/products/')]",
+  "sitemap category links": "//*[@data-testid='sitemaps']//a[contains(@href, '/category/')]",
+  "sitemap article links": "//*[@data-testid='sitemaps']//a[contains(@href, '/article/')]"
+}
