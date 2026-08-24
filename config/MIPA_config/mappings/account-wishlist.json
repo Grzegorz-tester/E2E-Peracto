@@ -1,0 +1,7 @@
+{
+  "search bar": "[placeholder='Enter name or keyword']",
+  "Refresh": "[data-testid='refresh-query-button']",
+  "Create a new Wishlist": "text=Create a new List",
+  "Wishlists table": "[data-testid='wishlists-list']",
+  "wishlist add to basket": "[data-testid='wishlist-item__add-to-basket-button']"
+}

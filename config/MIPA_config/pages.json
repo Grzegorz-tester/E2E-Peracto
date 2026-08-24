@@ -35,48 +35,72 @@
     "route": "/account/wishlists",
     "regex": "^/account/wishlists$"
   },
-  "finalise-order": {
-    "route": "/finalise-order",
-    "regex": "^/finalise-order$"
+  "checkout": {
+    "route": "/checkout",
+    "regex": "^/checkout$"
   },
   "thank-you": {
-    "route": "/finalise-order/thank-you",
-    "regex": "^/finalise-order/thank-you$"
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
   },
   "reset-password": {
     "route": "/reset-password",
     "regex": "^/reset-password$"
   },
-  "test-paint": {
-    "route": "/products/second-test-paint-sku12345",
-    "regex": "^/products/second-test-paint-sku12345$"
-  },
-  "brochure": {
-    "route": "/brochure",
-    "regex": "^/brochure$"
-  },
-  "samples": {
-    "route": "/samples",
-    "regex": "^/samples$"
-  },
   "search": {
     "route": "/search",
     "regex": "^/search$"
   },
-  "inspiration": {
-    "route": "/inspiration",
-    "regex": "^/inspiration$"
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
   },
-  "about": {
-    "route": "/about",
-    "regex": "^/about$"
+  "account-make-a-payment": {
+    "route": "/account/make-a-payment",
+    "regex": "^/account/make-a-payment$"
   },
-  "support": {
-    "route": "/support",
-    "regex": "^/support$"
+  "account-invoices": {
+    "route": "/account/invoices",
+    "regex": "^/account/invoices$"
   },
-  "news": {
-    "route": "/articles/news",
-    "regex": "^/articles/news$"
+  "brochures": {
+    "route": "/brochures",
+    "regex": "^/brochures$"
+  },
+  "all-refinishing": {
+    "route": "/category/all-refinishing",
+    "regex": "^/category/all-refinishing$"
+  },
+  "ready-mixed-colours": {
+    "route": "/category/ready-mixed-colours-refinish",
+    "regex": "^/category/ready-mixed-colours-refinish$"
+  },
+  "test-product": {
+    "route": "/products/2k-hs-wet-on-wet-filler-f37-light-grey-1lt",
+    "regex": "^/products/2k-hs-wet-on-wet-filler-f37-light-grey-1lt$"
+  },
+  "pdp": {
+    "route": "/products/2k-hs-wet-on-wet-filler-f37-light-grey-1lt",
+    "regex": "^/products/[^/]+$"
+  },
+  "blog": {
+    "route": "/articles/blog",
+    "regex": "^/articles/blog$"
+  },
+  "refinishing": {
+    "route": "/refinishing",
+    "regex": "^/refinishing$"
+  },
+  "industrial": {
+    "route": "/industrial",
+    "regex": "^/industrial$"
+  },
+  "aerosols": {
+    "route": "/aerosols",
+    "regex": "^/aerosols$"
+  },
+  "mp-products": {
+    "route": "/mp-products",
+    "regex": "^/mp-products$"
   }
 }

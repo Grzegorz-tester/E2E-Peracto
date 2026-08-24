@@ -85,8 +85,8 @@ Feature: Header functionality
     And the "title" should contain the text "<title>"
     And the "products cards" should be displayed
     Examples:
-      | product SKU   | title         |
-      | SKU12345-TEST | SKU12345-TEST |
+      | product SKU | title       |
+      | 229510000   | 229510000   |
 
 
   Scenario Outline: Verify: - search box functionality using the Magnifier glass button for NOT existing products
@@ -109,8 +109,8 @@ Feature: Header functionality
     When I click on the "first search result" element
     Then I should be redirected to the "<product>" page
     Examples:
-      | product name      | product    |
-      | Second Test Paint | test-paint |
+      | product name          | product |
+      | Mipa 2K HS F37 Filler | pdp     |
 
 
   Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the menu side-draw
@@ -121,19 +121,5 @@ Feature: Header functionality
     When I click on the "first search result" element
     Then I should be redirected to the "<product>" page
     Examples:
-      | product name      | product    |
-      | Second Test Paint | test-paint |
-
-
-#  Scenario Outline: Verify redirection to menu elements
-#    Given I am on the "home" page
-#    When I click on the "<menu element>" element
-#    Then I should be redirected to the "<page>" page
-#    And the "page title" should contain the text "<title>"
-#    Examples:
-#      | menu element          | page        | title       |
-#      | Inspiration menu item | inspiration | INSPIRATION |
-#      | About menu item       | about       | ABOUT HiB   |
-#      | Support menu item     | support     | SUPPORT     |
-#      | News menu item        | news        | News        |
-##      | Careers      | careers     |             |
+      | product name          | product |
+      | Mipa 2K HS F37 Filler | pdp     |

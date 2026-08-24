@@ -60,32 +60,17 @@ Feature: Operations in the users account
     And I click on the "Orders" tab
     Then I should be redirected to the "account-orders" page
     And the "Order picker" should be displayed
-    And the "Date picker" should be displayed
-    And the "Total picker" should be displayed
     And the "Refresh" should be displayed
     And the "Orders table" should be displayed
 
   Scenario: Verify:
-  - a presence of Wishlist tab elements
+  - a presence of My Lists tab elements
 
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page
-    And I click on the "Wishlist" tab
+    And I click on the "My Lists" tab
     Then I should be redirected to the "account-wishlist" page
     And the "search bar" should be displayed
     And the "Refresh" should be displayed
     And the "Create a new Wishlist" should be displayed
     And the "Wishlists table" should be displayed
-
-
-#  Scenario: Check the presence of My details in the Profile tab
-#    Given I am logged in user
-#    When I press the PROFILE tab
-#    Then I should see all of My Details
-#      | Field Name     | Value            |
-#      | Email          | logged-in-user@example.com |
-#      | First name     | Grzegorz         |
-#      | Last name      | Test             |
-#      | Company Name   | 9xb              |
-#      | Account Number | CEU012           |
-#      | Currency       | GBP              |

@@ -1,6 +1,5 @@
 {
   "Order picker": "[data-testid='order-number-input']",
-  "Date picker": "//button[@id='date']",
   "Refresh": "[data-testid='refresh-query-button']",
-  "Orders table": "//tbody"
+  "Orders table": "[data-testid='orders-list']"
 }

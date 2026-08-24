@@ -1,0 +1,10 @@
+{
+  "Delivery method": "[data-testid='radio-select_option-Delivery']",
+  "Continue": "[data-testid='proceed-to-next']",
+  "Delivery Address": "[data-testid='checkout__delivery-details-address__address-0']",
+  "Courier delivery option": "[data-testid^='radio-select_option-3 Day Courier']",
+  "Billing Address": "[data-testid='checkout__billing-address__address-0']",
+  "PO Number": "input[label='Purchase Order Ref Number']",
+  "Terms and conditions checkbox": "//label[@data-testid='checkbox'][contains(., 'terms and conditions')]",
+  "PLACE ORDER": "button:has-text('Place Order')"
+}

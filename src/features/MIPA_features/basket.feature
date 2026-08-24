@@ -1,85 +1,49 @@
 @MIPA_regression
-Feature: Place Order (Basket) page
+Feature: Basket page
 
-  Background:
-    Given I am navigating the page as a "logged in" user
-    When I am on the "place-order" page
-
+  # Full rewrite. Two structural bugs, both fixed:
+  # (1) The Background navigated to a "place-order" page id that has never
+  #     existed in pages.json - confirmed live, this is just the "basket"
+  #     page (/basket); "place-order" was likely a HIB/earlier name for it.
+  # (2) The selectors themselves lived in mappings/place-order.json, which
+  #     was NEVER loaded - getElementLocator resolves a page's mapping file
+  #     by matching its FILENAME to the current page id, and no page id
+  #     "place-order" has ever existed either. Renamed to mappings/basket.json
+  #     so it actually applies to the real "basket" page id.
+  # Also removed: the previous version searched for and added products
+  # directly from an inline "Search products" box on this page - confirmed
+  # live, no such feature exists here. The only way to add an item is via a
+  # PDP's "Add to basket" button (see pdp.feature); Quick Order CSV upload
+  # (the only other way to add items from this page) is covered separately
+  # in quick-order.feature.
 
   Scenario: Verify empty basket elements
-    Then I should be presented with a "order total price" "0.00"
-    And the "no items message" should be displayed
-    And the "PLACE ORDER" should not be enabled
+    Given I am navigating the page as a "logged in" user
+    And I am on the "basket" page
+    And I click on the "Clear Basket" button if present
+    Then the "no items message" should be displayed
+    And the "Checkout" should not be displayed
 
 
-  Scenario Outline: Existing product search functionality
-    And I fill in the "Search products" input field with "<product>"
-    Then the "search results" should be displayed
-    And the "first search result" should be displayed
-    When I click on the "X" button
-    Then the "search results" should not be displayed
-    Examples:
-      | product  |
-      | Vanquish |
-
-
-  Scenario Outline: Non existing product search functionality
-    And I fill in the "Search products" input field with "<product>"
-    Then the "search results" should be displayed
-    And the "first search result" should not be displayed
-    And the "No results found message" should be displayed
-    When I click on the "X" button
-    Then the "search results" should not be displayed
-    Examples:
-      | product              |
-      | non existing product |
-
-
-  Scenario Outline: Verify changing the quantity of a product in the basket
-    And I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    Examples:
-      | product  |
-      | Vanquish |
-
-
-  Scenario Outline: Verify removing products from the basket
-    And I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    And I slowly click on the "first variant" element
-    And I slowly click on the "Add to basket" button
-    Then the "product's price" should be displayed
-    And the "product's price" should contain the text "<price>"
-    When I fill in the "Search products" input field with "<product>"
-    And I click on the "second search result" element
-    And I click on the "second variant" element
+  Scenario: Changing the quantity of a basket item updates its total correctly
+    Given I am navigating the page as a "logged in" user
+    And I am on the "test-product" page
+    And I click on the "EACH UOM" element
     And I click on the "Add to basket" button
-    Examples:
-      | product  | price |
-      | Vanquish | 84.00 |
+    And I click on the "Checkout" element
+    Then I should be redirected to the "basket" page
+    When I fill in the "Quantity selector" input field with "3"
+    And I click on the "Update" button
+    Then the "product's total price" should contain the text "36.69"
+    And the "order total price" should contain the text "36.69"
 
 
-#  Scenario Outline: Verify opening and closing the "Specifications" draw
-#    Then the "specification draw" should not be displayed
-#    When I fill in the "Search products" input field with "<product>"
-#    And I click on the "first search result" element
-#    And I click on the "Specification" button
-#    Then the "specification draw" should be displayed
-#    When I click on the "close" button
-#    Then the "specification draw" should not be displayed
-#    Examples:
-#      | product |
-#      | Vanquish    |
-#
-#
-#  Scenario Outline: Verify opening and closing the "Products you may also need" draw
-#    Then the "you may also need draw" should not be displayed
-#    When I fill in the "Search products" input field with "<product>"
-#    And I click on the "first search result" element
-#    And I click on the "Products you may also need" button
-#    Then the "you may also need draw" should be displayed
-#    When I click on the "close" button
-#    Then the "you may also need draw" should not be displayed
-#    Examples:
-#      | product |
-#      | Vanquish   |
+  Scenario: Removing a product empties the basket
+    Given I am navigating the page as a "logged in" user
+    And I am on the "test-product" page
+    And I click on the "EACH UOM" element
+    And I click on the "Add to basket" button
+    And I click on the "Checkout" element
+    Then I should be redirected to the "basket" page
+    When I click on the "Remove items" element
+    Then the "no items message" should be displayed

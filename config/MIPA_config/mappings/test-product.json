@@ -1,0 +1,22 @@
+{
+  "product title": "[data-testid='product-content__title']",
+  "product SKU": "[data-testid='product-content__sku']",
+  "product image": "[data-testid='product-content__image']",
+  "product price": "[data-testid='product-price__title']",
+  "guest sign in prompt": "[data-testid='product-price__login-link']",
+  "Add to Enquiry": "[data-testid='product-price__add-to-enquiry']",
+  "Add to basket": "[data-testid='product-price__add-to-basket']",
+  "Add to List": "[data-testid='product-price__add-to-list']",
+  "Quantity input": "[data-testid='quantity-picker__input']",
+  "Quantity increment": "[data-testid='quantity-picker__increment']",
+  "Quantity decrement": "[data-testid='quantity-picker__decrement']",
+  "BOX OF 6 UOM": "[data-testid='product-variant-options__lozenge-0']",
+  "EACH UOM": "[data-testid='product-variant-options__lozenge-1']",
+  "HALF PALLET OF 210 UOM": "[data-testid='product-variant-options__lozenge-2']",
+  "PALLET OF 420 UOM": "[data-testid='product-variant-options__lozenge-3']",
+  "added to basket modal": "[data-testid='success-popup-checkout']",
+  "added to list modal": "[data-testid='add-wishlist__add-to-wishlist-btn']",
+  "Add to Wishlist confirm button": "[data-testid='add-wishlist__add-to-wishlist-btn']",
+  "Continue Shopping": "[data-testid='success-popup-continue-shopping']",
+  "Checkout": "[data-testid='success-popup-checkout']"
+}

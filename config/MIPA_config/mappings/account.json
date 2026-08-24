@@ -1,11 +1,13 @@
 {
-  "DASHBOARD": "[data-value='Dashboard']",
-  "PROFILE": "[data-value='Profile']",
-  "ADDRESS BOOK": "[data-value='Address Book']",
-  "ORDER HISTORY": "[data-value='Order History']",
-  "STOCK CHECK & QUICK ORDER": "[data-value='Stock Check & Quick Order']",
-  "Stock Check & Quick Order": "//button[text()='Stock Check & Quick Order']",
-  "Contact Us": "//button[text()='Contact Us']",
-  "View all and search": "//a[text()='View all and search']",
-  "Orders table": "//tbody"
+  "Dashboard": "[data-value='Dashboard']",
+  "Profile": "[data-value='Profile']",
+  "Address Book": "[data-value='Address Book']",
+  "Orders": "[data-value='Orders']",
+  "My Lists": "[data-value='My Lists']",
+  "Make a Payment": "[data-value='Make a Payment']",
+  "Invoices": "[data-value='Invoices']",
+  "Recent Orders table": "[data-testid='recent-orders']",
+  "Delivery Address": "(//*[@data-testid='address-card'])[1]",
+  "Billing Address": "(//*[@data-testid='address-card'])[2]",
+  "orders - View all": "(//a[text()='View All'])[last()]"
 }

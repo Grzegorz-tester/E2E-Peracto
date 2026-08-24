@@ -1,0 +1,16 @@
+{
+  "basket item": "[data-testid='basket__product-card']",
+  "Quantity selector": "[data-testid='basket__quantity-input_input']",
+  "Update": "[data-testid='basket__quantity-input__update']",
+  "Remove items": "[data-testid='basket__quantity-input__delete']",
+  "product's total price": "[data-testid='basket__total__price']",
+  "product's price": "[data-testid='basket__product-price__price']",
+  "order total price": "[data-testid='basket__total__price']",
+  "Checkout": "[data-testid='basket__summary__checkout-button']",
+  "Clear Basket": "//button[text()='Clear Basket']",
+  "no items message": "//p[text()='You have no items in your basket.']",
+  "Download sample file": "//a[text()='Download sample file']",
+  "Upload CSV File": "//button[text()='UPLOAD CSV FILE']",
+  "CSV file input": "input[type='file']",
+  "CSV upload error banner": "//*[contains(text(), 'could not be processed')]"
+}
