@@ -22,7 +22,8 @@ Feature: Basket interactions
 
   Scenario: Changing the quantity of a basket item updates its total correctly
     When I click on the "Add to basket" button
-    And I press the Escape key
+    Then the "added to basket confirmation" should be displayed
+    When I press the Escape key
     And I click on the "Basket" icon
     Then I should be redirected to the "basket" page
     When I increment the basket quantity and the total should update correctly
@@ -31,7 +32,8 @@ Feature: Basket interactions
 
   Scenario: Removing a product empties the basket
     When I click on the "Add to basket" button
-    And I press the Escape key
+    Then the "added to basket confirmation" should be displayed
+    When I press the Escape key
     And I click on the "Basket" icon
     Then I should be redirected to the "basket" page
     When I click on the "Remove items" element
