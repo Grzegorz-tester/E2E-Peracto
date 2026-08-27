@@ -32,8 +32,21 @@ const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
 // forgetting to exclude it manually isn't possible. Tag order-completing
 // scenarios in any project's feature files with @places-real-order to get
 // this protection.
+//
+// @completes-registration gets the same automatic exclusion, for a
+// different reason: production sites commonly run real bot-protection
+// (reCAPTCHA, Cloudflare, etc.) on their registration form that staging
+// doesn't have - confirmed live on Watco's production registration
+// (2026-08-26, "The form ReCaptcha has failed") and already known for
+// PizzaExpressLive's Cloudflare-protected flows. A scenario that actually
+// completes a new-account registration will therefore fail on production
+// every single time regardless of what was deployed, which is pure noise
+// in a post-deployment run - not a real regression signal. Tag any
+// scenario whose whole point is finishing registration (not just
+// exercising the form's validation, which doesn't reach the bot-check)
+// with @completes-registration.
 const productionExclusion = env('UI_AUTOMATION_HOST', 'staging') === 'production'
-    ? ' and not @places-real-order'
+    ? ' and not @places-real-order and not @completes-registration'
     : '';
 const tagFilter = (tag: string) => `${tag}${productionExclusion}`;
 

@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-de.watco.pub"
+  "staging": "https://staging-de.watco.pub",
+  "production": "https://www.watco.de"
 }

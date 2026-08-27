@@ -30,6 +30,7 @@ Feature: Registration - VAT number field (FR)
     Then the "validation message" should be displayed
     And the "validation message" should equal text "Le numéro de TVA entré n'est pas valable. Veuillez entrer un numéro de TVA au format: FRXX123456789."
 
+  @completes-registration
   Scenario: Registration succeeds with the VAT number left blank
     Given I am on the "register" page
     When I fill in the "Email address" input field with a unique guest email

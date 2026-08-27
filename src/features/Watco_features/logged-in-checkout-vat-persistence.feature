@@ -1,4 +1,5 @@
 @regression
+@places-real-order
 Feature: Logged-in checkout - VAT number persistence to account
 
   # Migrated from P3Playwright watco/tests/basket-checkout/uk/logged-in-checkout-vat-persistence.test.ts

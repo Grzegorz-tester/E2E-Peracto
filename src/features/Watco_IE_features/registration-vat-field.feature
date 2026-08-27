@@ -32,6 +32,7 @@ Feature: Registration - VAT number field (IE)
     Then the "validation message" should be displayed
     And the "validation message" should equal text "The entered VAT number is invalid. Enter a VAT number in the format IE9999999L."
 
+  @completes-registration
   Scenario: Registration succeeds with the VAT number left blank
     Given I am on the "register" page
     When I fill in the "Email address" input field with a unique guest email

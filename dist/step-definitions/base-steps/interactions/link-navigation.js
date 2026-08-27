@@ -122,7 +122,7 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     throw new Error(`"${elementKey}" has no href to rewrite and navigate to.`);
   }
   const currentOrigin = new URL(page.url());
-  const rewritten = new URL(href);
+  const rewritten = new URL(href, currentOrigin);
   rewritten.protocol = currentOrigin.protocol;
   rewritten.hostname = currentOrigin.hostname;
   await page.goto(rewritten.toString(), {

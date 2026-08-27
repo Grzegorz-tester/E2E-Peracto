@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-befr.watco.pub"
+  "staging": "https://staging-befr.watco.pub",
+  "production": "https://fr.watcodirect.be"
 }

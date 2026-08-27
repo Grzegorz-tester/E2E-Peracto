@@ -29,6 +29,7 @@ Feature: Registration - VAT number field (DE)
     Then the "validation message" should be displayed
     And the "validation message" should equal text "Die eingegebene USt-IdNr. ist ungültig. Bitte geben Sie eine Umsatzsteuer-Identifikationsnummer im Format DE123456789 ein"
 
+  @completes-registration
   Scenario: Registration succeeds with the VAT number left blank
     Given I am on the "register" page
     When I fill in the "Email address" input field with a unique guest email

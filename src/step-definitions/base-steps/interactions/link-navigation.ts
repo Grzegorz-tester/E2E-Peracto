@@ -110,7 +110,7 @@ When(/^I click on the "([^"]*)" (?:link|element) via its href on this origin$/, 
     }
 
     const currentOrigin = new URL(page.url());
-    const rewritten = new URL(href);
+    const rewritten = new URL(href, currentOrigin);
     rewritten.protocol = currentOrigin.protocol;
     rewritten.hostname = currentOrigin.hostname;
 

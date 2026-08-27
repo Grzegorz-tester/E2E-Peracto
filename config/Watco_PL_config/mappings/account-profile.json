@@ -1,5 +1,8 @@
 {
   "VAT number": "#user_profile_customer_vat_number",
   "NIP number": "#user_profile_customer_nip_number",
+  "Company": "#user_profile_company",
+  "Job function": "#user_profile_job_function",
+  "Industry sector": "#user_profile_industry_sector",
   "Save details": "form[name='user_profile'] button[type='submit']"
 }
