@@ -1,0 +1,6 @@
+{
+  "title": "//h2",
+  "products amount": "//h2//span",
+  "products cards": "[data-testid='search__hits__container']",
+  "first item link": "[data-testid='row-0-name'] a"
+}
