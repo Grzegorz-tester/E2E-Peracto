@@ -6,3 +6,4 @@ reports/screenshots/
 reports/videos/
 reports/cucumber-html-report.html
 reports/cucumber-pdf-report.pdf
+reports/*/*.pdf
