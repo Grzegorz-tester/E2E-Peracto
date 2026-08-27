@@ -1,4 +1,4 @@
-@Russells_regression
+@regression
 Feature: Login functionality
 
   @smoke

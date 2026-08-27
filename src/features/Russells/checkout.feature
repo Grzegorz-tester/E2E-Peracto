@@ -1,4 +1,4 @@
-@Russells_regression
+@regression
 Feature: Checkout flow
 
   Background:
