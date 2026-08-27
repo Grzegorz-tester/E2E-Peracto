@@ -4,7 +4,7 @@
   "contact email": "[data-testid='utility-bar__email-link']",
   "Sign In": "[data-testid='utility-bar__content--logged-out__sign-in']",
   "Sign Out": "//a[contains(@href, '/logout')]",
-  "Quotes": "[data-testid='brand-bar__quotes-button']",
+  "My Lists": "[data-testid='brand-bar__quotes-button']",
   "Account": "[data-testid='brand-bar__account-button']",
   "Basket": "[data-testid='brand-bar__basket-button']",
   "header search bar": "(//input[@placeholder='Search Products'])[1]",

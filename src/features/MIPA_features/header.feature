@@ -13,7 +13,7 @@ Feature: Header functionality
     And the "Sign Out" should not be displayed
 
     And the "header logo" should be displayed
-    And the "Quotes" should be displayed
+    And the "My Lists" should be displayed
     And the "Account" should be displayed
     And the "Basket" should be displayed
 
@@ -27,27 +27,25 @@ Feature: Header functionality
     And the "Sign Out" should be displayed
 
     And the "header logo" should be displayed
-    And the "Quotes" should be displayed
+    And the "My Lists" should be displayed
     And the "Account" should be displayed
     And the "Basket" should be displayed
 
 #  ------------ Middle header ---------------------------------
 
 
-  Scenario Outline: Verify: - "Quotes" redirection
+  Scenario Outline: Verify: - "My Lists" redirection
     Given I am navigating the page as a "<user type>" user
-    When I click on the "Quotes" icon
-    Then I should be redirected to the "<page type>" page
+    When I click on the "My Lists" element, retrying until redirected to the "<page type>" page
     Examples:
-      | user type | page type |
-      | guest     | login     |
-      | logged in | quotes    |
+      | user type | page type       |
+      | guest     | login           |
+      | logged in | account-wishlist |
 
 
   Scenario Outline: Verify: - "Account" redirection
     Given I am navigating the page as a "<user type>" user
-    When I click on the "Account" icon
-    Then I should be redirected to the "<page type>" page
+    When I click on the "Account" element, retrying until redirected to the "<page type>" page
     Examples:
       | user type | page type |
       | guest     | login     |
