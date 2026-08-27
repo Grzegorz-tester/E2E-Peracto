@@ -1,4 +1,4 @@
-
+@regression
 Feature: Operations in the users account
 
 

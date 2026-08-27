@@ -1,4 +1,4 @@
-
+@regression
 Feature: Home page
 
   Scenario: Verify page elements

@@ -1,4 +1,4 @@
-
+@regression
 Feature: Products page functionality
 
 

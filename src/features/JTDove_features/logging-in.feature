@@ -1,5 +1,5 @@
 @smoke
-
+@regression
 Feature: Login Page
 
   Scenario Outline: Successful log in to the user's account

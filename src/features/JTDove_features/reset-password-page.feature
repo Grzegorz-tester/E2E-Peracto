@@ -1,4 +1,4 @@
-
+@regression
 Feature: Resetting the password
 
   Scenario: Requesting the reset password email with the registered email address

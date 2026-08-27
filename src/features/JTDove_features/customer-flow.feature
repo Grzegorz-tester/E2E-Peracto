@@ -1,5 +1,5 @@
 @smoke
-
+@regression
 Feature: Product purchase flow
 
 

@@ -1,4 +1,4 @@
-
+@regression
 Feature: Basket page
 
   Background:
