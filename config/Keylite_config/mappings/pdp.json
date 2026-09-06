@@ -1,0 +1,26 @@
+{
+  "page heading": "(//h1)[1]",
+  "Add to basket": "[data-testid='product-add-to-basket__button']:visible",
+
+  "variant lozenge options": "[data-testid^='product-variant-lozenges__value-']:visible",
+  "configurator total value": "[data-testid='product-price__now-price']",
+
+  "Build & Buy": "text=Build & Buy",
+  "product-configurator": "[data-testid='product-configurator']",
+
+  "configurator step 1": "[data-testid='product-configurator__step-selector-1']",
+  "configurator step 2": "[data-testid='product-configurator__step-selector-2']",
+  "configurator step 3": "[data-testid='product-configurator__step-selector-3']",
+  "configurator step 4": "[data-testid='product-configurator__step-selector-4']",
+
+  "configurator options": "[data-testid^='product-configurator__group-0-option-']",
+
+  "configurator next step": "[data-testid='product-configurator__next-step']",
+  "configurator previous step": "[data-testid='product-configurator__previous-step']",
+
+  "configurator summary total": "[data-testid='product-configurator__product-price']",
+
+  "configurator review product name": "[data-testid='product-configurator__product-review--product-name']",
+  "configurator review product price": "[data-testid='product-configurator__product-review--product-price']",
+  "configurator add to basket": "[data-testid='product-configurator__add-to-basket']"
+}

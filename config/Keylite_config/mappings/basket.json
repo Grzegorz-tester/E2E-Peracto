@@ -1,0 +1,15 @@
+{
+  "basket item": "[data-testid='basket-card']",
+  "basket item name": "[data-testid='basket-card__name']",
+  "basket item sku": "[data-testid='basket-card__sku']",
+  "basket item price": "[data-testid='basket-card__price-price']",
+  "basket item total price": "[data-testid='basket-card__total-price']",
+  "basket item quantity": "[data-testid='basket-card__quantity-heading']",
+  "remove basket line": "[data-testid='basket-card__remove-button']",
+
+  "basket available lines": "[data-testid='basket-items__available-lines']",
+  "basket subtotal": "[data-testid='basket-summary__subtotal']",
+  "basket total": "[data-testid='basket-summary__total']",
+  "basket promotions": "[data-testid='basket-summary__promotions']",
+  "Checkout": "[data-testid='basket-summary__checkout-button']:visible"
+}

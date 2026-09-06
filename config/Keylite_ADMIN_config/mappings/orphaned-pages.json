@@ -1,0 +1,10 @@
+{
+  "Add Item": "//button[contains(.,'Add Item')]",
+  "Navigation Item Type": "//label[text()='Navigation Item Type']/following::*[contains(@class,'-control')][1]",
+  "Select Item": "//label[text()='Select Item']/following::*[contains(@class,'-control')][1]",
+  "Submit": "//button[text()='Submit']",
+  "menu item title": ".rst__rowTitle",
+  "menu item row": ".rst__row",
+  "Remove Item": "button[title='Remove Item']",
+  "Confirm Remove Item": "[data-testid='button-action_delete']"
+}

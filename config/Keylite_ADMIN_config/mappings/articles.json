@@ -1,0 +1,4 @@
+{
+  "first item link": "[data-testid='row-0-heading'] a",
+  "Create New Article": "[data-testid='create-new-article']"
+}

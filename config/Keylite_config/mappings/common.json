@@ -1,0 +1,9 @@
+{
+  "header logo": "[data-testid='brand-bar__logo-link']",
+  "Menu": "[data-testid='brand-bar__menu-button--desktop']",
+  "header search bar": "[data-testid='algolia-autocomplete__input']",
+  "search button": "[data-testid='brand-bar__search-button']",
+  "Account": "[data-testid='brand-bar__account-link']",
+  "Basket": "[data-testid='brand-bar__basket-link']",
+  "Currency": "[data-testid='brand-bar__currency-button']"
+}

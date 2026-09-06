@@ -17,5 +17,16 @@ When(/^I dismiss the newsletter popup if present$/, async function (this: Scenar
 
     if (appeared) {
         await closeButton.click();
+        return;
     }
+
+    // Keylite's newsletter popup is a Mailchimp embedded form (container id
+    // "mcforms-<formId>-<uid>") rather than MailerLite's iframe. Confirmed
+    // live: it loads asynchronously and its own aria-label="Close" button
+    // never reports as Playwright-"visible" in headless mode even though the
+    // popup still visually blocks clicks on whatever's underneath it - so it
+    // is removed from the DOM directly rather than clicked.
+    await page.evaluate(() => {
+        document.querySelector('[id^="mcforms-"]')?.remove();
+    });
 });

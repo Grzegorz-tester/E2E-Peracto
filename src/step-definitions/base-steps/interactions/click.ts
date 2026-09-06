@@ -268,8 +268,23 @@ When(
 // For an element that only sometimes appears (an optional interstitial, a
 // modal shown only on a fresh page load, etc.) - clicks it if it shows up
 // within a short window, otherwise moves on without failing the scenario.
+//
+// Worst case this step's own logic can take ~28s (8s appear-check + up to
+// 20s of dismiss-retry below) - and waitFor below only re-checks its own
+// timeout at the START of each retry iteration, so a slow iteration (a
+// clickElement + a 4s hidden-check) can carry it past its nominal 20s by
+// close to another full iteration. That total exceeds some projects'
+// SCRIPT_TIMEOUT (as low as 20000ms) - confirmed live on Insinkerator EU:
+// the interaction itself succeeded (country correctly switched, modal
+// gone) but Cucumber's own step timeout fired first and failed the
+// scenario anyway. An explicit per-step timeout, matching the same 45000ms
+// the "dismissing ... if it interferes" steps below already use rather
+// than a tightly-calculated figure, removes the dependency on whatever
+// SCRIPT_TIMEOUT happens to be configured for a given project and leaves
+// real margin for that overshoot.
 When(
   /^I click on the "([^"]*)" (?:button|link|icon|element|dropdown|tab) if present$/,
+  { timeout: 45000 },
   async function (elementKey: ElementKey) {
     const {
       screen: { page },
@@ -366,6 +381,40 @@ When(
   }
 );
 
+// A real (even forced) mouse click still gets hit-tested by the browser at
+// the target's on-screen coordinates - if something else is genuinely
+// stacked on top there, the click lands on THAT element instead, silently,
+// with no Playwright error (force just skips Playwright's own pre-checks,
+// it doesn't change what the browser does with the resulting click).
+// Confirmed live on Keylite's PDP configurator: its first option card sits
+// beneath the sticky product-gallery panel at the viewport size this suite
+// runs at, so every click (forced or not) at that card's center actually
+// lands on the gallery's chevron-left arrow. Unlike the animating-overlay
+// case elsewhere in this codebase (which a "precisely"/retry click waits
+// out), this is a static layout overlap that waiting or scrolling doesn't
+// resolve - dispatching a real DOM click directly on the element (bypassing
+// the browser's own hit-testing entirely) is what a mouse click cannot do.
+// Reusable by any project with a similarly permanently-occluded target.
+When(
+  /^I click on the "(\d+(?:st|nd|rd|th))" "([^"]+)" element via JavaScript$/,
+  async function (this: ScenarioWorld, elementPosition: string, elementKey: ElementKey) {
+    const {
+      screen: { page },
+      globalConfig,
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const index = Number(elementPosition.match(/\d+/)?.[0]) - 1;
+
+    const elements = await page.$$(elementIdentifier);
+    if (index >= elements.length) {
+      throw new Error(`Expected: to click index ${index} of "${elementKey}" (${elementIdentifier}) via JavaScript\nFound: only ${elements.length} matching element(s)`);
+    }
+
+    await elements[index].evaluate((el: HTMLElement) => el.click());
+  }
+);
+
 // For an overlay that isn't just present once (the "removing the X
 // overlay if it interferes" click variants already handle that) but gets
 // RE-INSERTED on every page load / re-render throughout a scenario - a
@@ -423,16 +472,30 @@ When(
     const candidates = page.locator(elementIdentifier);
 
     await candidates.first().waitFor({ state: "visible", timeout: 15000 });
-    const count = await candidates.count();
 
-    for (let i = 0; i < count; i++) {
-      const candidate = candidates.nth(i);
-      if (await candidate.isEnabled()) {
-        await candidate.click();
-        return;
+    // Confirmed live on Indespension's towbar fitting-date picker: a
+    // candidate can render as visible immediately but start out disabled,
+    // with its real enabled/disabled state settling ~1-1.5s later (e.g.
+    // availability data loading asynchronously after render). Checking
+    // isEnabled() only once, right after the visibility wait above, can
+    // catch every candidate mid-load and wrongly report none available -
+    // so poll for a few seconds instead of checking once.
+    const clicked = await waitFor(async () => {
+      const count = await candidates.count();
+      for (let i = 0; i < count; i++) {
+        const candidate = candidates.nth(i);
+        if (await candidate.isEnabled()) {
+          await candidate.click();
+          return true;
+        }
       }
+      return false;
+    }, { timeout: 5000, wait: 250 }).catch(() => false);
+
+    if (!clicked) {
+      const count = await candidates.count();
+      throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
     }
-    throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
   }
 );
 

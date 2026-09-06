@@ -1,0 +1,8 @@
+{
+  "Products nav link": "a[href='/category/all']",
+  "Replace My Window nav link": "a[href='/replacing-your-roof-window']",
+  "Homeowners nav link": "a[href='/homeowners']",
+  "Professionals nav link": "a[href='/professionals']",
+  "Support nav link": "a[href='/support']",
+  "Find Installer nav link": "a[href='/branches']"
+}

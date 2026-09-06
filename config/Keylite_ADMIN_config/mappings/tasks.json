@@ -1,0 +1,5 @@
+{
+  "first item link": "[data-testid='row-0-name'] a",
+  "task name link": "[data-testid$='-name'] a",
+  "play button": "[data-testid$='-run-task'] button"
+}
