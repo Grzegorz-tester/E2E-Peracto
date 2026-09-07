@@ -31,6 +31,22 @@
     "route": "/checkout/delivery-method",
     "regex": "^/checkout/delivery-method$"
   },
+  "checkout-sign-in": {
+    "route": "/checkout/sign-in",
+    "regex": "^/checkout/sign-in$"
+  },
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-billing": {
+    "route": "/checkout/billing",
+    "regex": "^/checkout/billing$"
+  },
+  "checkout-review": {
+    "route": "/checkout/review-and-payment",
+    "regex": "^/checkout/review-and-payment$"
+  },
   "products": {
     "route": "/category/all",
     "regex": "^/category/all$"
@@ -38,5 +54,21 @@
   "pdp": {
     "route": "/products/ray-lux-flat-glass-with-kerb",
     "regex": "^/products/[^/]+$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "contact": {
+    "route": "/contact",
+    "regex": "^/contact$"
+  },
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
   }
 }

@@ -1,0 +1,5 @@
+{
+  "PDP title": "h1",
+  "PDP price": ":nth-match(.price.js-price, 1)",
+  "PDP breadcrumb": ".breadcrumbs"
+}

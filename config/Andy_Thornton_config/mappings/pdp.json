@@ -1,15 +1,19 @@
 {
   "product image": "[data-testid='product-media__image']",
-  "product name": "//h1",
-  "product SKU": "",
-  "product features": "(//div[@data-testid='product_concent__description'])[1]  ",
-  "product specifications": "//button[@id='technical-specifications']",
-  "product price": "",
-  "stock level": "",
-  "delivery time": "",
-  "warranty time": "",
-  "View details": "",
-  "quantity picker": "//input[@id='quantity']",
-  "Add to basket": "[data-testid='add-to-basket']",
-  "Add to quotes": "[data-testid='add-to-quotes']"
+  "product name": "[data-testid='product-info__name']",
+  "product SKU": "[data-testid='product-info__sku']",
+  "product price": "[data-testid='product-price__now-price']",
+  "quantity picker": "[data-testid='product-add-to-basket__quantity-picker']",
+  "quantity input": "[data-testid='quantity-picker__input']",
+  "quantity plus": "[data-testid='quantity-picker__plus-button']",
+  "quantity minus": "[data-testid='quantity-picker__minus-button']",
+  "Add to basket": "[data-testid='product-add-to-basket__button']:visible",
+
+  "Description tab": "[data-testid='product-accordion__trigger']:has-text('Description')",
+  "Specifications tab": "[data-testid='product-accordion__trigger']:has-text('Specifications')",
+  "Downloads tab": "[data-testid='product-accordion__trigger']:has-text('Downloads')",
+  "product accordion content": "[data-testid='product-accordion__content']",
+
+  "stock message": "[data-testid='product-messages'] [data-testid='product-message__title']",
+  "also in the range": "[data-testid='product-relations__frequentlyBoughtTogether']"
 }

@@ -1,0 +1,8 @@
+{
+  "product card": ".card-fresh",
+  "first product card title": ":nth-match(.card-fresh__title, 1)",
+  "first product card link": ":nth-match(a.view-product-btn, 1)",
+  "second brand filter checkbox": ":nth-match([data-facet-name='brand'] label.bloomreach-refinement-list--label, 2)",
+  "sort dropdown": "#category-sort-by-select",
+  "page 2 link": ".bloomreach-pagination--item__page:has-text(\"2\") a"
+}

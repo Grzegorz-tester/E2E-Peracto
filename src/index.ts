@@ -45,8 +45,21 @@ const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
 // scenario whose whole point is finishing registration (not just
 // exercising the form's validation, which doesn't reach the bot-check)
 // with @completes-registration.
+//
+// @mutates-admin-data gets the same automatic exclusion for CLAUDE.md's
+// "Staging vs production rules" on the ADMIN side specifically: a
+// production admin must stay read-only (no creating/editing/deleting
+// anything through it), but the shared Carbon_admin feature folder is
+// reused by tenants that DO have a production admin env (e.g.
+// KOOL_ADMIN_PROD.env). Tag any admin scenario that adds/edits/deletes
+// real data (e.g. address-book-management.feature) with this so it can't
+// run there even if picked up by a profile's tags. Each such scenario's
+// own steps also independently refuse to run against
+// UI_AUTOMATION_HOST=production (see admin-address-book.ts's "I require a
+// staging admin" step) - this tag exclusion and that runtime guard are
+// deliberately two independent layers, not one relying on the other.
 const productionExclusion = env('UI_AUTOMATION_HOST', 'staging') === 'production'
-    ? ' and not @places-real-order and not @completes-registration'
+    ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data'
     : '';
 const tagFilter = (tag: string) => `${tag}${productionExclusion}`;
 
@@ -54,11 +67,10 @@ const dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = `${common} --tags '${tagFilter('@regression')}'`;
 const Andy_Thornton_regression = `${common} --tags '${tagFilter('@Andy_Thornton_regression')}'`;
-const MIPA_regression = `${common} --tags '${tagFilter('@MIPA_regression')}'`;
 const carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;
 const PizzaExpressLive_regression = `${common} --tags '${tagFilter('@PizzaExpressLive_regression')}'`;
 
 
 console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');
 
-export {dev, smoke, regression, Andy_Thornton_regression, MIPA_regression, carbon_regression, PizzaExpressLive_regression};
+export {dev, smoke, regression, Andy_Thornton_regression, carbon_regression, PizzaExpressLive_regression};

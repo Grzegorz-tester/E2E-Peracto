@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Product Detail Page (PDP)
 
   # New coverage (previously none existed) - confirmed live against a

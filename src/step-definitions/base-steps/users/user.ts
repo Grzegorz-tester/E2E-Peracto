@@ -1,6 +1,7 @@
 import { Given } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
 import { env } from "../../../env/parseEnv";
+import { dismissNewsletterPopup } from "../interactions/newsletter-popup";
 
 Given(/^I am navigating the page as a "([^"]*)" user$/, async function (this: ScenarioWorld, userType: string) {
     const {
@@ -46,17 +47,13 @@ Given(/^I am navigating the page as a "([^"]*)" user$/, async function (this: Sc
     const loginUrl = hostUrl.endsWith("/") ? `${hostUrl}login` : `${hostUrl}/login`;
     await page.goto(loginUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
 
-    // Some projects (e.g. HIB) show a newsletter signup popup on a fresh
-    // page load whose overlay blocks the Sign In click underneath it. The
-    // separate "I dismiss the newsletter popup if present" Cucumber step
+    // Some projects (e.g. HIB, Keylite) show a newsletter signup popup on a
+    // fresh page load whose overlay blocks the Sign In click underneath it.
+    // The separate "I dismiss the newsletter popup if present" Cucumber step
     // handles this for feature files that navigate manually, but this
-    // compound step bypasses that - dismiss it here too, a no-op where the
-    // popup never appears.
-    const newsletterCloseButton = page.frameLocator('iframe[src*="mailerlite"]').getByRole("button", { name: "Close" });
-    const newsletterPopupAppeared = await newsletterCloseButton.waitFor({ state: "visible", timeout: 8000 }).then(() => true).catch(() => false);
-    if (newsletterPopupAppeared) {
-        await newsletterCloseButton.click();
-    }
+    // compound step bypasses that - dismiss it here too (via the same
+    // shared helper, not a duplicated copy), a no-op where no popup appears.
+    await dismissNewsletterPopup(page);
 
     // Use selectors from login.json for login actions. Waits for the form
     // to actually be visible/interactive first - unlike the generic click

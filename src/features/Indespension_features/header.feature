@@ -46,7 +46,10 @@ Feature: Header functionality
     Given I am on the "home" page
     When I fill in the "Search bar" input field with "<product name>"
     And I click on the "magnifier glass" element
-    Then I should be redirected to the "search" page
+    # Confirmed live (2026-08-27): this redirect can just be slow, not
+    # broken - "eventually" gives it up to 30s instead of the plain step's
+    # 15s default.
+    Then I should eventually be redirected to the "search" page
     And the "title" should contain the text "<title>"
     And the "products cards" should be displayed
 
@@ -60,7 +63,7 @@ Feature: Header functionality
     Given I am on the "home" page
     When I fill in the "Search bar" input field with "<product name>"
     And I click on the "magnifier glass" element
-    Then I should be redirected to the "search" page
+    Then I should eventually be redirected to the "search" page
     And the "title" should contain the text "<title>"
     And the "products amount" should contain the text "can't find any results"
 
@@ -95,10 +98,20 @@ Feature: Header functionality
   # items) instead of navigating anywhere, so "should be redirected to a
   # services page" doesn't apply to it. Its own visibility is still covered
   # by menu-draw.feature's "Verify menu elements for:" outline.
+  # Confirmed live (2026-08-27): "I click on the ... element"'s force:true
+  # is flaky here specifically - the drawer's own opening backdrop overlay
+  # (a fixed, full-screen, animated div) can still be mid fade-out when the
+  # click fires, and force skips Playwright's "receives events" wait that
+  # would otherwise hold off until the overlay stops intercepting. A forced
+  # click during that window lands on the overlay instead of the menu link
+  # (confirmed via elementFromPoint at the click coordinates), so the drawer
+  # stays open instead of navigating. "I click precisely" (non-forced) is
+  # unaffected - it waits out the overlay like any other actionability
+  # check - confirmed live, reliable across repeat runs.
   Scenario Outline: Verify redirection from menu elements in the header
     Given I am on the "home" page
     When I click on the "Menu" icon
-    And I click on the "<menu element>" element
+    And I click precisely on the "<menu element>" element
     Then I should be redirected to the "<redirection>" page
 
     Examples:

@@ -25,6 +25,8 @@
   "Users": "[data-testid='nav-users']",
   "All Users": "[data-testid='nav-users-all-users']",
   "User Groups": "[data-testid='nav-users-user-groups']",
+  "Test Harnesses": "[data-testid='nav-test-harnesses']",
+  "Get Product": "[data-testid='nav-test-harnesses-get-product']",
   "Configuration": "[data-testid='nav-configuration']",
   "Settings": "[data-testid='nav-configuration-settings']",
   "Navigation": "[data-testid='nav-configuration-navigation']",

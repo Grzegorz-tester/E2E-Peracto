@@ -81,7 +81,7 @@
   },
   "towbar-fixed-flange-pdp": {
     "route": "/products/ta1006",
-    "regex": "^/products/ta1006$"
+    "regex": "^/products/ta[0-9a-zA-Z-]+$"
   },
   "contact": {
     "route": "/contact",

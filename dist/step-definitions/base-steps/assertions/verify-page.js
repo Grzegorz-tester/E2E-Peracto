@@ -11,7 +11,35 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     },
     globalConfig
   } = this;
-  await (0, _waitForBehaviour.waitFor)(() => (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig));
+  await (0, _waitForBehaviour.waitFor)(() => (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig), {
+    expected: `URL path to match the "${pageId}" page (route "${globalConfig.pagesConfig[pageId]?.route}", regex /${globalConfig.pagesConfig[pageId]?.regex}/)`,
+    describeActual: async () => `current URL path is "${new URL(page.url()).pathname}"`
+  });
+});
+
+// For a redirect that's genuinely just slow rather than broken - confirmed
+// live on Indespension's search results page (the magnifier-glass search,
+// not the Algolia autocomplete dropdown), which can take noticeably longer
+// than the plain step's 15s waitFor default to actually navigate. Needs its
+// own generous step timeout too, same convention as elsewhere in this repo -
+// otherwise Cucumber's own SCRIPT_TIMEOUT (20s) kills the step first with an
+// opaque "function timed out" before this waitFor's own 30s ever gets to
+// finish or throw its clearer error. Reusable by any project with a
+// similarly slow post-search/action redirect, not just this one.
+(0, _cucumber.Then)(/^I should eventually be redirected to the "([^"]*)" page$/, {
+  timeout: 35000
+}, async function (pageId) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  await (0, _waitForBehaviour.waitFor)(() => (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig), {
+    timeout: 30000,
+    expected: `URL path to eventually match the "${pageId}" page (route "${globalConfig.pagesConfig[pageId]?.route}", regex /${globalConfig.pagesConfig[pageId]?.regex}/)`,
+    describeActual: async () => `current URL path is "${new URL(page.url()).pathname}"`
+  });
 });
 
 // For state that lives in the URL itself rather than a distinct page (e.g.
@@ -23,7 +51,10 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
       page
     }
   } = this;
-  await (0, _waitForBehaviour.waitFor)(() => page.url().includes(expectedText));
+  await (0, _waitForBehaviour.waitFor)(() => page.url().includes(expectedText), {
+    expected: `current URL to contain "${expectedText}"`,
+    describeActual: async () => `current URL is "${page.url()}"`
+  });
 });
 
 // For a "click the first item in the list" flow reused across a project
@@ -44,5 +75,8 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     const urlMatches = page.url().includes(expectedText);
     const elementVisible = (await page.$(elementIdentifier)) != null;
     return urlMatches || elementVisible;
+  }, {
+    expected: `current URL to contain "${expectedText}" or "${elementKey}" (${elementIdentifier}) to be displayed`,
+    describeActual: async () => `current URL is "${page.url()}"; "${elementKey}": ${await (0, _webElementHelper.describeElement)(page, elementIdentifier)}`
   });
 });

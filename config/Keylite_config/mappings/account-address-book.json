@@ -1,0 +1,15 @@
+{
+  "address entry": "[data-testid='address-book-address__name']",
+  "address line 1": "[data-testid='address-book-address__line-1']",
+  "address city": "[data-testid='address-book-address__city']",
+  "address postcode": "[data-testid='address-book-address__postcode']",
+  "Delete Address": "[data-testid='address-book-address-delete-address__button']",
+  "Add new address": "text=Add new address",
+  "Address First Name": "[data-testid='checkout-address-form__first-name']",
+  "Address Last Name": "[data-testid='checkout-address-form__last-name']",
+  "Address Line 1": "[data-testid='checkout-address-form__address-line-1']",
+  "Address City": "[data-testid='checkout-address-form__city']",
+  "Address County": "[data-testid='checkout-address-form__county']",
+  "Address Postcode": "[data-testid='checkout-address-form__postcode']",
+  "Save Address": "text=Save Address"
+}

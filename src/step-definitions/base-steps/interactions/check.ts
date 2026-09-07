@@ -2,7 +2,8 @@ import {When} from "@cucumber/cucumber";
 import {ElementKey} from "../../../env/global";
 import {getElementLocator} from "../../support-functions/web-element-helper";
 import {waitFor} from "../../support-functions/wait-for-behaviour";
-import {checkElement} from "../../support-functions/html-behaviour";
+import {checkElement, uncheckElement} from "../../support-functions/html-behaviour";
+import {describeElement} from "../../support-functions/web-element-helper";
 
 When(/^I check the "([^"]*)"$/, async function (elementKey: ElementKey) {
     const {
@@ -18,6 +19,56 @@ When(/^I check the "([^"]*)"$/, async function (elementKey: ElementKey) {
     // explicit timeout with headroom under SCRIPT_TIMEOUT instead.
     await page.waitForSelector(elementIdentifier, { state: "visible", timeout: 15000 });
     await checkElement(page, elementIdentifier);
+});
+
+// The uncheck counterpart to "I check the ..." above - for a real toggle
+// (e.g. Russells' header VAT-inclusive/exclusive switch) that a scenario
+// needs to set to a KNOWN state in either direction, not just turn on.
+// page.uncheck() is idempotent (a no-op if already unchecked), the same
+// property "I check" already relies on. Waits for "attached" rather than
+// "visible" - like "I ensure the ... checkbox is checked" below, a real
+// toggle's underlying <input type="checkbox"> is often visually hidden
+// behind custom switch styling (confirmed on Russells' VAT toggle, whose
+// visible clickable element is a separate wrapping "switch" component) -
+// uncheckElement's own force:true already tolerates that for the actual
+// action, so requiring "visible" here first would just fail before ever
+// reaching it.
+When(/^I uncheck the "([^"]*)"$/, async function (elementKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { state: "attached", timeout: 15000 });
+    await uncheckElement(page, elementIdentifier);
+});
+
+// For a checkbox whose native <input> is deliberately visually hidden
+// behind custom styling (a wrapping <label> plus a decorative <span> that's
+// what actually renders) - confirmed live on MIPA Admin's "Index Product"
+// checkbox, unlike Carbon Admin's plain visible one for the same field
+// despite both running the same underlying Peracto Admin product (see
+// CLAUDE.md). The plain "I check" step above deliberately requires
+// "visible" before acting, which a hidden-but-real input never satisfies -
+// this reads/sets checked state directly via the DOM instead, and skips
+// the click entirely if the box already reports checked (confirmed live:
+// MIPA's defaults to checked already), rather than blindly clicking and
+// risking toggling it OFF.
+When(/^I ensure the "([^"]*)" checkbox is checked$/, async function (elementKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { state: "attached", timeout: 15000 });
+    const isChecked = await page.isChecked(elementIdentifier);
+    if (!isChecked) {
+        await checkElement(page, elementIdentifier);
+    }
 });
 
 // For a checkbox that doesn't always register as checked on the first
@@ -43,5 +94,56 @@ When(/^I check the "([^"]*)", retrying until it is checked$/, async function (el
             // yet", which the isChecked() check below already reports.
         }
         return page.isChecked(elementIdentifier);
+    }, {
+        expected: `"${elementKey}" (${elementIdentifier}) to become checked`,
+        describeActual: () => describeElement(page, elementIdentifier),
     });
 });
+
+// Same reappearing-overlay problem already solved for clicks (see click.ts's
+// "... dismissing the X if it interferes" steps) but for a checkbox -
+// confirmed live on Insinkerator EU's guest checkout billing page: the
+// OneTrust cookie banner reappeared directly over the "same as delivery"
+// checkbox, and checkElement's own force:true click landed on the banner
+// instead (six consecutive retries all reported "Clicking the checkbox did
+// not change its state" with identical unchanged DOM). force:true only
+// skips Playwright's own actionability checks, not the browser's native
+// hit-testing, so a covering overlay still wins - deliberately NOT using
+// checkElement/force here; a plain (non-forced) page.check() correctly
+// waits out the overlay via Playwright's real actionability check instead,
+// with the dismiss-and-retry loop as a second line of defence for when the
+// banner is already gone by the time this fires but reappears again before
+// the next retry.
+When(
+  /^I check the "([^"]*)", dismissing the "([^"]*)" if it interferes, retrying until it is checked$/,
+  { timeout: 45000 },
+  async function (elementKey: ElementKey, dismissButtonKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const dismissButtonIdentifier = getElementLocator(page, dismissButtonKey, globalConfig);
+
+    await waitFor(async () => {
+        const dismissButtonVisible = await page.locator(dismissButtonIdentifier).isVisible().catch(() => false);
+        if (dismissButtonVisible) {
+            await page.locator(dismissButtonIdentifier).click({ force: true }).catch(() => {});
+            await page.locator(dismissButtonIdentifier).waitFor({ state: "hidden", timeout: 4000 }).catch(() => {});
+        }
+        try {
+            await page.check(elementIdentifier, { timeout: 8000 });
+        } catch {
+            // Swallowed - a failed check attempt just means "not checked
+            // yet", which the isChecked() check below already reports.
+        }
+        return page.isChecked(elementIdentifier);
+    }, {
+        timeout: 30000,
+        wait: 500,
+        expected: `"${elementKey}" (${elementIdentifier}) to become checked`,
+        describeActual: () => describeElement(page, elementIdentifier),
+    });
+  },
+);

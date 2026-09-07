@@ -1,0 +1,9 @@
+{
+  "order reference": "[data-testid='orders-details__reference']",
+  "order confirmation email": "[data-testid='orders-details__email']",
+  "order delivery address": "[data-testid='orders-details__order-delivery-address']",
+  "order delivery method": "[data-testid='orders-details__order-delivery-method']",
+  "order subtotal": "[data-testid='orders-details__order-summary__subtotal']",
+  "order shipping total": "[data-testid='orders-details__order-summary__shipping-total']",
+  "order total": "[data-testid='orders-details__order-summary__total']"
+}

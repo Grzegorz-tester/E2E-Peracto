@@ -4,6 +4,7 @@ var _cucumber = require("@cucumber/cucumber");
 var _test = require("@playwright/test");
 var _webElementHelper = require("../../support-functions/web-element-helper");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
+var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // Currency-symbol-agnostic and decimal/thousands-separator-agnostic - see
 // the identical helper in basket.ts for why (different storefronts in this
 // framework format prices differently even though the underlying testids
@@ -42,7 +43,7 @@ const parsePrice = text => {
     throw new Error(`Could not read a result count out of facet label "${labelText}"`);
   }
   const expectedCount = match[1];
-  await checkbox.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the first "facet checkboxes" (${checkboxSelector}) checkbox`, () => (0, _webElementHelper.describeLocator)(checkbox, `the first "facet checkboxes" (${checkboxSelector}) checkbox`), () => checkbox.click());
   await (0, _test.expect)(page.locator(hitCountSelector)).toHaveText(`(${expectedCount})`, {
     timeout: 15000
   });
@@ -63,16 +64,34 @@ const parsePrice = text => {
   } = this;
   const closeButtonSelector = (0, _webElementHelper.getElementLocator)(page, "filter drawer close button", globalConfig);
   const facetCheckboxSelector = (0, _webElementHelper.getElementLocator)(page, "facet checkboxes", globalConfig);
-  await page.click(closeButtonSelector);
+
+  // See the identical fallback in "I sort by price low to high ..." below -
+  // not every project's drawer has a dedicated close button (CONFIRMED on
+  // Russells: Escape-only, no close button in the DOM).
+  if (closeButtonSelector) {
+    await (0, _htmlBehaviour.clickElement)(page, closeButtonSelector, {
+      timeout: 5000
+    }).catch(() => {});
+  }
+  await page.keyboard.press("Escape");
   await (0, _test.expect)(page.locator(facetCheckboxSelector).first()).toBeHidden({
     timeout: 15000
   });
 });
 
-// Asserts the real ascending price order across the current page of results,
-// and that re-sorting doesn't drop or add results (only reorders them) -
-// waiting for the item count to return to its pre-sort value is also the
-// correct settle signal before any following Load More interaction.
+// Asserts the real ascending price order across the current page of
+// results. Changing the sort refinement is a fresh Algolia InstantSearch
+// query, which resets infinite-pagination back to its first page - CONFIRMED
+// live on Insinkerator EU (2026-09-05): the item count legitimately drops
+// after sorting (e.g. 22, from an earlier Load More, back down to the base
+// page size of 11), not a bug. All three projects using this step
+// (Insinkerator EU, Insinkerator UK, Russells) share the identical
+// "algolia-infinite-pagination__current-items" testid, i.e. the same
+// underlying widget, so this reset is expected everywhere this step runs,
+// not an Insinkerator-EU-specific quirk. Waiting for the count to settle
+// (stop changing) rather than asserting it matches the pre-sort value is
+// still the correct signal before any following Load More interaction -
+// it just no longer assumes a specific relationship to the old count.
 (0, _cucumber.When)(/^I sort by price low to high and validate ascending order$/, async function () {
   const {
     screen: {
@@ -84,22 +103,63 @@ const parsePrice = text => {
   const currentItemsSelector = (0, _webElementHelper.getElementLocator)(page, "current items count", globalConfig);
   const priceSelector = (0, _webElementHelper.getElementLocator)(page, "product card price", globalConfig);
   const facetCheckboxSelector = (0, _webElementHelper.getElementLocator)(page, "facet checkboxes", globalConfig);
-  const expectedCount = await page.textContent(currentItemsSelector);
   const priceLowToHigh = page.locator(sortOptionsSelector).nth(1);
-  await priceLowToHigh.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the "price low to high" sort option (${sortOptionsSelector}, index 1)`, () => (0, _webElementHelper.describeLocator)(priceLowToHigh, `the "price low to high" sort option (${sortOptionsSelector}, index 1)`), () => priceLowToHigh.click());
   await (0, _test.expect)(priceLowToHigh).toHaveAttribute("aria-checked", "true", {
     timeout: 15000
   });
-  await (0, _test.expect)(page.locator(currentItemsSelector)).toHaveText(expectedCount ?? "", {
-    timeout: 15000
+  let previousCount = await page.textContent(currentItemsSelector);
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    await page.waitForTimeout(500);
+    const currentCount = await page.textContent(currentItemsSelector);
+    const stable = currentCount === previousCount;
+    previousCount = currentCount;
+    return stable;
+  }, {
+    timeout: 15000,
+    wait: 200
   });
-  const priceTexts = await page.locator(priceSelector).allTextContents();
+
+  // Give prices a moment to catch up in case reading immediately after
+  // the item count settles still catches a card mid-render - but this is
+  // NOT just a render race: CONFIRMED SITE BUG, live on Insinkerator EU
+  // (2026-09-05), reproduced 3/3 times - every single price on this
+  // filtered ("Air Switch") + sorted (price low-to-high) + Load More'd
+  // page renders as the literal text "Price NaN €", not just transiently
+  // but for the full 10s wait below. Left as a real (informative) failure
+  // rather than silently tolerated - asserting price order is meaningless
+  // while every price is NaN, and that's the actual defect this should
+  // keep catching until fixed.
+  let priceTexts = [];
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    priceTexts = await page.locator(priceSelector).allTextContents();
+    return priceTexts.length > 0 && priceTexts.every(text => !text.includes("NaN"));
+  }, {
+    timeout: 10000,
+    wait: 300,
+    expected: `every "product card price" (${priceSelector}) to render a real number, not "NaN"`,
+    describeActual: async () => `prices were: ${JSON.stringify(await page.locator(priceSelector).allTextContents())}`
+  });
   const prices = priceTexts.map(parsePrice);
   for (let i = 1; i < prices.length; i++) {
     (0, _test.expect)(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
   }
+
+  // Not every project's drawer has a dedicated close button - CONFIRMED
+  // live on Russells (staging, 2026-08-15): this drawer only closes via
+  // Escape, no close button exists in the DOM at all. Trying the button
+  // first (where "filter drawer close button" resolves to one) keeps the
+  // original behaviour for projects that do have one; Escape as a
+  // fallback (attempted either way, a harmless no-op if the button click
+  // already closed it) covers those that don't, without needing a
+  // per-project branch here.
   const closeButtonSelector = (0, _webElementHelper.getElementLocator)(page, "filter drawer close button", globalConfig);
-  await page.click(closeButtonSelector);
+  if (closeButtonSelector) {
+    await (0, _htmlBehaviour.clickElement)(page, closeButtonSelector, {
+      timeout: 5000
+    }).catch(() => {});
+  }
+  await page.keyboard.press("Escape");
   await (0, _test.expect)(page.locator(facetCheckboxSelector).first()).toBeHidden({
     timeout: 15000
   });
@@ -138,10 +198,12 @@ const parsePrice = text => {
   // for the real signal without hard-failing the rest of this scenario's
   // otherwise-working coverage (navigation, filtering, sorting,
   // click-through) on a single flaky/broken interaction.
-  await page.click(loadMoreSelector);
+  await (0, _htmlBehaviour.clickElement)(page, loadMoreSelector);
   const increased = await (0, _waitForBehaviour.waitFor)(async () => Number(await page.textContent(currentItemsSelector)) > currentBefore, {
     timeout: 15000,
-    wait: 1000
+    wait: 1000,
+    expected: `"current items count" (${currentItemsSelector}) to increase past ${currentBefore} after clicking "load more button"`,
+    describeActual: async () => `current items count text is "${(await page.textContent(currentItemsSelector).catch(() => null))?.trim() ?? "(could not read)"}"`
   }).catch(() => false);
   if (increased) {
     const currentAfter = Number(await page.textContent(currentItemsSelector));
@@ -172,6 +234,6 @@ const parsePrice = text => {
   await (0, _test.expect)(firstLink).toBeVisible({
     timeout: 15000
   });
-  await firstLink.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the first "product card" (${productCardSelector})`, () => (0, _webElementHelper.describeLocator)(firstLink, `the first "product card" (${productCardSelector})`), () => firstLink.click());
   this.globalVariables[variableName] = expectedName;
 });

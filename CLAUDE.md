@@ -23,7 +23,7 @@ COMMON_CONFIG_FILE=env/KOOL.env ./run_tests.sh regression
 ```
 
 Cucumber profiles (`dev`, `smoke`, `regression`, plus a few project-specific ones like
-`MIPA_regression`) are defined in `src/index.ts`, transpiled into `dist/index.js`, and picked
+`carbon_regression`) are defined in `src/index.ts`, transpiled into `dist/index.js`, and picked
 up via the root `cucumber.js` (`module.exports = require('./dist')`). **Editing a profile or any
 step definition requires a recompile** - `yarn cucumber` (= `cucumber-compile`) always runs
 `transpile` first; running `cucumber-js` directly against stale `dist/` will not pick up source
@@ -215,6 +215,15 @@ always fit exactly:
 
 ## Known quirks worth knowing before debugging a failure
 
+Before writing a failure off as "known flakiness" or genuine real-world behaviour (an inventory
+limit, a real exhaustion, a slow third party), verify it live - instrument the actual step
+definition and inspect the real DOM/state, rather than trusting a plausible-sounding narrative.
+Confirmed live (2026-08-27): an earlier investigation into Indespension's towbar fitting-slot
+booking concluded slots were "genuinely exhausted" across every week and postcode tried, backed
+by its own "confirmed live" `isEnabled()` dumps - the real cause was the async-loading race
+described below, which a few seconds of extra polling fixed outright, and the very first postcode
+tried turned out to have 85%+ real availability once fixed.
+
 - Browser permissions (geolocation, etc.) are explicitly denied in `ScenarioWorld.init` rather
   than left unset, because an undecided permission auto-denies invisibly in headless mode but
   blocks indefinitely in headed mode waiting for a native prompt.
@@ -225,6 +234,19 @@ always fit exactly:
   still must be attached and visible); it clicks at the target's bounding-box center, which
   breaks on oversized wrapper elements (a `<label>` wrapping a multi-line paragraph) - use the
   "precisely" (non-forced) click variant for those instead.
+- `force: true` is also unsafe against a target with its own animating overlay/backdrop sitting on
+  top of it mid-transition (e.g. a mobile nav drawer's full-screen fade-in/fade-out backdrop) -
+  force skips the "receives events" wait that would otherwise hold off until the overlay stops
+  intercepting, so the click can land on the overlay instead of the real target underneath,
+  intermittently, depending on animation timing. Confirmed live via `elementFromPoint` at the
+  click coordinates on Indespension's header nav drawer - the "precisely" (non-forced) variant
+  waits out the overlay correctly.
+- An element can render `visible` well before its real enabled/disabled state has settled -
+  confirmed live on Indespension's towbar fitting-slot picker and the generic "click first
+  enabled" step: a candidate/button appears visible immediately but stays disabled for ~1-1.5s
+  while its real availability data loads asynchronously. Checking `isEnabled()` only once, right
+  after a visibility wait, reliably catches every candidate mid-load and reports none available
+  even when most are genuinely open - poll for a few seconds instead of checking once.
 - Cookie/preference-centre overlays can reappear after being dismissed once. The
   `..., dismissing the "X" if it interferes` click steps re-check and re-dismiss before every
   retry attempt, not just the first.

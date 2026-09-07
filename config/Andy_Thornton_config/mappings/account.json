@@ -1,7 +1,7 @@
 {
-  "Dashboard": "//div[@href='/account']",
-  "Profile": "//div[@href='/account/profile']",
-  "Address book": "//div[@href='/account/address-book']",
-  "Orders": "//div[@href='/account/orders']",
-  "Quotes": "//div[@href='/account/quotes']"
+  "Dashboard tab": "[data-value='Dashboard']",
+  "Profile tab": "[data-value='Profile']",
+  "Address book tab": "[data-value='Address Book']",
+  "Orders tab": "[data-value='Orders']",
+  "Moodboards tab": "[data-value='Moodboards']"
 }

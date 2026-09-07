@@ -1,62 +1,29 @@
-
+@Andy_Thornton_regression
 Feature: Basket page
 
   Background:
-    Given I am navigating the page as a "logged in" user
-    When I am on the "basket" page
-
+    Given I am on the "pdp" page
+    When I click on the "Add to basket" button
+    And I am on the "basket" page
+    Then the "basket item" should be displayed
 
   Scenario: Verify basket elements
-    Then I should be presented with a "order total price" "0.00"
+    Then the "basket total" should be displayed
+    And the "basket subtotal" should be displayed
 
+  @smoke
+  Scenario: Verify changing the amount of a product in the basket
+    When I increment the basket quantity and the total should update correctly
+    And I decrement the basket quantity and the total should update correctly
+    Then the "quantity input" should equal the value "1"
+    And the "quantity minus" should not be enabled
 
-  Scenario Outline: Product search functionality
-    And I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    Examples:
-      | product       |
-      | Greg's Mirror |
+  Scenario: Verify removing products from the basket
+    When I click on the "remove basket line" button
+    Then the "basket item" should not be displayed
 
-
-  Scenario Outline: Verify changing the amount of a product in the basket
-    And I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    Examples:
-      | product       |
-      | Greg's Mirror |
-
-
-  Scenario Outline: Verify removing products from the basket
-    And I fill in the "Search products" input field with "<product1>"
-    And I click on the "first search result" element
-    And I fill in the "Search products" input field with "<product2>"
-    And I click on the "second search result" element
-    Examples:
-      | product1      | product2 |
-      | Greg's Mirror | Solas    |
-
-
-  Scenario Outline: Verify opening and closing the "Specifications" draw
-    Then the "specification draw" should not be displayed
-    When I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    And I click on the "Specification" button
-    Then the "specification draw" should be displayed
-    When I click on the "close" button
-    Then the "specification draw" should not be displayed
-    Examples:
-      | product       |
-      | Greg's Mirror |
-
-
-  Scenario Outline: Verify opening and closing the "Products you may also need" draw
-    Then the "you may also need draw" should not be displayed
-    When I fill in the "Search products" input field with "<product>"
-    And I click on the "first search result" element
-    And I click on the "Products you may also need" button
-    Then the "you may also need draw" should be displayed
-    When I click on the "close" button
-    Then the "you may also need draw" should not be displayed
-    Examples:
-      | product       |
-      | Greg's Mirror |
+  Scenario: Verify an invalid promotional code is rejected
+    When I click on the "promotional code" button
+    And I fill in the "promo code input" input field with "INVALIDCODE123"
+    And I click on the "promotional code" button
+    Then the "promo code form" should contain the text "This is not a valid promo code."

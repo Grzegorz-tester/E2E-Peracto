@@ -6,7 +6,8 @@
   "basket total": "[data-testid=\"basket-summary__total\"]",
   "promo code toggle": "[data-testid=\"add-promotion-form__button\"]",
   "promo code input": "[data-testid=\"add-promotion-form__input\"]",
-  "promo code error": "[data-testid=\"add-promotion-form\"] :text-is(\"This is not a valid promo code.\")",
+  "promo code apply": "[data-testid=\"add-promotion-form\"] >> role=button[name=\"Apply\" s]",
+  "promo code success message": "[data-testid=\"add-promotion-form\"] :text-is(\"Promotion PROMO10 is now applied\")",
 
   "basket main product name": ":nth-match([data-testid=\"basket-items__available-line-0__name\"], 1)",
   "basket main product sku": ":nth-match([data-testid=\"basket-items__available-line-0__sku\"], 1)",

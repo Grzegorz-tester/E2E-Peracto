@@ -1,0 +1,20 @@
+{
+  "address first name": "[data-testid='checkout-address-form__first-name']",
+  "address last name": "[data-testid='checkout-address-form__last-name']",
+  "Manually enter your address": "text=Manually enter your address",
+  "address line 1": "[data-testid='checkout-address-form__address-line-1']",
+  "address line 2": "[data-testid='checkout-address-form__address-line-2']",
+  "address city": "[data-testid='checkout-address-form__city']",
+  "address county": "[data-testid='checkout-address-form__county']",
+  "address postcode": "[data-testid='checkout-address-form__postcode']",
+  "address country": "[data-testid='checkout-address-form__country']",
+  "Use this address": "[data-testid='checkout-address-form__submit-button']",
+
+  "current delivery address": "[data-testid='checkout-current-address__address']",
+  "delivery change address": "[data-testid='checkout-current-address__edit-address-button']",
+
+  "delivery phone": "[data-testid='delivery-content__form-telephone']",
+  "delivery method option": "[data-testid='delivery-content__radio-select'] [data-testid^='radio-select_option']",
+  "delivery notes": "[data-testid='delivery-content__form-delivery-notes']",
+  "delivery options continue": "[data-testid='delivery-content__form-continue-button']"
+}

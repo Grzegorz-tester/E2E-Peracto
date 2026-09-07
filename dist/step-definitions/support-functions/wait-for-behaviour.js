@@ -29,6 +29,10 @@ const waitFor = async (predicate, options) => {
     }
     await sleep(wait);
   }
+  if (options?.expected && options?.describeActual) {
+    const actual = await options.describeActual().catch(error => `could not determine (${error instanceof Error ? error.message : String(error)})`);
+    throw new Error(`Expected: ${options.expected}\nFound: ${actual}`);
+  }
   if (lastError) {
     throw new Error(`Wait time of ${timeout}ms exceeded (last error: ${lastError instanceof Error ? lastError.message : String(lastError)})`);
   }

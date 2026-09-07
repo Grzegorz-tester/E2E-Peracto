@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Quick Order - CSV Upload
 
   # New coverage (previously none existed). The Quick Order CSV uploader

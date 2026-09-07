@@ -3,6 +3,7 @@
 var _cucumber = require("@cucumber/cucumber");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _webElementHelper = require("../../support-functions/web-element-helper");
+var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // Currency-symbol-agnostic and decimal/thousands-separator-agnostic: this
 // framework's projects render prices as "58,00 €" (comma decimal, symbol
 // last) on some storefronts and "£58.00" (period decimal, symbol first) on
@@ -43,9 +44,15 @@ const parsePrice = text => {
   const totalBefore = parsePrice(await page.textContent(basketTotal));
   const unitPrice = totalBefore / qtyBefore;
   const qtyAfter = direction === "increment" ? qtyBefore + 1 : qtyBefore - 1;
-  await page.click(quantityButton);
-  await (0, _waitForBehaviour.waitFor)(async () => (await page.inputValue(quantityInput)) === String(qtyAfter));
-  await (0, _waitForBehaviour.waitFor)(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
+  await (0, _htmlBehaviour.clickElement)(page, quantityButton);
+  await (0, _waitForBehaviour.waitFor)(async () => (await page.inputValue(quantityInput)) === String(qtyAfter), {
+    expected: `basket quantity to become ${qtyAfter} after clicking "${direction === "increment" ? "quantity plus" : "quantity minus"}"`,
+    describeActual: async () => `quantity input reads "${await page.inputValue(quantityInput).catch(() => "(could not read)")}"`
+  });
+  await (0, _waitForBehaviour.waitFor)(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02, {
+    expected: `basket total to update to ~${(unitPrice * qtyAfter).toFixed(2)} (unit price ${unitPrice.toFixed(2)} × qty ${qtyAfter})`,
+    describeActual: async () => `basket total text is "${(await page.textContent(basketTotal).catch(() => null))?.trim() ?? "(could not read)"}"`
+  });
 });
 
 // For a logged-in account's basket, which is server-side and persists
@@ -65,7 +72,8 @@ const parsePrice = text => {
   } = this;
   const removeLinkSelector = (0, _webElementHelper.getElementLocator)(page, "remove basket line", globalConfig);
   while ((await page.locator(removeLinkSelector).count()) > 0) {
-    await page.locator(removeLinkSelector).first().click();
+    const removeLink = page.locator(removeLinkSelector).first();
+    await (0, _htmlBehaviour.withActionDiagnostics)(`to click "remove basket line" (${removeLinkSelector})`, () => (0, _webElementHelper.describeLocator)(removeLink, `"remove basket line" (${removeLinkSelector})`), () => removeLink.click());
     await page.waitForLoadState("load");
   }
 });

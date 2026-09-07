@@ -1,0 +1,9 @@
+{
+  "Register First Name": "[data-testid='register-form__first-name-input']",
+  "Register Last Name": "[data-testid='register-form__last-name-input']",
+  "Register email": "[data-testid='register-form__email-input']",
+  "Register phone": "[data-testid='register-form__telephone-input']",
+  "Register password": "[data-testid='register-form__password-input']",
+  "Register confirm password": "[data-testid='register-form__confirm-password-input']",
+  "Register submit": "[data-testid='register-form__submit-button']"
+}

@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Register page
 
   # New coverage. Confirmed live: registration is a "Request an Account"

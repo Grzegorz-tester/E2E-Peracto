@@ -6,7 +6,12 @@
   "configurator total value": "[data-testid='product-price__now-price']",
 
   "Build & Buy": "text=Build & Buy",
+  "Use Product Size": "text=Use Product Size",
   "product-configurator": "[data-testid='product-configurator']",
+
+  "size serial number": "[data-testid='product-configurator__size-serial-number']",
+  "Request a FREE swatch sample": "text=Request a FREE swatch sample",
+  "swatch request form": "[data-testid='product-enquiry-form__swatch']",
 
   "configurator step 1": "[data-testid='product-configurator__step-selector-1']",
   "configurator step 2": "[data-testid='product-configurator__step-selector-2']",

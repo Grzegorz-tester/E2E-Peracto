@@ -7,6 +7,14 @@
     "route": "/login",
     "regex": "^/login$"
   },
+  "register": {
+    "route": "/register",
+    "regex": "^/register$"
+  },
+  "reset-password": {
+    "route": "/reset-password",
+    "regex": "^/reset-password$"
+  },
   "account": {
     "route": "/account",
     "regex": "^/account$"
@@ -23,32 +31,56 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
+  "account-moodboards": {
+    "route": "/account/moodboards",
+    "regex": "^/account/moodboards$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "dining-chairs": {
+    "route": "/category/contract-furniture/dining-chairs",
+    "regex": "^/category/contract-furniture/dining-chairs$"
+  },
+  "pdp": {
+    "route": "/products/vienna-stackable-side-chair-atfuof1104",
+    "regex": "^/products/vienna-stackable-side-chair-atfuof1104$"
+  },
   "basket": {
     "route": "/basket",
     "regex": "^/basket$"
   },
-  "basket-success": {
-    "route": "/basket/success",
-    "regex": "^/basket/success$"
-  },
-  "quotes": {
-    "route": "/account/quotes",
-    "regex": "^/account/quotes$"
-  },
   "checkout": {
-    "route": "/checkout",
-    "regex": "^/checkout$"
+    "route": "/checkout/sign-in",
+    "regex": "^/checkout/sign-in$"
   },
-  "thank-you": {
+  "checkout-delivery": {
+    "route": "/checkout/delivery",
+    "regex": "^/checkout/delivery$"
+  },
+  "checkout-billing": {
+    "route": "/checkout/billing",
+    "regex": "^/checkout/billing$"
+  },
+  "checkout-review": {
+    "route": "/checkout/review-and-payment",
+    "regex": "^/checkout/review-and-payment$"
+  },
+  "checkout-thank-you": {
     "route": "/checkout/thank-you",
     "regex": "^/checkout/thank-you$"
   },
-  "reset-password": {
-    "route": "/reset-password",
-    "regex": "^/reset-password$"
+  "opayo-card-selection": {
+    "route": "/gateway/service/cardselection",
+    "regex": "^/gateway/service/cardselection$"
   },
-  "pdp": {
-    "route": "/products/harrow_bar_stool_atfuvf1369",
-    "regex": "^/products/harrow_bar_stool_atfuvf1369$"
+  "opayo-card-details": {
+    "route": "/gateway/service/carddetails",
+    "regex": "^/gateway/service/carddetails$"
+  },
+  "opayo-card-confirmation": {
+    "route": "/gateway/service/cardconfirmation",
+    "regex": "^/gateway/service/cardconfirmation$"
   }
 }

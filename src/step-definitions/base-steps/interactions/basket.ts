@@ -1,7 +1,8 @@
 import { When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
-import { getElementLocator } from "../../support-functions/web-element-helper";
+import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
+import { clickElement, withActionDiagnostics } from "../../support-functions/html-behaviour";
 
 // Currency-symbol-agnostic and decimal/thousands-separator-agnostic: this
 // framework's projects render prices as "58,00 €" (comma decimal, symbol
@@ -43,10 +44,16 @@ When(/^I (increment|decrement) the basket quantity and the total should update c
     const unitPrice = totalBefore / qtyBefore;
     const qtyAfter = direction === "increment" ? qtyBefore + 1 : qtyBefore - 1;
 
-    await page.click(quantityButton);
+    await clickElement(page, quantityButton);
 
-    await waitFor(async () => (await page.inputValue(quantityInput)) === String(qtyAfter));
-    await waitFor(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02);
+    await waitFor(async () => (await page.inputValue(quantityInput)) === String(qtyAfter), {
+        expected: `basket quantity to become ${qtyAfter} after clicking "${direction === "increment" ? "quantity plus" : "quantity minus"}"`,
+        describeActual: async () => `quantity input reads "${await page.inputValue(quantityInput).catch(() => "(could not read)")}"`,
+    });
+    await waitFor(async () => Math.abs(parsePrice(await page.textContent(basketTotal)) - unitPrice * qtyAfter) < 0.02, {
+        expected: `basket total to update to ~${(unitPrice * qtyAfter).toFixed(2)} (unit price ${unitPrice.toFixed(2)} × qty ${qtyAfter})`,
+        describeActual: async () => `basket total text is "${(await page.textContent(basketTotal).catch(() => null))?.trim() ?? "(could not read)"}"`,
+    });
 });
 
 // For a logged-in account's basket, which is server-side and persists
@@ -62,7 +69,12 @@ When(/^I clear the basket$/, async function (this: ScenarioWorld) {
     const removeLinkSelector = getElementLocator(page, "remove basket line", globalConfig);
 
     while (await page.locator(removeLinkSelector).count() > 0) {
-        await page.locator(removeLinkSelector).first().click();
+        const removeLink = page.locator(removeLinkSelector).first();
+        await withActionDiagnostics(
+            `to click "remove basket line" (${removeLinkSelector})`,
+            () => describeLocator(removeLink, `"remove basket line" (${removeLinkSelector})`),
+            () => removeLink.click()
+        );
         await page.waitForLoadState("load");
     }
 });

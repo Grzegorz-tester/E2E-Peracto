@@ -1,8 +1,10 @@
 "use strict";
 
 var _cucumber = require("@cucumber/cucumber");
+var _test = require("@playwright/test");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _webElementHelper = require("../../support-functions/web-element-helper");
+var _htmlBehaviour = require("../../support-functions/html-behaviour");
 var _paymentTestCards = require("../../support-functions/payment-test-cards");
 // Generates a disposable, throwaway guest email (not a real credential) and
 // stashes it in globalVariables so a later step in the same scenario can
@@ -22,7 +24,7 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     state: "visible",
     timeout: 15000
   });
-  await page.fill(elementIdentifier, guestEmail);
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, guestEmail);
   this.globalVariables["guest email"] = guestEmail;
 });
 
@@ -46,7 +48,7 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     state: "visible",
     timeout: 15000
   });
-  await page.fill(elementIdentifier, guestEmail);
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, guestEmail);
 });
 (0, _cucumber.Then)(/^the "([^"]*)" should contain the stored guest email$/, async function (elementKey) {
   const {
@@ -63,6 +65,9 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(elementIdentifier);
     return elementText?.includes(guestEmail);
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to contain the stored guest email "${guestEmail}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
   });
 });
 
@@ -76,7 +81,18 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
 // project's own search input; "address autocomplete listbox" / "address
 // autocomplete options" / "Use this address" are resolved the same way,
 // via that project's own mapping file.
-(0, _cucumber.When)(/^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/, async function (elementKey, searchTerm) {
+//
+// The two waitFor calls below total up to 45s (25s + 20s) worst case, which
+// exceeds some projects' SCRIPT_TIMEOUT (as low as 20000ms) - confirmed live
+// on Insinkerator EU: Cucumber's own generic step timeout fired
+// ("function timed out ... 20000 milliseconds") before either waitFor's own
+// more descriptive error could. An explicit per-step timeout, generous
+// rather than tightly calculated (see the same fix applied to the "if
+// present" click step), removes the dependency on whatever SCRIPT_TIMEOUT
+// happens to be configured for a given project.
+(0, _cucumber.When)(/^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/, {
+  timeout: 60000
+}, async function (elementKey, searchTerm) {
   const {
     screen: {
       page
@@ -100,7 +116,9 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     }).then(() => true).catch(() => false);
   }, {
     timeout: 25000,
-    wait: 500
+    wait: 500,
+    expected: `"address autocomplete listbox" (${listbox}) to appear after typing "${searchTerm}" into "${elementKey}" (${searchInput})`,
+    describeActual: () => (0, _webElementHelper.describeLocator)(page.locator(listbox), `"address autocomplete listbox" (${listbox})`)
   });
   await (0, _waitForBehaviour.waitFor)(async () => {
     const optionsLocator = page.locator(options);
@@ -110,7 +128,9 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     return page.locator(submitButton).isEnabled();
   }, {
     timeout: 20000,
-    wait: 500
+    wait: 500,
+    expected: `"Use this address" (${submitButton}) to become enabled after picking an "address autocomplete options" (${options}) suggestion`,
+    describeActual: () => (0, _webElementHelper.describeLocator)(page.locator(submitButton), `"Use this address" (${submitButton})`)
   });
 });
 
@@ -138,24 +158,29 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     throw new Error(`Unknown CyberSource test card "${cardName}". Add it to payment-test-cards.ts.`);
   }
   const buttonFrame = page.frameLocator("#__buttonlist");
-  await buttonFrame.getByTestId("ctp-mini-btn").click();
+  const miniButton = buttonFrame.getByTestId("ctp-mini-btn");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the CyberSource "ctp-mini-btn"`, () => (0, _webElementHelper.describeLocator)(miniButton, `CyberSource "ctp-mini-btn"`), () => miniButton.click());
   const cardFrame = page.frameLocator("#__mce");
   const cardNumberInput = cardFrame.locator("#card-number");
   await cardNumberInput.waitFor({
     state: "visible",
     timeout: 20000
   });
-  await cardNumberInput.fill(card.number);
-  await cardFrame.getByTestId("expiry-month").selectOption(card.expiryMonth);
-  await cardFrame.getByTestId("expiry-year").selectOption(card.expiryYear);
-  await cardFrame.locator("#card-security-code").fill(card.securityCode);
-  await cardFrame.getByTestId("btn").click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill CyberSource "#card-number"`, () => (0, _webElementHelper.describeLocator)(cardNumberInput, `CyberSource "#card-number"`), () => cardNumberInput.fill(card.number));
+  const expiryMonth = cardFrame.getByTestId("expiry-month");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to select expiry month "${card.expiryMonth}" on CyberSource "expiry-month"`, () => (0, _webElementHelper.describeLocator)(expiryMonth, `CyberSource "expiry-month"`), () => expiryMonth.selectOption(card.expiryMonth));
+  const expiryYear = cardFrame.getByTestId("expiry-year");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to select expiry year "${card.expiryYear}" on CyberSource "expiry-year"`, () => (0, _webElementHelper.describeLocator)(expiryYear, `CyberSource "expiry-year"`), () => expiryYear.selectOption(card.expiryYear));
+  const securityCodeInput = cardFrame.locator("#card-security-code");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill CyberSource "#card-security-code"`, () => (0, _webElementHelper.describeLocator)(securityCodeInput, `CyberSource "#card-security-code"`), () => securityCodeInput.fill(card.securityCode));
+  const payButton = cardFrame.getByTestId("btn");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click CyberSource "btn"`, () => (0, _webElementHelper.describeLocator)(payButton, `CyberSource "btn"`), () => payButton.click());
   const confirmButton = cardFrame.getByTestId("step-review-continue-btn");
   await confirmButton.waitFor({
     state: "visible",
     timeout: 15000
   });
-  await confirmButton.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click CyberSource "step-review-continue-btn"`, () => (0, _webElementHelper.describeLocator)(confirmButton, `CyberSource "step-review-continue-btn"`), () => confirmButton.click());
 });
 
 // Barclays Verifone hosted card form (cst.checkout.vficloud.net), used by
@@ -221,15 +246,17 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     state: "visible",
     timeout: 20000
   });
-  await cardNumberInput.fill(card.number);
-  await cardFrame.locator("#inputcc-exp").fill(card.expiry);
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Verifone "#inputcc-number"`, () => (0, _webElementHelper.describeLocator)(cardNumberInput, `Verifone "#inputcc-number"`), () => cardNumberInput.fill(card.number));
+  const expiryInput = cardFrame.locator("#inputcc-exp");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Verifone "#inputcc-exp"`, () => (0, _webElementHelper.describeLocator)(expiryInput, `Verifone "#inputcc-exp"`), () => expiryInput.fill(card.expiry));
   const cvvInput = cardFrame.locator("#inputnew-password");
-  await cvvInput.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Verifone "#inputnew-password"`, () => (0, _webElementHelper.describeLocator)(cvvInput, `Verifone "#inputnew-password"`), () => cvvInput.click());
   await new Promise(resolve => setTimeout(resolve, 400));
-  await cvvInput.type(card.securityCode, {
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to type the security code into Verifone "#inputnew-password"`, () => (0, _webElementHelper.describeLocator)(cvvInput, `Verifone "#inputnew-password"`), () => cvvInput.type(card.securityCode, {
     delay: 120
-  });
-  await cardFrame.locator('[data-e2e="card-form-submit"]').click();
+  }));
+  const submitButton = cardFrame.locator('[data-e2e="card-form-submit"]');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Verifone "[data-e2e='card-form-submit']"`, () => (0, _webElementHelper.describeLocator)(submitButton, `Verifone "[data-e2e='card-form-submit']"`), () => submitButton.click());
   await page.waitForURL(/\/(payment-return\/checkout|checkout\/thank-you)/, {
     timeout: 55000
   });
@@ -263,15 +290,17 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     state: "visible",
     timeout: 20000
   });
-  await cardNumberInput.fill(card.number);
-  await cardFrame.locator("#inputcc-exp").fill(card.expiry);
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Verifone "#inputcc-number"`, () => (0, _webElementHelper.describeLocator)(cardNumberInput, `Verifone "#inputcc-number"`), () => cardNumberInput.fill(card.number));
+  const expiryInput = cardFrame.locator("#inputcc-exp");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Verifone "#inputcc-exp"`, () => (0, _webElementHelper.describeLocator)(expiryInput, `Verifone "#inputcc-exp"`), () => expiryInput.fill(card.expiry));
   const cvvInput = cardFrame.locator("#inputnew-password");
-  await cvvInput.click();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Verifone "#inputnew-password"`, () => (0, _webElementHelper.describeLocator)(cvvInput, `Verifone "#inputnew-password"`), () => cvvInput.click());
   await new Promise(resolve => setTimeout(resolve, 400));
-  await cvvInput.type(card.securityCode, {
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to type the security code into Verifone "#inputnew-password"`, () => (0, _webElementHelper.describeLocator)(cvvInput, `Verifone "#inputnew-password"`), () => cvvInput.type(card.securityCode, {
     delay: 120
-  });
-  await cardFrame.locator('[data-e2e="card-form-submit"]').click();
+  }));
+  const submitButton = cardFrame.locator('[data-e2e="card-form-submit"]');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Verifone "[data-e2e='card-form-submit']"`, () => (0, _webElementHelper.describeLocator)(submitButton, `Verifone "[data-e2e='card-form-submit']"`), () => submitButton.click());
   await cardFrame.locator(':text("Select a payment method")').first().waitFor({
     state: "visible",
     timeout: 20000
@@ -305,10 +334,55 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     timeout: 15000
   });
   const cardholderName = (0, _webElementHelper.getElementLocator)(page, "Adyen cardholder name", globalConfig);
-  await page.fill(cardholderName, "Test Test");
-  await page.frameLocator('[data-cse="encryptedCardNumber"] iframe').locator('input[data-fieldtype="encryptedCardNumber"]').fill("4111111111111111");
-  await page.frameLocator('[data-cse="encryptedExpiryDate"] iframe').locator('input[data-fieldtype="encryptedExpiryDate"]').fill("03/30");
-  await page.frameLocator('[data-cse="encryptedSecurityCode"] iframe').locator('input[data-fieldtype="encryptedSecurityCode"]').fill("737");
+  await (0, _htmlBehaviour.enterValue)(page, cardholderName, "Test Test");
+  const cardNumberInput = page.frameLocator('[data-cse="encryptedCardNumber"] iframe').locator('input[data-fieldtype="encryptedCardNumber"]');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Adyen "encryptedCardNumber"`, () => (0, _webElementHelper.describeLocator)(cardNumberInput, `Adyen "encryptedCardNumber"`), () => cardNumberInput.fill("4111111111111111"));
+  const expiryDateInput = page.frameLocator('[data-cse="encryptedExpiryDate"] iframe').locator('input[data-fieldtype="encryptedExpiryDate"]');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Adyen "encryptedExpiryDate"`, () => (0, _webElementHelper.describeLocator)(expiryDateInput, `Adyen "encryptedExpiryDate"`), () => expiryDateInput.fill("03/30"));
+  const securityCodeInput = page.frameLocator('[data-cse="encryptedSecurityCode"] iframe').locator('input[data-fieldtype="encryptedSecurityCode"]');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Adyen "encryptedSecurityCode"`, () => (0, _webElementHelper.describeLocator)(securityCodeInput, `Adyen "encryptedSecurityCode"`), () => securityCodeInput.fill("737"));
+});
+
+// PayPal SDK button rendered inside its own iframe (no testid, no stable
+// frame name - third-party markup) that opens a real POPUP window rather
+// than redirecting in-tab. CONFIRMED live on Russells (staging, 2026-08-03):
+// this integration points at PayPal's PRODUCTION environment even on
+// staging (the popup's own URL carries env=production), so clicking
+// through and authenticating would place a genuine PayPal transaction -
+// this step deliberately stops at confirming the popup opens and lands on
+// paypal.com, and never logs in or completes a payment. CONFIRMED live
+// (2026-08-07): the SDK button intermittently doesn't open its popup on
+// the first click (a genuine third-party init-timing issue, same class of
+// flakiness already documented for Global Payments below) - retried as a
+// whole, with a fresh waitForEvent each attempt, since a stale event
+// promise can't be reused. elementKey should resolve to the PayPal link/
+// button itself (inside its iframe, via the calling project's own mapping
+// - a plain CSS selector string can't reach across an iframe boundary, so
+// this reads the RAW selector value and re-wraps it in frameLocator here,
+// the one case in this file needing an iframe boundary).
+(0, _cucumber.When)(/^I click on the "([^"]*)" button and verify it opens a popup redirecting to "([^"]*)"$/, async function (elementKey, expectedHost) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const frameSelector = (0, _webElementHelper.getElementLocator)(page, `${elementKey} iframe`, globalConfig);
+  const buttonSelector = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _test.expect)(async () => {
+    const popupPromise = page.context().waitForEvent("page", {
+      timeout: 15000
+    });
+    await page.frameLocator(frameSelector).locator(buttonSelector).click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    await (0, _test.expect)(popup).toHaveURL(new RegExp(expectedHost.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), {
+      timeout: 20000
+    });
+    await popup.close();
+  }).toPass({
+    timeout: 60000
+  });
 });
 
 // GlobalPayments (js.globalpay.com) hosted fields - Indespension's card
@@ -347,9 +421,14 @@ var _paymentTestCards = require("../../support-functions/payment-test-cards");
     state: "visible",
     timeout: 15000
   });
-  await page.frameLocator('iframe[name="card-number"]').locator('#secure-payment-field').fill(card.number);
-  await page.frameLocator('iframe[name="card-expiration"]').locator('#secure-payment-field').fill(card.expiry);
-  await page.frameLocator('iframe[name="card-cvv"]').locator('#secure-payment-field').fill(card.securityCode);
-  await page.frameLocator('iframe[name="card-holder-name"]').locator('#secure-payment-field').fill("Velstar Test");
-  await page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first().click();
+  const numberInput = page.frameLocator('iframe[name="card-number"]').locator('#secure-payment-field');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-number"`, () => (0, _webElementHelper.describeLocator)(numberInput, `GlobalPayments "card-number"`), () => numberInput.fill(card.number));
+  const expirationInput = page.frameLocator('iframe[name="card-expiration"]').locator('#secure-payment-field');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-expiration"`, () => (0, _webElementHelper.describeLocator)(expirationInput, `GlobalPayments "card-expiration"`), () => expirationInput.fill(card.expiry));
+  const cvvInput = page.frameLocator('iframe[name="card-cvv"]').locator('#secure-payment-field');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-cvv"`, () => (0, _webElementHelper.describeLocator)(cvvInput, `GlobalPayments "card-cvv"`), () => cvvInput.fill(card.securityCode));
+  const holderNameInput = page.frameLocator('iframe[name="card-holder-name"]').locator('#secure-payment-field');
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-holder-name"`, () => (0, _webElementHelper.describeLocator)(holderNameInput, `GlobalPayments "card-holder-name"`), () => holderNameInput.fill("Velstar Test"));
+  const submitButton = page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click GlobalPayments "submit"`, () => (0, _webElementHelper.describeLocator)(submitButton, `GlobalPayments "submit"`), () => submitButton.click());
 });

@@ -1,7 +1,7 @@
 import {Then} from "@cucumber/cucumber";
 import {ScenarioWorld} from "../../setup/world";
 import {ElementKey} from "../../../env/global";
-import {getElementLocator} from "../../support-functions/web-element-helper";
+import {describeElement, getElementLocator} from "../../support-functions/web-element-helper";
 import {waitFor} from "../../support-functions/wait-for-behaviour";
 
 Then(
@@ -19,6 +19,13 @@ Then(
         await waitFor(async () => {
             const isElementVisible = await page.isChecked(elementIdentifier)
             return isElementVisible === !negate;
+        }, {
+            expected: `"${elementKey}" (${elementIdentifier}) radio button to ${negate ? "not be" : "be"} checked`,
+            describeActual: async () => {
+                const isChecked = await page.isChecked(elementIdentifier).catch(() => undefined);
+                const state = isChecked === undefined ? "could not read its checked state" : isChecked ? "checked" : "not checked";
+                return `${await describeElement(page, elementIdentifier)}, ${state}`;
+            },
         });
     }
 );

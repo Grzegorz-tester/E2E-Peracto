@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 
 Feature: Operations in the users account
 

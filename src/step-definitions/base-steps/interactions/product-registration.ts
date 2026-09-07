@@ -1,8 +1,8 @@
 import { Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { ScenarioWorld } from "../../setup/world";
-import { getElementLocator } from "../../support-functions/web-element-helper";
-import { enterValue } from "../../support-functions/html-behaviour";
+import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
+import { clickElement, enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 
 type RegistrationData = {
@@ -55,14 +55,19 @@ const fillRegistrationForm = async (world: ScenarioWorld, omit?: RegistrationFie
     }
 
     const dateButtonSelector = getElementLocator(page, "registration date of purchase button", globalConfig);
-    await page.click(dateButtonSelector);
+    await clickElement(page, dateButtonSelector);
     const today = new Date().getDate();
-    await page.getByRole("gridcell", { name: String(today), exact: true }).first().click();
+    const todayGridcell = page.getByRole("gridcell", { name: String(today), exact: true }).first();
+    await withActionDiagnostics(
+        `to click today's (${today}) date-of-purchase gridcell`,
+        () => describeLocator(todayGridcell, `today's (${today}) gridcell`),
+        () => todayGridcell.click()
+    );
 
     const modelComboboxSelector = getElementLocator(page, "registration product model combobox", globalConfig);
     const modelOptionSelector = getElementLocator(page, "Standard 460 model option", globalConfig);
-    await page.click(modelComboboxSelector);
-    await page.click(modelOptionSelector);
+    await clickElement(page, modelComboboxSelector);
+    await clickElement(page, modelOptionSelector);
 
     // The visible Radix listbox only exposes each option's TRANSLATED label,
     // but the underlying native <select> this component syncs from keeps a
@@ -73,8 +78,13 @@ const fillRegistrationForm = async (world: ScenarioWorld, omit?: RegistrationFie
     const installedBySelectSelector = getElementLocator(page, "registration installed by select", globalConfig);
     const installedByComboboxSelector = getElementLocator(page, "registration installed by combobox", globalConfig);
     const installedByLabel = await page.locator(installedBySelectSelector).locator('option[value="DIY"]').textContent();
-    await page.click(installedByComboboxSelector);
-    await page.getByRole("option", { name: installedByLabel ?? "DIY", exact: true }).click();
+    await clickElement(page, installedByComboboxSelector);
+    const installedByOption = page.getByRole("option", { name: installedByLabel ?? "DIY", exact: true });
+    await withActionDiagnostics(
+        `to click the "${installedByLabel ?? "DIY"}" installed-by option`,
+        () => describeLocator(installedByOption, `the "${installedByLabel ?? "DIY"}" installed-by option`),
+        () => installedByOption.click()
+    );
 
     return data;
 };
@@ -105,8 +115,11 @@ When(/^I look up the warranty using the remembered product registration "([^"]*)
 
     await enterValue(page, lastNameSelector, registration.lastName);
     await enterValue(page, serialNumberSelector, registration.serialNumber);
-    await waitFor(() => page.isEnabled(submitSelector));
-    await page.click(submitSelector);
+    await waitFor(() => page.isEnabled(submitSelector), {
+        expected: `"warranty submit button" (${submitSelector}) to become enabled`,
+        describeActual: () => describeLocator(page.locator(submitSelector), `"warranty submit button" (${submitSelector})`),
+    });
+    await clickElement(page, submitSelector);
 });
 
 Then(/^the warranty lookup should succeed for "([^"]*)" using the remembered registration "([^"]*)"$/, async function (this: ScenarioWorld, productName: string, variableName: string) {

@@ -5,5 +5,7 @@
   "First order": "[data-testid='row-0-order-reference']",
   "Export Order Data": "[data-testid='export-order-data']",
   "Entries amount number": "[data-testid='rowcount-picker']",
-  "order": "//tbody/tr"
+  "order": "//tbody/tr",
+  "order reference cells": "td[data-testid$='-order-reference']",
+  "order email cells": "td[data-testid$='-email']"
 }

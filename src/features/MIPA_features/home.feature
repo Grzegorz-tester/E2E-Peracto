@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Home page
 
   # Full rewrite - the previous version asserted HIB's bathroom-fixtures

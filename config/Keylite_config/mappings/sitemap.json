@@ -1,0 +1,4 @@
+{
+  "sitemap container": "[data-testid='sitemaps']",
+  "sitemap links": "[data-testid='sitemaps'] a"
+}

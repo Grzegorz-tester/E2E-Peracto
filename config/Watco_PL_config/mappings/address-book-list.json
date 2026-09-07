@@ -1,0 +1,6 @@
+{
+  "Add new address link": "a[href='/konto/ksiazka-adresowa/nowy']",
+  "test address card": ".address-box:has-text('Velstar Test Automation Address')",
+  "edit link for test address": ".address-box:has-text('Velstar Test Automation Address') a[href*='/konto/ksiazka-adresowa/edytuj/']",
+  "delete button for test address": ".address-box:has-text('Velstar Test Automation Address') button.remove-address"
+}

@@ -1,7 +1,8 @@
 import { DataTable, When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
-import { getElementLocator } from "../../support-functions/web-element-helper";
+import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
+import { clickElement, enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 
 // Delivery and billing addresses share the exact same underlying form and
 // list markup, only distinguished by a "delivery"/"billing" testid prefix.
@@ -22,12 +23,12 @@ const fillAddressForm = async (
     globalConfig: ScenarioWorld["globalConfig"],
     row: Record<string, string>
 ) => {
-    await page.fill(getElementLocator(page, "address first name", globalConfig), row["First name"]);
-    await page.fill(getElementLocator(page, "address last name", globalConfig), row["Last name"]);
-    await page.fill(getElementLocator(page, "address line 1", globalConfig), row["Address line 1"]);
-    await page.fill(getElementLocator(page, "address city", globalConfig), row["City"]);
-    await page.fill(getElementLocator(page, "address postcode", globalConfig), row["Postcode"]);
-    await page.click(getElementLocator(page, "Save address", globalConfig));
+    await enterValue(page, getElementLocator(page, "address first name", globalConfig), row["First name"]);
+    await enterValue(page, getElementLocator(page, "address last name", globalConfig), row["Last name"]);
+    await enterValue(page, getElementLocator(page, "address line 1", globalConfig), row["Address line 1"]);
+    await enterValue(page, getElementLocator(page, "address city", globalConfig), row["City"]);
+    await enterValue(page, getElementLocator(page, "address postcode", globalConfig), row["Postcode"]);
+    await clickElement(page, getElementLocator(page, "Save address", globalConfig));
 };
 
 When(/^I add a new (delivery|billing) address with the following details:$/, async function (this: ScenarioWorld, type: string, table: DataTable) {
@@ -38,7 +39,11 @@ When(/^I add a new (delivery|billing) address with the following details:$/, asy
 
     const addButton = page.locator(addButtonSelector(type));
     if (await addButton.count() > 0) {
-        await addButton.click();
+        await withActionDiagnostics(
+            `to click the "${type}" add-address button (${addButtonSelector(type)})`,
+            () => describeLocator(addButton, `the "${type}" add-address button`),
+            () => addButton.click()
+        );
         await page.waitForSelector(getElementLocator(page, "address first name", globalConfig), { state: "visible", timeout: 35000 });
     }
 
@@ -67,7 +72,7 @@ When(/^I edit the last added (delivery|billing) address with the following detai
     const row = table.rowsHash();
     const addressNumber = Number(this.globalVariables[`last added ${type} address number`]);
 
-    await page.click(editButtonSelector(type, addressNumber));
+    await clickElement(page, editButtonSelector(type, addressNumber));
     await page.waitForSelector(getElementLocator(page, "address first name", globalConfig), { state: "visible", timeout: 35000 });
     await fillAddressForm(page, globalConfig, row);
 
@@ -82,9 +87,9 @@ When(/^I remove the last added (delivery|billing) address$/, async function (thi
     const { screen: { page } } = this;
     const addressNumber = Number(this.globalVariables[`last added ${type} address number`]);
 
-    await page.click(deleteButtonSelector(type, addressNumber));
+    await clickElement(page, deleteButtonSelector(type, addressNumber));
     await page.waitForSelector(deleteConfirmSelector(type, addressNumber), { state: "visible", timeout: 15000 });
-    await page.click(deleteConfirmSelector(type, addressNumber));
+    await clickElement(page, deleteConfirmSelector(type, addressNumber));
 
     await page.waitForSelector(nameSelector(type, addressNumber), { state: "detached", timeout: 35000 });
 });

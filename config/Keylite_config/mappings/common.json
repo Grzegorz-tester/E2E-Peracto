@@ -1,9 +1,55 @@
 {
   "header logo": "[data-testid='brand-bar__logo-link']",
   "Menu": "[data-testid='brand-bar__menu-button--desktop']",
+  "Mobile menu": "[data-testid='brand-bar__menu-button']",
+  "navigation drawer": "[data-testid='navigation-drawer']",
+  "navigation drawer links": "[data-testid^='navigation-drawer-sheet__current-tier-link-']",
   "header search bar": "[data-testid='algolia-autocomplete__input']",
   "search button": "[data-testid='brand-bar__search-button']",
+  "search results": "[data-testid='algolia-autocomplete-hits']",
+  "search result products": "[data-testid='algolia-autocomplete-hits__products']",
+  "first search result": "[data-testid='algolia-autocomplete-hit-product']",
   "Account": "[data-testid='brand-bar__account-link']",
   "Basket": "[data-testid='brand-bar__basket-link']",
-  "Currency": "[data-testid='brand-bar__currency-button']"
+  "Currency": "[data-testid='brand-bar__currency-button']",
+
+  "footer": "[data-testid='main-footer']",
+  "footer Facebook icon": "[data-testid='main-footer__social-link-facebook']",
+  "footer Twitter icon": "[data-testid='main-footer__social-link-twitter']",
+  "footer Instagram icon": "[data-testid='main-footer__social-link-instagram']",
+  "footer LinkedIn icon": "[data-testid='main-footer__social-link-linkedin']",
+  "footer YouTube icon": "[data-testid='main-footer__social-link-youtube']",
+  "footer sitemap link": "[data-testid='stripped-footer__sitemap-link']",
+  "footer company info": "[data-testid='stripped-footer__company-info']",
+  "footer copyright": "[data-testid='stripped-footer__copyright']",
+
+  "Existing customer": "[data-testid='radio-select_option-Existing customer']",
+  "Guest checkout": "[data-testid='radio-select_option-Guest checkout']",
+  "Guest email": "[data-testid='guest-checkout-form__email-input']",
+  "Guest continue": "[data-testid='guest-checkout-form__submit-button']",
+  "Signed-in continue": "[data-testid='checkout-sign-in-content'] button:has-text('Continue')",
+
+  "address first name": "[data-testid='checkout-address-form__first-name']",
+  "address last name": "[data-testid='checkout-address-form__last-name']",
+  "address line 1": "[data-testid='checkout-address-form__address-line-1']",
+  "address city": "[data-testid='checkout-address-form__city']",
+  "address county": "[data-testid='checkout-address-form__county']",
+  "address postcode": "[data-testid='checkout-address-form__postcode']",
+  "Use this address": "[data-testid='checkout-address-form__submit-button']",
+  "same as delivery checkbox": "[data-testid='checkout-address-form__same-as-delivery-address']",
+
+  "Phone number": "[data-testid='delivery-content__form-telephone']",
+  "delivery method option": "[data-testid^='radio-select_option-']",
+  "Delivery method continue": "[data-testid='delivery-content__form-continue-button']",
+  "Billing continue": "[data-testid='checkout-billing-content__continue-button']",
+
+  "saved address": "[data-testid='checkout-select-address__addresses'] [data-testid^='radio-select_option-']",
+  "saved address continue": "[data-testid='checkout-select-address__continue-button']",
+
+  "review content": "[data-testid='review-content']",
+  "review product name": "[data-testid='review-product-card__name']",
+  "review product price": "[data-testid='review-product-card__price-price']",
+  "review current address": "[data-testid='review-current-address']",
+  "terms and conditions checkbox": "[data-testid='review-content__terms-and-conditions']",
+  "Pay now": "[data-testid='review-content__continue-to-payment-account']"
 }

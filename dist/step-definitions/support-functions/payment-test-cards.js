@@ -62,6 +62,19 @@ const GLOBALPAYMENTS_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = {
     number: "4263970000005262",
     expiry: "12/28",
     securityCode: "123"
+  },
+  // CONFIRMED live on Russells (staging, 2026-08-03): GlobalPayments' own
+  // decline test card - fails gracefully with a "Payment Error" alert
+  // (checkout__payment-alert) rather than completing the order, leaving
+  // the customer on the review page with the card form still filled in
+  // to retry. Unlike Indespension's integration (see the "default" card's
+  // note above), Russells' own staging gateway IS connected end-to-end -
+  // the "no gateway available" caveat there is tenant-specific, not a
+  // limitation of GlobalPayments test cards in general.
+  declined: {
+    number: "4000120000001154",
+    expiry: "12/29",
+    securityCode: "123"
   }
 };
 const VERIFONE_TEST_CARDS = exports.VERIFONE_TEST_CARDS = {

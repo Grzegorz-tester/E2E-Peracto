@@ -69,6 +69,33 @@ Then(/^the noted response status should be less than (\d+)$/, async function (th
 // cucumber-js auto-converts a purely-numeric regex capture group to a
 // Number, not a string - accept either here rather than relying on which
 // one gets passed.
+// For a click that submits a form via an XHR/fetch POST rather than
+// following an href (the "... and note the response status" step above
+// only works for a real link, since it reads the element's own href
+// attribute) - matches the resulting request by a URL substring instead
+// (e.g. "/form-submissions"), the same way this framework already matches
+// a real backend acceptance rather than trusting a rendered "success"
+// message, which can be missing/broken even when the backend genuinely
+// accepted the submission (confirmed live on Russells' Quick Enquiry Form -
+// RUS-474). Shares "noted response status" with the steps above, so the
+// same "Then the noted response status should equal ..." assertion works
+// unchanged regardless of which of the two captured it.
+When(/^I click on the "([^"]*)" button and note the response status of a request to "([^"]*)"$/, { timeout: 40000 }, async function (this: ScenarioWorld, elementKey: ElementKey, urlSubstring: string) {
+    const {
+        screen: { page },
+        globalConfig,
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    const [response] = await Promise.all([
+        page.waitForResponse((res) => res.url().includes(urlSubstring), { timeout: 35000 }),
+        page.click(elementIdentifier),
+    ]);
+
+    this.globalVariables["noted response status"] = String(response.status());
+});
+
 Then(/^the noted response status should equal (\d+)$/, async function (this: ScenarioWorld, expected: string | number) {
     const status = this.globalVariables["noted response status"];
     if (status === undefined) {

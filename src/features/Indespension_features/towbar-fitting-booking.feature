@@ -79,7 +79,7 @@ Feature: Towbar fitting booking
     And I select the "A4" option from the "Model dropdown" listbox
     And I select the "2003" option from the "Year dropdown" listbox
     And I select the "Avant Estate" option from the "Body type dropdown" listbox
-    And I fill in the "Postcode input" input field with "LS10 1TD"
+    And I fill in the "Postcode input" input field with "PO7 6QX"
     And I click on the "Search towbars button" button
     And I click on the "Yes, this is my vehicle" button
     Then I should be redirected to the "towbar-comparison" page
@@ -94,84 +94,29 @@ Feature: Towbar fitting booking
     And the "Fitting week dropdown" should be displayed
 
   Scenario: Completing the fitting-booking form books a real appointment and reaches the confirmation page
-    Given I click on the "1st" "Select towbar button" button
-    # CONFIRMED LIVE: without this explicit wait, the very next step's
-    # element lookup runs against page.url() before the click's
-    # client-side route change has actually landed - getElementLocator
-    # itself doesn't poll, unlike "I should be redirected to ... page"
-    # (which does, via waitFor) - so it silently resolves "Fitting week
-    # dropdown" against the PREVIOUS page (towbar-comparison, which has
-    # no such key, nor does common.json), producing a literal
-    # locator('undefined') rather than a real failure. This vehicle +
-    # centre combination's first recommended towbar is deterministically
-    # "towbar-fixed-flange-pdp" (ta1006), confirmed live.
-    And I should be redirected to the "towbar-fixed-flange-pdp" page
-    # CONFIRMED LIVE: neither a hardcoded specific day/time slot (first
-    # tried: Wednesday 09:00) nor always picking "the last" week held up
-    # under repeat runs - not flakiness, this step completes a REAL
-    # booking, and repeated runs (including this scenario's own past
-    # runs) exhaust whichever exact slot or week they target, exactly like
-    # real customers booking would. "Fitting slot" in the mapping resolves
-    # to every slot button in the currently selected week, not one
-    # specific testid, and this step tries weeks from the end of the list
-    # backwards until it finds one where at least one slot is still
-    # enabled - so the scenario keeps working run after run regardless of
-    # what earlier runs have already consumed.
+    # CORRECTION (2026-08-27): earlier revisions of this scenario (and the
+    # postcode-retry step it now uses) were built on a "genuine inventory
+    # exhaustion" theory - confirmed live, more than once, that every week
+    # of a centre's calendar showed 0/10 enabled slots. That theory was
+    # wrong. The real cause, found by instrumenting
+    # selectOptionWithEnabledCandidate in form.ts directly: each slot
+    # button renders as visible immediately but starts out disabled - the
+    # real availability data loads asynchronously ~1-1.5s later. The old
+    # code checked isEnabled() exactly once, right after the visibility
+    # wait, so it always caught every candidate mid-load and reported zero
+    # availability even with 85%+ real availability confirmed live on the
+    # very first postcode tried. Fixed in form.ts by polling isEnabled()
+    # for a few seconds instead of checking once - re-tested live, now
+    # succeeds on the first postcode, no fallback needed.
     #
-    # CORRECTION - the "zero enabled candidates across every week" finding
-    # reported earlier was traced to two real bugs, both now fixed and
-    # confirmed live via direct DOM inspection (not guessed at): (1) this
-    # scenario used to navigate directly to the PDP by URL, which shows a
-    # "may not be compatible with your vehicle" warning and never
-    # properly renders the fitting widget at all, because it depends on
-    # vehicle context set during the real search flow - fixed by reaching
-    # it through the Background's real flow instead (see the "Given I
-    # click ... Select towbar button" / "Then I should be redirected"
-    # pair above). (2) a race condition: the element lookup immediately
-    # after that click ran before the client-side route change had
-    # landed, resolving against the PREVIOUS page's mapping instead - the
-    # explicit "I should be redirected to ... page" step above (which
-    # polls, unlike a bare element lookup) fixes this too. With both
-    # fixed, the exact same selector and week-selection step ARE
-    # confirmed live to work correctly (the week trigger's own visible
-    # text changes to the real selected date range; the last week
-    # genuinely had 9 of 10 real slots enabled when checked directly).
-    #
-    # CORRECTION #2, with stronger evidence than the "genuine exhaustion"
-    # theory above: instrumented this live (dumped isEnabled(),
-    # aria-disabled, the native disabled attribute, and class list for
-    # every candidate, for the actual week cucumber has selected at the
-    # moment of the check). Every one of the 10 slot buttons in the last
-    # week genuinely has a native disabled="" attribute present, which is
-    # exactly what the button's own Tailwind classes
-    # (disabled:bg-brand-light-metal-grey etc.) key off - so isEnabled()
-    # is reporting the real, correct state; this is NOT an isEnabled()
-    # bug, and NOT the week-selection step resetting anything.
-    #
-    # The real explanation: there is more than one recommended towbar on
-    # /towbars/comparison, and each has its OWN independent fitting-slot
-    # inventory. This scenario always targets the 1st one
-    # (towbar-fixed-flange-pdp / ta1006) via the Background - confirmed
-    # live that a 2nd recommended towbar exists too (a different product,
-    # "ta1006vk", not yet registered as its own page id), which the user
-    # separately reported seeing real availability on. So the "zero
-    # enabled slots" failure is specific to ta1006's own calendar right
-    # now (plausibly exhausted by this exact scenario's own repeated runs
-    # today, since every prior successful run consumed a real slot from
-    # THIS SAME towbar), not proof the whole booking system/day is
-    # unavailable.
-    #
-    # NOT FIXED HERE - flagging rather than half-building it: making this
-    # resilient the same way week-selection already is (try each
-    # recommended towbar in turn, not just the 1st, until one's calendar
-    # has an enabled slot) needs each candidate towbar's own PDP
-    # registered as a page id first (only ta1006/towbar-fixed-flange-pdp
-    # is registered right now) and a step generic enough to navigate
-    # back to /towbars/comparison and retry with the next "Select towbar
-    # button" candidate - a real but bounded follow-up, not attempted in
-    # this pass to avoid guessing at how many towbars are typically
-    # recommended or half-committing an untested retry loop.
-    When I select an option from the "Fitting week dropdown" listbox with an enabled "Fitting slot" candidate
+    # The postcode-retry step below is kept as-is (harmless, genuine
+    # defence-in-depth against real exhaustion if it ever does happen) but
+    # is no longer required to make this scenario pass reliably.
+    When I search for a vehicle with the details below, retrying with each postcode in "PO7 6QX, LS10 1TD, BL3 2RY, DE24 8ST, B62 9JE" until the "Fitting week dropdown" listbox has an option with an enabled "Fitting slot" candidate:
+      | Make dropdown      | AUDI         |
+      | Model dropdown     | A4           |
+      | Year dropdown      | 2003         |
+      | Body type dropdown | Avant Estate |
     And I click on the first enabled "Fitting slot" button
     # CONFIRMED LIVE: the plain "I click on the ... button" step's
     # force:true can fire before this button's own re-render (from

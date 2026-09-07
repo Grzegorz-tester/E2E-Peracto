@@ -23,6 +23,9 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     const firstVisible = (await page.$(firstIdentifier)) != null;
     const secondVisible = (await page.$(secondIdentifier)) != null;
     return firstVisible || secondVisible;
+  }, {
+    expected: `"${firstElementKey}" or "${secondElementKey}" to be displayed`,
+    describeActual: async () => `"${firstElementKey}": ${await (0, _webElementHelper.describeElement)(page, firstIdentifier)}; "${secondElementKey}": ${await (0, _webElementHelper.describeElement)(page, secondIdentifier)}`
   });
 });
 
@@ -38,6 +41,9 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const isElementVisible = (await page.$(elementIdentifier)) != null;
     return isElementVisible === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not be present" : "be displayed"}`,
+    describeActual: () => (0, _webElementHelper.describeElement)(page, elementIdentifier)
   });
 });
 
@@ -53,6 +59,9 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const isElementEnabled = await page.isEnabled(elementIdentifier);
     return isElementEnabled === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to be ${negate ? "disabled" : "enabled"}`,
+    describeActual: () => (0, _webElementHelper.describeElement)(page, elementIdentifier)
   });
 });
 (0, _cucumber.Then)(/^I should( not)? see "([^"]*)" "([^"]*)" displayed$/, async function (negate, count, elementKey) {
@@ -66,6 +75,9 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const element = await page.$$(elementIdentifier);
     return count === String(element.length) === !negate;
+  }, {
+    expected: `${negate ? "not " : ""}${count} "${elementKey}" (${elementIdentifier}) element(s) to be displayed`,
+    describeActual: async () => `${(await page.$$(elementIdentifier)).length} matching element(s) found`
   });
 });
 
@@ -101,5 +113,8 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     if (comparison === "equal") return currentCount === rememberedCount;
     if (comparison === "be fewer than") return currentCount < rememberedCount;
     return currentCount > rememberedCount;
+  }, {
+    expected: `number of "${elementKey}" (${elementIdentifier}) elements to ${comparison} the remembered count (${rememberedCount})`,
+    describeActual: async () => `${(await page.$$(elementIdentifier)).length} matching element(s) found`
   });
 });

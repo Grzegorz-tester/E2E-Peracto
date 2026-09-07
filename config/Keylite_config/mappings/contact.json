@@ -1,0 +1,9 @@
+{
+  "First Name": "[name='/form-fields/141']",
+  "Last Name": "[name='/form-fields/5']",
+  "Contact Number": "[name='/form-fields/7']",
+  "Email": "[name='/form-fields/6']",
+  "Message": "textarea",
+  "Consent checkbox": "[name='/form-fields/113']",
+  "Submit Query": "button:has-text('Submit Query')"
+}

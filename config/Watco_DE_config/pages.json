@@ -32,8 +32,8 @@
     "regex": "^/produkte/[^/]+$"
   },
   "added-to-basket": {
-    "route": "/added-to-basket",
-    "regex": "^/added-to-basket$"
+    "route": "/zum-warenkorb-hinzugefuegt",
+    "regex": "^/zum-warenkorb-hinzugefuegt$"
   },
   "checkout-payment": {
     "route": "/kasse/payment",
@@ -54,5 +54,41 @@
   "checkout-thanks": {
     "route": "/kasse/danke",
     "regex": "^/kasse/danke$"
+  },
+  "plp": {
+    "route": "/boden",
+    "regex": "^/(boden|wand|dach|metallschutz|beschichtung|reparatur|antirutsch|wartung-instandhaltung)(/[a-z0-9-]+)*$"
+  },
+  "forgotten": {
+    "route": "/vergessen",
+    "regex": "^/vergessen$"
+  },
+  "check-email": {
+    "route": "/e-mail-prüfen",
+    "regex": "^/e-mail-pr%C3%BCfen$"
+  },
+  "change-password": {
+    "route": "/kundenkonto/passwort-ändern",
+    "regex": "^/kundenkonto/passwort-%C3%A4ndern$"
+  },
+  "address-book-list": {
+    "route": "/kundenkonto/adressbuch/liste",
+    "regex": "^/kundenkonto/adressbuch/liste$"
+  },
+  "address-book-new": {
+    "route": "/kundenkonto/adressbuch/neu",
+    "regex": "^/kundenkonto/adressbuch/neu$"
+  },
+  "address-book-edit": {
+    "route": "/kundenkonto/adressbuch/bearbeiten",
+    "regex": "^/kundenkonto/adressbuch/bearbeiten/[0-9]+$"
+  },
+  "order-list": {
+    "route": "/kundenkonto/bestellung/übersicht",
+    "regex": "^/kundenkonto/bestellung/%C3%BCbersicht$"
+  },
+  "order-detail": {
+    "route": "/kundenkonto/bestellung/details",
+    "regex": "^/kundenkonto/bestellung/details/[0-9]+$"
   }
 }

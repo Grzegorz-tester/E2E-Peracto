@@ -1,0 +1,8 @@
+{
+  "review content": "[data-testid='checkout-review-content']",
+  "review delivery address summary": "[data-testid='review-current-address']:has(a[href='/checkout/delivery'])",
+  "review billing address summary": "[data-testid='review-current-address']:has(a[href='/checkout/billing'])",
+
+  "review terms and conditions": "[data-testid='review-content__terms-and-conditions']",
+  "Continue to Payment": "[data-testid='review-content__continue-to-payment']"
+}

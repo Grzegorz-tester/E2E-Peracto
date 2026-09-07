@@ -1,0 +1,5 @@
+{
+  "SKU": "[data-testid='sku']",
+  "Submit": "[data-testid='submit']",
+  "response details": "#response-details pre"
+}

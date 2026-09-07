@@ -15,5 +15,12 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const isElementVisible = await page.isChecked(elementIdentifier);
     return isElementVisible === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) radio button to ${negate ? "not be" : "be"} checked`,
+    describeActual: async () => {
+      const isChecked = await page.isChecked(elementIdentifier).catch(() => undefined);
+      const state = isChecked === undefined ? "could not read its checked state" : isChecked ? "checked" : "not checked";
+      return `${await (0, _webElementHelper.describeElement)(page, elementIdentifier)}, ${state}`;
+    }
   });
 });

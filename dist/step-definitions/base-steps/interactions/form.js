@@ -3,6 +3,8 @@
 var _cucumber = require("@cucumber/cucumber");
 var _webElementHelper = require("../../support-functions/web-element-helper");
 var _htmlBehaviour = require("../../support-functions/html-behaviour");
+var _navigationBehaviour = require("../../support-functions/navigation-behaviour");
+var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 // Sources the value from users.json/env vars instead of literal Gherkin text,
 // so real credentials never need to be hardcoded in a .feature file (e.g. to
 // deliberately test a wrong-password login while still using a real email).
@@ -45,6 +47,50 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     timeout: 15000
   });
   await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, `qa-${Date.now()}`);
+});
+
+// Same disposable "qa-<ts>" value as "... with a unique value" above, but
+// also stashes it in globalVariables - for a scenario that needs to find
+// this exact row/element again later (e.g. to edit or delete whatever it
+// just created), not just fill the field once and move on.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique value, remembering it as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const value = `qa-${Date.now()}`;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, value);
+  this.globalVariables[variableName] = value;
+});
+
+// The fill-side counterpart to verify-element-value.ts's "I remember the
+// text of ... as ..." / "should contain the remembered ..." pair - for
+// carrying a live, page-read value (e.g. a real product's own SKU) INTO a
+// later field, not just comparing against it. Avoids hardcoding a specific
+// SKU/value that could stop existing (or change) later, the same reason
+// this suite prefers "click the first item" over a fixed one elsewhere.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with the remembered "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." must run first.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, remembered);
 });
 (0, _cucumber.When)(/^I fill in the "([^"]*)" input field with "([^"]*)"$/, async function (elementKey, inputText) {
   const {
@@ -219,25 +265,51 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // throws its own clear error - confirmed live, that showed up as an
 // opaque "function timed out" from cucumber itself instead, well before
 // every week had even been tried.
-(0, _cucumber.When)(/^I select an option from the "([^"]*)" listbox with an enabled "([^"]*)" candidate$/, {
-  timeout: 90000
-}, async function (listboxKey, candidateKey) {
+// For Peracto Admin's classic react-select widget (classNamePrefix "list",
+// no ARIA roles at all) - confirmed live on Carbon Admin's Add Product
+// form: Product Type/Status/Availability/Sales Unit/Tax rate/Attribute Set
+// all render this way, none of them a real <select> (so the "... dropdown"
+// step's page.selectOption throws) or a role=combobox/listbox/option
+// widget (so the "... listbox" step above can't find a trigger or
+// options either). Confirmed identical shape across Peracto Admin tenants
+// per CLAUDE.md ("KOOL, Indespension and Carbon Admin... run the same
+// underlying Peracto Admin product"), so this is expected to be reusable
+// wherever a future scenario needs to drive one of these fields, not just
+// this one form. The mapping's own selector should point at the
+// react-select's outer container (the same element you'd click to open
+// it), same convention as the "... listbox" step's trigger.
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" react-select$/, async function (option, elementKey) {
   const {
     screen: {
       page
     },
     globalConfig
   } = this;
-  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, listboxKey, globalConfig);
-  const candidateIdentifier = (0, _webElementHelper.getElementLocator)(page, candidateKey, globalConfig);
-  const resolved = page.locator(elementIdentifier);
-  const isComboboxItself = (await resolved.getAttribute("role").catch(() => null)) === "combobox";
-  const trigger = isComboboxItself ? resolved : resolved.locator("button[role='combobox']");
-  await trigger.waitFor({
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const control = page.locator(elementIdentifier);
+  await control.waitFor({
     state: "visible",
     timeout: 15000
   });
+  await control.click();
+  const menu = page.locator(".list__menu:visible").last();
+  await menu.locator(".list__option").first().waitFor({
+    state: "visible",
+    timeout: 10000
+  });
+  await menu.getByText(option, {
+    exact: true
+  }).click();
+});
 
+// Shared by the two steps below: tries every option in an already-open-able
+// combobox from the end of the list backwards until candidateIdentifier has
+// at least one enabled match, re-opening the listbox between attempts since
+// selecting an option closes it. Returns whether one was found instead of
+// throwing, so the multi-postcode step below can fall through to its next
+// postcode instead of failing outright the moment one centre's calendar
+// comes up empty.
+const selectOptionWithEnabledCandidate = async (page, trigger, candidateIdentifier) => {
   // force:true on the trigger click here specifically: confirmed live
   // that re-opening this same combobox on a LATER iteration (after
   // having already opened and closed it once) can leave a lingering,
@@ -274,16 +346,143 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     const listOptions = await openListbox();
     await listOptions.nth(i).click();
     const candidates = page.locator(candidateIdentifier);
-    await candidates.first().waitFor({
+    const candidatesRendered = await candidates.first().waitFor({
       state: "visible",
       timeout: 15000
-    });
-    const candidateCount = await candidates.count();
-    for (let c = 0; c < candidateCount; c++) {
-      if (await candidates.nth(c).isEnabled()) {
-        return;
+    }).then(() => true).catch(() => false);
+    if (!candidatesRendered) {
+      continue;
+    }
+
+    // Confirmed live: candidates render as visible immediately but start
+    // out disabled - the real availability data loads asynchronously
+    // ~1-1.5s later. Checking isEnabled() only once, right after the
+    // visibility wait above, catches every candidate in this transient
+    // disabled state and reports zero availability even when the vast
+    // majority of slots are genuinely open (this is what produced the
+    // earlier "genuine inventory exhaustion" theory - it wasn't real).
+    // Poll for a few seconds instead of checking once.
+    const anyEnabled = await (0, _waitForBehaviour.waitFor)(async () => {
+      const candidateCount = await candidates.count();
+      for (let c = 0; c < candidateCount; c++) {
+        if (await candidates.nth(c).isEnabled()) {
+          return true;
+        }
       }
+      return false;
+    }, {
+      timeout: 5000,
+      wait: 250
+    }).catch(() => false);
+    if (anyEnabled) {
+      return true;
     }
   }
-  throw new Error(`No option in the "${listboxKey}" listbox left an enabled "${candidateKey}" candidate.`);
+  return false;
+};
+const resolveComboboxTrigger = async (page, elementIdentifier) => {
+  const resolved = page.locator(elementIdentifier);
+  const isComboboxItself = (await resolved.getAttribute("role").catch(() => null)) === "combobox";
+  const trigger = isComboboxItself ? resolved : resolved.locator("button[role='combobox']");
+  await trigger.waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+  return trigger;
+};
+(0, _cucumber.When)(/^I select an option from the "([^"]*)" listbox with an enabled "([^"]*)" candidate$/, {
+  timeout: 90000
+}, async function (listboxKey, candidateKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, listboxKey, globalConfig);
+  const candidateIdentifier = (0, _webElementHelper.getElementLocator)(page, candidateKey, globalConfig);
+  const trigger = await resolveComboboxTrigger(page, elementIdentifier);
+  const found = await selectOptionWithEnabledCandidate(page, trigger, candidateIdentifier);
+  if (!found) {
+    throw new Error(`No option in the "${listboxKey}" listbox left an enabled "${candidateKey}" candidate.`);
+  }
+});
+
+// For a REAL, live booking calendar (not a fixture) where a single centre
+// can go from a couple of open slots to zero within minutes of real demand
+// - confirmed live, twice, on Indespension's towbar fitting booking
+// (2026-08-27): Portsmouth (PO7 6QX) had 2/10 slots enabled in its nearest
+// week, then 0/10 across every week two minutes later when the actual
+// scenario reached that step. The per-week retry above already handles one
+// centre's calendar being unevenly booked across weeks; this handles the
+// centre itself being temporarily dry across ALL of its weeks, by retrying
+// the whole vehicle search against each postcode in the CSV list (each one
+// resolves to a different fitting centre with its own independent
+// inventory) until one has an enabled candidate anywhere in its dropdown.
+//
+// Redoes the full search per postcode (a fresh "towbars" page navigation
+// resets the form, so earlier selections can't just be reused) - the
+// vehicle's own fields (make/model/year/body type etc.) come from the data
+// table so this isn't hardcoded to one specific vehicle, only the
+// conventional element keys below are: "Postcode input", "Search towbars
+// button", "Yes, this is my vehicle" and "Select towbar button" (the 1st
+// recommended towbar is used every attempt) are expected to exist in the
+// calling project's own mapping, the same convention the compound login
+// step uses for login.json's keys. Needs a generous step timeout - each
+// postcode attempt can itself take up to ~90s (this framework's own
+// per-listbox default), and this tries several postcodes in turn.
+(0, _cucumber.When)(/^I search for a vehicle with the details below, retrying with each postcode in "([^"]*)" until the "([^"]*)" listbox has an option with an enabled "([^"]*)" candidate:$/, {
+  timeout: 600000
+}, async function (postcodesCsv, weekListboxKey, candidateKey, table) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const vehicleFields = table.rowsHash();
+  const postcodes = postcodesCsv.split(",").map(s => s.trim()).filter(Boolean);
+  for (const postcode of postcodes) {
+    await (0, _navigationBehaviour.navigateToPage)(page, "towbars", globalConfig);
+    for (const [fieldKey, value] of Object.entries(vehicleFields)) {
+      const fieldTrigger = await resolveComboboxTrigger(page, (0, _webElementHelper.getElementLocator)(page, fieldKey, globalConfig));
+      const listbox = page.locator("[role='listbox']:visible").last();
+      await fieldTrigger.click();
+      await listbox.locator("[role='option']").first().waitFor({
+        state: "visible",
+        timeout: 15000
+      });
+      await listbox.getByText(value, {
+        exact: true
+      }).click();
+    }
+    await page.fill((0, _webElementHelper.getElementLocator)(page, "Postcode input", globalConfig), postcode);
+    await page.click((0, _webElementHelper.getElementLocator)(page, "Search towbars button", globalConfig));
+    await page.click((0, _webElementHelper.getElementLocator)(page, "Yes, this is my vehicle", globalConfig));
+    await (0, _waitForBehaviour.waitFor)(() => new URL(page.url()).pathname.includes("/towbars/comparison"), {
+      timeout: 20000
+    });
+    await (0, _htmlBehaviour.clickElementAtIndex)(page, (0, _webElementHelper.getElementLocator)(page, "Select towbar button", globalConfig), 0, {
+      force: true
+    });
+    await (0, _waitForBehaviour.waitFor)(() => new URL(page.url()).pathname.includes("/products/"), {
+      timeout: 20000
+    });
+
+    // Resolved here, not before the loop starts: getElementLocator
+    // keys off the CURRENT page (via getCurrentPageId), and before
+    // this first navigateToPage call above, that's still whatever
+    // page the calling scenario's Background left off on (e.g.
+    // towbar-comparison) - which has no "Fitting slot" mapping key,
+    // silently resolving to a locator that matches nothing rather
+    // than throwing (confirmed live: an 18-minute run that quietly
+    // timed out on every week of every postcode because of this).
+    const weekTrigger = await resolveComboboxTrigger(page, (0, _webElementHelper.getElementLocator)(page, weekListboxKey, globalConfig));
+    const candidateIdentifier = (0, _webElementHelper.getElementLocator)(page, candidateKey, globalConfig);
+    const found = await selectOptionWithEnabledCandidate(page, weekTrigger, candidateIdentifier);
+    if (found) {
+      return;
+    }
+  }
+  throw new Error(`No postcode in "${postcodesCsv}" left an enabled "${candidateKey}" candidate for the "${weekListboxKey}" listbox, across any of its weeks.`);
 });

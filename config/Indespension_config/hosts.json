@@ -1,5 +1,5 @@
 {
-  "release_branch": "",
+  "release_branch": "https://next-15.indespension.pub/",
   "staging": "https://staging.indespension.pub/",
   "dev": "http://localhost:3001"
 }

@@ -1,7 +1,7 @@
 {
-  "Email address": "[id='email']",
-  "Password": "[id='password']",
-  "Sign In": "button:has-text('Sign In')",
-  "Forgotten your password?": "//div[@data-testid='login-form']/a",
-  "validation message": "//div[@data-testid='login-form']/p"
+  "Email address": "[data-testid='login-form__email-input']",
+  "Password": "[data-testid='login-form__password-input']",
+  "Sign In": "[data-testid='login-form__submit-button']",
+  "Forgotten your password?": "[data-testid='login-form__forgot-password-link']",
+  "validation message": "[data-testid='login-form__alert']"
 }

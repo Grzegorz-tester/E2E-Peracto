@@ -1,5 +1,5 @@
 @smoke
-@MIPA_regression
+@regression
 Feature: Payment on Account purchase flow
 
   # Full rewrite. This scenario was HIB contamination end to end - clicking

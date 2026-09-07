@@ -1,15 +1,21 @@
 {
-  "Checkout securely": "added-to-basket__checkout-link",
-  "basket item": "[data-testid='basket__product-card']",
-  "Quantity selector": "[data-testid='basket__quantity-input_input']",
-  "Update": "[data-testid='basket__quantity-input__update']",
-  "Remove items": "[data-testid='basket__quantity-input__delete']",
-  "product's total price": "[data-testid='basket__total__price']",
-  "product's price": "[data-testid='basket__product-price__price']",
-  "order total price": "[data-testid='price']",
-  "Products you may also need": "button:has-text('Products you may also need')",
-  "Specification": "button:has-text('Specification')",
-  "specification draw": "//h3[text()='Specification']/../..",
-  "you may also need draw": "//h3[text()='You may also need']/../..",
-  "close": "button:has-text('Close')"
+  "basket item": "[data-testid='basket-items__available-line-0']",
+  "basket item name": "[data-testid='basket-items__available-line-0__name']",
+  "basket item sku": "[data-testid='basket-items__available-line-0__sku']",
+  "remove basket line": "[data-testid='basket-items__available-line-0__remove-button']",
+
+  "quantity input": "[data-testid='quantity-picker__input']",
+  "quantity plus": "[data-testid='quantity-picker__plus-button']",
+  "quantity minus": "[data-testid='quantity-picker__minus-button']",
+
+  "basket total": "[data-testid='basket-summary__total']",
+  "basket subtotal": "[data-testid='basket-summary__subtotal']",
+
+  "promotional code": "[data-testid='add-promotion-form__button']",
+  "promo code input": "[data-testid='add-promotion-form__input']",
+  "promo code form": "[data-testid='add-promotion-form']",
+  "promotions container": "[data-testid='basket-summary__promotions']",
+
+  "Checkout": "[data-testid='basket-summary__checkout-button']",
+  "Continue shopping": "[data-testid='default-basket-content__continue-shopping-link']"
 }

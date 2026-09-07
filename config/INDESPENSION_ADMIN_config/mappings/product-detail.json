@@ -1,0 +1,11 @@
+{
+  "Attribute Set": "[data-testid='set-dropdown']",
+  "Product Name": "[data-testid='product-name']",
+  "SKU": "[data-testid='sku']",
+  "Price": "[data-testid='price']",
+  "Product Status": "//label[text()='Product Status']/following::*[contains(@class,\"-container\") or contains(@class,\"select__control\")][1]",
+  "Index Product": "#saveAndIndex",
+  "Save": "[data-testid='save-form']",
+  "Delete Product": "[data-testid='delete-product']",
+  "Confirm Delete Product": "[data-testid='button-action_delete-product']"
+}

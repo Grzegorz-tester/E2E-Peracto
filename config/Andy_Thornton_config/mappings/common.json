@@ -1,11 +1,34 @@
 {
+  "header logo": "[data-testid='brand-bar__logo-link']",
   "Contact Us email": "[data-testid='utility-bar__email-link']",
   "contact phone number": "[data-testid='utility-bar__phone-link']",
-
   "Sign In button": "[data-testid='utility-bar__sign-in-link']",
+  "Register link": "[data-testid='utility-bar__register-link']",
   "Sign Out button": "[data-testid='utility-bar__sign-out-link']",
   "user name": "[data-testid='utility-bar__user-name']",
-  "header logo": "[data-testid='brand-bar__logo-link']"
 
+  "Moodboards icon": "[data-testid='brand-bar__branches-link']",
+  "Account icon": "[data-testid='brand-bar__account-link']",
+  "Basket icon": "[data-testid='brand-bar__basket-link']",
+  "Menu button": "[data-testid='brand-bar__menu-button']",
 
+  "Search products": "[data-testid='algolia-autocomplete__input']",
+  "magnifier glass": "[data-testid='algolia-autocomplete__search-button']",
+  "search results": "[data-testid='algolia-autocomplete-hits']",
+  "first search result": "[data-testid='algolia-autocomplete-hit-product']",
+
+  "Contract Furniture menu item": "[data-testid='navigation-drawer-sheet__link-0']",
+  "By Venue menu item": "[data-testid='navigation-drawer-sheet__link-1']",
+  "Interior Fittings & Antiques menu item": "[data-testid='navigation-drawer-sheet__link-2']",
+  "Architectural Metalwork menu item": "[data-testid='navigation-drawer-sheet__link-3']",
+  "Projects menu item": "[data-testid='navigation-drawer-sheet__link-4']",
+  "More menu item": "[data-testid='navigation-drawer-sheet__link-5']",
+
+  "newsletter email input": "[data-testid='newsletter-form__input']",
+  "newsletter submit button": "[data-testid='newsletter-form__submit-button']",
+
+  "Facebook footer icon": "[data-testid='main-footer__social-link-facebook']",
+  "Instagram footer icon": "[data-testid='main-footer__social-link-instagram']",
+  "LinkedIn footer icon": "[data-testid='main-footer__social-link-linkedin']",
+  "sitemap link": "[data-testid='stripped-footer__sitemap-link']"
 }

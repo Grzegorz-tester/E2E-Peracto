@@ -1,6 +1,18 @@
 export const waitFor = async <T>(
     predicate: () => T | Promise<T>,
-    options?: { timeout?: number; wait?: number; state?: string }
+    options?: {
+        timeout?: number;
+        wait?: number;
+        state?: string;
+        // Plain-English statement of the condition being polled for, e.g.
+        // `"Submit button" to be displayed` - paired with describeActual
+        // below to build an Expected/Found failure message instead of the
+        // generic "wait time exceeded", which never said what was actually
+        // on the page. Only used once, on final failure - not on every
+        // poll, since most polls succeed and this is purely diagnostic.
+        expected?: string;
+        describeActual?: () => Promise<string>;
+    }
 ): Promise<T> => {
     const {timeout = 15000, wait = 2000} = options || {};
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -25,6 +37,13 @@ export const waitFor = async <T>(
         }
 
         await sleep(wait);
+    }
+
+    if (options?.expected && options?.describeActual) {
+        const actual = await options.describeActual().catch((error) =>
+            `could not determine (${error instanceof Error ? error.message : String(error)})`
+        );
+        throw new Error(`Expected: ${options.expected}\nFound: ${actual}`);
     }
 
     if (lastError) {

@@ -1,4 +1,5 @@
 import { When } from "@cucumber/cucumber";
+import { Page } from "playwright";
 import { ScenarioWorld } from "../../setup/world";
 
 // A MailerLite newsletter signup popup appears on a fresh page load and
@@ -9,9 +10,15 @@ import { ScenarioWorld } from "../../setup/world";
 // selector string can't reach it the way every other step in this
 // framework does - frameLocator() is required, same class of exception as
 // the CyberSource payment widget elsewhere in this codebase.
-When(/^I dismiss the newsletter popup if present$/, async function (this: ScenarioWorld) {
-    const { screen: { page } } = this;
-
+//
+// Exported (not just a Cucumber step) so the compound "I am navigating the
+// page as a ... user" step (user.ts) can call the SAME dismissal logic
+// after its own login-page navigation, rather than duplicating a
+// MailerLite-only copy that silently misses other projects' popup vendors -
+// confirmed live on Keylite: that duplicated copy left its Mailchimp popup
+// undismissed, intermittently blocking the Sign In click and timing out the
+// whole login step.
+export const dismissNewsletterPopup = async (page: Page): Promise<void> => {
     const closeButton = page.frameLocator('iframe[src*="mailerlite"]').getByRole("button", { name: "Close" });
     const appeared = await closeButton.waitFor({ state: "visible", timeout: 8000 }).then(() => true).catch(() => false);
 
@@ -29,4 +36,9 @@ When(/^I dismiss the newsletter popup if present$/, async function (this: Scenar
     await page.evaluate(() => {
         document.querySelector('[id^="mcforms-"]')?.remove();
     });
+};
+
+When(/^I dismiss the newsletter popup if present$/, async function (this: ScenarioWorld) {
+    const { screen: { page } } = this;
+    await dismissNewsletterPopup(page);
 });

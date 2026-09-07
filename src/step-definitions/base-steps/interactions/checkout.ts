@@ -1,7 +1,9 @@
 import { Then, When } from "@cucumber/cucumber";
+import { expect } from "@playwright/test";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
-import { getElementLocator } from "../../support-functions/web-element-helper";
+import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
+import { enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 import { ElementKey } from "../../../env/global";
 import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS } from "../../support-functions/payment-test-cards";
 
@@ -17,7 +19,7 @@ When(/^I fill in the "([^"]*)" input field with a unique guest email$/, async fu
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
     await page.waitForSelector(elementIdentifier, { state: "visible", timeout: 15000 });
-    await page.fill(elementIdentifier, guestEmail);
+    await enterValue(page, elementIdentifier, guestEmail);
 
     this.globalVariables["guest email"] = guestEmail;
 });
@@ -35,7 +37,7 @@ When(/^I fill in the "([^"]*)" input field with the stored guest email$/, async 
 
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
     await page.waitForSelector(elementIdentifier, { state: "visible", timeout: 15000 });
-    await page.fill(elementIdentifier, guestEmail);
+    await enterValue(page, elementIdentifier, guestEmail);
 });
 
 Then(/^the "([^"]*)" should contain the stored guest email$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
@@ -50,6 +52,9 @@ Then(/^the "([^"]*)" should contain the stored guest email$/, async function (th
     await waitFor(async () => {
         const elementText = await page.textContent(elementIdentifier);
         return elementText?.includes(guestEmail);
+    }, {
+        expected: `"${elementKey}" (${elementIdentifier}) to contain the stored guest email "${guestEmail}"`,
+        describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
 });
 
@@ -63,7 +68,19 @@ Then(/^the "([^"]*)" should contain the stored guest email$/, async function (th
 // project's own search input; "address autocomplete listbox" / "address
 // autocomplete options" / "Use this address" are resolved the same way,
 // via that project's own mapping file.
-When(/^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, searchTerm: string) {
+//
+// The two waitFor calls below total up to 45s (25s + 20s) worst case, which
+// exceeds some projects' SCRIPT_TIMEOUT (as low as 20000ms) - confirmed live
+// on Insinkerator EU: Cucumber's own generic step timeout fired
+// ("function timed out ... 20000 milliseconds") before either waitFor's own
+// more descriptive error could. An explicit per-step timeout, generous
+// rather than tightly calculated (see the same fix applied to the "if
+// present" click step), removes the dependency on whatever SCRIPT_TIMEOUT
+// happens to be configured for a given project.
+When(
+  /^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/,
+  { timeout: 60000 },
+  async function (this: ScenarioWorld, elementKey: ElementKey, searchTerm: string) {
     const { screen: { page }, globalConfig } = this;
 
     const searchInput = getElementLocator(page, elementKey, globalConfig);
@@ -77,7 +94,12 @@ When(/^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/
         await new Promise((resolve) => setTimeout(resolve, 600));
         await page.type(searchInput, searchTerm, { delay: 30 });
         return page.waitForSelector(listbox, { state: "visible", timeout: 5000 }).then(() => true).catch(() => false);
-    }, { timeout: 25000, wait: 500 });
+    }, {
+        timeout: 25000,
+        wait: 500,
+        expected: `"address autocomplete listbox" (${listbox}) to appear after typing "${searchTerm}" into "${elementKey}" (${searchInput})`,
+        describeActual: () => describeLocator(page.locator(listbox), `"address autocomplete listbox" (${listbox})`),
+    });
 
     await waitFor(async () => {
         const optionsLocator = page.locator(options);
@@ -85,7 +107,12 @@ When(/^I search for an address in the "([^"]*)" field using the term "([^"]*)"$/
             await optionsLocator.first().click();
         }
         return page.locator(submitButton).isEnabled();
-    }, { timeout: 20000, wait: 500 });
+    }, {
+        timeout: 20000,
+        wait: 500,
+        expected: `"Use this address" (${submitButton}) to become enabled after picking an "address autocomplete options" (${options}) suggestion`,
+        describeActual: () => describeLocator(page.locator(submitButton), `"Use this address" (${submitButton})`),
+    });
 });
 
 // CyberSource Unified Checkout. Card fields live inside real iframes with
@@ -110,20 +137,53 @@ When(/^I pay with the "([^"]*)" CyberSource test card$/, async function (this: S
     }
 
     const buttonFrame = page.frameLocator("#__buttonlist");
-    await buttonFrame.getByTestId("ctp-mini-btn").click();
+    const miniButton = buttonFrame.getByTestId("ctp-mini-btn");
+    await withActionDiagnostics(
+        `to click the CyberSource "ctp-mini-btn"`,
+        () => describeLocator(miniButton, `CyberSource "ctp-mini-btn"`),
+        () => miniButton.click()
+    );
 
     const cardFrame = page.frameLocator("#__mce");
     const cardNumberInput = cardFrame.locator("#card-number");
     await cardNumberInput.waitFor({ state: "visible", timeout: 20000 });
-    await cardNumberInput.fill(card.number);
-    await cardFrame.getByTestId("expiry-month").selectOption(card.expiryMonth);
-    await cardFrame.getByTestId("expiry-year").selectOption(card.expiryYear);
-    await cardFrame.locator("#card-security-code").fill(card.securityCode);
-    await cardFrame.getByTestId("btn").click();
+    await withActionDiagnostics(
+        `to fill CyberSource "#card-number"`,
+        () => describeLocator(cardNumberInput, `CyberSource "#card-number"`),
+        () => cardNumberInput.fill(card.number)
+    );
+    const expiryMonth = cardFrame.getByTestId("expiry-month");
+    await withActionDiagnostics(
+        `to select expiry month "${card.expiryMonth}" on CyberSource "expiry-month"`,
+        () => describeLocator(expiryMonth, `CyberSource "expiry-month"`),
+        () => expiryMonth.selectOption(card.expiryMonth)
+    );
+    const expiryYear = cardFrame.getByTestId("expiry-year");
+    await withActionDiagnostics(
+        `to select expiry year "${card.expiryYear}" on CyberSource "expiry-year"`,
+        () => describeLocator(expiryYear, `CyberSource "expiry-year"`),
+        () => expiryYear.selectOption(card.expiryYear)
+    );
+    const securityCodeInput = cardFrame.locator("#card-security-code");
+    await withActionDiagnostics(
+        `to fill CyberSource "#card-security-code"`,
+        () => describeLocator(securityCodeInput, `CyberSource "#card-security-code"`),
+        () => securityCodeInput.fill(card.securityCode)
+    );
+    const payButton = cardFrame.getByTestId("btn");
+    await withActionDiagnostics(
+        `to click CyberSource "btn"`,
+        () => describeLocator(payButton, `CyberSource "btn"`),
+        () => payButton.click()
+    );
 
     const confirmButton = cardFrame.getByTestId("step-review-continue-btn");
     await confirmButton.waitFor({ state: "visible", timeout: 15000 });
-    await confirmButton.click();
+    await withActionDiagnostics(
+        `to click CyberSource "step-review-continue-btn"`,
+        () => describeLocator(confirmButton, `CyberSource "step-review-continue-btn"`),
+        () => confirmButton.click()
+    );
 });
 
 // Barclays Verifone hosted card form (cst.checkout.vficloud.net), used by
@@ -182,15 +242,37 @@ When(/^I pay with the "([^"]*)" Verifone test card$/, { timeout: 60000 }, async 
     const cardFrame = page.frameLocator("iframe[src*='vficloud.net']");
     const cardNumberInput = cardFrame.locator("#inputcc-number");
     await cardNumberInput.waitFor({ state: "visible", timeout: 20000 });
-    await cardNumberInput.fill(card.number);
-    await cardFrame.locator("#inputcc-exp").fill(card.expiry);
+    await withActionDiagnostics(
+        `to fill Verifone "#inputcc-number"`,
+        () => describeLocator(cardNumberInput, `Verifone "#inputcc-number"`),
+        () => cardNumberInput.fill(card.number)
+    );
+    const expiryInput = cardFrame.locator("#inputcc-exp");
+    await withActionDiagnostics(
+        `to fill Verifone "#inputcc-exp"`,
+        () => describeLocator(expiryInput, `Verifone "#inputcc-exp"`),
+        () => expiryInput.fill(card.expiry)
+    );
 
     const cvvInput = cardFrame.locator("#inputnew-password");
-    await cvvInput.click();
+    await withActionDiagnostics(
+        `to click Verifone "#inputnew-password"`,
+        () => describeLocator(cvvInput, `Verifone "#inputnew-password"`),
+        () => cvvInput.click()
+    );
     await new Promise((resolve) => setTimeout(resolve, 400));
-    await cvvInput.type(card.securityCode, { delay: 120 });
+    await withActionDiagnostics(
+        `to type the security code into Verifone "#inputnew-password"`,
+        () => describeLocator(cvvInput, `Verifone "#inputnew-password"`),
+        () => cvvInput.type(card.securityCode, { delay: 120 })
+    );
 
-    await cardFrame.locator('[data-e2e="card-form-submit"]').click();
+    const submitButton = cardFrame.locator('[data-e2e="card-form-submit"]');
+    await withActionDiagnostics(
+        `to click Verifone "[data-e2e='card-form-submit']"`,
+        () => describeLocator(submitButton, `Verifone "[data-e2e='card-form-submit']"`),
+        () => submitButton.click()
+    );
     await page.waitForURL(/\/(payment-return\/checkout|checkout\/thank-you)/, { timeout: 55000 });
 });
 
@@ -215,15 +297,37 @@ When(/^I attempt to pay with the "([^"]*)" Verifone test card$/, { timeout: 3000
     const cardFrame = page.frameLocator("iframe[src*='vficloud.net']");
     const cardNumberInput = cardFrame.locator("#inputcc-number");
     await cardNumberInput.waitFor({ state: "visible", timeout: 20000 });
-    await cardNumberInput.fill(card.number);
-    await cardFrame.locator("#inputcc-exp").fill(card.expiry);
+    await withActionDiagnostics(
+        `to fill Verifone "#inputcc-number"`,
+        () => describeLocator(cardNumberInput, `Verifone "#inputcc-number"`),
+        () => cardNumberInput.fill(card.number)
+    );
+    const expiryInput = cardFrame.locator("#inputcc-exp");
+    await withActionDiagnostics(
+        `to fill Verifone "#inputcc-exp"`,
+        () => describeLocator(expiryInput, `Verifone "#inputcc-exp"`),
+        () => expiryInput.fill(card.expiry)
+    );
 
     const cvvInput = cardFrame.locator("#inputnew-password");
-    await cvvInput.click();
+    await withActionDiagnostics(
+        `to click Verifone "#inputnew-password"`,
+        () => describeLocator(cvvInput, `Verifone "#inputnew-password"`),
+        () => cvvInput.click()
+    );
     await new Promise((resolve) => setTimeout(resolve, 400));
-    await cvvInput.type(card.securityCode, { delay: 120 });
+    await withActionDiagnostics(
+        `to type the security code into Verifone "#inputnew-password"`,
+        () => describeLocator(cvvInput, `Verifone "#inputnew-password"`),
+        () => cvvInput.type(card.securityCode, { delay: 120 })
+    );
 
-    await cardFrame.locator('[data-e2e="card-form-submit"]').click();
+    const submitButton = cardFrame.locator('[data-e2e="card-form-submit"]');
+    await withActionDiagnostics(
+        `to click Verifone "[data-e2e='card-form-submit']"`,
+        () => describeLocator(submitButton, `Verifone "[data-e2e='card-form-submit']"`),
+        () => submitButton.click()
+    );
     await cardFrame.locator(':text("Select a payment method")').first().waitFor({ state: "visible", timeout: 20000 });
 });
 
@@ -248,14 +352,61 @@ When(/^I fill in the Adyen test card details$/, async function (this: ScenarioWo
     await page.waitForSelector(dropinReady, { state: "visible", timeout: 15000 });
 
     const cardholderName = getElementLocator(page, "Adyen cardholder name", globalConfig);
-    await page.fill(cardholderName, "Test Test");
+    await enterValue(page, cardholderName, "Test Test");
 
-    await page.frameLocator('[data-cse="encryptedCardNumber"] iframe')
-        .locator('input[data-fieldtype="encryptedCardNumber"]').fill("4111111111111111");
-    await page.frameLocator('[data-cse="encryptedExpiryDate"] iframe')
-        .locator('input[data-fieldtype="encryptedExpiryDate"]').fill("03/30");
-    await page.frameLocator('[data-cse="encryptedSecurityCode"] iframe')
-        .locator('input[data-fieldtype="encryptedSecurityCode"]').fill("737");
+    const cardNumberInput = page.frameLocator('[data-cse="encryptedCardNumber"] iframe')
+        .locator('input[data-fieldtype="encryptedCardNumber"]');
+    await withActionDiagnostics(
+        `to fill Adyen "encryptedCardNumber"`,
+        () => describeLocator(cardNumberInput, `Adyen "encryptedCardNumber"`),
+        () => cardNumberInput.fill("4111111111111111")
+    );
+    const expiryDateInput = page.frameLocator('[data-cse="encryptedExpiryDate"] iframe')
+        .locator('input[data-fieldtype="encryptedExpiryDate"]');
+    await withActionDiagnostics(
+        `to fill Adyen "encryptedExpiryDate"`,
+        () => describeLocator(expiryDateInput, `Adyen "encryptedExpiryDate"`),
+        () => expiryDateInput.fill("03/30")
+    );
+    const securityCodeInput = page.frameLocator('[data-cse="encryptedSecurityCode"] iframe')
+        .locator('input[data-fieldtype="encryptedSecurityCode"]');
+    await withActionDiagnostics(
+        `to fill Adyen "encryptedSecurityCode"`,
+        () => describeLocator(securityCodeInput, `Adyen "encryptedSecurityCode"`),
+        () => securityCodeInput.fill("737")
+    );
+});
+
+// PayPal SDK button rendered inside its own iframe (no testid, no stable
+// frame name - third-party markup) that opens a real POPUP window rather
+// than redirecting in-tab. CONFIRMED live on Russells (staging, 2026-08-03):
+// this integration points at PayPal's PRODUCTION environment even on
+// staging (the popup's own URL carries env=production), so clicking
+// through and authenticating would place a genuine PayPal transaction -
+// this step deliberately stops at confirming the popup opens and lands on
+// paypal.com, and never logs in or completes a payment. CONFIRMED live
+// (2026-08-07): the SDK button intermittently doesn't open its popup on
+// the first click (a genuine third-party init-timing issue, same class of
+// flakiness already documented for Global Payments below) - retried as a
+// whole, with a fresh waitForEvent each attempt, since a stale event
+// promise can't be reused. elementKey should resolve to the PayPal link/
+// button itself (inside its iframe, via the calling project's own mapping
+// - a plain CSS selector string can't reach across an iframe boundary, so
+// this reads the RAW selector value and re-wraps it in frameLocator here,
+// the one case in this file needing an iframe boundary).
+When(/^I click on the "([^"]*)" button and verify it opens a popup redirecting to "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, expectedHost: string) {
+    const { screen: { page }, globalConfig } = this;
+    const frameSelector = getElementLocator(page, `${elementKey} iframe`, globalConfig);
+    const buttonSelector = getElementLocator(page, elementKey, globalConfig);
+
+    await expect(async () => {
+        const popupPromise = page.context().waitForEvent("page", { timeout: 15000 });
+        await page.frameLocator(frameSelector).locator(buttonSelector).click();
+        const popup = await popupPromise;
+        await popup.waitForLoadState("domcontentloaded");
+        await expect(popup).toHaveURL(new RegExp(expectedHost.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), { timeout: 20000 });
+        await popup.close();
+    }).toPass({ timeout: 60000 });
 });
 
 // GlobalPayments (js.globalpay.com) hosted fields - Indespension's card
@@ -288,10 +439,35 @@ When(/^I pay with the "([^"]*)" GlobalPayments test card$/, { timeout: 30000 }, 
 
     await page.waitForSelector('iframe[name="card-number"]', { state: "visible", timeout: 15000 });
 
-    await page.frameLocator('iframe[name="card-number"]').locator('#secure-payment-field').fill(card.number);
-    await page.frameLocator('iframe[name="card-expiration"]').locator('#secure-payment-field').fill(card.expiry);
-    await page.frameLocator('iframe[name="card-cvv"]').locator('#secure-payment-field').fill(card.securityCode);
-    await page.frameLocator('iframe[name="card-holder-name"]').locator('#secure-payment-field').fill("Velstar Test");
+    const numberInput = page.frameLocator('iframe[name="card-number"]').locator('#secure-payment-field');
+    await withActionDiagnostics(
+        `to fill GlobalPayments "card-number"`,
+        () => describeLocator(numberInput, `GlobalPayments "card-number"`),
+        () => numberInput.fill(card.number)
+    );
+    const expirationInput = page.frameLocator('iframe[name="card-expiration"]').locator('#secure-payment-field');
+    await withActionDiagnostics(
+        `to fill GlobalPayments "card-expiration"`,
+        () => describeLocator(expirationInput, `GlobalPayments "card-expiration"`),
+        () => expirationInput.fill(card.expiry)
+    );
+    const cvvInput = page.frameLocator('iframe[name="card-cvv"]').locator('#secure-payment-field');
+    await withActionDiagnostics(
+        `to fill GlobalPayments "card-cvv"`,
+        () => describeLocator(cvvInput, `GlobalPayments "card-cvv"`),
+        () => cvvInput.fill(card.securityCode)
+    );
+    const holderNameInput = page.frameLocator('iframe[name="card-holder-name"]').locator('#secure-payment-field');
+    await withActionDiagnostics(
+        `to fill GlobalPayments "card-holder-name"`,
+        () => describeLocator(holderNameInput, `GlobalPayments "card-holder-name"`),
+        () => holderNameInput.fill("Velstar Test")
+    );
 
-    await page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first().click();
+    const submitButton = page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first();
+    await withActionDiagnostics(
+        `to click GlobalPayments "submit"`,
+        () => describeLocator(submitButton, `GlobalPayments "submit"`),
+        () => submitButton.click()
+    );
 });

@@ -27,32 +27,32 @@ Feature: Logged-in purchase journey
     And I am on the "login" page
     When I fill in the "Email address" input field with the "logged in" user's email
     And I fill in the "Password" input field with the "logged in" user's password
-    And I click on the "Sign In" button
+    And I click precisely on the "Sign In" button, dismissing the "Accept cookies" if it interferes
     Then I should be redirected to the "account" page
 
     When I am on the "home" page
-    And I click on the "Menu" button
+    And I click precisely on the "Menu" button, dismissing the "Accept cookies" if it interferes
     And I choose the "Shop" category from the menu
     Then the "product card" should be displayed
 
     When I am on the "sink-flange-pdp" page
-    And I click on the "Add to basket" button
+    And I click precisely on the "Add to basket" button, dismissing the "Accept cookies" if it interferes
     And the "added to basket confirmation" should be displayed
-    And I click on the "Continue shopping" button
+    And I click precisely on the "Continue shopping" button, dismissing the "Accept cookies" if it interferes
     And the "basket count" should contain the text "1"
 
     When I am on the "basket" page
-    And I click on the "Secure Checkout" button
+    And I click precisely on the "Secure Checkout" button, dismissing the "Accept cookies" if it interferes
     And I click on the "sign-in confirmation continue" button if present
     And I click on the "1st" "saved address" element
-    And I click on the "Address continue" button
+    And I click precisely on the "Address continue" button, dismissing the "Accept cookies" if it interferes
     And I fill in the "Phone number" input field with "07911123456"
     And I click on the "1st" "delivery method option" element
-    And I click on the "Delivery method continue" button
+    And I click precisely on the "Delivery method continue" button, dismissing the "Accept cookies" if it interferes
     Then I should be redirected to the "checkout-billing" page
 
     When I click on the "1st" "saved address" element
-    And I click on the "Address continue" button
+    And I click precisely on the "Address continue" button, dismissing the "Accept cookies" if it interferes
     Then I should be redirected to the "checkout-review" page
     And the "review content" should be displayed
 

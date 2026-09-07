@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 
 # Feature: Verify that specific users can see only the products allowed for their User Group
 

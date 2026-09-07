@@ -2,6 +2,7 @@
 
 var _cucumber = require("@cucumber/cucumber");
 var _webElementHelper = require("../../support-functions/web-element-helper");
+var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // The currency picker is a header dropdown: click the toggle to reveal the
 // GBP/EUR options, then click the requested one.
 (0, _cucumber.When)(/^I switch the currency to "(GBP|EUR)"$/, async function (currency) {
@@ -12,7 +13,7 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     globalConfig
   } = this;
   const toggleLocator = (0, _webElementHelper.getElementLocator)(page, "currency picker", globalConfig);
-  await page.click(toggleLocator, {
+  await (0, _htmlBehaviour.clickElement)(page, toggleLocator, {
     timeout: 15000
   });
   const optionLocator = (0, _webElementHelper.getElementLocator)(page, `${currency} currency option`, globalConfig);
@@ -20,7 +21,7 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     state: "visible",
     timeout: 10000
   });
-  await page.click(optionLocator, {
+  await (0, _htmlBehaviour.clickElement)(page, optionLocator, {
     timeout: 10000
   });
 });

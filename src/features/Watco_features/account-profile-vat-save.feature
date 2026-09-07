@@ -25,6 +25,21 @@ Feature: Account profile - VAT number save
   # "account test user with vat" account, since this scenario's whole
   # point is to mutate a saved VAT number, and a bug here should never
   # risk leaving a shared account in an unexpected state for other tests.
+  #
+  # CONFIRMED live (2026-09-07): reproduced this scenario failing again
+  # (VAT reverted to GB111111111 after save+reload) via a raw Playwright
+  # script - same class of bug as CLAUDE.md's "Known quirks" section
+  # already documents (cookie preference-centre overlay reappearing
+  # mid-scenario, force:true landing the click on the overlay instead of
+  # the real target underneath). Every OTHER click in this scenario
+  # (Register, Sign In, Marketing agreement) already has its own
+  # "removing the ... overlay if it interferes" clause; the "Save
+  # details" click didn't, so a reappeared overlay could swallow that one
+  # click specifically with no visible error - Playwright's force:true
+  # still "succeeds" against the overlay, no POST ever fires, and the
+  # page just reloads back to the unsaved value. Fixed by adding the same
+  # overlay-removal clause here too; 4 consecutive clean runs afterward,
+  # 0 retries needed.
 
   Scenario: Editing the VAT number and saving persists the new value
     Given I am on the "register" page
@@ -56,7 +71,7 @@ Feature: Account profile - VAT number save
     And I fill in the "Company" input field with "Velstar Test Ltd"
     And I select the "Facilities Manager" option from the "Job function" dropdown
     And I select the "Building/construction" option from the "Industry sector" dropdown
-    And I click on the "Save details" button
+    And I click on the "Save details" button, removing the "cookie preference centre overlay" overlay if it interferes
     And I wait for the page to settle
     And I reload the page
     Then the "VAT number" should equal the value "GB222222222"

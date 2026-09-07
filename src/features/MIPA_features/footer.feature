@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Footer
 
   # New coverage. The original QA export's "Footer links redirections"

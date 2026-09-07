@@ -33,6 +33,30 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
     force: true
   });
 });
+
+// Playwright auto-DISMISSES (not accepts) any native browser dialog
+// (window.confirm/alert/prompt) left unhandled, so a plain click on an
+// element whose click handler is gated behind a JS confirm() - e.g. "Are
+// you sure you want to delete this address?" - would silently cancel the
+// action itself rather than trigger it, with no error to show for it.
+// Registering the accept handler immediately before the click (rather
+// than once for the whole scenario) keeps this scoped to exactly the
+// click that's expected to raise a dialog. Reusable by any project whose
+// delete/remove action is gated by a native confirm().
+(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|icon|element), accepting the confirmation dialog$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  page.once("dialog", dialog => dialog.accept());
+  await (0, _htmlBehaviour.clickElement)(page, elementIdentifier, {
+    timeout: 15000,
+    force: true
+  });
+});
 (0, _cucumber.When)(/^I slowly click on the "([^"]*)" (?:button|link|icon|element|dropdown|tab)$/, async function (elementKey) {
   const {
     screen: {
@@ -281,7 +305,23 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
 // For an element that only sometimes appears (an optional interstitial, a
 // modal shown only on a fresh page load, etc.) - clicks it if it shows up
 // within a short window, otherwise moves on without failing the scenario.
-(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|icon|element|dropdown|tab) if present$/, async function (elementKey) {
+//
+// Worst case this step's own logic can take ~28s (8s appear-check + up to
+// 20s of dismiss-retry below) - and waitFor below only re-checks its own
+// timeout at the START of each retry iteration, so a slow iteration (a
+// clickElement + a 4s hidden-check) can carry it past its nominal 20s by
+// close to another full iteration. That total exceeds some projects'
+// SCRIPT_TIMEOUT (as low as 20000ms) - confirmed live on Insinkerator EU:
+// the interaction itself succeeded (country correctly switched, modal
+// gone) but Cucumber's own step timeout fired first and failed the
+// scenario anyway. An explicit per-step timeout, matching the same 45000ms
+// the "dismissing ... if it interferes" steps below already use rather
+// than a tightly-calculated figure, removes the dependency on whatever
+// SCRIPT_TIMEOUT happens to be configured for a given project and leaves
+// real margin for that overshoot.
+(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|icon|element|dropdown|tab) if present$/, {
+  timeout: 45000
+}, async function (elementKey) {
   const {
     screen: {
       page
@@ -380,6 +420,72 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
   });
 });
 
+// A real (even forced) mouse click still gets hit-tested by the browser at
+// the target's on-screen coordinates - if something else is genuinely
+// stacked on top there, the click lands on THAT element instead, silently,
+// with no Playwright error (force just skips Playwright's own pre-checks,
+// it doesn't change what the browser does with the resulting click).
+// Confirmed live on Keylite's PDP configurator: its first option card sits
+// beneath the sticky product-gallery panel at the viewport size this suite
+// runs at, so every click (forced or not) at that card's center actually
+// lands on the gallery's chevron-left arrow. Unlike the animating-overlay
+// case elsewhere in this codebase (which a "precisely"/retry click waits
+// out), this is a static layout overlap that waiting or scrolling doesn't
+// resolve - dispatching a real DOM click directly on the element (bypassing
+// the browser's own hit-testing entirely) is what a mouse click cannot do.
+// Reusable by any project with a similarly permanently-occluded target.
+(0, _cucumber.When)(/^I click on the "(\d+(?:st|nd|rd|th))" "([^"]+)" element via JavaScript$/, async function (elementPosition, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const index = Number(elementPosition.match(/\d+/)?.[0]) - 1;
+  const elements = await page.$$(elementIdentifier);
+  if (index >= elements.length) {
+    throw new Error(`Expected: to click index ${index} of "${elementKey}" (${elementIdentifier}) via JavaScript\nFound: only ${elements.length} matching element(s)`);
+  }
+  await elements[index].evaluate(el => el.click());
+});
+
+// Combines the JS-dispatch click above with the "retrying until the X is
+// displayed" pattern elsewhere in this file - for a target that needs BOTH
+// (occluded, so force/real clicks silently miss; AND flaky, so even a
+// correctly-landed click can no-op once). Confirmed live on Keylite's blinds
+// PDP configurator: advancing off Step 1 straight after filling the serial
+// number can silently no-op on the first JS-dispatched click (an "acted
+// before client state was ready" race, same class already documented
+// elsewhere in this repo) - blindly clicking twice risks double-advancing
+// on the run where the first click DID work, since "Next" is the same
+// persistent element across every step, not something that disappears once
+// clicked. Re-clicking only when the target still isn't showing avoids that.
+(0, _cucumber.When)(/^I click on the "(\d+(?:st|nd|rd|th))" "([^"]+)" element via JavaScript, retrying until the "([^"]*)" is displayed$/, async function (elementPosition, elementKey, targetKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const targetIdentifier = (0, _webElementHelper.getElementLocator)(page, targetKey, globalConfig);
+  const index = Number(elementPosition.match(/\d+/)?.[0]) - 1;
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    if ((await page.$(targetIdentifier)) != null) return true;
+    const elements = await page.$$(elementIdentifier);
+    if (index >= elements.length) {
+      throw new Error(`Expected: to click index ${index} of "${elementKey}" (${elementIdentifier}) via JavaScript\nFound: only ${elements.length} matching element(s)`);
+    }
+    await elements[index].evaluate(el => el.click());
+    await page.waitForTimeout(1000);
+    return (await page.$(targetIdentifier)) != null;
+  }, {
+    timeout: 20000,
+    wait: 500
+  });
+});
+
 // For an overlay that isn't just present once (the "removing the X
 // overlay if it interferes" click variants already handle that) but gets
 // RE-INSERTED on every page load / re-render throughout a scenario - a
@@ -446,15 +552,32 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
     state: "visible",
     timeout: 15000
   });
-  const count = await candidates.count();
-  for (let i = 0; i < count; i++) {
-    const candidate = candidates.nth(i);
-    if (await candidate.isEnabled()) {
-      await candidate.click();
-      return;
+
+  // Confirmed live on Indespension's towbar fitting-date picker: a
+  // candidate can render as visible immediately but start out disabled,
+  // with its real enabled/disabled state settling ~1-1.5s later (e.g.
+  // availability data loading asynchronously after render). Checking
+  // isEnabled() only once, right after the visibility wait above, can
+  // catch every candidate mid-load and wrongly report none available -
+  // so poll for a few seconds instead of checking once.
+  const clicked = await (0, _waitForBehaviour.waitFor)(async () => {
+    const count = await candidates.count();
+    for (let i = 0; i < count; i++) {
+      const candidate = candidates.nth(i);
+      if (await candidate.isEnabled()) {
+        await candidate.click();
+        return true;
+      }
     }
+    return false;
+  }, {
+    timeout: 5000,
+    wait: 250
+  }).catch(() => false);
+  if (!clicked) {
+    const count = await candidates.count();
+    throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
   }
-  throw new Error(`None of the ${count} "${elementKey}" candidates are currently enabled.`);
 });
 
 // For a click-triggered client-side route change that silently no-ops

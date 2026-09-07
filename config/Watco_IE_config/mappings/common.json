@@ -9,5 +9,15 @@
   "search result card title": ".card-fresh__title",
   "Add to basket": ".pdp-atb-btn",
   "basket header link": "#nav-basket",
-  "View basket": ".brand-btn-checkout"
+  "View basket": ".brand-btn-checkout",
+
+  "address first name": "#address_firstname",
+  "address last name": "#address_lastname",
+  "address telephone": "#address_telephone",
+  "address line 1": "#address_address_line_1",
+  "address line 2": "#address_address_line_2",
+  "address city": "#address_city",
+  "address postcode": "#address_postcode",
+  "address country": "#address_country",
+  "Save address": "form:has(#address_firstname) button[type='submit']"
 }

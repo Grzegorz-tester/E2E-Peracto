@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Contact Us page
 
   # New coverage. Confirmed live: no "Country dropdown" and no separate

@@ -54,5 +54,41 @@
   "checkout-thanks": {
     "route": "/bestelling-bevestigen/bedankt",
     "regex": "^/bestelling\\-bevestigen/bedankt$"
+  },
+  "plp": {
+    "route": "/vloeren",
+    "regex": "^/(vloeren|muren|daken|metaalbescherming|verven|reparatie|antislip-veiligheid|onderhoud-bescherming)(/[a-z0-9-]+)*$"
+  },
+  "forgotten": {
+    "route": "/vergeten",
+    "regex": "^/vergeten$"
+  },
+  "check-email": {
+    "route": "/bevestiging-opnieuw-instellen",
+    "regex": "^/bevestiging-opnieuw-instellen$"
+  },
+  "change-password": {
+    "route": "/mijn-account/wachtwoord-wijzigen",
+    "regex": "^/mijn\\-account/wachtwoord\\-wijzigen$"
+  },
+  "address-book-list": {
+    "route": "/mijn-account/mijn-adressen/weergeven",
+    "regex": "^/mijn\\-account/mijn\\-adressen/weergeven$"
+  },
+  "address-book-new": {
+    "route": "/mijn-account/mijn-adressen/adres-toevoegen",
+    "regex": "^/mijn\\-account/mijn\\-adressen/adres\\-toevoegen$"
+  },
+  "address-book-edit": {
+    "route": "/mijn-account/mijn-adressen/wijzigen",
+    "regex": "^/mijn\\-account/mijn\\-adressen/wijzigen/[0-9]+$"
+  },
+  "order-list": {
+    "route": "/mijn-account/bestellen/lijst",
+    "regex": "^/mijn\\-account/bestellen/lijst$"
+  },
+  "order-detail": {
+    "route": "/mijn-account/bestellen/details",
+    "regex": "^/mijn\\-account/bestellen/details/[0-9]+$"
   }
 }

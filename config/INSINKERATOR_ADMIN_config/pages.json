@@ -164,6 +164,18 @@
     "route": "/content/edit/article/:id",
     "regex": "^/content/edit/article/[^/]+$"
   },
+  "content-page-new": {
+    "route": "/content/edit/page/",
+    "regex": "^/content/edit/page/$"
+  },
+  "content-article-new": {
+    "route": "/content/edit/article/",
+    "regex": "^/content/edit/article/$"
+  },
+  "get-product": {
+    "route": "/test-harnesses/get-product",
+    "regex": "^/test-harnesses/get-product$"
+  },
   "content-template-detail": {
     "route": "/content/edit/template/:id",
     "regex": "^/content/edit/template/[^/]+$"

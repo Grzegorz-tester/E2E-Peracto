@@ -32,8 +32,8 @@
     "regex": "^/produits/[^/]+$"
   },
   "added-to-basket": {
-    "route": "/added-to-basket",
-    "regex": "^/added-to-basket$"
+    "route": "/ajoute-au-panier",
+    "regex": "^/ajoute-au-panier$"
   },
   "checkout-payment": {
     "route": "/valider-la-commande/payment",
@@ -54,5 +54,41 @@
   "checkout-thanks": {
     "route": "/valider-la-commande/merci",
     "regex": "^/valider\\-la\\-commande/merci$"
+  },
+  "plp": {
+    "route": "/sols",
+    "regex": "^/(sols|murs|toits|protection-metal|peintures|reparation|antiderapant-securisation|entretien-protection)(/[a-z0-9-]+)*$"
+  },
+  "forgotten": {
+    "route": "/oublié",
+    "regex": "^/oubli%C3%A9$"
+  },
+  "check-email": {
+    "route": "/confirmation-reinitialisation",
+    "regex": "^/confirmation-reinitialisation$"
+  },
+  "change-password": {
+    "route": "/mon-compte/changer-le-mot-de-passe",
+    "regex": "^/mon-compte/changer-le-mot-de-passe$"
+  },
+  "address-book-list": {
+    "route": "/mon-compte/mes-adresses/voir",
+    "regex": "^/mon-compte/mes-adresses/voir$"
+  },
+  "address-book-new": {
+    "route": "/mon-compte/mes-adresses/ajouter-une-adresse",
+    "regex": "^/mon-compte/mes-adresses/ajouter-une-adresse$"
+  },
+  "address-book-edit": {
+    "route": "/mon-compte/mes-adresses/modifier",
+    "regex": "^/mon-compte/mes-adresses/modifier/[0-9]+$"
+  },
+  "order-list": {
+    "route": "/mon-compte/ma-commande/voir",
+    "regex": "^/mon-compte/ma-commande/voir$"
+  },
+  "order-detail": {
+    "route": "/mon-compte/ma-commande/details",
+    "regex": "^/mon-compte/ma-commande/details/[0-9]+$"
   }
 }

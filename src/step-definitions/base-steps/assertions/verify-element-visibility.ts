@@ -1,6 +1,6 @@
 import { Then, When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
-import { getElementLocator } from "../../support-functions/web-element-helper";
+import { describeElement, getElementLocator } from "../../support-functions/web-element-helper";
 import { expect } from "@playwright/test";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { ElementKey } from "../../../env/global";
@@ -26,6 +26,10 @@ Then(
       const firstVisible = (await page.$(firstIdentifier)) != null;
       const secondVisible = (await page.$(secondIdentifier)) != null;
       return firstVisible || secondVisible;
+    }, {
+      expected: `"${firstElementKey}" or "${secondElementKey}" to be displayed`,
+      describeActual: async () =>
+        `"${firstElementKey}": ${await describeElement(page, firstIdentifier)}; "${secondElementKey}": ${await describeElement(page, secondIdentifier)}`,
     });
   },
 );
@@ -43,6 +47,9 @@ Then(
     await waitFor(async () => {
       const isElementVisible = (await page.$(elementIdentifier)) != null;
       return isElementVisible === !negate;
+    }, {
+      expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not be present" : "be displayed"}`,
+      describeActual: () => describeElement(page, elementIdentifier),
     });
   },
 );
@@ -65,6 +72,9 @@ Then(
     await waitFor(async () => {
       const isElementEnabled = await page.isEnabled(elementIdentifier);
       return isElementEnabled === !negate;
+    }, {
+      expected: `"${elementKey}" (${elementIdentifier}) to be ${negate ? "disabled" : "enabled"}`,
+      describeActual: () => describeElement(page, elementIdentifier),
     });
   },
 );
@@ -86,6 +96,9 @@ Then(
     await waitFor(async () => {
       const element = await page.$$(elementIdentifier);
       return (count === String(element.length)) === !negate;
+    }, {
+      expected: `${negate ? "not " : ""}${count} "${elementKey}" (${elementIdentifier}) element(s) to be displayed`,
+      describeActual: async () => `${(await page.$$(elementIdentifier)).length} matching element(s) found`,
     });
   },
 );
@@ -136,6 +149,9 @@ Then(
       if (comparison === "equal") return currentCount === rememberedCount;
       if (comparison === "be fewer than") return currentCount < rememberedCount;
       return currentCount > rememberedCount;
+    }, {
+      expected: `number of "${elementKey}" (${elementIdentifier}) elements to ${comparison} the remembered count (${rememberedCount})`,
+      describeActual: async () => `${(await page.$$(elementIdentifier)).length} matching element(s) found`,
     });
   },
 );

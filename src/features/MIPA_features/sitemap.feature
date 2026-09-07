@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Sitemap
 
   # New coverage. /sitemap is itself a sitemap index (confirmed live: 5

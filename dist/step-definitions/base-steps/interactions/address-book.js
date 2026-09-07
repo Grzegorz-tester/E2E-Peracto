@@ -3,6 +3,7 @@
 var _cucumber = require("@cucumber/cucumber");
 var _webElementHelper = require("../../support-functions/web-element-helper");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
+var _htmlBehaviour = require("../../support-functions/html-behaviour");
 // Delivery and billing addresses share the exact same underlying form and
 // list markup, only distinguished by a "delivery"/"billing" testid prefix.
 // Position-numbered add/edit/delete/name selectors are inherently dynamic
@@ -17,12 +18,12 @@ const editButtonSelector = (type, n) => `[data-testid="address-book-${type}__add
 const deleteButtonSelector = (type, n) => `[data-testid="address-book-${type}__address-${n}__delete-address-button"]`;
 const deleteConfirmSelector = (type, n) => `[data-testid="address-book-${type}__address-${n}__delete-address-yes-button"]`;
 const fillAddressForm = async (page, globalConfig, row) => {
-  await page.fill((0, _webElementHelper.getElementLocator)(page, "address first name", globalConfig), row["First name"]);
-  await page.fill((0, _webElementHelper.getElementLocator)(page, "address last name", globalConfig), row["Last name"]);
-  await page.fill((0, _webElementHelper.getElementLocator)(page, "address line 1", globalConfig), row["Address line 1"]);
-  await page.fill((0, _webElementHelper.getElementLocator)(page, "address city", globalConfig), row["City"]);
-  await page.fill((0, _webElementHelper.getElementLocator)(page, "address postcode", globalConfig), row["Postcode"]);
-  await page.click((0, _webElementHelper.getElementLocator)(page, "Save address", globalConfig));
+  await (0, _htmlBehaviour.enterValue)(page, (0, _webElementHelper.getElementLocator)(page, "address first name", globalConfig), row["First name"]);
+  await (0, _htmlBehaviour.enterValue)(page, (0, _webElementHelper.getElementLocator)(page, "address last name", globalConfig), row["Last name"]);
+  await (0, _htmlBehaviour.enterValue)(page, (0, _webElementHelper.getElementLocator)(page, "address line 1", globalConfig), row["Address line 1"]);
+  await (0, _htmlBehaviour.enterValue)(page, (0, _webElementHelper.getElementLocator)(page, "address city", globalConfig), row["City"]);
+  await (0, _htmlBehaviour.enterValue)(page, (0, _webElementHelper.getElementLocator)(page, "address postcode", globalConfig), row["Postcode"]);
+  await (0, _htmlBehaviour.clickElement)(page, (0, _webElementHelper.getElementLocator)(page, "Save address", globalConfig));
 };
 (0, _cucumber.When)(/^I add a new (delivery|billing) address with the following details:$/, async function (type, table) {
   const {
@@ -35,7 +36,7 @@ const fillAddressForm = async (page, globalConfig, row) => {
   const countBefore = await page.locator(namesListSelector(type)).count();
   const addButton = page.locator(addButtonSelector(type));
   if ((await addButton.count()) > 0) {
-    await addButton.click();
+    await (0, _htmlBehaviour.withActionDiagnostics)(`to click the "${type}" add-address button (${addButtonSelector(type)})`, () => (0, _webElementHelper.describeLocator)(addButton, `the "${type}" add-address button`), () => addButton.click());
     await page.waitForSelector((0, _webElementHelper.getElementLocator)(page, "address first name", globalConfig), {
       state: "visible",
       timeout: 35000
@@ -69,7 +70,7 @@ const fillAddressForm = async (page, globalConfig, row) => {
   } = this;
   const row = table.rowsHash();
   const addressNumber = Number(this.globalVariables[`last added ${type} address number`]);
-  await page.click(editButtonSelector(type, addressNumber));
+  await (0, _htmlBehaviour.clickElement)(page, editButtonSelector(type, addressNumber));
   await page.waitForSelector((0, _webElementHelper.getElementLocator)(page, "address first name", globalConfig), {
     state: "visible",
     timeout: 35000
@@ -89,12 +90,12 @@ const fillAddressForm = async (page, globalConfig, row) => {
     }
   } = this;
   const addressNumber = Number(this.globalVariables[`last added ${type} address number`]);
-  await page.click(deleteButtonSelector(type, addressNumber));
+  await (0, _htmlBehaviour.clickElement)(page, deleteButtonSelector(type, addressNumber));
   await page.waitForSelector(deleteConfirmSelector(type, addressNumber), {
     state: "visible",
     timeout: 15000
   });
-  await page.click(deleteConfirmSelector(type, addressNumber));
+  await (0, _htmlBehaviour.clickElement)(page, deleteConfirmSelector(type, addressNumber));
   await page.waitForSelector(nameSelector(type, addressNumber), {
     state: "detached",
     timeout: 35000

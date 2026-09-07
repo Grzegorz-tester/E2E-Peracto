@@ -1,0 +1,4 @@
+{
+  "order history table": "table",
+  "first order view link": ":nth-match(a[href*='/mijn-account/bestellen/details/'], 1)"
+}

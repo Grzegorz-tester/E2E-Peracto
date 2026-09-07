@@ -1,0 +1,7 @@
+{
+  "Card number": "input[placeholder='0000 0000 0000 0000']",
+  "Expiry month": "input[placeholder='MM']",
+  "Expiry year": "input[placeholder='YY']",
+  "CVC": "input[placeholder='123']",
+  "Confirm card details": "button:has-text('Confirm card details')"
+}

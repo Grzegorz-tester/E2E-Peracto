@@ -1,0 +1,6 @@
+{
+  "Add new address link": "a[href='/mijn-account/mijn-adressen/adres-toevoegen']",
+  "test address card": ".address-box:has-text('Velstar Test Automation Address')",
+  "edit link for test address": ".address-box:has-text('Velstar Test Automation Address') a[href*='/mijn-account/mijn-adressen/wijzigen/']",
+  "delete button for test address": ".address-box:has-text('Velstar Test Automation Address') button.remove-address"
+}

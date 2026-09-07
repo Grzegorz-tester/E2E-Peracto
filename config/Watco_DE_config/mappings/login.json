@@ -1,5 +1,7 @@
 {
   "Email address": "#login__username",
   "Password": "#login__password",
-  "Sign In": "form[name='login'] button[type='submit']"
+  "Sign In": "form[name='login'] button[type='submit']",
+  "login error message": ".alert-danger",
+  "Forgotten password link": "a[href='/vergessen']"
 }

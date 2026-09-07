@@ -2,17 +2,13 @@
 Feature: Resetting the password
 
   Scenario: Requesting the reset password email with the registered email address
-    Given the user is on the reset password page
-    When the user enters his email
-    And clicks the Submit button
+    Given I am on the "reset-password" page
+    When I fill in the "Email address" input field with "grzegorz.hajduk+andythornton@velstar.co.uk"
+    And I click on the "Submit" button
+    Then I should be presented with a "reset password message" "You should receive an email shortly with instructions on how to proceed."
 
-#
-#  Scenario Outline: Requesting the reset password email with email address that is not registered
-#    Given the user is on the reset password page
-#    When the user enters a wrong email address <email>
-#    And clicks the Submit button
-#    Then he should be presented with an error message <message>
-#    Examples:
-#      | email            | message                            |
-#      |                  | Please enter your email address    |
-#      | not_valid_email@ | Please enter a valid email address |
+  Scenario: Requesting the reset password email with a malformed email address
+    Given I am on the "reset-password" page
+    When I fill in the "Email address" input field with "not_a_correct_email_address@"
+    And I click on the "Submit" button
+    Then the "Email address" input should be rejected as invalid

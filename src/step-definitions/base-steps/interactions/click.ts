@@ -37,6 +37,29 @@ When(
   }
 );
 
+// Playwright auto-DISMISSES (not accepts) any native browser dialog
+// (window.confirm/alert/prompt) left unhandled, so a plain click on an
+// element whose click handler is gated behind a JS confirm() - e.g. "Are
+// you sure you want to delete this address?" - would silently cancel the
+// action itself rather than trigger it, with no error to show for it.
+// Registering the accept handler immediately before the click (rather
+// than once for the whole scenario) keeps this scoped to exactly the
+// click that's expected to raise a dialog. Reusable by any project whose
+// delete/remove action is gated by a native confirm().
+When(
+  /^I click on the "([^"]*)" (?:button|link|icon|element), accepting the confirmation dialog$/,
+  async function (elementKey: ElementKey) {
+    const {
+      screen: { page },
+      globalConfig,
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    page.once("dialog", (dialog) => dialog.accept());
+    await clickElement(page, elementIdentifier, { timeout: 15000, force: true });
+  }
+);
+
 When(
   /^I slowly click on the "([^"]*)" (?:button|link|icon|element|dropdown|tab)$/,
   async function (elementKey: ElementKey) {
@@ -412,6 +435,39 @@ When(
     }
 
     await elements[index].evaluate((el: HTMLElement) => el.click());
+  }
+);
+
+// Combines the JS-dispatch click above with the "retrying until the X is
+// displayed" pattern elsewhere in this file - for a target that needs BOTH
+// (occluded, so force/real clicks silently miss; AND flaky, so even a
+// correctly-landed click can no-op once). Confirmed live on Keylite's blinds
+// PDP configurator: advancing off Step 1 straight after filling the serial
+// number can silently no-op on the first JS-dispatched click (an "acted
+// before client state was ready" race, same class already documented
+// elsewhere in this repo) - blindly clicking twice risks double-advancing
+// on the run where the first click DID work, since "Next" is the same
+// persistent element across every step, not something that disappears once
+// clicked. Re-clicking only when the target still isn't showing avoids that.
+When(
+  /^I click on the "(\d+(?:st|nd|rd|th))" "([^"]+)" element via JavaScript, retrying until the "([^"]*)" is displayed$/,
+  async function (this: ScenarioWorld, elementPosition: string, elementKey: ElementKey, targetKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const targetIdentifier = getElementLocator(page, targetKey, globalConfig);
+    const index = Number(elementPosition.match(/\d+/)?.[0]) - 1;
+
+    await waitFor(async () => {
+      if ((await page.$(targetIdentifier)) != null) return true;
+
+      const elements = await page.$$(elementIdentifier);
+      if (index >= elements.length) {
+        throw new Error(`Expected: to click index ${index} of "${elementKey}" (${elementIdentifier}) via JavaScript\nFound: only ${elements.length} matching element(s)`);
+      }
+      await elements[index].evaluate((el: HTMLElement) => el.click());
+      await page.waitForTimeout(1000);
+      return (await page.$(targetIdentifier)) != null;
+    }, { timeout: 20000, wait: 500 });
   }
 );
 

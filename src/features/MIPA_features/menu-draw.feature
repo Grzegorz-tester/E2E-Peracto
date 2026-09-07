@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Menu side draw
 
   # Full rewrite - the previous version tested a menu item set cloned from

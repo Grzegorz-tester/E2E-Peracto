@@ -32,8 +32,8 @@
     "regex": "^/produkt/[^/]+$"
   },
   "added-to-basket": {
-    "route": "/added-to-basket",
-    "regex": "^/added-to-basket$"
+    "route": "/dodano-do-koszyka",
+    "regex": "^/dodano-do-koszyka$"
   },
   "checkout-payment": {
     "route": "/realizacja-transakcji/payment",
@@ -54,5 +54,41 @@
   "checkout-thanks": {
     "route": "/realizacja-transakcji/dziekujemy",
     "regex": "^/realizacja\\-transakcji/dziekujemy$"
+  },
+  "plp": {
+    "route": "/posadzki",
+    "regex": "^/(posadzki|sciany|dachy|specjalistyczne-zastosowanie|farby|naprawy|antyposlizgowosc-i-bezpieczenstwo|ogolna-konserwacja)(/[a-z0-9-]+)*$"
+  },
+  "forgotten": {
+    "route": "/pomin",
+    "regex": "^/pomin$"
+  },
+  "check-email": {
+    "route": "/e-mail-sprawdz",
+    "regex": "^/e-mail-sprawdz$"
+  },
+  "change-password": {
+    "route": "/konto/zmiana-hasła",
+    "regex": "^/konto/zmiana-has%C5%82a$"
+  },
+  "address-book-list": {
+    "route": "/konto/ksiazka-adresowa/lista",
+    "regex": "^/konto/ksiazka-adresowa/lista$"
+  },
+  "address-book-new": {
+    "route": "/konto/ksiazka-adresowa/nowy",
+    "regex": "^/konto/ksiazka-adresowa/nowy$"
+  },
+  "address-book-edit": {
+    "route": "/konto/ksiazka-adresowa/edytuj",
+    "regex": "^/konto/ksiazka-adresowa/edytuj/[0-9]+$"
+  },
+  "order-list": {
+    "route": "/konto/zamowienie/lista",
+    "regex": "^/konto/zamowienie/lista$"
+  },
+  "order-detail": {
+    "route": "/konto/zamowienie/szczegoly",
+    "regex": "^/konto/zamowienie/szczegoly/[0-9]+$"
   }
 }

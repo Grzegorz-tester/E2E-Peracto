@@ -8,5 +8,9 @@
   "Contact Us": "//button[text()='Contact Us']",
   "View all and search": "//a[text()='View all and search']",
   "Orders table": "//tbody",
-  "first item link": "a[data-testid='row-0-name']"
+  "first item link": "a[data-testid='row-0-name']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "SKU filter": "[data-testid='text-filter-sku']",
+  "product name": "[data-testid$='-name'] a",
+  "product SKU": "td[data-testid$='-sku']"
 }

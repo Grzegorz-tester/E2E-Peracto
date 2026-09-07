@@ -49,16 +49,17 @@ const fillRegistrationForm = async (world, omit) => {
     await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, data[field]);
   }
   const dateButtonSelector = (0, _webElementHelper.getElementLocator)(page, "registration date of purchase button", globalConfig);
-  await page.click(dateButtonSelector);
+  await (0, _htmlBehaviour.clickElement)(page, dateButtonSelector);
   const today = new Date().getDate();
-  await page.getByRole("gridcell", {
+  const todayGridcell = page.getByRole("gridcell", {
     name: String(today),
     exact: true
-  }).first().click();
+  }).first();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click today's (${today}) date-of-purchase gridcell`, () => (0, _webElementHelper.describeLocator)(todayGridcell, `today's (${today}) gridcell`), () => todayGridcell.click());
   const modelComboboxSelector = (0, _webElementHelper.getElementLocator)(page, "registration product model combobox", globalConfig);
   const modelOptionSelector = (0, _webElementHelper.getElementLocator)(page, "Standard 460 model option", globalConfig);
-  await page.click(modelComboboxSelector);
-  await page.click(modelOptionSelector);
+  await (0, _htmlBehaviour.clickElement)(page, modelComboboxSelector);
+  await (0, _htmlBehaviour.clickElement)(page, modelOptionSelector);
 
   // The visible Radix listbox only exposes each option's TRANSLATED label,
   // but the underlying native <select> this component syncs from keeps a
@@ -69,11 +70,12 @@ const fillRegistrationForm = async (world, omit) => {
   const installedBySelectSelector = (0, _webElementHelper.getElementLocator)(page, "registration installed by select", globalConfig);
   const installedByComboboxSelector = (0, _webElementHelper.getElementLocator)(page, "registration installed by combobox", globalConfig);
   const installedByLabel = await page.locator(installedBySelectSelector).locator('option[value="DIY"]').textContent();
-  await page.click(installedByComboboxSelector);
-  await page.getByRole("option", {
+  await (0, _htmlBehaviour.clickElement)(page, installedByComboboxSelector);
+  const installedByOption = page.getByRole("option", {
     name: installedByLabel ?? "DIY",
     exact: true
-  }).click();
+  });
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the "${installedByLabel ?? "DIY"}" installed-by option`, () => (0, _webElementHelper.describeLocator)(installedByOption, `the "${installedByLabel ?? "DIY"}" installed-by option`), () => installedByOption.click());
   return data;
 };
 (0, _cucumber.When)(/^I fill in a freshly generated product registration, remembering it as "([^"]*)"$/, async function (variableName) {
@@ -104,8 +106,11 @@ const fillRegistrationForm = async (world, omit) => {
   const submitSelector = (0, _webElementHelper.getElementLocator)(page, "warranty submit button", globalConfig);
   await (0, _htmlBehaviour.enterValue)(page, lastNameSelector, registration.lastName);
   await (0, _htmlBehaviour.enterValue)(page, serialNumberSelector, registration.serialNumber);
-  await (0, _waitForBehaviour.waitFor)(() => page.isEnabled(submitSelector));
-  await page.click(submitSelector);
+  await (0, _waitForBehaviour.waitFor)(() => page.isEnabled(submitSelector), {
+    expected: `"warranty submit button" (${submitSelector}) to become enabled`,
+    describeActual: () => (0, _webElementHelper.describeLocator)(page.locator(submitSelector), `"warranty submit button" (${submitSelector})`)
+  });
+  await (0, _htmlBehaviour.clickElement)(page, submitSelector);
 });
 (0, _cucumber.Then)(/^the warranty lookup should succeed for "([^"]*)" using the remembered registration "([^"]*)"$/, async function (productName, variableName) {
   const {

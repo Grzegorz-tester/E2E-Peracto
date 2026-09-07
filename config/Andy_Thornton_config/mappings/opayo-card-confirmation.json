@@ -1,0 +1,3 @@
+{
+  "Pay now": "button:has-text('Pay')"
+}

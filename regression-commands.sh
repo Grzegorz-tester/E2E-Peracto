@@ -35,6 +35,24 @@
 # COMMON_CONFIG_FILE=env/Watco_NL.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/Watco_PL.env ./run_tests.sh regression
 
+# ---- Watco PROD (UK + regional variants) ----
+# LIVE/PRODUCTION - each env file below carries its own header comment
+# repeating this, but worth saying here too: never place a real order on
+# production. The one Watco scenario that completes an order
+# (logged-in-checkout-vat-persistence) is tagged @places-real-order, which
+# is auto-excluded from every profile whenever UI_AUTOMATION_HOST is
+# exactly "production" (see productionExclusion in src/index.ts) - this
+# only holds as long as any future order-placing scenario is tagged the
+# same way.
+# COMMON_CONFIG_FILE=env/Watco_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_BEFR_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_BENL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_DE_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_FR_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_IE_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_NL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Watco_PL_PROD.env ./run_tests.sh regression
+
 # ---- Insinkerator ----
 # COMMON_CONFIG_FILE=env/Insinkerator.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN.env ./run_tests.sh regression
@@ -50,6 +68,7 @@
 # ---- Indespension ----
 # COMMON_CONFIG_FILE=env/Indespension.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Indespension_RELEASE.env ./run_tests.sh regression
 
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
 # COMMON_CONFIG_FILE=env/CARBON_ADMIN.env ./run_tests.sh regression
@@ -65,9 +84,16 @@
 # COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh Andy_Thornton_regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
 
-# ---- MIPA (uses its own regression profile/tag) ----
-# COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh MIPA_regression
+# ---- MIPA ----
+# Was tagged @MIPA_regression with its own cucumber profile; retagged
+# @regression and the MIPA_regression profile removed from src/index.ts,
+# in line with the rest of the projects. MIPA_RELEASE targets the
+# Next.js-upgrade release branch (config/MIPA_config/hosts.json's
+# release_branch host, URL bumped each sprint) - treated as staging, real
+# orders OK.
+# COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/MIPA_RELEASE.env ./run_tests.sh regression
 
 # ---- Pizza Express Live ----
 # Storefront is production only (admin is read-only there per CLAUDE.md) -

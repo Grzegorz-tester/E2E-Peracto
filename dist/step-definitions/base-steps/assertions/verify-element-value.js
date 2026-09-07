@@ -23,6 +23,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(elementIdentifier);
     return elementText?.includes(user.email);
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to contain the ${userType} user's email "${user.email}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
   });
 });
 
@@ -38,6 +41,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(elementIdentifier);
     return elementText?.includes(expectedElementText) === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the text "${expectedElementText}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
   });
 });
 
@@ -59,6 +65,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementText = await page.textContent(elementIdentifier);
     return elementText?.trim() === expectedElementText.trim() === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}equal text "${expectedElementText}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
   });
 });
 
@@ -74,6 +83,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const elementAttribute = await (0, _htmlBehaviour.getValue)(page, elementIdentifier);
     return elementAttribute === elementValue === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}equal the value "${elementValue}"`,
+    describeActual: async () => `value was "${(await (0, _htmlBehaviour.getValue)(page, elementIdentifier).catch(() => null)) ?? "(could not read value)"}"`
   });
 });
 
@@ -108,9 +120,13 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   console.log(`the ${elementPosition} ${elementKey} should ${negate ? "not " : ""}contain the text ${expectedElementText}`);
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
   const index = Number(elementPosition.match(/\d/g)?.join("")) - 1;
+  const indexedIdentifier = `${elementIdentifier}>>nth=${index}`;
   await (0, _waitForBehaviour.waitFor)(async () => {
-    const elementText = await page.textContent(`${elementIdentifier}>>nth=${index}`);
+    const elementText = await page.textContent(indexedIdentifier);
     return elementText?.includes(expectedElementText) === !negate;
+  }, {
+    expected: `the ${elementPosition} "${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the text "${expectedElementText}"`,
+    describeActual: () => (0, _webElementHelper.describeElement)(page, indexedIdentifier)
   });
 });
 
@@ -127,6 +143,49 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
   const text = await page.textContent(elementIdentifier);
   this.globalVariables[variableName] = text ?? "";
+});
+
+// For a value that's usually present but can legitimately be blank on one
+// particular candidate - confirmed live: Carbon Admin's own Products list
+// has a genuinely blank-named seed row at position 0 (its SKU is
+// populated, just not its name), which would otherwise make "remember the
+// text of ... as ..." stash an empty string for any shared scenario that
+// assumes row 0 is usable. elementKey should resolve to ALL candidates
+// (e.g. every row's own name cell, not just row 0's), same convention as
+// click.ts's "the first enabled ..." step - this remembers whichever one
+// actually has text, mirroring that step's same "not every candidate is
+// usable" reasoning for reading text instead of clicking.
+//
+// Deliberately waits for at least one candidate to be ATTACHED, not for
+// candidates.first() to be VISIBLE - confirmed live, this is another
+// symptom of Carbon Admin's own confirmed 0x0-bounding-box bug on its
+// Products list's first row link (see first-item-redirects.feature):
+// that row genuinely never becomes "visible" to Playwright, so waiting on
+// first() specifically would time out there even though later candidates
+// (row 1, 2, ...) are perfectly visible and exactly what this step exists
+// to fall through to.
+(0, _cucumber.When)(/^I remember the text of the first non-empty "([^"]*)" as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const candidates = page.locator(elementIdentifier);
+  await candidates.first().waitFor({
+    state: "attached",
+    timeout: 15000
+  });
+  const count = await candidates.count();
+  for (let i = 0; i < count; i++) {
+    const text = (await candidates.nth(i).textContent())?.trim();
+    if (text) {
+      this.globalVariables[variableName] = text;
+      return;
+    }
+  }
+  throw new Error(`None of the ${count} "${elementKey}" (${elementIdentifier}) candidates have any text.`);
 });
 
 // For a value that renders with an extra prefix in one place but not
@@ -161,6 +220,9 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const currentText = await page.textContent(elementIdentifier);
     return currentText?.trim() === remembered.trim() === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}equal the remembered text "${remembered}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
   });
 });
 
@@ -183,6 +245,40 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   await (0, _waitForBehaviour.waitFor)(async () => {
     const currentText = await page.textContent(elementIdentifier);
     return (currentText?.includes(remembered) ?? false) === !negate;
+  }, {
+    expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the remembered text "${remembered}"`,
+    describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`
+  });
+});
+
+// An "any match" variant of "should contain the remembered" above - for a
+// remembered value that could land in ANY ONE of several matching elements
+// (e.g. one address card among several a user already has) rather than
+// necessarily the first, which is all "should contain the remembered"
+// checks (it reads only the first match's text). Also doubles as the
+// negated "no longer present" check after a delete, since a genuinely
+// empty result set makes the positive form meaningless the same way "the X
+// should not be displayed" differs from "the X should be displayed".
+(0, _cucumber.Then)(/^the remembered "([^"]*)" should\s*(not)?\s*appear in the "([^"]*)" element$/, async function (variableName, negate, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." (or an equivalent "remembering it as ..." step) must run first.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    const count = await page.locator(elementIdentifier).filter({
+      hasText: remembered
+    }).count();
+    return count > 0 === !negate;
+  }, {
+    expected: `at least one "${elementKey}" (${elementIdentifier}) element to ${negate ? "not " : ""}contain the remembered "${variableName}" ("${remembered}")`,
+    describeActual: async () => `found ${await page.locator(elementIdentifier).count()} matching element(s)${negate ? ", still" : ", none"} containing "${remembered}"`
   });
 });
 
@@ -209,6 +305,12 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
     return texts.every(text => text?.toLowerCase().includes(expectedText.toLowerCase()));
   }, {
     timeout: 15000,
-    wait: 500
+    wait: 500,
+    expected: `every "${elementKey}" (${elementIdentifier}) element to contain the text "${expectedText}"`,
+    describeActual: async () => {
+      const elements = await page.$$(elementIdentifier);
+      const texts = await Promise.all(elements.map(el => el.textContent().catch(() => null)));
+      return `${elements.length} matching element(s), texts: ${JSON.stringify(texts.map(t => t?.trim()))}`;
+    }
   });
 });

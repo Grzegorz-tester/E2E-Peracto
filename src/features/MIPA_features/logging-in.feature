@@ -1,5 +1,5 @@
 @smoke
-@MIPA_regression
+@regression
 Feature: Login Page
 
 

@@ -1,0 +1,4 @@
+{
+  "forgotten password email": "#forgotten_username",
+  "forgotten password submit": "form:has(#forgotten_username) button[type='submit']"
+}

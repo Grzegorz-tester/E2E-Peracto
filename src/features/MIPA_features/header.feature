@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 
 Feature: Header functionality
 

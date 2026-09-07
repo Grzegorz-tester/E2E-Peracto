@@ -54,5 +54,41 @@
   "checkout-payment": {
     "route": "/checkout/payment",
     "regex": "^/checkout/payment$"
+  },
+  "plp": {
+    "route": "/floors",
+    "regex": "^/(floors|walls|roofs|paint|repair|anti-slip-safety|general-maintenance)(/[a-z0-9-]+)*$"
+  },
+  "forgotten": {
+    "route": "/forgotten",
+    "regex": "^/forgotten$"
+  },
+  "check-email": {
+    "route": "/check-email",
+    "regex": "^/check-email$"
+  },
+  "change-password": {
+    "route": "/account/change-password",
+    "regex": "^/account/change-password$"
+  },
+  "address-book-list": {
+    "route": "/account/address-book/list",
+    "regex": "^/account/address-book/list$"
+  },
+  "address-book-new": {
+    "route": "/account/address-book/new",
+    "regex": "^/account/address-book/new$"
+  },
+  "address-book-edit": {
+    "route": "/account/address-book/edit",
+    "regex": "^/account/address-book/edit/[0-9]+$"
+  },
+  "order-list": {
+    "route": "/account/order/list",
+    "regex": "^/account/order/list$"
+  },
+  "order-detail": {
+    "route": "/account/order/details",
+    "regex": "^/account/order/details/[0-9]+$"
   }
 }

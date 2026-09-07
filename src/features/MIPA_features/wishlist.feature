@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Wishlist ("My Lists")
 
   # New coverage (previously none existed). MIPA calls this feature

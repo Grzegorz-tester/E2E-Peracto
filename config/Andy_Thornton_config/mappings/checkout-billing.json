@@ -1,0 +1,11 @@
+{
+  "billing same as delivery": "[data-testid='checkout-address-form__same-as-delivery-address']",
+
+  "address first name": "[data-testid='checkout-address-form__first-name']",
+  "address last name": "[data-testid='checkout-address-form__last-name']",
+  "Manually enter your address": "text=Manually enter your address",
+  "address line 1": "[data-testid='checkout-address-form__address-line-1']",
+  "address city": "[data-testid='checkout-address-form__city']",
+  "address postcode": "[data-testid='checkout-address-form__postcode']",
+  "Use this address": "[data-testid='checkout-address-form__submit-button']"
+}

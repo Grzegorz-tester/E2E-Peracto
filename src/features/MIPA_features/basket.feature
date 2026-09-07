@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Basket page
 
   # Full rewrite. Two structural bugs, both fixed:

@@ -89,13 +89,54 @@ const getRunner = () => {
   }
 };
 const sumDurations = element => (element.steps ?? []).reduce((sum, step) => sum + (step.result?.duration ?? 0), 0);
+
+// Step definitions that support it (see wait-for-behaviour.ts's `expected`/
+// `describeActual` and html-behaviour.ts's withDiagnostics) throw errors
+// shaped as "Expected: ...\nFound: ...", optionally followed by a blank
+// line and the original Playwright error for extra detail. Older/plainer
+// errors (a raw Playwright timeout, a bespoke thrown Error) don't match
+// this shape at all - those still fall back to the single raw block below,
+// so this is purely additive.
+//
+// A leading "Error: " (or similar) is stripped first - Cucumber's own error
+// formatter (assertion-error-formatter, see format_error.js) reconstructs
+// the reported message from the error's `.stack`, and for a plain `new
+// Error(...)` whose stack was never overwritten, Node's default stack
+// format ("Error: <message>\n    at ...") means that prefix gets folded
+// back into the message it reports - confirmed live: identical Expected/
+// Found errors got a leading "Error: " when thrown from wait-for-
+// behaviour.ts (untouched stack) but not from html-behaviour.ts (which
+// reassigns .stack to the original failure's own stack), even though both
+// are the exact same shape.
+const parseExpectedFound = message => {
+  const withoutErrorPrefix = message.replace(/^[A-Za-z]*Error:\s*/, '');
+  const match = withoutErrorPrefix.match(/^Expected:\s*([\s\S]*?)\nFound:\s*([\s\S]*?)(?:\n\n([\s\S]*))?$/);
+  if (!match) return null;
+  return {
+    expected: match[1].trim(),
+    found: match[2].trim(),
+    rest: (match[3] ?? '').trim()
+  };
+};
+const renderStepError = message => {
+  const parsed = parseExpectedFound(message);
+  if (!parsed) {
+    return `<div class="step-error step-error-plain">${escapeHtml(message.slice(0, 500))}</div>`;
+  }
+  const rawDetail = parsed.rest ? `<div class="step-error-raw">${escapeHtml(parsed.rest.slice(0, 500))}</div>` : '';
+  return `<div class="step-error">
+        <div class="expected-found"><span class="ef-label ef-expected">Expected</span>${escapeHtml(parsed.expected)}</div>
+        <div class="expected-found"><span class="ef-label ef-found">Found</span>${escapeHtml(parsed.found)}</div>
+        ${rawDetail}
+    </div>`;
+};
 const renderStepRow = (step, index) => {
   const rawStatus = step.result?.status;
   const status = normalizeStatus(rawStatus);
   const keyword = (step.keyword ?? '').trim();
   const text = escapeHtml(step.name ?? '');
   const duration = formatDuration(step.result?.duration);
-  const comment = step.result?.error_message ? `<div class="step-error">${escapeHtml(step.result.error_message.slice(0, 500))}</div>` : '-';
+  const comment = step.result?.error_message ? renderStepError(step.result.error_message) : '-';
   return `<tr>
         <td class="col-index">${index}</td>
         <td class="col-step"><span class="step-keyword">${escapeHtml(keyword)}</span>${text}</td>
@@ -229,12 +270,20 @@ const buildHtml = (features, generatedAt) => {
   .steps-table td { padding: 10px 8px; border-bottom: 1px solid #eaeef2; font-size: 12px; vertical-align: top; }
   .steps-table tr { page-break-inside: avoid; }
   .col-index { width: 28px; color: #57606a; }
-  .col-comment { width: 220px; color: #57606a; }
+  .col-comment { width: 280px; color: #57606a; }
   .col-attachments { width: 90px; color: #57606a; }
   .col-status { width: 100px; }
   .step-keyword { color: #0969da; font-weight: bold; margin-right: 4px; }
   .step-duration { color: #8c959f; font-size: 10px; margin-top: 2px; }
-  .step-error { font-family: monospace; font-size: 10px; white-space: pre-wrap; color: ${STATUS_COLOR.failed}; }
+  .step-error { font-size: 10px; }
+  .step-error-plain { font-family: monospace; font-size: 9px; white-space: pre-wrap; color: ${STATUS_COLOR.failed}; }
+
+  .expected-found { white-space: pre-wrap; line-height: 1.5; margin-bottom: 3px; }
+  .ef-label { display: inline-block; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 9px; text-transform: uppercase; letter-spacing: 0.03em; border-radius: 3px; padding: 1px 5px; margin-right: 6px; }
+  .ef-expected { background: #ddf4ff; color: #0969da; }
+  .ef-found { background: #ffebe9; color: ${STATUS_COLOR.failed}; }
+
+  .step-error-raw { font-family: monospace; font-size: 9px; white-space: pre-wrap; color: #57606a; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #d0d7de; }
 
   .status-text { font-weight: bold; }
   .status-passed { color: ${STATUS_COLOR.passed}; }

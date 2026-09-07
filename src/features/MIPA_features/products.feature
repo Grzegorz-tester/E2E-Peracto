@@ -1,4 +1,4 @@
-@MIPA_regression
+@regression
 Feature: Product Listing Page (PLP)
 
   # Full rewrite - the previous version pointed at "bathroom-cabinets"/

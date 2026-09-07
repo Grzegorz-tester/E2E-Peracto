@@ -1,0 +1,10 @@
+{
+  "PLP container": "[data-testid='algolia-list-page-with-drawer']",
+  "PLP hit count": "[data-testid='algolia-hit-count']",
+  "PLP sort by": "[data-testid='algolia-sort-by']",
+  "PLP product cards": "[data-testid='algolia-hits__hits']",
+  "PLP product card": "[data-testid='product-card']",
+  "PLP product card name": "[data-testid='product-card__name']",
+  "PLP view product": "[data-testid='product-card__view-product']",
+  "PLP pagination next": "[data-testid='algolia-pagination__next-button']"
+}
