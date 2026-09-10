@@ -21,5 +21,7 @@
   "Delete Address": "//button[text()='Delete Address' and not(@data-testid)]",
   "Confirm Delete Address": "[data-testid='button-action_delete-address']",
   "address entry": "address",
-  "warning toast": ".Toastify__toast--warning"
+  "warning toast": ".Toastify__toast--warning",
+  "Content Name": "[data-testid='content-name']",
+  "Open save menu": "[data-testid='content-dropdown-save']"
 }

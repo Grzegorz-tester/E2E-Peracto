@@ -17,6 +17,7 @@
   "Configuration": "[data-testid='nav-configuration']",
   "Navigation": "[data-testid='nav-configuration-navigation']",
   "Page Name": "[data-testid='content-name']",
+  "Content Name": "[data-testid='content-name']",
   "Article Heading": "[data-testid='content-heading']",
   "Open save menu": "[data-testid='content-dropdown-save']",
   "Save content": "[data-testid='content-save']",

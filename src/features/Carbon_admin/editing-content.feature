@@ -22,6 +22,20 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
   # own edit step in product-management.feature, not a "should
   # contain success toast" check that would never pass.
   #
+  # CONFIRMED (live, Andy Thornton AT-171 admin release branch, 2026-09-10):
+  # on this tenant, "Save content" ([data-testid='content-save']) exists in
+  # the DOM but stays hidden until a dropdown trigger, "Open save menu"
+  # ([data-testid='content-dropdown-save']), is clicked first - a two-step
+  # save flow, not a missing/broken button. Carbon_admin's own common.json
+  # already had this "Open save menu" key defined (predating this file's
+  # promotion) but nothing exercised it until now. MIPA's admin uses a
+  # different, always-visible save button instead (confirmed live: zero
+  # content-dropdown-save elements on MIPA's real page) - added "Open save
+  # menu" as a harmless key to every tenant's common.json (resolves fine,
+  # matches nothing where the dropdown doesn't exist) and an "if present"
+  # click before every "Save content" click below, so both save UIs work
+  # without a tenant-specific branch in the scenario itself.
+  #
   # The Page scenario below uses the same generic "first item link"
   # pattern as Article/Element (not a hardcoded content ID) so it's
   # portable across tenants. Known issue: on MIPA specifically, the FIRST
@@ -45,12 +59,14 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "first item link" element if present
     And I remember the value of the "Content Name" input field as "original page name"
     And I fill in the "Content Name" input field with a unique value, remembering it as "new page name"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
     Then the "Content Name" input field should have the remembered "new page name"
 
     When I fill in the "Content Name" input field with the remembered "original page name"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
@@ -65,12 +81,14 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "first item link" element if present
     And I remember the value of the "Article Heading" input field as "original article heading"
     And I fill in the "Article Heading" input field with a unique value, remembering it as "new article heading"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
     Then the "Article Heading" input field should have the remembered "new article heading"
 
     When I fill in the "Article Heading" input field with the remembered "original article heading"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
@@ -85,12 +103,14 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "first item link" element if present
     And I remember the value of the "Content Name" input field as "original element name"
     And I fill in the "Content Name" input field with a unique value, remembering it as "new element name"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
     Then the "Content Name" input field should have the remembered "new element name"
 
     When I fill in the "Content Name" input field with the remembered "original element name"
+    And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
     When I reload the page
