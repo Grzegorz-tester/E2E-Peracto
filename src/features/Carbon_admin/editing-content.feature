@@ -49,9 +49,18 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
   # detached?"), intermittently (Page/Element hit it in one run, Article
   # didn't, on the exact same page/save mechanism) - manually reproducing
   # the same edit live confirmed the save itself genuinely works every
-  # time, toast or not. Fixed with "I wait for the page to settle"
-  # (networkidle + 1s buffer) before every reload in this file, rather
-  # than waiting on a toast that isn't universal.
+  # time, toast or not. First fixed with "I wait for the page to settle"
+  # (networkidle + 1s buffer) before every reload, which reduced but
+  # didn't eliminate the race - CONFIRMED (live, 2026-09-10) the Article
+  # scenario hit the exact same ERR_ABORTED again in a later run even with
+  # that wait in place. Replaced with "I wait for the save to complete"
+  # (navigation.ts), which races the success toast appearing (fast and
+  # precise on tenants that show one, like Andy Thornton) against the same
+  # networkidle-based settle (the fallback for tenants like MIPA that
+  # never show one), rather than always paying the slower, less precise
+  # settle-only wait. "I reload the page" itself also now retries once on
+  # ERR_ABORTED specifically, as a second layer in case this exact race is
+  # ever hit regardless.
   #
   # The Page scenario below uses the same generic "first item link"
   # pattern as Article/Element (not a hardcoded content ID) so it's
@@ -79,7 +88,7 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Content Name" input field should have the remembered "new page name"
 
@@ -87,7 +96,7 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Content Name" input field should have the remembered "original page name"
 
@@ -103,7 +112,7 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Article Heading" input field should have the remembered "new article heading"
 
@@ -111,7 +120,7 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Article Heading" input field should have the remembered "original article heading"
 
@@ -127,7 +136,7 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Content Name" input field should have the remembered "new element name"
 
@@ -135,6 +144,6 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I wait for the page to settle
+    When I wait for the save to complete
     And I reload the page
     Then the "Content Name" input field should have the remembered "original element name"

@@ -6,6 +6,7 @@ import {
     currentPathMatchesPageId,
 } from "../../support-functions/navigation-behaviour";
 import {waitFor} from "../../support-functions/wait-for-behaviour";
+import {getElementLocator} from "../../support-functions/web-element-helper";
 
 Given(/^I am on the "([^"]*)" page$/, async function (this: ScenarioWorld, pageId: PageId) {
     const {
@@ -36,6 +37,32 @@ When(/^I wait for the page to settle$/, async function (this: ScenarioWorld) {
     const { screen: { page } } = this;
     await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
     await new Promise((resolve) => setTimeout(resolve, 1000));
+});
+
+// A more precise counterpart to the generic settle step above, for
+// waiting out a SAVE action specifically rather than an arbitrary async
+// page load - e.g. before reloading right after clicking Save, per
+// editing-content.feature's own confirmed race (Save completes fast with
+// no toast to signal it, so a reload right after can catch the save's
+// own client-side redirect still in flight). Toast behaviour for this
+// varies by tenant though (see that file's comments: MIPA shows none for
+// saving an existing Page/Article/Element, Andy Thornton does), so this
+// can't just wait for the toast outright - that would hang for the full
+// timeout on any tenant that never shows one. Races the toast appearing
+// against the same networkidle-based settle instead: whichever finishes
+// first wins, so a tenant with a toast gets a fast, precise signal
+// (usually well under the networkidle window), and a tenant without one
+// still falls back to the settle-based wait rather than the toast timeout
+// eating time on top of it.
+When(/^I wait for the save to complete$/, async function (this: ScenarioWorld) {
+    const { screen: { page }, globalConfig } = this;
+    const toastIdentifier = getElementLocator(page, "success toast", globalConfig);
+
+    await Promise.race([
+        page.waitForSelector(toastIdentifier, { state: "visible", timeout: 8000 }).catch(() => null),
+        page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => null),
+    ]);
+    await new Promise((resolve) => setTimeout(resolve, 500));
 });
 
 // For asserting server-persisted state survives a fresh page load, rather
