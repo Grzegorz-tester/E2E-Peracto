@@ -2,6 +2,8 @@
   "Add Item": "//button[contains(.,'Add Item')]",
   "Navigation Item Type": "//label[contains(.,'Navigation Item Type')]/following::*[contains(@class,'-control')][1]",
   "Select Item": "//label[contains(.,'Select Item')]/following::*[contains(@class,'-control')][1]",
+  "Link Text": "input[name='linkText']",
+  "Link Location": "input[name='path']",
   "Submit": "//button[text()='Submit']",
   "menu item title": ".rst__rowTitle",
   "menu item row": ".rst__row",

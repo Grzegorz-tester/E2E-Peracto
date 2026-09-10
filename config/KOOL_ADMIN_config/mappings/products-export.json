@@ -1,0 +1,11 @@
+{
+  "Export Products": "[data-testid='export-products']",
+  "Export Variants": "[data-testid='export-variants']",
+  "Export Attributes": "[data-testid='export-attributes']",
+  "Export Resources": "[data-testid='export-resources']",
+  "Export Relationships": "[data-testid='export-relationships']",
+  "Export Product Inventory": "[data-testid='export-product-inventory']",
+  "Export Product Options": "[data-testid='export-product-options']",
+  "Export Product Variant Options": "[data-testid='export-product-variant-options']",
+  "Export Product Variant Inventory": "[data-testid='export-product-variant-inventory']"
+}

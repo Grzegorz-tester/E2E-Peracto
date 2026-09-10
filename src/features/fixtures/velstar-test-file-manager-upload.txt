@@ -1,0 +1,1 @@
+Velstar Test - fixture file for File Manager (CKFinder) upload automation.

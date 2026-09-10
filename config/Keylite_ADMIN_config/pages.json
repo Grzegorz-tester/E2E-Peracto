@@ -19,6 +19,10 @@
     "route": "/products",
     "regex": "^/products$"
   },
+  "products-export": {
+    "route": "/products/export",
+    "regex": "^/products/export$"
+  },
   "size-finder": {
     "route": "/size-finder",
     "regex": "^/size-finder$"

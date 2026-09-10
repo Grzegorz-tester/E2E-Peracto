@@ -28,5 +28,6 @@
   "Back to list": "[data-testid='navigate-back']",
   "Page Name": "[data-testid='content-name']",
   "Article Heading": "[data-testid='content-heading']",
-  "Save content": "[data-testid='content-save']"
+  "Save content": "[data-testid='content-save']",
+  "File Manager": "[data-testid='nav-file-manager']"
 }

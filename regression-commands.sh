@@ -183,13 +183,34 @@
 # claiming Page/Article/Element saves show no toast anywhere was also
 # corrected - that's MIPA-specific, Andy Thornton does show one.
 #
-# MIPA_ADMIN_features now only holds what's genuinely MIPA-specific: File
-# Manager (CKFinder upload/delete, confirmed absent on Carbon Admin),
-# Product Restrictions (ditto), the Image Picker (depends on File
-# Manager), Products Export (its selector isn't confirmed anywhere else
-# yet), the Navigation "Direct Link" menu-item scenario (a real write kept
-# out of the shared folder since it's reused by tenants with a
-# production admin env - see src/index.ts's @mutates-admin-data comment),
+# A fourth round (2026-09-10, same day) promoted products-export.feature,
+# file-manager.feature, and navigation-menu-items.feature after the user
+# flagged Products Export directly as another example of the same "should
+# be shared" pattern. Two of the three overturned earlier "MIPA-specific"
+# findings that turned out to be stale, not permanent: File Manager's
+# "confirmed absent on Carbon Admin" was re-checked live and found
+# present and fully working there now (and on Andy Thornton) - three
+# independent tenants confirmed, so the earlier finding was simply
+# out of date, not wrong when made. Products Export's 9 CSV buttons were
+# verified byte-for-byte (filenames + header prefixes) against Andy
+# Thornton's real exports before promoting - no @mutates-admin-data
+# needed, exporting is read-only. navigation-menu-items.feature (the
+# Direct Link menu item) already had the @mutates-admin-data tag but was
+# missing its matching "I require a staging admin" runtime guard - added
+# on promotion, same double-layer pattern as everywhere else.
+# image-picker.feature was investigated too (it asserts a specific
+# CONFIRMED BUG - Category's Main Image field not populating - as
+# expected behaviour, the same "assert reality" pattern that made the
+# Template scenario un-promotable earlier) but a live check found Andy
+# Thornton's Main Image UI structured differently enough (separate
+# Upload/Browse controls) that reproducing the exact bug needs more
+# investigation than a quick check allows - left MIPA-specific for now
+# rather than promote an unverified assumption either way.
+#
+# MIPA_ADMIN_features now only holds what's genuinely MIPA-specific or
+# still unverified: Product Restrictions (confirmed absent on Andy
+# Thornton - no heading renders on a direct visit to that route), the
+# Image Picker (see above - not yet conclusively resolved either way),
 # a couple of known-current-bug scenarios split out of the promoted files
 # (a broken Page save, a broken Template save), and all 8 Test Harnesses
 # (real Business Central ERP calls, including a real Send Order write).
