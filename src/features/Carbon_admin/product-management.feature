@@ -14,6 +14,16 @@ Feature: Product Creation and Publishing
   # folder is reused by tenants with a production admin env (e.g.
   # KOOL_ADMIN_PROD.env).
   #
+  # Merged in from a since-removed Indespension-specific duplicate of this
+  # same scenario (written 2026-08-27, before this file was shared -
+  # discovered via scripts/check-duplicate-admin-features.sh) rather than
+  # lost on cleanup: CONFIRMED (live, Indespension staging, 2026-08-27,
+  # independently re-verified end to end including a full
+  # create -> reload -> delete cycle) identical to MIPA/Carbon Admin in
+  # every respect checked - a third independent tenant confirmation of
+  # this scenario's universality, on top of the config-file match noted
+  # above.
+  #
   # CONFIRMED (live, MIPA_ADMIN staging, 2026-08-27 + Andy Thornton AT-171
   # admin release branch, 2026-09-10):
   # - An Attribute Set must be chosen before Product Type/Status/

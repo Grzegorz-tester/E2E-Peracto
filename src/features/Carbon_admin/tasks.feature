@@ -54,6 +54,37 @@ Feature: Admin Tasks Can All Be Triggered
   # together) - with a systemic issue like MIPA's, stopping at the first
   # failure would hide exactly how widespread it is, which is the useful
   # part of this scenario's evidence on any tenant that has one.
+  #
+  # Merged in from several since-removed tenant-specific duplicates of this
+  # same scenario (written 2026-08-31, before this file was shared -
+  # discovered via scripts/check-duplicate-admin-features.sh) rather than
+  # lost on cleanup:
+  # - CONFIRMED (live, Carbon Admin staging, 2026-08-31): all 15 of Carbon's
+  #   tasks render the same play button/toast shape as MIPA's, EXCEPT
+  #   "Cleanup old Import data" - triggering it returns a genuine HTTP 500
+  #   from GET /tasks/cleanup_old_import_data/run, surfaced correctly as its
+  #   own error toast, not a success one. Confirmed a real backend bug on
+  #   Carbon specifically (reproduced twice), not a selector/config gap - so
+  #   this scenario is expected to keep failing on that one row for Carbon
+  #   until it's fixed, same "assert reality" reasoning as everywhere else.
+  # - CONFIRMED (live, HIB/Insinkerator/Indespension/KOOL/Russells staging,
+  #   2026-08-31): every task on all five tenants triggers successfully
+  #   regardless of its listed Active/Inactive status - further confirming
+  #   MIPA's own systemic Active-succeeds/Inactive-fails split (see above)
+  #   is a MIPA-specific data bug, not something to expect elsewhere.
+  # - CONFIRMED (live, Insinkerator/Carbon, 2026-08-31): navigating directly
+  #   to /tasks via a bare page load (not a sidebar click) renders an empty
+  #   list/body on both - the SPA doesn't hydrate correctly on a fresh
+  #   deep-link to this route. Irrelevant to this scenario (it always
+  #   arrives via a real sidebar click), but worth knowing if reproducing a
+  #   failure here manually.
+  # - CONFIRMED (live, Russells, 2026-08-31): task rows can render into the
+  #   DOM a moment after the page/table shell itself does - a query taken
+  #   immediately after navigating can transiently see 0 rows even though
+  #   real ones exist. Not tenant-specific: the "task name link"/"play
+  #   button" step already waits for attachment before counting, so this
+  #   is a non-issue for the scenario itself, just worth knowing if
+  #   debugging a similar page in future.
 
   Scenario: Every task's play button successfully triggers its own run
     Given I require a staging admin for this scenario

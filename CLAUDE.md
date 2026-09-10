@@ -213,6 +213,22 @@ always fit exactly:
   other quirk in this document, so a real config mistake doesn't get waved off as "this tenant
   doesn't have that".
 
+**Before promoting any feature file to `src/features/Carbon_admin/`**, run
+`scripts/check-duplicate-admin-features.sh` (or check by hand: does any `<Project>_ADMIN_features/`
+folder already have a file with the exact same name?). Because every tenant runs the same
+underlying Peracto Admin product, it's common for a tenant-specific version of a scenario to have
+been independently built (and independently live-verified) before that scenario is promoted to
+the shared suite. If both end up existing under the same filename, a tenant whose `FEATURE_PATH`
+includes both globs silently runs the SAME scenario twice, every regression run - no error, just
+duplicated real-world writes and double-counted scenarios in every report. CONFIRMED (live
+investigation, 2026-09-10): this had already happened to 6 tenants across `content-creation.feature`/
+`tasks.feature`/`product-management.feature`, undetected until a direct manual audit prompted by a
+user question - not caught by any dry-run, since cucumber has no reason to consider two
+identically-behaving scenarios from different files an error. When the check finds a collision:
+read both files, merge any unique CONFIRMED findings from the tenant-specific copy into the
+shared file's comments (real live-verified knowledge, don't lose it), then delete the
+tenant-specific copy.
+
 ## Known quirks worth knowing before debugging a failure
 
 Before writing a failure off as "known flakiness" or genuine real-world behaviour (an inventory

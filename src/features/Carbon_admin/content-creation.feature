@@ -57,6 +57,47 @@ Feature: Creating A Page Or Article Adds It To The Orphaned Pages Menu
   #   Admin) - "Save content" stays hidden until "Open save menu" is
   #   clicked; MIPA's always-visible save button needs no such click. The
   #   "if present" click before "Save content" below handles both.
+  #
+  # Merged in from several since-removed tenant-specific duplicates of this
+  # same scenario (written 2026-08-31, before this file was shared -
+  # discovered via scripts/check-duplicate-admin-features.sh) rather than
+  # lost on cleanup:
+  # - CONFIRMED (live, Carbon Admin staging, 2026-08-31) Carbon's own
+  #   dropdown save genuinely opens and works. CONFIRMED SEPARATELY (live,
+  #   PizzaExpressLive staging) its identical-LOOKING dropdown never opens -
+  #   a real site bug on PizzaExpressLive specifically, not a selector gap -
+  #   so a failure there on the "Save content" click (stuck behind a
+  #   dropdown that won't open) is expected until that's fixed, not a sign
+  #   the "if present" handling here is wrong.
+  # - CONFIRMED (live, HIB staging, 2026-08-31): HIB's dropdown has a THIRD
+  #   option too ("Save and Index"), not just "Save" - only "Save content"
+  #   is clicked here, same as everywhere else. Clicking the dropdown
+  #   toggle alone (without then picking an option) does nothing visible -
+  #   no toast, no request - which can look like a broken Save button if a
+  #   failure investigation stops there; it just needs the second click.
+  # - CONFIRMED (live, Indespension/KOOL/Russells staging, 2026-08-31):
+  #   identical field/slug/toast shape to MIPA on all three. The save
+  #   icon's SVG data-icon attribute varies by tenant (e.g. "floppy-disk"
+  #   on Indespension/Russells, "save" on MIPA/KOOL) - already handled by
+  #   each tenant's own "Save content" mapping, no scenario change needed.
+  # - CONFIRMED, THEN RE-CONFIRMED FIXED (live, JTDove staging): on
+  #   2026-08-31 a plain "click precisely" (non-forced) on "Save content"
+  #   reliably failed here - Playwright's own "receives events" check never
+  #   passed, an overlay-interference issue - while a forced click worked
+  #   every time. Live-verified again on 2026-09-10 (prompted by this
+  #   duplicate-file cleanup): the plain, non-forced click now succeeds
+  #   instantly and saves correctly (toast + real persisted page, cleaned
+  #   up afterwards) - the underlying site issue looks to have been fixed
+  #   since. Deliberately NOT switched to a forced click here on the
+  #   strength of a 10-day-old finding - re-verify live again if this
+  #   scenario ever fails specifically on JTDove's "Save content" step.
+  # - CONFIRMED (live, Russells staging, 2026-08-31): the Orphaned Pages
+  #   menu genuinely has real pre-existing rows here - an earlier
+  #   investigation (recorded in a since-deleted Indespension-side file)
+  #   had wrongly concluded Russells' list was empty, which was a
+  #   live-verification miss, not a real gap. Worth remembering as a
+  #   general caution: a claim about tenant B recorded in tenant A's
+  #   comments is only as reliable as whoever last actually checked B.
 
   Scenario: Creating a new page adds it to the Orphaned Pages menu
     Given I require a staging admin for this scenario
