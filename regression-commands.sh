@@ -198,22 +198,27 @@
 # Direct Link menu item) already had the @mutates-admin-data tag but was
 # missing its matching "I require a staging admin" runtime guard - added
 # on promotion, same double-layer pattern as everywhere else.
-# image-picker.feature was investigated too (it asserts a specific
-# CONFIRMED BUG - Category's Main Image field not populating - as
-# expected behaviour, the same "assert reality" pattern that made the
-# Template scenario un-promotable earlier) but a live check found Andy
-# Thornton's Main Image UI structured differently enough (separate
-# Upload/Browse controls) that reproducing the exact bug needs more
-# investigation than a quick check allows - left MIPA-specific for now
-# rather than promote an unverified assumption either way.
+# image-picker.feature was promoted too, once properly investigated (a
+# quick first check had grabbed the wrong button - Andy Thornton's Main
+# Image field has separate "Upload"/"Browse" buttons that share the exact
+# same testid, distinguished only by visible text). Once targeting the
+# real "Browse" button, the scenario's confirmed bug (Category's Main
+# Image field not populating after choosing a file) reproduced
+# identically on Andy Thornton - genuinely universal, not MIPA-specific,
+# so this is a legitimate shared "assert reality" scenario like tasks.
+# feature's Inactive-task assertion, not a repeat of the Template mistake
+# (which baked in a MIPA-only bug as expected everywhere). The ambiguous
+# "Browse Main Image" selector was fixed with a `:has-text('Browse')`
+# scope in every tenant's category-detail.json, not just where the
+# ambiguity was found - a strict improvement with no downside even on a
+# tenant where only one element ever matched.
 #
-# MIPA_ADMIN_features now only holds what's genuinely MIPA-specific or
-# still unverified: Product Restrictions (confirmed absent on Andy
-# Thornton - no heading renders on a direct visit to that route), the
-# Image Picker (see above - not yet conclusively resolved either way),
-# a couple of known-current-bug scenarios split out of the promoted files
-# (a broken Page save, a broken Template save), and all 8 Test Harnesses
-# (real Business Central ERP calls, including a real Send Order write).
+# MIPA_ADMIN_features now only holds what's genuinely MIPA-specific:
+# Product Restrictions (confirmed absent on Andy Thornton - no heading
+# renders on a direct visit to that route), a couple of known-current-bug
+# scenarios split out of the promoted files (a broken Page save, a broken
+# Template save), and all 8 Test Harnesses (real Business Central ERP
+# calls, including a real Send Order write).
 # The full regression run now takes a while (~2-3 hours observed) mostly
 # because of the Test Harness ERP round-trips and the tabs/redirect
 # sweeps - don't be surprised if it's much slower than the other admin
