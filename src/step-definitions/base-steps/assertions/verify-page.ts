@@ -43,13 +43,13 @@ Then(/^I should eventually be redirected to the "([^"]*)" page$/, { timeout: 350
 // For state that lives in the URL itself rather than a distinct page (e.g.
 // an Algolia InstantSearch refinement like ?refinementList[...]=Soft+Close),
 // where pagesConfig's page-identity matching doesn't apply.
-Then(/^the current URL should contain "([^"]*)"$/, async function (this: ScenarioWorld, expectedText: string) {
+Then(/^the current URL should( not)? contain "([^"]*)"$/, async function (this: ScenarioWorld, negate: boolean, expectedText: string) {
     const {
         screen: {page},
     } = this;
 
-    await waitFor(() => page.url().includes(expectedText), {
-        expected: `current URL to contain "${expectedText}"`,
+    await waitFor(() => page.url().includes(expectedText) === !negate, {
+        expected: `current URL to ${negate ? "not " : ""}contain "${expectedText}"`,
         describeActual: async () => `current URL is "${page.url()}"`,
     });
 });

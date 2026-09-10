@@ -127,7 +127,6 @@
     "route": "/menus/footer",
     "regex": "^/menus/footer$"
   },
-
   "product-detail": {
     "route": "/products/:id",
     "regex": "^/products/[^/]+$"
@@ -135,6 +134,10 @@
   "product-variant-detail": {
     "route": "/products/:id/variants/:variantId",
     "regex": "^/products/[^/]+/variants/[^/]+$"
+  },
+  "product-variants-list": {
+    "route": "/products/:id/variants",
+    "regex": "^/products/[^/]+/variants$"
   },
   "category-detail": {
     "route": "/categories/:id",

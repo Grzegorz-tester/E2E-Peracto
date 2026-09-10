@@ -140,19 +140,44 @@
 # editing. Their detail-page selectors (previously only in MIPA's config)
 # were copied to every other admin tenant's config on promotion - not yet
 # live-verified against every tenant individually, so watch for gaps on
-# their first real runs. MIPA_ADMIN_features now only holds what's
-# genuinely MIPA-specific: File Manager (CKFinder upload/delete, confirmed
-# absent on Carbon Admin), Product Restrictions (ditto), the Image Picker
-# (depends on File Manager), Products Export (its selector isn't confirmed
-# anywhere else yet), Tasks and Product/Content creation (real writes kept
-# out of the shared folder since it's reused by tenants with a production
-# admin env - see src/index.ts's @mutates-admin-data comment), a couple of
-# known-current-bug scenarios split out of the promoted files (a broken
-# Page save, a broken Template save), and all 8 Test Harnesses (real
-# Business Central ERP calls, including a real Send Order write). The full
-# regression run now takes a while (~2-3 hours observed) mostly because of
-# the Test Harness ERP round-trips and the tabs/redirect sweeps - don't be
-# surprised if it's much slower than the other admin projects.
+# their first real runs.
+#
+# A second round (2026-09-10) promoted content-creation.feature (Page/
+# Article create+delete via the Orphaned Pages menu) and
+# product-management.feature (Product create/edit/delete) too, once the
+# @mutates-admin-data tag + staging guard were added to each - both are
+# real writes, verified live end-to-end on Andy Thornton (create, verify
+# persistence, edit, delete, all passing, no leftover data). Also added
+# BRAND NEW coverage, product-variant-management.feature (adding a Product
+# Option + a Variant to a disposable product, then deleting both) - there's
+# no standalone "Add Variant" button; a Product Option must be added and
+# saved first, which reveals a "Manage Variants" link. Cross-verified live
+# on a second tenant (MIPA) before rolling the new mapping files out
+# everywhere, same as product-detail.json's earlier double-tenant check.
+# Two real redirect-timing gotchas found and fixed along the way: saving a
+# NEW variant doesn't redirect away from its own "/add" URL as fast as a
+# new Product/Page/Article does (a loose "current URL should contain
+# '.../variants/'" check matches the stale "/add" URL and passes without
+# ever waiting for the real redirect - fixed with a new negated "current
+# URL should not contain" step instead), and deleting a variant has the
+# same delay on its way back to the list (fixed with the existing "I wait
+# for the page to settle" step, since getElementLocator resolves the
+# current page ID once up front and can't self-heal mid-poll).
+#
+# MIPA_ADMIN_features now only holds what's genuinely MIPA-specific: File
+# Manager (CKFinder upload/delete, confirmed absent on Carbon Admin),
+# Product Restrictions (ditto), the Image Picker (depends on File
+# Manager), Products Export (its selector isn't confirmed anywhere else
+# yet), Tasks and the Navigation "Direct Link" menu-item scenario (real
+# writes kept out of the shared folder since it's reused by tenants with a
+# production admin env - see src/index.ts's @mutates-admin-data comment),
+# a couple of known-current-bug scenarios split out of the promoted files
+# (a broken Page save, a broken Template save), and all 8 Test Harnesses
+# (real Business Central ERP calls, including a real Send Order write).
+# The full regression run now takes a while (~2-3 hours observed) mostly
+# because of the Test Harness ERP round-trips and the tabs/redirect
+# sweeps - don't be surprised if it's much slower than the other admin
+# projects.
 # COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_RELEASE.env ./run_tests.sh regression

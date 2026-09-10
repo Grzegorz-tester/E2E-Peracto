@@ -1,0 +1,9 @@
+{
+  "SKU": "[data-testid='sku']",
+  "Option Value": "[data-testid='option-0-display-value']",
+  "Product Status": "[data-testid='product-status-dropdown']",
+  "Price": "[data-testid='price']",
+  "Save": "[data-testid='save-form']",
+  "Delete Variant": "[data-testid='delete-product-variant']",
+  "Confirm Delete Variant": "[data-testid='button-action_delete-product-variant']"
+}

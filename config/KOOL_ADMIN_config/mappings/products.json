@@ -1,5 +1,6 @@
 {
   "first item link": "a[data-testid='row-0-name']",
+  "Add Product": "[data-testid='add-product']",
   "Name filter": "[data-testid='text-filter-name']",
   "SKU filter": "[data-testid='text-filter-sku']",
   "product name": "[data-testid$='-name'] a",

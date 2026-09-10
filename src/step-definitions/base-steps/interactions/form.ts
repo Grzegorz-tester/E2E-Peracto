@@ -1,8 +1,8 @@
-import {DataTable, When} from "@cucumber/cucumber";
+import {DataTable, Then, When} from "@cucumber/cucumber";
 import {Locator, Page} from "playwright";
 import {ElementKey} from "../../../env/global";
 import {getElementLocator} from "../../support-functions/web-element-helper";
-import {clickElementAtIndex, enterValue, selectDropdownOption} from "../../support-functions/html-behaviour";
+import {clickElementAtIndex, enterValue, getValue, selectDropdownOption} from "../../support-functions/html-behaviour";
 import {navigateToPage} from "../../support-functions/navigation-behaviour";
 import {waitFor} from "../../support-functions/wait-for-behaviour";
 import {ScenarioWorld} from "../../setup/world";
@@ -98,6 +98,65 @@ When(/^I fill in the "([^"]*)" input field with "([^"]*)"$/, async function (ele
 
     await page.waitForSelector(elementIdentifier, { timeout: 15000 });
     await enterValue(page, elementIdentifier, inputText);
+});
+
+// For editing a real, pre-existing entity (not a disposable created-and-
+// deleted one) where the scenario needs to restore the original value
+// afterwards rather than leave it permanently changed - e.g. a live
+// Category heading or Promotion message that's real site content, not
+// test fixture data. Captures the CURRENT value before it gets
+// overwritten, the input-field equivalent of "I remember the text of ...
+// as ..." (which reads a static element's text content, not an input's
+// value).
+When(/^I remember the value of the "([^"]*)" input field as "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    await page.waitForSelector(elementIdentifier, { timeout: 15000 });
+    this.globalVariables[variableName] = await page.inputValue(elementIdentifier);
+});
+
+// Generic counterpart to product-admin.ts's "... should have the stored
+// product name/SKU" - for an arbitrary remembered variable rather than one
+// of those two fixed globalVariables keys, so any scenario that captures
+// its own "before" value (e.g. via "I remember the value of ... as ...")
+// can confirm a later value change actually took/persisted, or that a
+// restore afterwards genuinely put the original value back.
+Then(/^the "([^"]*)" input field should have the remembered "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+        throw new Error(`No remembered text found for "${variableName}" - "I remember the value of ... as ..." must run first.`);
+    }
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    await waitFor(async () => (await getValue(page, elementIdentifier)) === remembered, {
+        expected: `"${elementKey}" (${elementIdentifier}) to have the remembered value "${remembered}"`,
+        describeActual: async () => `value was "${(await getValue(page, elementIdentifier).catch(() => null)) ?? "(could not read value)"}"`,
+    });
+});
+
+// A "contains" variant of the above - for a field the backend normalises
+// (e.g. prepending a leading "/" to a path) before echoing it back, where
+// an exact match would never hold even though the value is genuinely the
+// same one that was typed. Confirmed live on MIPA's Redirects "From URL"
+// field: a plain "qa-<timestamp>" unique value is saved back as
+// "/qa-<timestamp>".
+Then(/^the "([^"]*)" input field should contain the remembered "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+        throw new Error(`No remembered text found for "${variableName}" - "I remember the value of ... as ..." must run first.`);
+    }
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    await waitFor(async () => (await getValue(page, elementIdentifier))?.includes(remembered) ?? false, {
+        expected: `"${elementKey}" (${elementIdentifier}) to contain the remembered value "${remembered}"`,
+        describeActual: async () => `value was "${(await getValue(page, elementIdentifier).catch(() => null)) ?? "(could not read value)"}"`,
+    });
 });
 
 
@@ -274,6 +333,34 @@ When(/^I select the "([^"]*)" option from the "([^"]*)" react-select$/, async fu
     const menu = page.locator(".list__menu:visible").last();
     await menu.locator(".list__option").first().waitFor({ state: "visible", timeout: 10000 });
     await menu.getByText(option, { exact: true }).click();
+});
+
+// Same "list" classNamePrefix react-select shape as above, but for a field
+// whose options are loaded ASYNC (a server-side search) rather than a
+// short fixed list rendered immediately on open - confirmed live on Andy
+// Thornton's Add Product form: "Attribute Set" shows no options at all
+// until text is typed into its own input (Product Type/Status/Availability/
+// Sales Unit/Tax rate on the same form don't need this, they open with a
+// fixed list already visible - use the plain "... react-select" step above
+// for those). Typing narrows a short static list too, so this step is a
+// safe superset - reusable for any react-select where the immediate-list
+// step above finds nothing.
+When(/^I select the "([^"]*)" option from the "([^"]*)" react-select, typing to search$/, async function (this: ScenarioWorld, option: string, elementKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const control = page.locator(elementIdentifier);
+    await control.waitFor({ state: "visible", timeout: 15000 });
+    await control.click();
+    await control.locator("input").first().type(option, { delay: 30 });
+
+    const menu = page.locator(".list__menu:visible").last();
+    const match = menu.getByText(option, { exact: true });
+    await match.waitFor({ state: "visible", timeout: 10000 });
+    await match.click();
 });
 
 // Shared by the two steps below: tries every option in an already-open-able

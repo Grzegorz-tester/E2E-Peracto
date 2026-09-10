@@ -140,6 +140,10 @@
     "route": "/products/:id/variants/:variantId",
     "regex": "^/products/[^/]+/variants/[^/]+$"
   },
+  "product-variants-list": {
+    "route": "/products/:id/variants",
+    "regex": "^/products/[^/]+/variants$"
+  },
   "category-detail": {
     "route": "/categories/:id",
     "regex": "^/categories/[^/]+$"

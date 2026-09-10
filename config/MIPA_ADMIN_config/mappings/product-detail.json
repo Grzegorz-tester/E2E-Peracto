@@ -7,5 +7,10 @@
   "Index Product": "#saveAndIndex",
   "Save": "[data-testid='save-form']",
   "Delete Product": "[data-testid='delete-product']",
-  "Confirm Delete Product": "[data-testid='button-action_delete-product']"
+  "Confirm Delete Product": "[data-testid='button-action_delete-product']",
+  "Add New Option": "[data-testid='add-variant-option']",
+  "Option Label": "[data-testid='options_item_0_label'] input",
+  "Option Identifier": "[data-testid='options_item_0_identifier'] input",
+  "Manage Variants": "[data-testid='button-manage-variants']",
+  "Remove Option": "[data-testid='remove-option-entry-0']"
 }
