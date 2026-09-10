@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Guest product purchase flow
 
   # Guest checkout, not a logged-in purchase - the generic LOGGED_IN_EMAIL

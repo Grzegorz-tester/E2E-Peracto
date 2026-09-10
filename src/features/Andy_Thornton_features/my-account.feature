@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Operations in the user's account
 
   # Every scenario below is blocked pending a real Andy Thornton test

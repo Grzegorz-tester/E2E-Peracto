@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Header functionality
 
   Scenario: Verify presence of header elements for a Guest user

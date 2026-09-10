@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Verify PDP functionality
 
   Scenario: Verify PDP elements

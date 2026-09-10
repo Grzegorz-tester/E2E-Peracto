@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = exports.Andy_Thornton_regression = void 0;
+exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = void 0;
 var _dotenv = _interopRequireDefault(require("dotenv"));
 var _parseEnv = require("./env/parseEnv");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -24,13 +24,34 @@ _dotenv.default.config(); // optional local .env (gitignored) for real login cre
 // project's own feature folder, so the same @smoke/@regression tags used
 // across every project don't pull in every other project's scenarios too.
 // Falls back to every feature file when a project doesn't set it.
+// --retry-tag-filter deliberately EXCLUDES @mutates-admin-data from the
+// global --retry count, rather than just applying it everywhere.
+// CONFIRMED (live, MIPA_ADMIN staging, 2026-09-09): several of this
+// suite's edit-existing-entity scenarios follow an edit -> assert ->
+// RESTORE pattern against real, shared admin data (a real Category,
+// Article, etc.) - if a step AFTER the edit but BEFORE the restore fails
+// (confirmed live: a transient page.reload() "net::ERR_ABORTED"), a
+// automatic retry reruns the whole scenario from scratch, which
+// "remembers" the ALREADY-MUTATED value as if it were the original and
+// then "restores" back to that wrong value on a clean second pass -
+// silently leaving real data corrupted while the run reports a pass.
+// This isn't hypothetical - it happened twice in one session (an
+// Article's heading left as a disposable "qa-<timestamp>" test value,
+// caught only by manually spot-checking the real site afterwards, not by
+// anything in the suite itself). A transient failure on one of these
+// scenarios should surface as a real failure needing a human to check
+// the data's actual state, not be silently smoothed over by a retry that
+// makes the corruption worse. Every other scenario (list checks, filters,
+// real create-then-delete flows with no shared "before" state to
+// corrupt) keeps the normal retry behaviour.
 const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
                 -f json:./reports/report.json \
                 --format progress-bar \
                 --parallel ${(0, _parseEnv.env)('PARALLEL')} \
-                --retry ${(0, _parseEnv.env)('RETRY')}`;
+                --retry ${(0, _parseEnv.env)('RETRY')} \
+                --retry-tag-filter 'not @mutates-admin-data'`;
 
 // Never place a real order against a live storefront (see CLAUDE.md's
 // "Staging vs production rules"). Rather than relying on picking the right
@@ -66,12 +87,20 @@ const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.featur
 // UI_AUTOMATION_HOST=production (see admin-address-book.ts's "I require a
 // staging admin" step) - this tag exclusion and that runtime guard are
 // deliberately two independent layers, not one relying on the other.
-const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data' : '';
+//
+// @requires-order-history gets the same automatic exclusion for a
+// structural reason, not a flaky-content one: this scenario only passes
+// if the logged-in test account already has past orders to list, but
+// CLAUDE.md's own production rule forbids ever placing a real order there
+// to create that history in the first place. CONFIRMED (live, Watco UK
+// production, 2026-09-09): the account's order-list page renders fine
+// (no error, no email-verification gate) but is genuinely empty, so
+// "first order view link" never appears - not a selector/config gap.
+const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history' : '';
 const tagFilter = tag => `${tag}${productionExclusion}`;
 const dev = exports.dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = exports.smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = exports.regression = `${common} --tags '${tagFilter('@regression')}'`;
-const Andy_Thornton_regression = exports.Andy_Thornton_regression = `${common} --tags '${tagFilter('@Andy_Thornton_regression')}'`;
 const carbon_regression = exports.carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;
 const PizzaExpressLive_regression = exports.PizzaExpressLive_regression = `${common} --tags '${tagFilter('@PizzaExpressLive_regression')}'`;
 console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');

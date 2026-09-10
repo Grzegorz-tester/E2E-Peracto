@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Login Page
 
   # "Successful log in" is blocked pending a real Andy Thornton test account:

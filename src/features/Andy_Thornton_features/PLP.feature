@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Verify PLP elements
 
   Scenario: Verify category listing page elements

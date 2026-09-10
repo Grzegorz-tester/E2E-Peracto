@@ -73,7 +73,7 @@
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
 # COMMON_CONFIG_FILE=env/CARBON_ADMIN.env ./run_tests.sh regression
 
-# ---- Andy Thornton (storefront uses its own regression profile/tag) ----
+# ---- Andy Thornton ----
 # Old project, due for a rework. env/Andy_Thornton_Peracto.env was removed
 # (2026-08-25) - it pointed at config/Peracto_Andy_Thornton_config/, which
 # never existed, so it errored on every run; its LOGIN_URL/GUEST_URL also
@@ -81,19 +81,37 @@
 # Peracto Admin login (confirmed live), not a storefront - already correctly
 # covered by ANDY_THORNTON_ADMIN.env below. Revisit both when the rework
 # happens, in case the storefront itself is moving onto Peracto too.
-# COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh Andy_Thornton_regression
+# Was tagged @Andy_Thornton_regression with its own cucumber profile;
+# retagged @regression and the Andy_Thornton_regression profile removed
+# from src/index.ts (2026-09-10), in line with the rest of the projects.
+# Andy_Thornton_RELEASE targets the AT-171 Peracto rework release branch
+# (config/Andy_Thornton_config/hosts.json's own release_branch host) -
+# treated as staging, real orders OK.
+# COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Andy_Thornton_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
 
 # ---- MIPA ----
 # Was tagged @MIPA_regression with its own cucumber profile; retagged
 # @regression and the MIPA_regression profile removed from src/index.ts,
-# in line with the rest of the projects. MIPA_RELEASE targets the
-# Next.js-upgrade release branch (config/MIPA_config/hosts.json's
-# release_branch host, URL bumped each sprint) - treated as staging, real
-# orders OK.
+# in line with the rest of the projects. MIPA_RELEASE/MIPA_ADMIN_RELEASE
+# target the Next.js-upgrade release branch (config/MIPA_config/hosts.json
+# and config/MIPA_ADMIN_config/hosts.json's own release_branch host, URL
+# bumped each sprint) - treated as staging, real orders OK.
+#
+# MIPA_ADMIN (2026-09-08+): now covers a lot more than the shared
+# Carbon_admin sweep - File Manager (CKFinder upload/delete), Products
+# Export (all 9 export buttons), all 8 Test Harnesses (real Business
+# Central ERP calls, including a real Send Order write), Product
+# Restrictions, editing an existing Category/Promotion, and adding/
+# deleting a Redirect. The full regression run now takes a while (~2-3
+# hours observed) mostly because of the Test Harness ERP round-trips and
+# the tabs/redirect sweeps - don't be surprised if it's much slower than
+# the other admin projects.
 # COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/MIPA_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- Pizza Express Live ----
 # Storefront is production only (admin is read-only there per CLAUDE.md) -

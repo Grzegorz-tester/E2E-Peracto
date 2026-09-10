@@ -1,4 +1,4 @@
-@Andy_Thornton_regression
+@regression
 Feature: Products page functionality
 
   Scenario: Filtering products narrows the result count
