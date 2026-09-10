@@ -164,12 +164,31 @@
 # for the page to settle" step, since getElementLocator resolves the
 # current page ID once up front and can't self-heal mid-poll).
 #
+# A third round (2026-09-10, same day) promoted tasks.feature too - per
+# the user directly, task-triggering can't run in production but must be
+# tested on release branches and staging, so the same @mutates-admin-data
+# tag + staging guard pattern applies rather than keeping it MIPA-only.
+# CONFIRMED (live, Andy Thornton, 2026-09-10) MIPA's own systemic
+# Active-succeeds/Inactive-fails bug is NOT universal - all 16 of Andy
+# Thornton's tasks are Inactive, and triggering one returned a genuine 200
+# with the expected toast, so the scenario asserts the ideal (every task
+# succeeds) rather than baking in MIPA's bug as expected everywhere.
+# "hello_world" (excluded from scope) is standard Peracto Admin scaffolding
+# confirmed present on both tenants, not a MIPA-only artifact. A fresh
+# regression run the same day also caught a real reload-timing race in
+# editing-content.feature's Page/Element scenarios (Save completes in
+# ~0.09s with no toast to force a wait, so a reload fired while the save's
+# own redirect was still in flight) - fixed with "I wait for the page to
+# settle" before every reload in that file; the file's own comment
+# claiming Page/Article/Element saves show no toast anywhere was also
+# corrected - that's MIPA-specific, Andy Thornton does show one.
+#
 # MIPA_ADMIN_features now only holds what's genuinely MIPA-specific: File
 # Manager (CKFinder upload/delete, confirmed absent on Carbon Admin),
 # Product Restrictions (ditto), the Image Picker (depends on File
 # Manager), Products Export (its selector isn't confirmed anywhere else
-# yet), Tasks and the Navigation "Direct Link" menu-item scenario (real
-# writes kept out of the shared folder since it's reused by tenants with a
+# yet), the Navigation "Direct Link" menu-item scenario (a real write kept
+# out of the shared folder since it's reused by tenants with a
 # production admin env - see src/index.ts's @mutates-admin-data comment),
 # a couple of known-current-bug scenarios split out of the promoted files
 # (a broken Page save, a broken Template save), and all 8 Test Harnesses
