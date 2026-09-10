@@ -41,9 +41,31 @@ When(/^I wait for the page to settle$/, async function (this: ScenarioWorld) {
 // For asserting server-persisted state survives a fresh page load, rather
 // than a client-side value that would pass even if nothing was actually
 // saved (e.g. Watco's account-profile VAT field).
+//
+// CONFIRMED (live, Andy Thornton AT-171 admin, 2026-09-10): reload() can
+// itself be aborted ("net::ERR_ABORTED; maybe frame was detached?") when
+// it races a still-in-flight client-side navigation from whatever action
+// preceded it (e.g. a content Save's own redirect) - reproduced even
+// AFTER "I wait for the page to settle" beforehand, so the settle step
+// alone isn't a fully reliable fix for every timing window, just a
+// reduction in how often the race is hit. A single retry after a short
+// pause resolves it: by the time the retry fires, the other navigation
+// has finished, so there's nothing left to race against. This only
+// swallows this one specific transient navigation-level error - a genuine
+// content/assertion failure after a successful reload surfaces normally,
+// unaffected by this retry.
 When(/^I reload the page$/, async function (this: ScenarioWorld) {
     const {screen: {page}} = this;
-    await page.reload({waitUntil: "domcontentloaded", timeout: 30000});
+    try {
+        await page.reload({waitUntil: "domcontentloaded", timeout: 30000});
+    } catch (error) {
+        if (error instanceof Error && error.message.includes("ERR_ABORTED")) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await page.reload({waitUntil: "domcontentloaded", timeout: 30000});
+        } else {
+            throw error;
+        }
+    }
 });
 
 // Cucumber's default Playwright viewport (1280x720) is already above most
