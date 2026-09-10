@@ -23,5 +23,10 @@
   "address entry": "address",
   "warning toast": ".Toastify__toast--warning",
   "Content Name": "[data-testid='content-name']",
-  "Open save menu": "[data-testid='content-dropdown-save']"
+  "Open save menu": "[data-testid='content-dropdown-save']",
+  "success toast": ".Toastify__toast--success",
+  "Back to list": "[data-testid='navigate-back']",
+  "Page Name": "[data-testid='content-name']",
+  "Article Heading": "[data-testid='content-heading']",
+  "Save content": "[data-testid='content-save']"
 }
