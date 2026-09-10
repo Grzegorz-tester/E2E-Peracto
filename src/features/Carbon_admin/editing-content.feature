@@ -14,13 +14,16 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
   # Not yet live-verified against every tenant individually; each tenant's
   # own regression run will surface any real gap.
   #
-  # CONFIRMED (live, MIPA_ADMIN staging, 2026-09-09): unlike Category/
-  # Promotion/Product, saving an EXISTING Page/Article/Element shows NO
-  # success toast at all (confirmed on a genuinely-successful save,
-  # verified via reload) - so these scenarios only assert on the
-  # persisted value, the same adjustment already made for Products'
-  # own edit step in product-management.feature, not a "should
-  # contain success toast" check that would never pass.
+  # Toast behaviour on saving an EXISTING Page/Article/Element varies by
+  # tenant, unlike Category/Promotion/Product: CONFIRMED (live, MIPA_ADMIN
+  # staging, 2026-09-09) MIPA shows NO success toast at all (checked for
+  # 4s after a genuinely-successful save, verified via reload) - but
+  # CONFIRMED (live, Andy Thornton, 2026-09-10) Andy Thornton DOES show
+  # one for the same action. Since it can't be relied on universally,
+  # these scenarios only assert on the persisted value (the same
+  # adjustment already made for Products' own edit step in
+  # product-management.feature), not a "should contain success toast"
+  # check that would fail on MIPA.
   #
   # CONFIRMED (live, Andy Thornton AT-171 admin release branch, 2026-09-10):
   # on this tenant, "Save content" ([data-testid='content-save']) exists in
@@ -35,6 +38,20 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
   # matches nothing where the dropdown doesn't exist) and an "if present"
   # click before every "Save content" click below, so both save UIs work
   # without a tenant-specific branch in the scenario itself.
+  #
+  # CONFIRMED (live, Andy Thornton AT-171 admin release branch, 2026-09-10):
+  # since this suite can't rely on a toast existing (see above - MIPA has
+  # none), nothing was forcing a wait between the "Save content" click and
+  # the next "I reload the page". Confirmed live this is a genuine race,
+  # not a real bug: reload() fires while the save's own client-side
+  # redirect (.../<id>, see below) is still in flight, and one navigation
+  # aborts the other ("page.reload: net::ERR_ABORTED; maybe frame was
+  # detached?"), intermittently (Page/Element hit it in one run, Article
+  # didn't, on the exact same page/save mechanism) - manually reproducing
+  # the same edit live confirmed the save itself genuinely works every
+  # time, toast or not. Fixed with "I wait for the page to settle"
+  # (networkidle + 1s buffer) before every reload in this file, rather
+  # than waiting on a toast that isn't universal.
   #
   # The Page scenario below uses the same generic "first item link"
   # pattern as Article/Element (not a hardcoded content ID) so it's
@@ -62,14 +79,16 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Content Name" input field should have the remembered "new page name"
 
     When I fill in the "Content Name" input field with the remembered "original page name"
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Content Name" input field should have the remembered "original page name"
 
 
@@ -84,14 +103,16 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Article Heading" input field should have the remembered "new article heading"
 
     When I fill in the "Article Heading" input field with the remembered "original article heading"
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Article Heading" input field should have the remembered "original article heading"
 
 
@@ -106,12 +127,14 @@ Feature: Editing Existing Pages, Articles, Templates and Elements
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Content Name" input field should have the remembered "new element name"
 
     When I fill in the "Content Name" input field with the remembered "original element name"
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element
 
-    When I reload the page
+    When I wait for the page to settle
+    And I reload the page
     Then the "Content Name" input field should have the remembered "original element name"
