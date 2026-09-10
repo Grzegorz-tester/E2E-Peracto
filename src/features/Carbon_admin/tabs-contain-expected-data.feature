@@ -77,12 +77,23 @@ Feature: Admin Tabs Contain Expected Data
       | Content       | Elements           | elements           | Elements           |
       | Content       | Element Areas      | element-areas      | Element Areas      |
       | Users         | All Users          | users              | Users              |
-      | Users         | User Groups        | user-groups        | User Groups        |
       | Configuration | Navigation         | navigation         | Navigation         |
       | Configuration | Redirects          | redirects          | Redirects          |
       | Configuration | Shipping Services  | shipping-services  | Shipping Services  |
       | Configuration | Tasks              | tasks              | Tasks              |
       | Configuration | Countries          | countries          | Countries          |
+
+    # Split into its own tagged Examples block (2026-09-10) - confirmed live
+    # Andy Thornton's admin genuinely has no "User Groups" tab under Users
+    # (only "All Users"), per the user directly. Every other Peracto Admin
+    # tenant using this shared suite already has "User Groups" mapped and
+    # passing, so this stays in the shared suite rather than being removed
+    # outright - see src/index.ts's EXCLUDE_TAGS mechanism and CLAUDE.md's
+    # "a tenant is missing a tab the shared suite expects" guidance.
+    @user-groups
+    Examples:
+      | parent | nav item    | page id     | heading     |
+      | Users  | User Groups | user-groups | User Groups |
 
   Scenario Outline: A two-level-nested tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<grandparent>" element

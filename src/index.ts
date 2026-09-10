@@ -91,7 +91,20 @@ const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
 const productionExclusion = env('UI_AUTOMATION_HOST', 'staging') === 'production'
     ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history'
     : '';
-const tagFilter = (tag: string) => `${tag}${productionExclusion}`;
+
+// EXCLUDE_TAGS (set per-project in env/<Project>.env, space-separated) lets a
+// single tenant opt out of specific rows/scenarios in the SHARED Carbon_admin
+// suite that don't apply to it - e.g. a nav tab the shared suite's Examples
+// table expects but this tenant genuinely doesn't have. Per CLAUDE.md's
+// "shared boilerplate" rules: only use this when the tab is missing for SOME
+// tenants, not all of them (if every tenant lacked it, the row belongs out of
+// the shared Examples table entirely, not behind a per-tenant exclusion).
+const customExclusion = env('EXCLUDE_TAGS', '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(tag => ` and not ${tag}`)
+    .join('');
+const tagFilter = (tag: string) => `${tag}${productionExclusion}${customExclusion}`;
 
 const dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = `${common} --tags '${tagFilter('@smoke')}'`;

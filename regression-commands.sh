@@ -92,6 +92,33 @@
 # ANDY_THORNTON_ADMIN_RELEASE.env below, which targets it correctly via
 # config/ANDY_THORNTON_ADMIN_config/hosts.json's own release_branch host -
 # treated as staging (admin is not read-only there).
+#
+# CONFIRMED (2026-09-10): "User Groups" is genuinely not part of this
+# tenant's project (per the user directly), unlike every other Peracto
+# Admin tenant using the shared suite, which already has it mapped and
+# passing - so it wasn't removed from the shared Examples table, just
+# split into its own @user-groups-tagged Examples block and excluded here
+# via the new EXCLUDE_TAGS env var (space-separated tags, appended as
+# "and not <tag>" to every profile in src/index.ts) - both
+# ANDY_THORNTON_ADMIN.env and ANDY_THORNTON_ADMIN_RELEASE.env set
+# EXCLUDE_TAGS=@user-groups. Reuse this same mechanism for any future
+# tenant missing a different shared tab - see src/index.ts's own comment.
+#
+# CONFIRMED REAL BUG (live, AT-171 release branch, 2026-09-10): saving a
+# Category or Shipping Service (and by the same pattern, almost certainly
+# Attribute Group/Attribute Set too) shows no toast at all and the edit is
+# silently discarded - reproduced live outside the test suite (filled a
+# unique value, saved, waited 10s, reloaded, value was unchanged).
+# Attribute/Location/Promotion saves on the same tenant work fine. Per this
+# suite's "assert reality" convention, these scenarios are expected to
+# stay red until the real bug is fixed.
+#
+# CONFIRMED TENANT DIVERGENCE (live, AT-171 release branch, 2026-09-10):
+# Andy Thornton's Content module (Pages/Articles/Elements) uses a visual
+# page-builder/canvas editor, not the simple form-based editor MIPA/Carbon
+# Admin have - the shared editing-content.feature's selectors genuinely
+# don't apply here. Not yet resolved - needs either real selectors for the
+# visual builder or a tag exclusion, same EXCLUDE_TAGS mechanism as above.
 # COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_RELEASE.env ./run_tests.sh regression

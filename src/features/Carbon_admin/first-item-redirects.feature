@@ -79,10 +79,21 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
       | Content       | Elements           | /content/edit/element/ | content edit heading  |
       | Content       | Element Areas      | /element-areas/        | page heading          |
       | Users         | All Users          | /users/                | page heading          |
-      | Users         | User Groups        | /user-groups/          | page heading          |
       | Configuration | Redirects          | /redirects/            | page heading          |
       | Configuration | Shipping Services  | /shipping-services/    | page heading          |
       | Configuration | Tasks              | /tasks/                | page heading          |
+
+    # Split into its own tagged Examples block (2026-09-10) - confirmed live
+    # Andy Thornton's admin genuinely has no "User Groups" tab under Users
+    # (only "All Users"), per the user directly. Every other Peracto Admin
+    # tenant using this shared suite already has "User Groups" mapped and
+    # passing, so this stays in the shared suite rather than being removed
+    # outright - see src/index.ts's EXCLUDE_TAGS mechanism and CLAUDE.md's
+    # "a tenant is missing a tab the shared suite expects" guidance.
+    @user-groups
+    Examples:
+      | parent | nav item    | url fragment  | heading key  |
+      | Users  | User Groups | /user-groups/ | page heading |
 
   Scenario Outline: The first item in a two-level-nested tab opens its own detail page, or the list is genuinely empty
     When I click precisely on the "<grandparent>" element
