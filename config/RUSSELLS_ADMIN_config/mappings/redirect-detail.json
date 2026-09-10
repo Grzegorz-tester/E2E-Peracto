@@ -1,0 +1,7 @@
+{
+  "From URL": "input[name='fromUrl']",
+  "To URL": "input[name='toUrl']",
+  "Save": "[data-testid='save-form']",
+  "Delete Redirect": "[data-testid='deleteRedirect']",
+  "Confirm Delete Redirect": "[data-testid='button-action_delete-redirect']"
+}

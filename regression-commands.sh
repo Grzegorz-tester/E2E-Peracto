@@ -84,12 +84,17 @@
 # Was tagged @Andy_Thornton_regression with its own cucumber profile;
 # retagged @regression and the Andy_Thornton_regression profile removed
 # from src/index.ts (2026-09-10), in line with the rest of the projects.
-# Andy_Thornton_RELEASE targets the AT-171 Peracto rework release branch
-# (config/Andy_Thornton_config/hosts.json's own release_branch host) -
-# treated as staging, real orders OK.
+# CONFIRMED (live, 2026-09-10): https://at-171-peracto.andythornton.pub/ is
+# the AT-171 Peracto rework's ADMIN login, not a storefront - an
+# Andy_Thornton_RELEASE.env pointed at it as the storefront was tried
+# first and every scenario failed identically (same Peracto sign-in
+# screenshot regardless of target route); removed in favour of
+# ANDY_THORNTON_ADMIN_RELEASE.env below, which targets it correctly via
+# config/ANDY_THORNTON_ADMIN_config/hosts.json's own release_branch host -
+# treated as staging (admin is not read-only there).
 # COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Andy_Thornton_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- MIPA ----
 # Was tagged @MIPA_regression with its own cucumber profile; retagged
@@ -99,15 +104,28 @@
 # and config/MIPA_ADMIN_config/hosts.json's own release_branch host, URL
 # bumped each sprint) - treated as staging, real orders OK.
 #
-# MIPA_ADMIN (2026-09-08+): now covers a lot more than the shared
-# Carbon_admin sweep - File Manager (CKFinder upload/delete), Products
-# Export (all 9 export buttons), all 8 Test Harnesses (real Business
-# Central ERP calls, including a real Send Order write), Product
-# Restrictions, editing an existing Category/Promotion, and adding/
-# deleting a Redirect. The full regression run now takes a while (~2-3
-# hours observed) mostly because of the Test Harness ERP round-trips and
-# the tabs/redirect sweeps - don't be surprised if it's much slower than
-# the other admin projects.
+# MIPA_ADMIN (2026-09-08+): built up a lot of scenarios beyond the shared
+# Carbon_admin sweep. Most of the "editing an existing entity" ones turned
+# out to be standard Peracto Admin functionality, not MIPA-specific -
+# promoted to the shared Carbon_admin boilerplate (2026-09-10): Redirects
+# (add/delete), Category/Promotion editing, Page/Article/Element editing,
+# and Attribute/Attribute Group/Attribute Set/Location/Shipping Service
+# editing. Their detail-page selectors (previously only in MIPA's config)
+# were copied to every other admin tenant's config on promotion - not yet
+# live-verified against every tenant individually, so watch for gaps on
+# their first real runs. MIPA_ADMIN_features now only holds what's
+# genuinely MIPA-specific: File Manager (CKFinder upload/delete, confirmed
+# absent on Carbon Admin), Product Restrictions (ditto), the Image Picker
+# (depends on File Manager), Products Export (its selector isn't confirmed
+# anywhere else yet), Tasks and Product/Content creation (real writes kept
+# out of the shared folder since it's reused by tenants with a production
+# admin env - see src/index.ts's @mutates-admin-data comment), a couple of
+# known-current-bug scenarios split out of the promoted files (a broken
+# Page save, a broken Template save), and all 8 Test Harnesses (real
+# Business Central ERP calls, including a real Send Order write). The full
+# regression run now takes a while (~2-3 hours observed) mostly because of
+# the Test Harness ERP round-trips and the tabs/redirect sweeps - don't be
+# surprised if it's much slower than the other admin projects.
 # COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_RELEASE.env ./run_tests.sh regression

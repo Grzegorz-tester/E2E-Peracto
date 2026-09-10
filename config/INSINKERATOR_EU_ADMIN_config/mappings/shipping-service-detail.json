@@ -1,0 +1,4 @@
+{
+  "Name": "input[name='name']",
+  "Save": "[data-testid='save-form']"
+}

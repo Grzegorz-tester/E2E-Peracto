@@ -1,0 +1,4 @@
+{
+  "Name": "[data-testid='location-name']",
+  "Save": "[data-testid='save-form']"
+}

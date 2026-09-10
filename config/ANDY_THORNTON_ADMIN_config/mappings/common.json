@@ -9,6 +9,7 @@
   "content edit heading": "//h2",
   "no results message": "//p[contains(., 'No results found')]",
   "success toast": ".Toastify__toast--success",
+  "warning toast": ".Toastify__toast--warning",
   "Back to list": "[data-testid='navigate-back']",
   "Content": "[data-testid='nav-content']",
   "Pages": "[data-testid='nav-content-pages']",

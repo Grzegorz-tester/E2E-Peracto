@@ -1,0 +1,4 @@
+{
+  "Label": "[data-testid='attribute-label']",
+  "Save": "[data-testid='save-form']"
+}

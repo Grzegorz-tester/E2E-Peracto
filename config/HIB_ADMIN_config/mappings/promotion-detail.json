@@ -1,0 +1,4 @@
+{
+  "Promotion Success Message": "[data-testid='promotion-success-message']",
+  "Save": "[data-testid='save-form']"
+}
