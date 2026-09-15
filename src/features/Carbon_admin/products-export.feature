@@ -30,6 +30,18 @@ Feature: Exporting Product Data
   # (Relationships/Inventory exports are genuinely tiny right now - real
   # low data, not a broken export) - this only asserts non-empty and a
   # correct header row, not a specific size.
+  #
+  # CONFIRMED (live, HIB_ADMIN release branch, 2026-09-11): the Attributes
+  # export's header row is NOT the same column order on every tenant - HIB's
+  # starts "product,range,product_features,swatch,..." rather than
+  # "product,product_name,description,...", but all the expected columns
+  # are genuinely present, just interleaved with HIB's own custom
+  # attributes rather than only appended at the end (which is what the
+  # "should start with the text" prefix match above already tolerated).
+  # Switched that one scenario to the order-independent "header row should
+  # contain the columns" step (file-download.ts) instead of loosening or
+  # removing the assertion - the other 8 exports keep the strict prefix
+  # match since those were confirmed to match exactly across tenants.
 
   Background:
     Given I am navigating the page as a "admin" user
@@ -54,7 +66,7 @@ Feature: Exporting Product Data
     When I click on the "Export Attributes" button, remembering the downloaded file as "export"
     Then the remembered "export" download should be named "product_attribute_export_1_100.csv"
     And the remembered "export" download should not be empty
-    And the remembered "export" download should start with the text "product,product_name,description"
+    And the remembered "export" download's header row should contain the columns "product,product_name,description"
 
   Scenario: Exporting Resources downloads a real product-resource CSV
     When I click on the "Export Resources" button, remembering the downloaded file as "export"

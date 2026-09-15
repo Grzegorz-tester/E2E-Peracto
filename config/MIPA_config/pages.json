@@ -72,8 +72,8 @@
     "regex": "^/category/all-refinishing$"
   },
   "ready-mixed-colours": {
-    "route": "/category/ready-mixed-colours-refinish",
-    "regex": "^/category/ready-mixed-colours-refinish$"
+    "route": "/category/products/refinishing/ready-mixed-colours",
+    "regex": "^/category/products/refinishing/ready-mixed-colours$"
   },
   "test-product": {
     "route": "/products/2k-hs-wet-on-wet-filler-f37-light-grey-1lt",
@@ -110,5 +110,13 @@
   "sitemap": {
     "route": "/sitemap",
     "regex": "^/sitemap$"
+  },
+  "industrial-product-finder": {
+    "route": "/industrial-product-finder",
+    "regex": "^/industrial-product-finder$"
+  },
+  "industrial-product-finder-results": {
+    "route": "/industrial-product-finder/results",
+    "regex": "^/industrial-product-finder/results$"
   }
 }

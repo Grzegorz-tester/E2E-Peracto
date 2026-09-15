@@ -8,6 +8,7 @@ Feature: Order history
   # order history, so this deliberately uses "account test user 1"
   # instead, which is verified and has real past orders on staging.
 
+  @requires-order-history
   Scenario: Order history lists past orders and each one opens its own detail page
     Given I am on the "login" page
     And I click on the "Accept cookies" button if present

@@ -5,22 +5,7 @@ var _test = require("@playwright/test");
 var _webElementHelper = require("../../support-functions/web-element-helper");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 var _htmlBehaviour = require("../../support-functions/html-behaviour");
-// Currency-symbol-agnostic and decimal/thousands-separator-agnostic - see
-// the identical helper in basket.ts for why (different storefronts in this
-// framework format prices differently even though the underlying testids
-// are shared).
-const parsePrice = text => {
-  const match = text?.match(/[\d.,]*\d/);
-  if (!match) {
-    throw new Error(`Could not parse a price out of "${text}"`);
-  }
-  const raw = match[0];
-  const lastComma = raw.lastIndexOf(",");
-  const lastDot = raw.lastIndexOf(".");
-  const normalized = lastComma > lastDot ? raw.replace(/\./g, "").replace(",", ".") : raw.replace(/,/g, "");
-  return parseFloat(normalized);
-};
-
+var _priceHelper = require("../../support-functions/price-helper");
 // Each facet checkbox's own sibling <label> carries its live result count
 // (e.g. "Air Switch (26)"). Reading that count and asserting the header's
 // hit-count updates to match is robust against catalogue changes - no
@@ -140,7 +125,7 @@ const parsePrice = text => {
     expected: `every "product card price" (${priceSelector}) to render a real number, not "NaN"`,
     describeActual: async () => `prices were: ${JSON.stringify(await page.locator(priceSelector).allTextContents())}`
   });
-  const prices = priceTexts.map(parsePrice);
+  const prices = priceTexts.map(_priceHelper.parsePrice);
   for (let i = 1; i < prices.length; i++) {
     (0, _test.expect)(prices[i]).toBeGreaterThanOrEqual(prices[i - 1]);
   }

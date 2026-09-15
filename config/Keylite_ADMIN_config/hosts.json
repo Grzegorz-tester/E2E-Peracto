@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.keyliteroofwindows.pub/"
+  "staging": "https://staging-peracto.keyliteroofwindows.pub/",
+  "release_branch": "https://2-0-1-peracto.keyliteroofwindows.pub/"
 }

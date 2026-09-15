@@ -2,9 +2,7 @@
 Feature: Menu side draw
 
 
-  Scenario Outline: Verify menu elements for:
-  - a Logged in User
-  - a Guest User
+  Scenario Outline: Verify menu elements for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     And I dismiss the newsletter popup if present
     And I click on the "Menu" icon

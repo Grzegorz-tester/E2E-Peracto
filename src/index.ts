@@ -1,8 +1,20 @@
 import dotenv from 'dotenv'
+import fs from 'fs'
+import path from 'path'
 import { env } from './env/parseEnv'
 
 dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 dotenv.config() // optional local .env (gitignored) for real login credentials
+
+// Each project now points JSON_REPORT_FILE at its own ./reports/<Project>/report.json
+// (rather than every project sharing the same ./reports/report.json, which let two
+// concurrent runs against different projects clobber each other's results). Unlike
+// the shared path, most of these per-project directories don't exist yet, and
+// cucumber-js's json formatter won't create missing directories itself.
+const jsonReportDir = path.dirname(env('JSON_REPORT_FILE', './reports/report.json'))
+if (!fs.existsSync(jsonReportDir)) {
+    fs.mkdirSync(jsonReportDir, { recursive: true })
+}
 
 // Hosts/pages/mappings/users config is loaded per-scenario by ScenarioWorld
 // (src/step-definitions/setup/world.ts) from the env vars set above, rather
@@ -39,7 +51,7 @@ dotenv.config() // optional local .env (gitignored) for real login credentials
 const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
-                -f json:./reports/report.json \
+                -f json:${env('JSON_REPORT_FILE', './reports/report.json')} \
                 --format progress-bar \
                 --parallel ${env('PARALLEL')} \
                 --retry ${env('RETRY')} \

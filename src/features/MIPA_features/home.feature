@@ -13,8 +13,7 @@ Feature: Home page
     Then the "header logo" should be displayed
     And the "page title" should contain the text "The trusted choice for professional automotive, industrial and defence coatings in the UK and Ireland"
 
-  Scenario Outline: Verify:
-  - redirection to categories from the "Shop by Category" cards
+  Scenario Outline: Verify: - redirection to the "<card>" category from the "Shop by Category" cards
     Given I am on the "home" page
     When I click on the "<card>" element
     Then I should be redirected to the "<page>" page
@@ -27,8 +26,7 @@ Feature: Home page
       | MP Products card    | mp-products | MP Products          |
 
 
-  Scenario: Verify:
-  - redirection to the blog from the "View Articles" link
+  Scenario: Verify: - redirection to the blog from the "View Articles" link
     Given I am on the "home" page
     When I click on the "View Articles" element
     Then I should be redirected to the "blog" page

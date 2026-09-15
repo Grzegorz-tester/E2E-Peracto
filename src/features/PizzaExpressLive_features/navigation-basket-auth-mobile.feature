@@ -35,7 +35,7 @@ Feature: Navigation, basket, account and mobile
     Then the "booking iframe" should be displayed
     And the "booking iframe" should have attribute "src" containing "bookings.pizzaexpresslive.com/pizzaexpress/website/secure/MyAccount.aspx"
 
-  Scenario Outline: Footer renders across pages
+  Scenario Outline: Footer renders on the "<page>" page
     Given I am on the "<page>" page
     Then the "desktop footer" should be displayed
     And the "desktop footer socials" should be displayed

@@ -6,7 +6,8 @@ Feature: Purchase journey (Logged-in, Click and Collect)
 
   @places-real-order
   Scenario: Logged-in user can complete a real Click and Collect order end-to-end
-    Given I am navigating the page as a "logged in" user
+    Given I require staging for this scenario
+    And I am navigating the page as a "logged in" user
     And I click on the "Accept cookies" button if present
     And I am on the "basket" page
     And I clear the basket

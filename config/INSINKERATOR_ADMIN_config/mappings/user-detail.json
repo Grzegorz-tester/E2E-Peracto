@@ -1,0 +1,8 @@
+{
+  "User First Name": "[data-testid='firstname']",
+  "User Last Name": "[data-testid='lastname']",
+  "User Email": "[data-testid='email']",
+  "Save": "[data-testid='save-form']",
+  "Delete User": "//a[text()='Delete User']",
+  "Confirm Delete User": "[data-testid='button-action_delete-user']"
+}

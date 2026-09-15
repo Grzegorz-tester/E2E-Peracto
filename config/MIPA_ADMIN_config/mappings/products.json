@@ -14,5 +14,6 @@
   "Name filter": "[data-testid='text-filter-name']",
   "SKU filter": "[data-testid='text-filter-sku']",
   "product name": "[data-testid$='-name'] a",
-  "product SKU": "td[data-testid$='-sku']"
+  "product SKU": "td[data-testid$='-sku']",
+  "Export Product Data": "[data-testid='export-product-data']"
 }

@@ -47,3 +47,25 @@ Then(
         }
     }
 );
+
+// An ordinal-position variant of the class check above - for a candidate
+// list where the SAME class moves between elements (e.g. a "current"/
+// "selected" class on whichever of several colour swatches was clicked
+// last), so a single non-positional elementKey can't distinguish "the one
+// I just clicked" from any other candidate. Indexing convention matches
+// the existing ordinal "should contain the text" step in
+// verify-element-value.ts.
+Then(
+    /^the "([0-9]+th|[0-9]+st|[0-9]+nd|[0-9]+rd)" "([^"]*)" should( not)? have class "([^"]*)"$/,
+    async function (this: ScenarioWorld, elementPosition: string, elementKey: ElementKey, negate: boolean, className: string) {
+        const { screen: { page }, globalConfig } = this;
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+        const index = Number(elementPosition.match(/\d/g)?.join("")) - 1;
+        const locator = page.locator(elementIdentifier).nth(index);
+        if (negate) {
+            await expect(locator).not.toHaveClass(new RegExp(className), { timeout: 15000 });
+        } else {
+            await expect(locator).toHaveClass(new RegExp(className), { timeout: 15000 });
+        }
+    }
+);

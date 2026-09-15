@@ -26,7 +26,7 @@ Feature: Branch Finder
     When I click on the "1st" "branch list item" element
     Then the current URL should contain "/branches/"
 
-  Scenario Outline: Branches can be filtered by an alphabet letter
+  Scenario Outline: Branches can be filtered by the "<letter>" alphabet letter
     When I click on the "<letter> filter button" element
     Then the "branch list item" should be displayed
 

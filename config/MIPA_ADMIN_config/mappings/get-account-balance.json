@@ -1,0 +1,6 @@
+{
+  "User Email": "[data-testid='user-email']",
+  "Account Number": "[data-testid='account-number']",
+  "Submit": "[data-testid='submit']",
+  "response details": "#response-details pre"
+}

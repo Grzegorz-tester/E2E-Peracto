@@ -1,8 +1,8 @@
 import {DataTable, Then, When} from "@cucumber/cucumber";
 import {Locator, Page} from "playwright";
-import {ElementKey} from "../../../env/global";
+import {ElementKey, GlobalConfig} from "../../../env/global";
 import {getElementLocator} from "../../support-functions/web-element-helper";
-import {clickElementAtIndex, enterValue, getValue, selectDropdownOption} from "../../support-functions/html-behaviour";
+import {clickElementAtIndex, enterValue, enterValueClearingAutoPopulatedFirst, getValue, selectDropdownOption} from "../../support-functions/html-behaviour";
 import {navigateToPage} from "../../support-functions/navigation-behaviour";
 import {waitFor} from "../../support-functions/wait-for-behaviour";
 import {ScenarioWorld} from "../../setup/world";
@@ -66,6 +66,54 @@ When(/^I fill in the "([^"]*)" input field with a unique value, remembering it a
     this.globalVariables[variableName] = value;
 });
 
+// The fill-side counterpart to click.ts's "... if present" - for a field
+// that's only required on SOME tenants sharing this suite (e.g. MIPA's
+// "Add User" form silently rejects Save without an Account Number, a
+// B2B/ERP-only field per CLAUDE.md's Peracto Admin shared-boilerplate
+// note - other tenants either don't have it or don't require it). A no-op
+// here (field genuinely absent) is the correct outcome, not a failure,
+// same reasoning as the click variant.
+When(/^I fill in the "([^"]*)" input field with a unique value if present$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const appeared = await page
+        .waitForSelector(elementIdentifier, { state: "visible", timeout: 8000 })
+        .then(() => true)
+        .catch(() => false);
+
+    if (appeared) {
+        await enterValue(page, elementIdentifier, `qa-${Date.now()}`);
+    }
+});
+
+// Same disposable-value idea as "... with a unique value, remembering it
+// as ..." above, but shaped as a valid email address rather than a bare
+// "qa-<ts>" string - confirmed live (MIPA_ADMIN_RELEASE, 2026-09-15): a
+// Peracto Admin "Add User" form's Save silently no-ops (no toast, no
+// navigation, no error) when its Email field is filled with the plain
+// "qa-<ts>" value instead, since that isn't a valid email at all - easy
+// to misdiagnose as a broken Save button/missing toast rather than a
+// failed client-side validation swallowing the submit. Use this variant
+// for any field that specifically requires a real email format.
+When(/^I fill in the "([^"]*)" input field with a unique email, remembering it as "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const value = `qa-${Date.now()}@velstar-test.co.uk`;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { timeout: 15000 });
+    await enterValue(page, elementIdentifier, value);
+
+    this.globalVariables[variableName] = value;
+});
+
 // The fill-side counterpart to verify-element-value.ts's "I remember the
 // text of ... as ..." / "should contain the remembered ..." pair - for
 // carrying a live, page-read value (e.g. a real product's own SKU) INTO a
@@ -98,6 +146,22 @@ When(/^I fill in the "([^"]*)" input field with "([^"]*)"$/, async function (ele
 
     await page.waitForSelector(elementIdentifier, { timeout: 15000 });
     await enterValue(page, elementIdentifier, inputText);
+});
+
+// See enterValueClearingAutoPopulatedFirst's own comment (html-behaviour.ts)
+// for why this exists as a separate step rather than changing the plain
+// "... input field with ..." step above for everyone: only use this for a
+// field already confirmed to auto-populate itself on focus.
+When(/^I fill in the "([^"]*)" input field with "([^"]*)", clearing any auto-populated value first$/, async function (elementKey: ElementKey, inputText: string) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { timeout: 15000 });
+    await enterValueClearingAutoPopulatedFirst(page, elementIdentifier, inputText);
 });
 
 // For editing a real, pre-existing entity (not a disposable created-and-
@@ -345,12 +409,7 @@ When(/^I select the "([^"]*)" option from the "([^"]*)" react-select$/, async fu
 // for those). Typing narrows a short static list too, so this step is a
 // safe superset - reusable for any react-select where the immediate-list
 // step above finds nothing.
-When(/^I select the "([^"]*)" option from the "([^"]*)" react-select, typing to search$/, async function (this: ScenarioWorld, option: string, elementKey: ElementKey) {
-    const {
-        screen: {page},
-        globalConfig
-    } = this;
-
+const selectReactSelectOptionTypingToSearch = async (page: Page, globalConfig: GlobalConfig, elementKey: ElementKey, option: string) => {
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
     const control = page.locator(elementIdentifier);
     await control.waitFor({ state: "visible", timeout: 15000 });
@@ -361,6 +420,38 @@ When(/^I select the "([^"]*)" option from the "([^"]*)" react-select, typing to 
     const match = menu.getByText(option, { exact: true });
     await match.waitFor({ state: "visible", timeout: 10000 });
     await match.click();
+};
+
+When(/^I select the "([^"]*)" option from the "([^"]*)" react-select, typing to search$/, async function (this: ScenarioWorld, option: string, elementKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    await selectReactSelectOptionTypingToSearch(page, globalConfig, elementKey, option);
+});
+
+// Same as above, but for the one react-select value that isn't safe to
+// hardcode into a shared feature file: Peracto Admin always ships a
+// pre-existing "root" Attribute Set that every product must belong to,
+// but its NAME isn't standard across tenants - confirmed live it's
+// "Default" on MIPA/Andy Thornton, but "Core" on HIB (2026-09-11: HIB's
+// Add Product form has no "Default" option at all, so typing that
+// literal text into the search found nothing and the scenario never
+// progressed past step 1 - not a broken product-creation flow, just the
+// wrong tenant-specific name). Resolves the actual name from the same
+// per-tenant mapping file selectors already come from
+// ("Default Attribute Set Name" in product-detail.json), rather than
+// adding a per-tenant Gherkin variant of the whole scenario.
+//
+// CONFIRMED (live, HIB_ADMIN release branch, 2026-09-12): the option's
+// real displayed text is "Core" (title case), not "CORE" - the mapping
+// was first set to "CORE" (from how the user described it in
+// conversation) and the exact-match getByText below never matched,
+// timing out. Corrected in HIB_ADMIN_config/mappings/product-detail.json.
+// Screenshot-verify a react-select's real option text before trusting a
+// spoken/typed description of it - casing is exactly the kind of detail
+// that doesn't survive being relayed second-hand.
+When(/^I select the tenant's default attribute set from the "([^"]*)" react-select, typing to search$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const { screen: { page }, globalConfig } = this;
+    const option = getElementLocator(page, "Default Attribute Set Name", globalConfig);
+    await selectReactSelectOptionTypingToSearch(page, globalConfig, elementKey, option);
 });
 
 // Shared by the two steps below: tries every option in an already-open-able

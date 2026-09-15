@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "clean": "rimraf dist reports",
-    "precucumber": "rimraf reports && mkdir reports",
+    "precucumber": "mkdir -p reports",
     "transpile": "rimraf dist && babel --extensions .ts --out-dir dist src",
     "cucumber-compile": "yarn transpile && cucumber-js",
     "cucumber": "yarn cucumber-compile",

@@ -27,7 +27,8 @@ Feature: Logged-in checkout - NIP-EU persistence to account (PL)
   # docblock for why.
 
   Scenario: An edited NIP-EU persists to the account after the order is placed
-    Given I am on the "login" page
+    Given I require staging for this scenario
+    And I am on the "login" page
     And I click on the "Accept cookies" button if present
     When I fill in the "Email address" input field with the "account test user with vat" user's email
     And I fill in the "Password" input field with the "account test user with vat" user's password

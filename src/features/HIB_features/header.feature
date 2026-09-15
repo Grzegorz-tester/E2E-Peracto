@@ -4,8 +4,7 @@ Feature: Header functionality
 
   #------------ Top header ---------------------------------
 
-  Scenario: Verify:
-    - presence of header elements for a Guest user
+  Scenario: Verify: - presence of header elements for a Guest user
     Given I am navigating the page as a "guest" user
     And I dismiss the newsletter popup if present
     Then the "contact phone number" should be displayed
@@ -19,8 +18,7 @@ Feature: Header functionality
     And the "Request a brochures" should be displayed
 
 
-  Scenario: Verify:
-    - presence of header elements for a Logged in user
+  Scenario: Verify: - presence of header elements for a Logged in user
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
     Then the "contact phone number" should be displayed
@@ -36,40 +34,35 @@ Feature: Header functionality
   #  ------------ Middle header ---------------------------------
 
 
-  Scenario: Verify:
-    - "Request Swatch Sample" redirection
+  Scenario: Verify: - "Request Swatch Sample" redirection
     Given I am navigating the page as a "guest" user
     And I dismiss the newsletter popup if present
     When I click on the "Request Swatch Sample" icon
     Then I should be redirected to the "samples" page
 
 
-  Scenario: Verify:
-    - "Find a retailer" redirection
+  Scenario: Verify: - "Find a retailer" redirection
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "Find a Retailer" icon
     Then I should be redirected to the "find-a-retailer" page
 
 
-  Scenario: Verify:
-    - "Request a brochures" redirection
+  Scenario: Verify: - "Request a brochures" redirection
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "Request a brochures" icon
     Then I should be redirected to the "brochure" page
 
 
-  Scenario: Verify:
-    - "Portal" menu item functionality
+  Scenario: Verify: - "Portal" menu item functionality
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "Portal" icon
     Then I should be redirected to the "login" page
 
 
-  Scenario Outline: Verify:
-    - search box functionality using the Magnifier glass button for existing products
+  Scenario Outline: Verify: - search box functionality using the Magnifier glass button for existing products
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I fill in the "Search products" input field with "<product name>"
@@ -82,8 +75,7 @@ Feature: Header functionality
       | Solas        | SOLAS |
 
 
-  Scenario Outline: Verify:
-    - search box functionality using the Magnifier glass button for NOT existing products
+  Scenario Outline: Verify: - search box functionality using the Magnifier glass button for NOT existing products
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I fill in the "Search products" input field with "<product name>"
@@ -98,9 +90,7 @@ Feature: Header functionality
       | non existent product | NON EXISTENT PRODUCT | Sorry, no results could be found for this search query. |
 
 
-  Scenario Outline: Verify:
-    - search box functionality using the Algolia search results autocomplete in the header
-    - covers both searching by product name and by SKU/article number
+  Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the header, covering both searching by product name and by SKU/article number - "<search term>"
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I fill in the "Search products" input field with "<search term>"
@@ -114,8 +104,7 @@ Feature: Header functionality
       | AUCROBK     | auryn-cabinet  |
 
 
-  Scenario Outline: Verify:
-    - search box functionality using the Algolia search results autocomplete in the menu side-draw
+  Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the menu side-draw
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "Menu" link
@@ -129,7 +118,7 @@ Feature: Header functionality
       | Solas        | solas   |
 
 
-  Scenario Outline: Verify redirection to menu elements
+  Scenario Outline: Verify redirection to menu elements - "<menu element>"
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "<menu element>" element

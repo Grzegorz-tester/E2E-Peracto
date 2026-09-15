@@ -69,6 +69,55 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   this.globalVariables[variableName] = value;
 });
 
+// The fill-side counterpart to click.ts's "... if present" - for a field
+// that's only required on SOME tenants sharing this suite (e.g. MIPA's
+// "Add User" form silently rejects Save without an Account Number, a
+// B2B/ERP-only field per CLAUDE.md's Peracto Admin shared-boilerplate
+// note - other tenants either don't have it or don't require it). A no-op
+// here (field genuinely absent) is the correct outcome, not a failure,
+// same reasoning as the click variant.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique value if present$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const appeared = await page.waitForSelector(elementIdentifier, {
+    state: "visible",
+    timeout: 8000
+  }).then(() => true).catch(() => false);
+  if (appeared) {
+    await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, `qa-${Date.now()}`);
+  }
+});
+
+// Same disposable-value idea as "... with a unique value, remembering it
+// as ..." above, but shaped as a valid email address rather than a bare
+// "qa-<ts>" string - confirmed live (MIPA_ADMIN_RELEASE, 2026-09-15): a
+// Peracto Admin "Add User" form's Save silently no-ops (no toast, no
+// navigation, no error) when its Email field is filled with the plain
+// "qa-<ts>" value instead, since that isn't a valid email at all - easy
+// to misdiagnose as a broken Save button/missing toast rather than a
+// failed client-side validation swallowing the submit. Use this variant
+// for any field that specifically requires a real email format.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique email, remembering it as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const value = `qa-${Date.now()}@velstar-test.co.uk`;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, value);
+  this.globalVariables[variableName] = value;
+});
+
 // The fill-side counterpart to verify-element-value.ts's "I remember the
 // text of ... as ..." / "should contain the remembered ..." pair - for
 // carrying a live, page-read value (e.g. a real product's own SKU) INTO a
@@ -104,6 +153,94 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     timeout: 15000
   });
   await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, inputText);
+});
+
+// See enterValueClearingAutoPopulatedFirst's own comment (html-behaviour.ts)
+// for why this exists as a separate step rather than changing the plain
+// "... input field with ..." step above for everyone: only use this for a
+// field already confirmed to auto-populate itself on focus.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with "([^"]*)", clearing any auto-populated value first$/, async function (elementKey, inputText) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValueClearingAutoPopulatedFirst)(page, elementIdentifier, inputText);
+});
+
+// For editing a real, pre-existing entity (not a disposable created-and-
+// deleted one) where the scenario needs to restore the original value
+// afterwards rather than leave it permanently changed - e.g. a live
+// Category heading or Promotion message that's real site content, not
+// test fixture data. Captures the CURRENT value before it gets
+// overwritten, the input-field equivalent of "I remember the text of ...
+// as ..." (which reads a static element's text content, not an input's
+// value).
+(0, _cucumber.When)(/^I remember the value of the "([^"]*)" input field as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  this.globalVariables[variableName] = await page.inputValue(elementIdentifier);
+});
+
+// Generic counterpart to product-admin.ts's "... should have the stored
+// product name/SKU" - for an arbitrary remembered variable rather than one
+// of those two fixed globalVariables keys, so any scenario that captures
+// its own "before" value (e.g. via "I remember the value of ... as ...")
+// can confirm a later value change actually took/persisted, or that a
+// restore afterwards genuinely put the original value back.
+(0, _cucumber.Then)(/^the "([^"]*)" input field should have the remembered "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - "I remember the value of ... as ..." must run first.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => (await (0, _htmlBehaviour.getValue)(page, elementIdentifier)) === remembered, {
+    expected: `"${elementKey}" (${elementIdentifier}) to have the remembered value "${remembered}"`,
+    describeActual: async () => `value was "${(await (0, _htmlBehaviour.getValue)(page, elementIdentifier).catch(() => null)) ?? "(could not read value)"}"`
+  });
+});
+
+// A "contains" variant of the above - for a field the backend normalises
+// (e.g. prepending a leading "/" to a path) before echoing it back, where
+// an exact match would never hold even though the value is genuinely the
+// same one that was typed. Confirmed live on MIPA's Redirects "From URL"
+// field: a plain "qa-<timestamp>" unique value is saved back as
+// "/qa-<timestamp>".
+(0, _cucumber.Then)(/^the "([^"]*)" input field should contain the remembered "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - "I remember the value of ... as ..." must run first.`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => (await (0, _htmlBehaviour.getValue)(page, elementIdentifier))?.includes(remembered) ?? false, {
+    expected: `"${elementKey}" (${elementIdentifier}) to contain the remembered value "${remembered}"`,
+    describeActual: async () => `value was "${(await (0, _htmlBehaviour.getValue)(page, elementIdentifier).catch(() => null)) ?? "(could not read value)"}"`
+  });
 });
 
 // The Algolia search-results autocomplete is debounced and re-renders as
@@ -300,6 +437,79 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await menu.getByText(option, {
     exact: true
   }).click();
+});
+
+// Same "list" classNamePrefix react-select shape as above, but for a field
+// whose options are loaded ASYNC (a server-side search) rather than a
+// short fixed list rendered immediately on open - confirmed live on Andy
+// Thornton's Add Product form: "Attribute Set" shows no options at all
+// until text is typed into its own input (Product Type/Status/Availability/
+// Sales Unit/Tax rate on the same form don't need this, they open with a
+// fixed list already visible - use the plain "... react-select" step above
+// for those). Typing narrows a short static list too, so this step is a
+// safe superset - reusable for any react-select where the immediate-list
+// step above finds nothing.
+const selectReactSelectOptionTypingToSearch = async (page, globalConfig, elementKey, option) => {
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const control = page.locator(elementIdentifier);
+  await control.waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+  await control.click();
+  await control.locator("input").first().type(option, {
+    delay: 30
+  });
+  const menu = page.locator(".list__menu:visible").last();
+  const match = menu.getByText(option, {
+    exact: true
+  });
+  await match.waitFor({
+    state: "visible",
+    timeout: 10000
+  });
+  await match.click();
+};
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" react-select, typing to search$/, async function (option, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  await selectReactSelectOptionTypingToSearch(page, globalConfig, elementKey, option);
+});
+
+// Same as above, but for the one react-select value that isn't safe to
+// hardcode into a shared feature file: Peracto Admin always ships a
+// pre-existing "root" Attribute Set that every product must belong to,
+// but its NAME isn't standard across tenants - confirmed live it's
+// "Default" on MIPA/Andy Thornton, but "Core" on HIB (2026-09-11: HIB's
+// Add Product form has no "Default" option at all, so typing that
+// literal text into the search found nothing and the scenario never
+// progressed past step 1 - not a broken product-creation flow, just the
+// wrong tenant-specific name). Resolves the actual name from the same
+// per-tenant mapping file selectors already come from
+// ("Default Attribute Set Name" in product-detail.json), rather than
+// adding a per-tenant Gherkin variant of the whole scenario.
+//
+// CONFIRMED (live, HIB_ADMIN release branch, 2026-09-12): the option's
+// real displayed text is "Core" (title case), not "CORE" - the mapping
+// was first set to "CORE" (from how the user described it in
+// conversation) and the exact-match getByText below never matched,
+// timing out. Corrected in HIB_ADMIN_config/mappings/product-detail.json.
+// Screenshot-verify a react-select's real option text before trusting a
+// spoken/typed description of it - casing is exactly the kind of detail
+// that doesn't survive being relayed second-hand.
+(0, _cucumber.When)(/^I select the tenant's default attribute set from the "([^"]*)" react-select, typing to search$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const option = (0, _webElementHelper.getElementLocator)(page, "Default Attribute Set Name", globalConfig);
+  await selectReactSelectOptionTypingToSearch(page, globalConfig, elementKey, option);
 });
 
 // Shared by the two steps below: tries every option in an already-open-able

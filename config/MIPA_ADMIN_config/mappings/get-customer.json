@@ -1,0 +1,5 @@
+{
+  "User Email": "[data-testid='user-email']",
+  "Submit": "[data-testid='submit']",
+  "response details": "#response-details pre"
+}

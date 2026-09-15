@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging.keyliteroofwindows.pub/"
+  "staging": "https://staging.keyliteroofwindows.pub/",
+  "release_branch": "https://2-0-1.keyliteroofwindows.pub/"
 }

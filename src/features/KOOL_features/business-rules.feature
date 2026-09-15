@@ -21,12 +21,26 @@ Feature: User Group Business Rules
   # (perhaps notably, that link points to /login even for the already
   # logged-in account - not something this suite changes or asserts on
   # further, just observed as-is).
+  #
+  # CONFIRMED SITE CONTENT CHANGE (live on production, 2026-09-11):
+  # "gas-pdp" (config/KOOL_config/pages.json) pointed at the stale slug
+  # /products/r407f, which 404s on production (still resolves on staging -
+  # another environment divergence, see navigation-menu.feature). The real
+  # current URL is /products/r407f-refrigerant-9kg. Also confirmed live the
+  # gating behaves differently by user type: as a GUEST the whole Add to
+  # Basket area is replaced by the warning box entirely (no button at all,
+  # matching pdp.feature's own note that this site generally doesn't render
+  # pricing/purchase controls for guests) - "PDP add to basket" (scoped to
+  # exclude the page's own "You may also like" cross-sell cards, which
+  # share the generic "Add to basket" testid) settles to 0 matches. As a
+  # LOGGED-IN user, the button DOES render, just disabled - confirmed live,
+  # "visible, disabled" via the same scoped selector.
 
   Scenario: A guest sees the F-Gas registration warning and cannot add a gas product to basket
     Given I am on the "gas-pdp" page
     And I click on the "Accept cookies" button if present
     Then the "F-Gas registration warning" should contain the text "F Gas Registration Required"
-    And the "Add to basket" should not be enabled
+    And the "PDP add to basket" should not be displayed
 
   @smoke
   Scenario: A logged-in, non-F-Gas-registered user sees the same warning and gating
@@ -34,7 +48,7 @@ Feature: User Group Business Rules
     And I am on the "gas-pdp" page
     And I click on the "Accept cookies" button if present
     Then the "F-Gas registration warning" should contain the text "F Gas Registration Required"
-    And the "Add to basket" should not be enabled
+    And the "PDP add to basket" should not be enabled
 
   # Confirmed live: this project's two test accounts differ in exactly this
   # way - "logged in" (a staff/quote-builder-capable account) sees an

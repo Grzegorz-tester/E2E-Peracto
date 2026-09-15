@@ -4,8 +4,7 @@ Feature: Header functionality
 
 #------------ Top header ---------------------------------
 
-  Scenario: Verify:
-  - presence of header elements for a Guest user
+  Scenario: Verify: - presence of header elements for a Guest user
     Given I am navigating the page as a "guest" user
     Then the "contact phone number" should be displayed
     And the "contact email" should be displayed
@@ -18,8 +17,7 @@ Feature: Header functionality
     And the "Basket" should be displayed
 
 
-  Scenario: Verify:
-  - presence of header elements for a Logged in user
+  Scenario: Verify: - presence of header elements for a Logged in user
     Given I am navigating the page as a "logged in" user
     Then the "contact phone number" should be displayed
     And the "contact email" should be displayed
@@ -34,7 +32,7 @@ Feature: Header functionality
 #  ------------ Middle header ---------------------------------
 
 
-  Scenario Outline: Verify: - "My Lists" redirection
+  Scenario Outline: Verify: - "My Lists" redirection for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     When I click on the "My Lists" element, retrying until redirected to the "<page type>" page
     Examples:
@@ -43,7 +41,7 @@ Feature: Header functionality
       | logged in | account-wishlist |
 
 
-  Scenario Outline: Verify: - "Account" redirection
+  Scenario Outline: Verify: - "Account" redirection for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     When I click on the "Account" element, retrying until redirected to the "<page type>" page
     Examples:
@@ -52,7 +50,7 @@ Feature: Header functionality
       | logged in | account   |
 
 
-  Scenario Outline: Verify: - "Basket" redirection
+  Scenario Outline: Verify: - "Basket" redirection for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     When I click on the "Basket" icon
     Then I should be redirected to the "<page type>" page
@@ -103,6 +101,7 @@ Feature: Header functionality
   Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the header
     Given I am on the "home" page
     When I fill in the "header search bar" input field with "<product name>"
+    And I wait for the search results to update
     Then the "search results" should be displayed
     When I click on the "first search result" element
     Then I should be redirected to the "<product>" page
@@ -116,6 +115,7 @@ Feature: Header functionality
     When I click on the "Menu" link
     Then the "menu draw" should be displayed
     When I fill in the "menu draw search bar" input field with "<product name>"
+    And I wait for the search results to update
     When I click on the "first search result" element
     Then I should be redirected to the "<product>" page
     Examples:

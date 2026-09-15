@@ -7,7 +7,7 @@ Feature: Header functionality
   # search bar at all. So both scenarios below navigate to "home" first,
   # to check the normal header a real user browses with, not the one-off
   # account dashboard layout.
-  Scenario Outline: Header elements are present for both user types
+  Scenario Outline: Header elements are present for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     And I am on the "home" page
     And I dismiss the newsletter popup if present
@@ -21,7 +21,7 @@ Feature: Header functionality
       | guest     |
       | logged in |
 
-  Scenario Outline: "Account" link redirects to the right page for each user type
+  Scenario Outline: "Account" link redirects to the right page for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     And I am on the "home" page
     And I dismiss the newsletter popup if present

@@ -11,6 +11,15 @@
   "basket header link": "#nav-basket",
   "View basket": ".brand-btn-checkout",
 
+  "Ex VAT toggle": "a.js-vat-link",
+  "Ex VAT label": ".utility-bar__vat-toggle .mobile-tax-span--exc",
+  "Inc VAT label": ".utility-bar__vat-toggle .mobile-tax-span--inc",
+
+  "sign-in prompt continue as guest button": ":text-is('Continue as guest'):visible",
+
+  "new quote name input": "input[placeholder='Enter new quote name']:visible",
+  "Create new quote button": "button:has-text('Create new quote'):visible",
+
   "address first name": "#address_firstname",
   "address last name": "#address_lastname",
   "address telephone": "#address_telephone",

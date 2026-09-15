@@ -1,0 +1,10 @@
+{
+  "User Email": "[data-testid='user-email']",
+  "Payment Type": "[data-testid='payment-type']",
+  "Currency Code": "[data-testid='currency-code']",
+  "Amount": "[data-testid='amount']",
+  "Auth Code": "[data-testid='auth-code']",
+  "Submit": "[data-testid='submit']",
+  "response details": "#response-details pre",
+  "error toast": ".Toastify__toast--error"
+}

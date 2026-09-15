@@ -3,11 +3,7 @@
 Feature: Operations in the users account
 
 
-  Scenario: Verify:
-  - the presence of DASHBOARD tab elements
-  - presence of the orders table
-  - redirection to "Stock Check & Quick Order"
-  - redirection to "All Orders"
+  Scenario: Verify: - the presence of DASHBOARD tab elements, the orders table, and redirection to "Stock Check & Quick Order" and "All Orders"
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
     When I am on the "account" page
@@ -23,11 +19,7 @@ Feature: Operations in the users account
     When I click on the "View all and search" link
     Then I should be redirected to the "account-orders" page
 
-  Scenario: Verify:
-  - a presence of the PROFILE tab elements
-  - if the not editable fields are disabled
-  - if the editable fields are not disabled
-  - if the required fields are not empty
+  Scenario: Verify: - a presence of the PROFILE tab elements, that non-editable fields are disabled, editable fields are not disabled, and required fields are not empty
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
     When I am on the "account" page
@@ -57,8 +49,7 @@ Feature: Operations in the users account
     And the "Save Changes" should be enabled
 
 
-  Scenario: Verify:
-  - a presence of ADDRESS BOOK tab elements
+  Scenario: Verify: - a presence of ADDRESS BOOK tab elements
 
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
@@ -69,8 +60,7 @@ Feature: Operations in the users account
     And the "Billing Address" should be displayed
 
 
-  Scenario: Verify:
-  - a presence of ORDERS tab elements
+  Scenario: Verify: - a presence of ORDERS tab elements
 
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
@@ -83,8 +73,7 @@ Feature: Operations in the users account
     And the "Orders table" should be displayed
 
 
-  Scenario: Verify:
-  - the STOCK CHECK & QUICK ORDER tab functionality
+  Scenario: Verify: - the STOCK CHECK & QUICK ORDER tab functionality
 
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present

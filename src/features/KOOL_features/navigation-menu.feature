@@ -8,6 +8,17 @@ Feature: Navigation Menu
   # mobile accordion. Subcategory refinement instead happens via the PLP's
   # own filter sidebar (already covered by plp-search.feature).
   #
+  # CONFIRMED SITE CONTENT CHANGE (live on production, 2026-09-11):
+  # production's real nav bar no longer has an "AC" top-level link at all -
+  # that range now sits under "Mitsubishi Electric" branding - and "Gas"
+  # now points to /category/gas-refrigerant, not /category/refrigerant.
+  # Staging still shows the older "AC" -> /category/air-conditioning nav
+  # (confirmed live, same date) - the two environments have genuinely
+  # diverged here, not just a stale selector. Since this suite's real
+  # regression target is production, the Examples below were switched to
+  # "Electrical" (still present, unchanged, on both) and Gas's corrected
+  # path, rather than staging's now out-of-date structure.
+  #
   # CONFIRMED SITE GAP (live, 2026-08-19): the site's own markup contains a
   # full subcategory link tree (e.g. "Mitsubishi Electric M Series" nested
   # under AC) inside [data-testid='navigation-bar'], matching what Qase's
@@ -18,16 +29,16 @@ Feature: Navigation Menu
   # Wishlists/Compare elsewhere on this site: documented in the test catalogue
   # but not actually reachable by a real user, so not covered here.
 
-  Scenario Outline: Clicking a top-level category link in the navigation bar navigates to that category
+  Scenario Outline: Clicking the "<category link>" top-level category link in the navigation bar navigates to that category
     Given I am on the "home" page
     And I click on the "Accept cookies" button if present
     When I click on the "<category link>" element
     Then the current URL should contain "<expected path>"
 
     Examples:
-      | category link      | expected path        |
-      | AC category link    | /category/air-conditioning |
-      | Gas category link   | /category/refrigerant |
+      | category link            | expected path              |
+      | Electrical category link | /category/electrical       |
+      | Gas category link        | /category/gas-refrigerant  |
 
   # CONFIRMED LIVE (2026-08-19): the mobile hamburger opens a completely
   # separate drawer ([data-testid='nav-tier-one'], inside a HeadlessUI

@@ -8,9 +8,7 @@ Feature: Menu side draw
   # Services, Used Trailers, identical for guest and logged-in users (no
   # user-type-gated item like HIB's "Request a Sample" was found).
 
-  Scenario Outline: Verify menu elements for:
-  - a Logged in User
-  - a Guest User
+  Scenario Outline: Verify menu elements for a "<user type>" user
     # Logging in lands on /account, a dashboard layout with no storefront
     # hamburger menu at all (confirmed live) - unlike guest, who lands
     # straight on the storefront homepage. Navigate back to "home"

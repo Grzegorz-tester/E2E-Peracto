@@ -30,7 +30,7 @@ Feature: Header functionality
   # "Download Catalogue" previously asserted a redirect to
   # "technical-documents" - that's a different link entirely (in the
   # footer). The header icon's real href is /catalogues, confirmed live.
-  Scenario Outline: Verify redirection from header icons
+  Scenario Outline: Verify redirection from the "<icon>" header icon
     Given I am on the "<page>" page
     When I click on the "<icon>" icon
     Then I should be redirected to the "<redirection>" page
@@ -42,7 +42,7 @@ Feature: Header functionality
       | home | Basket             | basket      |
 
 
-  Scenario Outline: Verify search box functionality for existing products
+  Scenario Outline: Verify search box functionality for existing products - "<product name>"
     Given I am on the "home" page
     When I fill in the "Search bar" input field with "<product name>"
     And I click on the "magnifier glass" element
@@ -108,7 +108,7 @@ Feature: Header functionality
   # stays open instead of navigating. "I click precisely" (non-forced) is
   # unaffected - it waits out the overlay like any other actionability
   # check - confirmed live, reliable across repeat runs.
-  Scenario Outline: Verify redirection from menu elements in the header
+  Scenario Outline: Verify redirection from the "<menu element>" menu element in the header
     Given I am on the "home" page
     When I click on the "Menu" icon
     And I click precisely on the "<menu element>" element

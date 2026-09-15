@@ -1,5 +1,18 @@
 {
   "PDP title": "h1",
   "PDP price": ":nth-match(.price.js-price, 1)",
-  "PDP breadcrumb": ".breadcrumbs"
+  "PDP breadcrumb": ".breadcrumbs",
+
+  "colour option swatches": ".product-configurable__swatch:visible",
+  "selected colour option swatch": ".product-configurable__swatch.current:visible",
+
+  "Data sheets tab": "a[role='tab']:has-text('Data sheets')",
+  "first data sheet download link": ":nth-match(.tab-pane.active a[href$='.pdf']:visible, 1)",
+
+  "reviews section": "#feefo-widget-parent",
+
+  "cross-sell section": "h2:has-text('Tools and accessories')",
+  "cross-sell product card": ".card-fresh",
+
+  "Add to quote": "a.js-add-to-quote:visible"
 }

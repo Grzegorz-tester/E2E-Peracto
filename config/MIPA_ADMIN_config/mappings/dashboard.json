@@ -4,6 +4,7 @@
   "Products": "[data-testid='nav-products']",
   "All Products": "[data-testid='nav-products-all-products']",
   "Product Variants": "[data-testid='nav-products-product-variants']",
+  "Product Restrictions": "[data-testid='nav-products-product-restrictions']",
   "Categories": "[data-testid='nav-products-categories']",
   "Attributes": "[data-testid='nav-products-attributes']",
   "All Attributes": "[data-testid='nav-products-attributes-all-attributes']",

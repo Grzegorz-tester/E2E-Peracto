@@ -1,4 +1,6 @@
 {
+  "Allow all cookies": "//button[contains(.,'Allow all cookies')]",
+
   "header logo": "[data-testid='brand-bar__logo-link']",
   "Contact Us email": "[data-testid='utility-bar__email-link']",
   "contact phone number": "[data-testid='utility-bar__phone-link']",

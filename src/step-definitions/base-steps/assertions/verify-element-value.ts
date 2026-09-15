@@ -6,6 +6,21 @@ import { expect } from "@playwright/test";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { getValue } from "../../support-functions/html-behaviour";
 
+// Every page.textContent(elementIdentifier) call below inside a waitFor poll
+// (and its matching describeActual) passes an explicit short timeout - same
+// fix already applied in admin-tasks.ts's readToast() helper, and for the
+// exact same reason. CONFIRMED (live, MIPA_ADMIN_RELEASE 2.8.0, 2026-09-09):
+// when the target element genuinely never appears (e.g. asserting on a
+// "response details" panel that never renders because the real call failed
+// via a toast instead), a bare page.textContent() auto-waits for Playwright's
+// own default actionability timeout (~30s) before resolving to null - so a
+// single poll iteration can burn most or all of a step's own Cucumber
+// timeout, surfacing as an opaque "function timed out" instead of this
+// framework's own clear "Expected: X, Found: Y" message. A short per-call
+// timeout with a null fallback keeps every poll fast regardless of whether
+// the element is ever going to show up, letting waitFor's own retry loop
+// (and its proper error reporting) actually run to completion.
+
 // Sources the expected email from users.json/env vars instead of literal
 // Gherkin text, so real account emails never need to be hardcoded in a
 // .feature file.
@@ -29,11 +44,11 @@ Then(
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
     await waitFor(async () => {
-      const elementText = await page.textContent(elementIdentifier);
+      const elementText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
       return elementText?.includes(user.email as string);
     }, {
       expected: `"${elementKey}" (${elementIdentifier}) to contain the ${userType} user's email "${user.email}"`,
-      describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
   }
 );
@@ -55,12 +70,12 @@ Then(
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
     await waitFor(async () => {
-      const elementText = await page.textContent(elementIdentifier);
+      const elementText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
 
       return elementText?.includes(expectedElementText) === !negate;
     }, {
       expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the text "${expectedElementText}"`,
-      describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
   }
 );
@@ -87,12 +102,12 @@ Then(
     // even though only "text" is visually shown) - trimming both sides
     // matches what a Gherkin author actually means by "equal text".
     await waitFor(async () => {
-      const elementText = await page.textContent(elementIdentifier);
+      const elementText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
 
       return (elementText?.trim() === expectedElementText.trim()) === !negate;
     }, {
       expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}equal text "${expectedElementText}"`,
-      describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
   }
 );
@@ -175,7 +190,7 @@ Then(
     const indexedIdentifier = `${elementIdentifier}>>nth=${index}`;
 
     await waitFor(async () => {
-      const elementText = await page.textContent(indexedIdentifier);
+      const elementText = await page.textContent(indexedIdentifier, { timeout: 1000 }).catch(() => null);
       return elementText?.includes(expectedElementText) === !negate;
     }, {
       expected: `the ${elementPosition} "${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the text "${expectedElementText}"`,
@@ -236,6 +251,38 @@ When(
   }
 );
 
+// A "first match" variant of the above - for a candidate list where some
+// entries are legitimate but not usable for the scenario at hand (e.g. a
+// manually-seeded QA/test row mixed in among real ones), rather than one
+// that's simply blank. CONFIRMED (live, MIPA_ADMIN_RELEASE 2.8.0,
+// 2026-09-08): the Products list's row 0 can be a dummy product created
+// directly on an environment for manual testing (name AND "SKU" both
+// literally "test may"), which isn't synced to the real ERP - the "first
+// non-empty" step above would happily remember it since it's non-blank,
+// but it isn't a real SKU. Callers supply their own pattern (e.g.
+// "^\\d+$" for a numeric-only SKU) rather than this step assuming what
+// "real" looks like, so it stays reusable beyond just SKUs.
+When(
+  /^I remember the text of the first "([^"]*)" matching the pattern "([^"]*)" as "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, pattern: string, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const candidates = page.locator(elementIdentifier);
+    await candidates.first().waitFor({ state: "attached", timeout: 15000 });
+
+    const regex = new RegExp(pattern);
+    const count = await candidates.count();
+    for (let i = 0; i < count; i++) {
+      const text = (await candidates.nth(i).textContent())?.trim();
+      if (text && regex.test(text)) {
+        this.globalVariables[variableName] = text;
+        return;
+      }
+    }
+    throw new Error(`None of the ${count} "${elementKey}" (${elementIdentifier}) candidates match the pattern "${pattern}".`);
+  }
+);
+
 // For a value that renders with an extra prefix in one place but not
 // another (e.g. a PDP shows "SKU 12345" while the basket line for the same
 // product shows plain "12345") - stripping the prefix at remember-time
@@ -263,11 +310,11 @@ Then(
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
     await waitFor(async () => {
-      const currentText = await page.textContent(elementIdentifier);
+      const currentText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
       return (currentText?.trim() === remembered.trim()) === !negate;
     }, {
       expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}equal the remembered text "${remembered}"`,
-      describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
   }
 );
@@ -287,11 +334,37 @@ Then(
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
     await waitFor(async () => {
-      const currentText = await page.textContent(elementIdentifier);
+      const currentText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
       return (currentText?.includes(remembered) ?? false) === !negate;
     }, {
       expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the remembered text "${remembered}"`,
-      describeActual: async () => `text was "${(await page.textContent(elementIdentifier).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
+    });
+  }
+);
+
+// A case-insensitive variant of "should contain the remembered" above - for
+// a value a real backend normalises the case of before echoing it back.
+// Confirmed live on MIPA's Send Order test harness: a "qa-<timestamp>"
+// unique value (this suite's standard disposable-value format) comes back
+// from Business Central as "QA-<timestamp>" - genuinely the same value,
+// just uppercased by BC itself, not a broken echo.
+Then(
+  /^the "([^"]*)" should( not)? contain the remembered "([^"]*)", case-insensitively$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, negate: boolean, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+      throw new Error(`No remembered text found for "${variableName}" - "I remember the text of ... as ..." must run first.`);
+    }
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await waitFor(async () => {
+      const currentText = await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null);
+      return (currentText?.toLowerCase().includes(remembered.toLowerCase()) ?? false) === !negate;
+    }, {
+      expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not " : ""}contain the remembered text "${remembered}" (case-insensitively)`,
+      describeActual: async () => `text was "${(await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "(could not read text)"}"`,
     });
   }
 );

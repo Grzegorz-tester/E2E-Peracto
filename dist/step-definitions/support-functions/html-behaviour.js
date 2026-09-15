@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.withActionDiagnostics = exports.uncheckElement = exports.selectDropdownOption = exports.getValue = exports.enterValue = exports.clickElementAtIndex = exports.clickElement = exports.checkElement = void 0;
+exports.withActionDiagnostics = exports.uncheckElement = exports.selectDropdownOption = exports.getValue = exports.enterValueClearingAutoPopulatedFirst = exports.enterValue = exports.clickElementAtIndex = exports.clickElement = exports.checkElement = void 0;
 var _webElementHelper = require("./web-element-helper");
 // getElementLocator returns undefined (not a string) when an element key
 // has no mapping entry for the current page/common.json - quoting that
@@ -68,6 +68,36 @@ const enterValue = async (page, elementIdentifier, inputText) => {
   });
 };
 
+// For a field that auto-populates itself (e.g. an Identifier/slug derived
+// from a sibling Label field) the instant it's focused - CONFIRMED live on
+// HIB_ADMIN (Peracto Admin's Option Identifier field, 2026-09-13):
+// focusing an empty Identifier field alone fills it with the slugified
+// Label value, so the plain "enterValue" above (focus then fill) ends up
+// filling on top of that just-appeared auto-value rather than an empty
+// field - Playwright's own fill() clears via a direct property set, but
+// this component's onChange still concatenates onto its own prior state
+// instead of the DOM's post-clear value, producing a doubled result
+// ("size" typed into an auto-populated "size" becomes "sizesize"). A real
+// user never hits this: they either accept the correct auto-value as-is or
+// notice and manually clear it before retyping, which this step now does
+// too - triple-click selects the field's current content (auto-populated
+// or not) and Backspace removes it before typing, so the same generic
+// "enterValue" above stays untouched for every field that doesn't have
+// this quirk (no reason to slow every fill in the suite down for it).
+exports.enterValue = enterValue;
+const enterValueClearingAutoPopulatedFirst = async (page, elementIdentifier, inputText) => {
+  await withDiagnostics(page, elementIdentifier, `to fill ${describeIdentifier(elementIdentifier)} with "${inputText}" after clearing any auto-populated value`, async () => {
+    const locator = page.locator(elementIdentifier);
+    await locator.click({
+      clickCount: 3
+    });
+    await locator.press("Backspace");
+    await locator.type(inputText, {
+      delay: 20
+    });
+  });
+};
+
 // Tries matching by the option's `value` attribute first (Playwright's
 // default for a plain string), falling back to its visible label text if
 // that throws - a select whose values are opaque (a country dropdown's
@@ -75,7 +105,7 @@ const enterValue = async (page, elementIdentifier, inputText) => {
 // would otherwise never match a feature file's human-readable option text.
 // Existing callers where value === label (common for e.g. "Sort by"
 // dropdowns) are unaffected - the first attempt already succeeds for them.
-exports.enterValue = enterValue;
+exports.enterValueClearingAutoPopulatedFirst = enterValueClearingAutoPopulatedFirst;
 const selectDropdownOption = async (page, elementIdentifier, option) => {
   await withDiagnostics(page, elementIdentifier, `to select option "${option}" on ${describeIdentifier(elementIdentifier)}`, async () => {
     await page.focus(elementIdentifier);

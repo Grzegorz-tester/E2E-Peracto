@@ -36,6 +36,23 @@ Feature: Login Page
   # unlike KOOL's and Indespension's - not something headless automation can
   # solve, so "Resetting password" is expected to fail there specifically.
   # Confirmed live rather than assumed; not a selector or setup mistake.
+  #
+  # RE-CONFIRMED (live, HIB_ADMIN release branch, 2026-09-11): same
+  # "Recaptcha token not in header" failure, initially logged as a possible
+  # HIB bug - but per the user, manually triggering "Reset Password" from a
+  # user's own Edit User admin page (a different, non-recaptcha-protected
+  # flow) worked fine on the same environment. So this is HIB joining Carbon
+  # Admin's recaptcha-protected bucket, not a broken reset feature - the
+  # underlying password-reset mechanism works, only this automated
+  # headless run of the PUBLIC login page's forgotten-password form can't
+  # get past reCAPTCHA. Not a ticket-worthy bug.
+  #
+  # NOTE (2026-09-12): the exact error text in that same banner isn't
+  # stable run-to-run - a later run got "An unknown error occurred. Please
+  # try again later." instead of the specific recaptcha message above,
+  # same banner/UI slot. Don't read a change in this particular string as
+  # a new/different bug on its own; the root cause (reCAPTCHA blocking
+  # headless automation) is unchanged.
 
   @smoke
   Scenario: Successful log in to the admin account

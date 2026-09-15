@@ -1,0 +1,5 @@
+{
+  "search results heading": ":text(\"Showing results for\")",
+  "search products tab showing zero results": "a:has-text(\"Products (0)\")",
+  "search viewing zero of zero count": ":text(\"Viewing 0 of 0\")"
+}

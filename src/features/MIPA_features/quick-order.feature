@@ -10,6 +10,19 @@ Feature: Quick Order - CSV Upload
   # Basket UOM" admin setting confirmed on for this account first - not
   # verified here since it requires Peracto admin access, out of scope
   # for this pass.
+  #
+  # CONFIRMED SITE BUG - release-2-8-1 only (live, 2026-09-15): uploading
+  # ANY Quick Order CSV shows "Internal Server Error" on the page and adds
+  # nothing to the basket. Instrumented the real network traffic: the
+  # basket API's own CSV-processing endpoint
+  # (https://2-8-1-api.mipa-paints.pub/baskets/{id}) returns a 500 every
+  # time, reproduced both with an empty basket (where the id was literally
+  # "undefined" - a separate, real frontend bug in its own right, worth
+  # reporting alongside this) AND with a real, valid basket id already
+  # holding one item - ruling out "just needs a real basket id" as the
+  # explanation. This is a genuine backend regression on this specific
+  # build, not a test issue - all 3 scenarios below are expected to stay
+  # red on release-2-8-1 until it's fixed.
 
   Scenario: Upload a CSV with a valid and an invalid SKU
     Given I am navigating the page as a "logged in" user

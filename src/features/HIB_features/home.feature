@@ -7,8 +7,7 @@ Feature: Home page
     Then the "header logo" should be displayed
     And the "page title" should contain the text "Feel Bathroom Fabulous"
 
-  Scenario Outline: Verify:
-  - redirection to categories from the category cards
+  Scenario Outline: Verify: - redirection to the "<card>" category from the category cards
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "<card>" element
@@ -24,8 +23,7 @@ Feature: Home page
       | Ventilation card | bathroom-ventilation | BATHROOM VENTILATION |
 
 
-  Scenario Outline: Verify:
-  - redirection to feature pages from the feature cards
+  Scenario Outline: Verify: - redirection to the "<card>" feature page from the feature cards
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
     When I click on the "<card>" button

@@ -95,6 +95,35 @@ export const enterValue = async (
     });
 }
 
+// For a field that auto-populates itself (e.g. an Identifier/slug derived
+// from a sibling Label field) the instant it's focused - CONFIRMED live on
+// HIB_ADMIN (Peracto Admin's Option Identifier field, 2026-09-13):
+// focusing an empty Identifier field alone fills it with the slugified
+// Label value, so the plain "enterValue" above (focus then fill) ends up
+// filling on top of that just-appeared auto-value rather than an empty
+// field - Playwright's own fill() clears via a direct property set, but
+// this component's onChange still concatenates onto its own prior state
+// instead of the DOM's post-clear value, producing a doubled result
+// ("size" typed into an auto-populated "size" becomes "sizesize"). A real
+// user never hits this: they either accept the correct auto-value as-is or
+// notice and manually clear it before retyping, which this step now does
+// too - triple-click selects the field's current content (auto-populated
+// or not) and Backspace removes it before typing, so the same generic
+// "enterValue" above stays untouched for every field that doesn't have
+// this quirk (no reason to slow every fill in the suite down for it).
+export const enterValueClearingAutoPopulatedFirst = async (
+    page: Page,
+    elementIdentifier: ElementLocator,
+    inputText: string
+) => {
+    await withDiagnostics(page, elementIdentifier, `to fill ${describeIdentifier(elementIdentifier)} with "${inputText}" after clearing any auto-populated value`, async () => {
+        const locator = page.locator(elementIdentifier);
+        await locator.click({ clickCount: 3 });
+        await locator.press("Backspace");
+        await locator.type(inputText, { delay: 20 });
+    });
+}
+
 // Tries matching by the option's `value` attribute first (Playwright's
 // default for a plain string), falling back to its visible label text if
 // that throws - a select whose values are opaque (a country dropdown's

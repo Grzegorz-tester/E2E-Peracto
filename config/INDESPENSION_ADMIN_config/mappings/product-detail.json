@@ -12,5 +12,6 @@
   "Option Label": "[data-testid='options_item_0_label'] input",
   "Option Identifier": "[data-testid='options_item_0_identifier'] input",
   "Manage Variants": "[data-testid='button-manage-variants']",
-  "Remove Option": "[data-testid='remove-option-entry-0']"
+  "Remove Option": "[data-testid='remove-option-entry-0']",
+  "Default Attribute Set Name": "Default"
 }

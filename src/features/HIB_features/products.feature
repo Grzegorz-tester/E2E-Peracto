@@ -2,7 +2,7 @@
 Feature: Products page functionality
 
 
-  Scenario Outline: Verify the Products hub page lists every category and links to the right page
+  Scenario Outline: Verify the Products hub page lists the "<card>" category and links to the right page
     Given I am on the "products" page
     And I dismiss the newsletter popup if present
     Then the "<card>" should be displayed

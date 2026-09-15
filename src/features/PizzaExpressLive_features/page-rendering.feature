@@ -45,7 +45,7 @@ Feature: Page rendering
     Then I should be redirected to the "venue-soho" page
     And the "content page" should be displayed
 
-  Scenario Outline: Static CMS pages load with content
+  Scenario Outline: The "<page>" static CMS page loads with content
     Given I am on the "<page>" page
     Then the "content page" should be displayed
     Examples:

@@ -46,7 +46,7 @@ Feature: Admin Tabs Contain Expected Data
   Background:
     Given I am navigating the page as a "admin" user
 
-  Scenario Outline: A top-level tab loads with its expected heading and real content or a genuine empty state
+  Scenario Outline: The "<nav item>" top-level tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
     And the "page heading" should contain the text "<heading>"
@@ -58,7 +58,7 @@ Feature: Admin Tabs Contain Expected Data
       | Locations  | locations  | Locations  |
       | Orders     | orders     | Orders     |
 
-  Scenario Outline: A one-level-nested tab loads with its expected heading and real content or a genuine empty state
+  Scenario Outline: The "<parent>" > "<nav item>" tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
@@ -95,7 +95,7 @@ Feature: Admin Tabs Contain Expected Data
       | parent | nav item    | page id     | heading     |
       | Users  | User Groups | user-groups | User Groups |
 
-  Scenario Outline: A two-level-nested tab loads with its expected heading and real content or a genuine empty state
+  Scenario Outline: The "<grandparent>" > "<parent>" > "<nav item>" tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<grandparent>" element
     And I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element

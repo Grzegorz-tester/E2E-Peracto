@@ -1,0 +1,6 @@
+{
+  "Customer Number": "[data-testid='customer-number']",
+  "SKUs": "[data-testid='skus']",
+  "Submit": "[data-testid='submit']",
+  "response details": "#response-details pre"
+}

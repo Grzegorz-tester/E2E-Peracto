@@ -1,4 +1,4 @@
-import { Then, When } from "@cucumber/cucumber";
+import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
@@ -6,6 +6,37 @@ import { describeLocator, getElementLocator } from "../../support-functions/web-
 import { enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 import { ElementKey } from "../../../env/global";
 import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS } from "../../support-functions/payment-test-cards";
+
+// Second, independent layer of protection beyond the @places-real-order tag
+// exclusion wired into src/index.ts's productionExclusion (see CLAUDE.md's
+// "Staging vs production rules": never place a real order on a live
+// storefront). Called directly from every step below that actually submits
+// a payment and completes a real order, so it can't be bypassed by a
+// missing/misconfigured tag - it re-derives the same UI_AUTOMATION_HOST
+// check independently, the same source navigation-behaviour.ts's own
+// navigateToPage reads. Mirrors admin-address-book.ts's "I require a
+// staging admin for this scenario", the same pattern applied to
+// order-placing instead of admin mutation.
+function refuseIfProduction(action: string) {
+    if (process.env.UI_AUTOMATION_HOST === "production") {
+        throw new Error(
+            `Refusing to run: "${action}" places a real order and UI_AUTOMATION_HOST is "production". ` +
+            `This should already be excluded via the @places-real-order tag in src/index.ts - seeing this error means that exclusion didn't apply, or this step was reached outside a tag-filtered cucumber run.`
+        );
+    }
+}
+
+// Reusable scenario-level version of the same guard, for order-completing
+// actions that go through the generic "I click on the ... button" step
+// rather than a bespoke payment step (e.g. KOOL's "PAY ON ACCOUNT", Watco's
+// "Pay on Account"/Adyen "Pay by card" flows) - those can't be guarded
+// individually without hardcoding project-specific button text into the
+// generic click step. Add this as the first step of any scenario tagged
+// @places-real-order so it refuses to run the instant the scenario starts,
+// the same double-layer guarantee as the bespoke card-payment steps below.
+Given(/^I require staging for this scenario$/, async function () {
+    refuseIfProduction("this scenario (places a real order)");
+});
 
 // Generates a disposable, throwaway guest email (not a real credential) and
 // stashes it in globalVariables so a later step in the same scenario can
@@ -129,6 +160,7 @@ When(
 // need a different card (decline, 3DS, etc.), and adding one is a one-line
 // addition to that file, no step-definition or feature-file changes.
 When(/^I pay with the "([^"]*)" CyberSource test card$/, async function (this: ScenarioWorld, cardName: string) {
+    refuseIfProduction(`I pay with the "${cardName}" CyberSource test card`);
     const { screen: { page } } = this;
 
     const card = CYBERSOURCE_TEST_CARDS[cardName];
@@ -232,6 +264,7 @@ When(/^I pay with the "([^"]*)" CyberSource test card$/, async function (this: S
 // kills this step via Cucumber's own "function timed out" error before
 // the internal waitForURL above ever gets the chance to.
 When(/^I pay with the "([^"]*)" Verifone test card$/, { timeout: 60000 }, async function (this: ScenarioWorld, cardName: string) {
+    refuseIfProduction(`I pay with the "${cardName}" Verifone test card`);
     const { screen: { page } } = this;
 
     const card = VERIFONE_TEST_CARDS[cardName];
@@ -430,6 +463,7 @@ When(/^I click on the "([^"]*)" button and verify it opens a popup redirecting t
 // scenario using this step needs to handle both outcomes explicitly
 // rather than assuming success).
 When(/^I pay with the "([^"]*)" GlobalPayments test card$/, { timeout: 30000 }, async function (this: ScenarioWorld, cardName: string) {
+    refuseIfProduction(`I pay with the "${cardName}" GlobalPayments test card`);
     const { screen: { page } } = this;
 
     const card = GLOBALPAYMENTS_TEST_CARDS[cardName];

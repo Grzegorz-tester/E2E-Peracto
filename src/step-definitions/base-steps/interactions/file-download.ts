@@ -55,3 +55,19 @@ Then(/^the remembered "([^"]*)" download should start with the text "([^"]*)"$/,
         throw new Error(`Expected the "${variableName}" download (${this.globalVariables[variableName]}) to start with "${expectedPrefix}", but it started with "${content.slice(0, 200)}"`);
     }
 });
+
+// Order-independent alternative to the "should start with the text" step
+// above - for a CSV whose header columns are confirmed present but not
+// necessarily in the same order on every tenant (e.g. per-tenant custom
+// attributes interleaved with the standard ones, rather than only
+// appended at the end).
+Then(/^the remembered "([^"]*)" download's header row should contain the columns "([^"]*)"$/, async function (this: ScenarioWorld, variableName: string, expectedColumns: string) {
+    const savedPath = this.globalVariables[`${variableName}__path`];
+    const content = fs.readFileSync(savedPath, "utf-8");
+    const headerRow = content.split(/\r?\n/, 1)[0];
+    const actualColumns = headerRow.split(",");
+    const missingColumns = expectedColumns.split(",").filter((column) => !actualColumns.includes(column));
+    if (missingColumns.length > 0) {
+        throw new Error(`Expected the "${variableName}" download (${this.globalVariables[variableName]}) header row to contain the columns "${missingColumns.join(", ")}", but the header row was "${headerRow}"`);
+    }
+});

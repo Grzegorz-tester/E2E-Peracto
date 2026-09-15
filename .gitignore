@@ -1,5 +1,6 @@
 node_modules
 .env
+.DS_Store
 
 # Regenerated on every test run - not worth tracking
 reports/screenshots/
@@ -7,3 +8,5 @@ reports/videos/
 reports/cucumber-html-report.html
 reports/cucumber-pdf-report.pdf
 reports/*/*.pdf
+reports/report.json
+reports/*/report.json

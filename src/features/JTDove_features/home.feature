@@ -20,7 +20,7 @@ Feature: Home page
 #      | News         | news        | News        |
 #      | Careers      | careers     |             |
 
-  Scenario Outline: Verify redirection to categories from the category cards
+  Scenario Outline: Verify redirection to the "<card>" category from the category cards
     Given I am on the "home" page
     When I click on the "<card>" element
     Then I should be redirected to the "<page>" page

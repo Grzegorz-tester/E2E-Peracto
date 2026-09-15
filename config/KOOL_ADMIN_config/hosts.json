@@ -1,4 +1,5 @@
 {
   "staging": "https://staging-peracto.kooltech.pub",
-  "production": "https://peracto.kooltech.co.uk"
+  "production": "https://peracto.kooltech.co.uk",
+  "release_branch": "https://2-19-0-peracto.kooltech.pub"
 }

@@ -17,11 +17,15 @@ Feature: Checkout - Delivery, Billing, and Review and Payment
   # returns a 200 from its own API but never rendered any results for
   # either a city name or postcode-prefix search term tried live.
 
+  # Confirmed live: navigating to "basket" with no settle time after adding
+  # an item is a real race - the basket reads as empty 3/3 times with no
+  # wait, and passes 3/3 times with one, so the settle wait below stays.
   Background:
     Given I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
     And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
+    And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button
     Then I should be redirected to the "checkout" page

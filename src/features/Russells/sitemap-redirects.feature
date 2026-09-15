@@ -17,7 +17,7 @@ Feature: Sitemap redirects
     Then I should be redirected to the "sitemap" page
     And the "Sitemap heading" should equal text "Sitemap"
 
-  Scenario Outline: Each sitemap category's first item redirects to a real page
+  Scenario Outline: Each sitemap category's first item redirects to a real page - "<category>"
     Given I am on the "sitemap" page
     When I click on the "<category> tab" link
     Then the "Sitemap category item" should be displayed

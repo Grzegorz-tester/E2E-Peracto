@@ -13,7 +13,7 @@ Feature: Login Page
       | logged-in-user@example.com | Password123 |
 
 
-  Scenario Outline: Unsuccessful log in attempt into the user's account
+  Scenario Outline: Unsuccessful log in attempt into the user's account - "<errorMessage>"
     Given I am on the "login" page
     When I fill in the "Email address" input field with "<email>"
     And I fill in the "Password" input field with "<password>"

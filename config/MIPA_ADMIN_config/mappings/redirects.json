@@ -1,3 +1,4 @@
 {
-  "first item link": "[data-testid='row-0-fromPath']"
+  "first item link": "[data-testid='row-0-fromPath']",
+  "Add Redirect": "[data-testid='add-redirect']"
 }

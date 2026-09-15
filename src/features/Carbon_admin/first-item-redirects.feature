@@ -49,7 +49,7 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
   Background:
     Given I am navigating the page as a "admin" user
 
-  Scenario Outline: The first item in a top-level tab opens its own detail page, or the list is genuinely empty
+  Scenario Outline: The first item in the "<nav item>" top-level tab opens its own detail page, or the list is genuinely empty
     When I click precisely on the "<nav item>" element
     And I click precisely on the "first item link" element if present
     Then the current URL should contain "<url fragment>" or the "no results message" should be displayed
@@ -60,7 +60,7 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
       | Promotions | /promotions/  |
       | Locations  | /locations/   |
 
-  Scenario Outline: The first item in a one-level-nested tab opens its own detail page, or the list is genuinely empty
+  Scenario Outline: The first item in the "<parent>" > "<nav item>" tab opens its own detail page, or the list is genuinely empty
     When I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element
     And I click precisely on the "first item link" element if present
@@ -95,7 +95,7 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
       | parent | nav item    | url fragment  | heading key  |
       | Users  | User Groups | /user-groups/ | page heading |
 
-  Scenario Outline: The first item in a two-level-nested tab opens its own detail page, or the list is genuinely empty
+  Scenario Outline: The first item in the "<grandparent>" > "<parent>" > "<nav item>" tab opens its own detail page, or the list is genuinely empty
     When I click precisely on the "<grandparent>" element
     And I click precisely on the "<parent>" element
     And I click precisely on the "<nav item>" element

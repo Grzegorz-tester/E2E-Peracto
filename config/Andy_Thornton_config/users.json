@@ -1,5 +1,6 @@
 {
   "admin": { "email": "", "password": "" },
   "logged in": { "email": "", "password": "" },
+  "non admin": { "email": "", "password": "" },
   "guest": {}
 }

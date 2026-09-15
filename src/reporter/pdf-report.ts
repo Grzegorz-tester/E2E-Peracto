@@ -4,13 +4,14 @@ import path from 'path'
 import os from 'os'
 import { execSync } from 'child_process'
 import { chromium } from 'playwright'
-import { env } from '../env/parseEnv'
+import { env, getJsonFromFile } from '../env/parseEnv'
 
 dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 
 type CucumberStepResult = { status?: string; duration?: number; error_message?: string }
 type CucumberTag = { name: string }
-type CucumberStep = { keyword: string; name?: string; hidden?: boolean; result?: CucumberStepResult }
+type CucumberEmbedding = { data: string; mime_type?: string; media?: { type?: string } }
+type CucumberStep = { keyword: string; name?: string; hidden?: boolean; result?: CucumberStepResult; embeddings?: CucumberEmbedding[] }
 type CucumberElement = { name: string; keyword: string; tags?: CucumberTag[]; steps?: CucumberStep[] }
 type CucumberFeature = { name: string; uri?: string; elements?: CucumberElement[] }
 
@@ -97,8 +98,37 @@ const getRunner = (): string => {
     }
 }
 
+// Resolves the actual base URL a run targeted (e.g.
+// "https://release-2-8-1.mipa-paints.pub/" for MIPA_RELEASE's
+// release_branch host), the same lookup loadGlobalConfig.ts does for the
+// step definitions - so a report can be told apart from another run of the
+// same project against a different environment (staging vs. a release
+// branch bumped mid-sprint) without having to go check the env file. Falls
+// back to '-' rather than throwing, since HOSTS_URL_PATH/UI_AUTOMATION_HOST
+// are always set by every real run but this is purely cosmetic - a lookup
+// failure here shouldn't break report generation.
+const resolveTargetUrl = (): string => {
+    try {
+        const hostsConfig = getJsonFromFile<Record<string, string>>(env('HOSTS_URL_PATH'))
+        const host = env('UI_AUTOMATION_HOST', 'staging')
+        return hostsConfig[host] ?? '-'
+    } catch {
+        return '-'
+    }
+}
+
 const sumDurations = (element: CucumberElement): number =>
     (element.steps ?? []).reduce((sum, step) => sum + (step.result?.duration ?? 0), 0)
+
+// hooks.ts's After hook attaches the failure screenshot via this.attach(),
+// which cucumber's json formatter records as an embedding on the (hidden)
+// "After" hook step rather than on any visible Given/When/Then step - so
+// this has to look across every step, not just the visible ones the steps
+// table already renders.
+const scenarioScreenshots = (element: CucumberElement): string[] =>
+    (element.steps ?? []).flatMap(step => step.embeddings ?? [])
+        .filter(embedding => (embedding.mime_type ?? embedding.media?.type) === 'image/png')
+        .map(embedding => `data:image/png;base64,${embedding.data}`)
 
 // Step definitions that support it (see wait-for-behaviour.ts's `expected`/
 // `describeActual` and html-behaviour.ts's withDiagnostics) throw errors
@@ -167,6 +197,10 @@ const renderScenarioPage = (scenario: CucumberElement, projectName: string, feat
     const visibleSteps = (scenario.steps ?? []).filter(step => !step.hidden)
     const rows = visibleSteps.map((step, i) => renderStepRow(step, i + 1)).join('\n')
     const timeSpent = formatClock(sumDurations(scenario))
+    const screenshots = scenarioScreenshots(scenario)
+    const screenshotBlock = screenshots.length === 0 ? '' : `
+        <h2 class="section-label">Screenshot</h2>
+        ${screenshots.map(src => `<img class="failure-screenshot" src="${src}" alt="Failure screenshot" />`).join('\n')}`
 
     return `<section class="scenario-page">
         <div class="breadcrumb">${escapeHtml(projectName)} / ${escapeHtml(featureName)}</div>
@@ -181,6 +215,7 @@ const renderScenarioPage = (scenario: CucumberElement, projectName: string, feat
             <thead><tr><th>#</th><th>Step</th><th>Comment</th><th>Attachments</th><th>Status</th></tr></thead>
             <tbody>${rows}</tbody>
         </table>
+        ${screenshotBlock}
     </section>`
 }
 
@@ -221,18 +256,32 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
     const projectName = path.basename(env('COMMON_CONFIG_FILE', 'env/common.env'), '.env')
     const reportTitle = `${projectName} test run - ${formatTimestamp(generatedAt)}`
     const host = env('UI_AUTOMATION_HOST', '')
+    const targetUrl = resolveTargetUrl()
     const runner = getRunner()
     const totalDurationNs = allScenarios.reduce((sum, el) => sum + sumDurations(el), 0)
 
-    const featureRows = scenariosByFeature.map(({name, scenarios}) => {
+    const pillLabel = (status: Status): string => status === 'passed' ? 'PASS' : status === 'failed' ? 'FAIL' : 'SKIP'
+
+    const featureBlocks = scenariosByFeature.map(({name, scenarios}) => {
         const featurePassed = scenarios.filter(el => scenarioStatus(el) === 'passed').length
         const featureFailed = scenarios.filter(el => scenarioStatus(el) === 'failed').length
-        return `<tr>
-            <td>${escapeHtml(name)}</td>
-            <td>${featurePassed}</td>
-            <td>${featureFailed}</td>
-            <td>${scenarios.length}</td>
-        </tr>`
+        const bullets = scenarios.map(scenario => {
+            const status = scenarioStatus(scenario)
+            return `<li class="scenario-bullet">
+                <span class="pill pill-${status}">${pillLabel(status)}</span>
+                <span>${escapeHtml(scenario.name)}</span>
+            </li>`
+        }).join('\n')
+
+        return `<div class="feature-block">
+            <div class="feature-block-header">
+                <span class="feature-block-name">${escapeHtml(name)}</span>
+                <span class="feature-block-stats">${featurePassed} passed &middot; ${featureFailed} failed &middot; ${scenarios.length} total</span>
+            </div>
+            <ul class="scenario-bullet-list">
+                ${bullets}
+            </ul>
+        </div>`
     }).join('\n')
 
     const scenarioPages = scenariosByFeature.flatMap(({name, scenarios}) =>
@@ -245,7 +294,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
 <meta charset="utf-8" />
 <title>${escapeHtml(reportTitle)}</title>
 <style>
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body { font-family: Arial, Helvetica, sans-serif; padding: 32px; color: #1f2328; font-size: 13px; }
   h1 { font-size: 22px; margin: 0 0 16px 0; }
   h2.section-label { font-size: 14px; margin: 24px 0 10px 0; }
@@ -253,6 +302,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
 
   .meta-label { display: block; font-weight: 700; font-size: 12px; margin-bottom: 4px; }
   .meta-value { display: block; font-size: 13px; }
+  .meta-sub { font-size: 11px; color: #57606a; font-weight: normal; }
   .meta-grid { display: flex; gap: 32px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #d0d7de; }
   .meta-grid > div { flex: 1; }
   .meta-grid-3 { margin-bottom: 6px; }
@@ -274,10 +324,16 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
 
   .completion-rate { font-size: 28px; font-weight: bold; }
 
-  .features-table { width: 100%; border-collapse: collapse; }
-  .features-table th { text-align: left; font-size: 12px; padding: 6px 8px; border-bottom: 2px solid #1f2328; }
-  .features-table td { padding: 6px 8px; border-bottom: 1px solid #eaeef2; font-size: 12px; }
-  .features-table td:not(:first-child), .features-table th:not(:first-child) { text-align: center; width: 80px; }
+  .features-list { display: flex; flex-direction: column; gap: 14px; }
+  .feature-block-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 4px; margin-bottom: 6px; border-bottom: 1px solid #1f2328; }
+  .feature-block-name { font-weight: bold; font-size: 13px; }
+  .feature-block-stats { color: #57606a; font-size: 11px; white-space: nowrap; }
+  .scenario-bullet-list { list-style: none; margin: 0; padding: 0; }
+  .scenario-bullet { display: flex; align-items: center; gap: 8px; padding: 2px 0; font-size: 12px; page-break-inside: avoid; }
+  .pill { display: inline-block; flex-shrink: 0; min-width: 42px; text-align: center; color: white; font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 999px; letter-spacing: 0.03em; }
+  .pill-passed { background: ${STATUS_COLOR.passed}; }
+  .pill-failed { background: ${STATUS_COLOR.failed}; }
+  .pill-skipped { background: ${STATUS_COLOR.skipped}; }
 
   /* --- Scenario pages --- */
   .scenario-page { page-break-before: always; }
@@ -302,6 +358,8 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
   .ef-found { background: #ffebe9; color: ${STATUS_COLOR.failed}; }
 
   .step-error-raw { font-family: monospace; font-size: 9px; white-space: pre-wrap; color: #57606a; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #d0d7de; }
+
+  .failure-screenshot { display: block; max-width: 100%; margin-top: 8px; border: 1px solid #d0d7de; border-radius: 4px; page-break-inside: avoid; }
 
   .status-text { font-weight: bold; }
   .status-passed { color: ${STATUS_COLOR.passed}; }
@@ -335,17 +393,14 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
   <div class="meta-grid">
     <div><span class="meta-label">Run by</span><span class="meta-value">${escapeHtml(runner)}</span></div>
     <div><span class="meta-label">Generated</span><span class="meta-value">${formatTimestamp(generatedAt)}</span></div>
-    <div><span class="meta-label">Environment</span><span class="meta-value">${escapeHtml(host || '-')}</span></div>
+    <div><span class="meta-label">Environment</span><span class="meta-value">${escapeHtml(host || '-')}${targetUrl !== '-' ? ` <span class="meta-sub">(${escapeHtml(targetUrl)})</span>` : ''}</span></div>
     <div><span class="meta-label">Total step time</span><span class="meta-value">${formatClock(totalDurationNs)}</span></div>
   </div>
 
   <h3>Features</h3>
-  <table class="features-table">
-    <thead><tr><th>Feature</th><th>Passed</th><th>Failed</th><th>Total</th></tr></thead>
-    <tbody>
-      ${featureRows}
-    </tbody>
-  </table>
+  <div class="features-list">
+    ${featureBlocks}
+  </div>
 </section>
 
 ${scenarioPages}
@@ -368,12 +423,27 @@ const run = async () => {
     const defaultFilename = `${projectName}-${formatTimestampForFilename(generatedAt)}.pdf`
     const defaultPath = path.join(path.dirname(env('HTML_REPORT_FILE')), projectName, defaultFilename)
     const outputPath = env('PDF_REPORT_FILE', defaultPath)
-    fs.mkdirSync(path.dirname(outputPath), {recursive: true})
+    const outputDir = path.dirname(outputPath)
+    fs.mkdirSync(outputDir, {recursive: true})
+
+    // Only the latest run's PDF should survive per project folder - these
+    // were piling up unbounded (one new timestamped file per run, nothing
+    // ever removed the previous ones; MIPA_RELEASE alone reached 110+
+    // PDFs). Clear out any older PDFs in this project's own folder before
+    // writing the new one - report.json lives in the same folder but isn't
+    // touched, only *.pdf entries are removed.
+    for (const entry of fs.readdirSync(outputDir)) {
+        if (entry.endsWith('.pdf')) fs.unlinkSync(path.join(outputDir, entry))
+    }
 
     const browser = await chromium.launch()
     const page = await browser.newPage()
     await page.setContent(html, {waitUntil: 'load'})
-    await page.pdf({path: outputPath, format: 'A4', margin: {top: '20px', bottom: '20px', left: '20px', right: '20px'}})
+    // printBackground defaults to false in Playwright/Chromium - without it,
+    // every background-only element (the donut's conic-gradient, badges,
+    // dots, pills) silently renders blank in the PDF even though it looks
+    // fine in a normal browser tab.
+    await page.pdf({path: outputPath, format: 'A4', printBackground: true, margin: {top: '20px', bottom: '20px', left: '20px', right: '20px'}})
     await browser.close()
 
     console.log(`📄 Cucumber PDF report ${outputPath} generated successfully 👍`)

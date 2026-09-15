@@ -44,17 +44,17 @@ Feature: Selecting An Image Via The File Manager From A Form Field
   # strict improvement with no downside even where only one element ever
   # matched.
   #
-  # Picks a pre-existing file, "duck.jpg", by name rather than uploading a
-  # fresh disposable one first - confirmed present in the File Manager on
-  # BOTH tenants checked (MIPA, Andy Thornton), suggesting it may be
-  # standard Peracto Admin seed/demo data rather than tenant-specific real
-  # content, but this is an assumption, not independently verified as
-  # such. If a future tenant's run times out specifically on "I choose the
-  # 'duck.jpg' file in the image picker" (file not found), that's the
-  # signal this assumption doesn't hold everywhere - switch to uploading a
-  # disposable fixture first (reusing file-manager.ts's existing upload
-  # step) and deleting it afterward, rather than assuming every tenant's
-  # real File Manager contents match MIPA's.
+  # Originally picked a pre-existing file, "duck.jpg", by name rather than
+  # uploading a fresh disposable one first - confirmed present in the File
+  # Manager on MIPA and Andy Thornton, but CONFIRMED ABSENT (live, HIB_ADMIN
+  # release branch, 2026-09-11: "I choose the 'duck.jpg' file in the image
+  # picker" timed out, file not found) - exactly the signal this comment
+  # already anticipated, so switched to uploading the same disposable fixture
+  # file-manager.feature itself already uses ("Choose" doesn't care how the
+  # file got into the listing) and deleting it again afterward, rather than
+  # assuming every tenant's real File Manager contents match MIPA's. Doesn't
+  # need re-verifying per tenant any more, since it no longer depends on
+  # pre-existing tenant content.
 
   Scenario: Choosing an image via Category's Main Image Browse button does not currently populate the field
     Given I am navigating the page as a "admin" user
@@ -63,5 +63,9 @@ Feature: Selecting An Image Via The File Manager From A Form Field
     And I click precisely on the "first item link" element if present
     And I remember the value of the "Main Image" input field as "original main image"
     And I click on the "Browse Main Image" button, opening an image picker
-    And I choose the "duck.jpg" file in the image picker
+    And I upload the "velstar-test-file-manager-upload.png" file to the File Manager
+    And I choose the "velstar-test-file-manager-upload.png" file in the image picker
     Then the "Main Image" input field should have the remembered "original main image"
+
+    When I click on the "Browse Main Image" button, opening an image picker
+    And I delete the "velstar-test-file-manager-upload.png" file from the File Manager

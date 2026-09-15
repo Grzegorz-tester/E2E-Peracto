@@ -35,7 +35,7 @@ Feature: Sitemap redirects
   # bare /sitemap page, otherwise none of these sub-route elements would
   # resolve at all (confirmed live: an unmatched route fails outright with
   # "Failed to find page name from current route", not a silent fallback).
-  Scenario Outline: Each sitemap category's first item redirects correctly
+  Scenario Outline: Each sitemap category's first item redirects correctly - "<category tab>"
     Given I am on the "sitemap" page
     When I click on the "<category tab>" link
     And I click on the "sitemap category item" element and note the response status

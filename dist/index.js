@@ -5,12 +5,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.smoke = exports.regression = exports.dev = exports.carbon_regression = exports.PizzaExpressLive_regression = void 0;
 var _dotenv = _interopRequireDefault(require("dotenv"));
+var _fs = _interopRequireDefault(require("fs"));
+var _path = _interopRequireDefault(require("path"));
 var _parseEnv = require("./env/parseEnv");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 _dotenv.default.config({
   path: (0, _parseEnv.env)('COMMON_CONFIG_FILE', 'env/common.env')
 });
 _dotenv.default.config(); // optional local .env (gitignored) for real login credentials
+
+// Each project now points JSON_REPORT_FILE at its own ./reports/<Project>/report.json
+// (rather than every project sharing the same ./reports/report.json, which let two
+// concurrent runs against different projects clobber each other's results). Unlike
+// the shared path, most of these per-project directories don't exist yet, and
+// cucumber-js's json formatter won't create missing directories itself.
+const jsonReportDir = _path.default.dirname((0, _parseEnv.env)('JSON_REPORT_FILE', './reports/report.json'));
+if (!_fs.default.existsSync(jsonReportDir)) {
+  _fs.default.mkdirSync(jsonReportDir, {
+    recursive: true
+  });
+}
 
 // Hosts/pages/mappings/users config is loaded per-scenario by ScenarioWorld
 // (src/step-definitions/setup/world.ts) from the env vars set above, rather
@@ -47,7 +61,7 @@ _dotenv.default.config(); // optional local .env (gitignored) for real login cre
 const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
-                -f json:./reports/report.json \
+                -f json:${(0, _parseEnv.env)('JSON_REPORT_FILE', './reports/report.json')} \
                 --format progress-bar \
                 --parallel ${(0, _parseEnv.env)('PARALLEL')} \
                 --retry ${(0, _parseEnv.env)('RETRY')} \
@@ -97,7 +111,16 @@ const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.featur
 // (no error, no email-verification gate) but is genuinely empty, so
 // "first order view link" never appears - not a selector/config gap.
 const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history' : '';
-const tagFilter = tag => `${tag}${productionExclusion}`;
+
+// EXCLUDE_TAGS (set per-project in env/<Project>.env, space-separated) lets a
+// single tenant opt out of specific rows/scenarios in the SHARED Carbon_admin
+// suite that don't apply to it - e.g. a nav tab the shared suite's Examples
+// table expects but this tenant genuinely doesn't have. Per CLAUDE.md's
+// "shared boilerplate" rules: only use this when the tab is missing for SOME
+// tenants, not all of them (if every tenant lacked it, the row belongs out of
+// the shared Examples table entirely, not behind a per-tenant exclusion).
+const customExclusion = (0, _parseEnv.env)('EXCLUDE_TAGS', '').split(/\s+/).filter(Boolean).map(tag => ` and not ${tag}`).join('');
+const tagFilter = tag => `${tag}${productionExclusion}${customExclusion}`;
 const dev = exports.dev = `${common} --tags '${tagFilter('@dev')}'`;
 const smoke = exports.smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = exports.regression = `${common} --tags '${tagFilter('@regression')}'`;

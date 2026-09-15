@@ -1,4 +1,4 @@
-import { When } from "@cucumber/cucumber";
+import { Then, When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
@@ -76,5 +76,43 @@ When(/^I clear the basket$/, async function (this: ScenarioWorld) {
             () => removeLink.click()
         );
         await page.waitForLoadState("load");
+    }
+});
+
+// For a basket holding several DIFFERENT products at once, rather than one
+// product plus its own priced extras (see product-configurator.ts's "the
+// basket grand total should be internally consistent", which sums a single
+// line's own extras) - sums every VISIBLE "basket line total price"
+// candidate (however many lines there are) and checks it against "basket
+// sub total", NOT "Order total". Scoped to :visible rather than reusing
+// the mapping's selector as-is: this storefront duplicates markup for
+// mobile/desktop breakpoint variants elsewhere (see quote-builder.ts's
+// opening comment) and a plain count/sum here would silently double-count
+// a line if the same pattern applies to basket rows.
+//
+// CONFIRMED LIVE (staging-uk, 2026-09-09): "Order total" is NOT the sum of
+// line totals - it's line totals + Delivery, all marked up by VAT (e.g. 2
+// lines summing to £169.20 produced an "Order total" of £224.58, which is
+// exactly (£169.20 + £17.95 delivery) × 1.2). "basket sub total" is the
+// pre-delivery, ex-VAT figure that genuinely should equal the line sum.
+Then(/^the basket sub total should equal the sum of all basket line totals$/, async function (this: ScenarioWorld) {
+    const { screen: { page }, globalConfig } = this;
+
+    const lineTotalSelector = `${getElementLocator(page, "basket line total price", globalConfig)}:visible`;
+    const subTotalSelector = getElementLocator(page, "basket sub total", globalConfig);
+
+    const lineTexts = await page.locator(lineTotalSelector).allTextContents();
+    const linePrices = lineTexts.map(parsePrice);
+    const linesSum = linePrices.reduce((sum, price) => sum + price, 0);
+    const subTotal = parsePrice(await page.textContent(subTotalSelector));
+
+    // A manual throw, not expect()'s own message argument - confirmed live
+    // that Playwright's expect(value, message).toBeLessThanOrEqual(...)
+    // silently drops the custom message from the reported error, leaving
+    // only "Received: <number>" with no way to see what was actually
+    // summed.
+    const diff = Math.abs(subTotal - linesSum);
+    if (diff > 0.02) {
+        throw new Error(`Expected basket sub total (${subTotal}) to equal the sum of ${linePrices.length} visible basket line total(s) (${JSON.stringify(linePrices)} = ${linesSum}), off by ${diff.toFixed(2)}`);
     }
 });

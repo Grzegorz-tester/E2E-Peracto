@@ -58,13 +58,58 @@ Feature: Product Variant Creation and Deletion
   # repeated regression runs don't pile up disposable products, options or
   # variants in any tenant's real catalogue.
 
+  # RETRACTED FALSE BUG REPORT, ROOT-CAUSED (live, HIB_ADMIN release
+  # branch, 2026-09-13): first logged here as a "confirmed bug" (Manage
+  # Variants silently not navigating) after reproducing a failure twice
+  # via automation - but the user then manually tested the same flow by
+  # hand and Manage Variants worked fine and quickly, directly
+  # contradicting that conclusion. Traced the real mechanism live: the
+  # "Option Identifier" field auto-populates itself with the slugified
+  # Label value the INSTANT it's focused (confirmed: focusing an empty
+  # identifier field alone fills it with "size" before any typing).
+  # Automation (both Playwright's fill() and character-by-character
+  # type() alike) focuses the field and then adds its own "size" on top
+  # of that just-appeared auto-value, producing "sizesize" - which left
+  # the form permanently dirty and made "Manage Variants" a no-op. A real
+  # user never hits this: they see the field already correctly
+  # auto-populated and don't redundantly retype the same value into it.
+  # This was a test-automation gap, not a site defect - fixed by using
+  # "... clearing any auto-populated value first" (form.ts/
+  # html-behaviour.ts, added 2026-09-13) for this one field instead of
+  # changing the plain fill step for everyone else. Left as a cautionary
+  # note rather than deleted outright: an automated repro that looks
+  # "confirmed" via a second independent reproduction can still be wrong
+  # if the reproduction method itself (not just the one run) is what's
+  # flawed - a live manual test is stronger evidence than repeating the
+  # same automated approach twice.
+  #
+  # SECOND ROUND, RESOLVED (2026-09-13, same day): with the identifier fix
+  # applied, "Manage Variants" still didn't navigate in three further
+  # automated attempts (confirmed the click lands on the real nested
+  # <button>, not an overlay; no new tab opens). Per the user, it worked
+  # fine and quickly when tested manually - and confirmed visible
+  # "straight away" with no flicker, ruling out a plain visibility race.
+  # A direct DOM check then caught it: querying for
+  # "[data-testid='button-manage-variants']" right after the Option save
+  # sometimes returned ZERO matches, even though a plain click() on the
+  # same selector moments earlier had succeeded without complaint - the
+  # element was appearing/disappearing across an async re-render window
+  # right after saving, same general shape as this file's OWN documented
+  # "Manage Variants" first-appears-after-save race (see the CONFIRMED
+  # (live, Andy Thornton...) note above), just a narrower/less consistent
+  # window on HIB. CONFIRMED FIX: adding "I wait for the page to settle"
+  # (navigation.ts - networkidle + 1s buffer, already used elsewhere in
+  # this same file for the equivalent post-delete race) before clicking
+  # "Manage Variants" made the very first click succeed reliably. Not a
+  # backend propagation/indexing delay after all - the settle wait alone
+  # was sufficient, no extra delay beyond its own ~1s buffer was needed.
   Scenario: Adding a Product Option and a Variant to a new product, then deleting both
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user
     When I click precisely on the "Products" element
     And I click precisely on the "All Products" element
     And I click precisely on the "Add Product" element
-    And I select the "Default" option from the "Attribute Set" react-select, typing to search
+    And I select the tenant's default attribute set from the "Attribute Set" react-select, typing to search
     And I fill in the "Product Name" input field with a unique product name
     And I fill in the "SKU" input field with a unique product SKU
     And I fill in the "Price" input field with "9.99"
@@ -73,11 +118,12 @@ Feature: Product Variant Creation and Deletion
 
     When I click precisely on the "Add New Option" element
     And I fill in the "Option Label" input field with "Size"
-    And I fill in the "Option Identifier" input field with "size"
+    And I fill in the "Option Identifier" input field with "size", clearing any auto-populated value first
     And I click precisely on the "Save" element
     Then the "success toast" should contain the text "Product successfully updated!"
 
-    When I click precisely on the "Manage Variants" element
+    When I wait for the page to settle
+    And I click precisely on the "Manage Variants" element
     Then the current URL should contain "/variants"
     And I click precisely on the "Add Product Variant" element
     Then the current URL should contain "/variants/add"

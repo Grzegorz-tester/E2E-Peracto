@@ -4,24 +4,7 @@ import { ScenarioWorld } from "../../setup/world";
 import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { clickElement, withActionDiagnostics } from "../../support-functions/html-behaviour";
-
-// Currency-symbol-agnostic and decimal/thousands-separator-agnostic - see
-// the identical helper in basket.ts for why (different storefronts in this
-// framework format prices differently even though the underlying testids
-// are shared).
-const parsePrice = (text: string | null): number => {
-    const match = text?.match(/[\d.,]*\d/);
-    if (!match) {
-        throw new Error(`Could not parse a price out of "${text}"`);
-    }
-    const raw = match[0];
-    const lastComma = raw.lastIndexOf(",");
-    const lastDot = raw.lastIndexOf(".");
-    const normalized = lastComma > lastDot
-        ? raw.replace(/\./g, "").replace(",", ".")
-        : raw.replace(/,/g, "");
-    return parseFloat(normalized);
-};
+import { parsePrice } from "../../support-functions/price-helper";
 
 // Each facet checkbox's own sibling <label> carries its live result count
 // (e.g. "Air Switch (26)"). Reading that count and asserting the header's

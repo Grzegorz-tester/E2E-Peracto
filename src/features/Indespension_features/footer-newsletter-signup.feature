@@ -34,7 +34,7 @@ Feature: Footer newsletter sign-up, company details and social links
     Then the "footer company details" should contain the text "Company Registration No"
     And the "footer company details" should contain the text "VAT No"
 
-  Scenario Outline: Social media icons in the footer link out correctly
+  Scenario Outline: The "<icon>" social media icon in the footer links out correctly
     Then the "<icon>" should be displayed
     Examples:
       | icon                    |
@@ -45,7 +45,7 @@ Feature: Footer newsletter sign-up, company details and social links
       | YouTube footer icon     |
       | LinkedIn footer icon    |
 
-  Scenario Outline: Footer links redirect to the correct page
+  Scenario Outline: The "<link>" footer link redirects to the correct page
     When I click on the "<link>" element
     Then I should be redirected to the "<page>" page
 

@@ -2,7 +2,11 @@
 Feature: Barclays Verifone Payment Integration
 
   # From KOOL-2026-08-17.json, "Barclays Verifone Payment Integration"
-  # (cases 548-574). Deliberately narrow: a successful card payment is
+  # (cases 548-574). Both scenarios below wait for the page to settle
+  # right after adding to basket - confirmed live, navigating to "basket"
+  # with no wait is a real race that empties the basket 3/3 times.
+  #
+  # Deliberately narrow: a successful card payment is
   # already proven end-to-end by purchase-journey.feature (via
   # payment-test-cards.ts's "frictionless" 3DS test numbers), and repeating
   # that here would just add more load against the SAME real Cardinal
@@ -26,6 +30,7 @@ Feature: Barclays Verifone Payment Integration
     And I am on the "cable-pdp" page
     And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
+    And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button
     Then I should be redirected to the "checkout" page
@@ -45,6 +50,7 @@ Feature: Barclays Verifone Payment Integration
     And I am on the "cable-pdp" page
     And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
+    And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "CHECKOUT SECURELY" button
     Then I should be redirected to the "checkout" page

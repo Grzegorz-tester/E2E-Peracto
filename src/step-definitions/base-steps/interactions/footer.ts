@@ -17,7 +17,12 @@ const checkLinksResolve = async (page: ScenarioWorld["screen"]["page"], hrefs: s
         // whether the page itself exists (confirmed live: a real, working
         // profile URL still 400s here) - not something this site controls,
         // so it's excluded rather than producing a permanent false failure.
-        if (url.includes("facebook.com")) {
+        //
+        // Twitter/X does the same with a 403 for KOOL's own real, working
+        // profile link (confirmed live, 3/3 attempts via this same request
+        // context - a plain curl to the identical URL gets a normal 200 via
+        // its x.com redirect), so it's excluded for the same reason.
+        if (url.includes("facebook.com") || url.includes("twitter.com") || url.includes("x.com")) {
             continue;
         }
 

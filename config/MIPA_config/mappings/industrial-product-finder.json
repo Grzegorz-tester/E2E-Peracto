@@ -1,0 +1,11 @@
+{
+  "page title": "(//h1)[1]",
+  "Product Type": "//label[text()='Product Type']/following-sibling::button[@role='combobox']",
+  "Substrate": "//label[text()='Substrate']/following-sibling::button[@role='combobox']",
+  "Finishes": "//label[text()='Finishes']/following-sibling::button[@role='combobox']",
+  "Application": "//label[text()='Application (Optional)']/following-sibling::button[@role='combobox']",
+  "Technologies": "//label[text()='Technologies (Optional)']/following-sibling::button[@role='combobox']",
+  "Usage": "//label[text()='Usage (Optional)']/following-sibling::button[@role='combobox']",
+  "SEARCH": "//button[normalize-space()='SEARCH']",
+  "CLEAR": "//button[normalize-space()='CLEAR']"
+}

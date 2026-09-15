@@ -24,28 +24,46 @@ Feature: Product Listing Page (PLP) & Search
   # The exact refinement option names in "refinement filters" haven't been
   # confirmed live for this category - this exercises the 1st available
   # filter checkbox generically rather than a specific named one.
+  #
+  # CONFIRMED SITE/DATA DIVERGENCE (live, 2026-09-11): asserting on the
+  # on-page "product card" count (as this scenario originally did) is
+  # fragile across environments - staging's 1st facet option happens to
+  # match fewer than a page size (count visibly drops), but production's
+  # 1st option ("M Series", 93 matches) still exceeds the 20-per-page
+  # display size, so the visible count never drops even though the filter
+  # is genuinely applied. A URL-based check was tried instead, but "Clear
+  # all" leaves an empty "refinementList[...]=" param behind rather than
+  # removing the key outright, so "should not contain refinementList" would
+  # still wrongly fail. The page count in "PLP page indicator" ("N of M")
+  # changes with the real, current total regardless of the 20-per-page
+  # display cap - confirmed live going 34 -> 5 -> 34 pages - so comparing
+  # that indicator's text is robust to whichever facet happens to be first,
+  # on any environment.
   Scenario: PLP - Apply filters and confirm results update
     Given I am on the "air-conditioning-plp" page
     And I click on the "Accept cookies" button if present
-    And I remember the number of "product card" elements as "unfiltered count"
+    And I remember the text of "PLP page indicator" as "unfiltered page indicator"
     When I click on the "1st" "refinement filters" element
-    Then the number of "product card" elements should be fewer than the remembered "unfiltered count"
+    Then the "PLP page indicator" text should not equal the remembered "unfiltered page indicator"
     When I click on the "Clear all" button
-    Then the number of "product card" elements should equal the remembered "unfiltered count"
+    Then the "PLP page indicator" text should equal the remembered "unfiltered page indicator"
 
-  # No dedicated pagination/"load more" data-testid was found live on this
-  # category - it may not paginate at this product count, or use a
-  # mechanism not yet identified. Uses the generic "if present" click so
-  # this reports cleanly rather than failing outright if there's nothing
-  # to click; confirm the real mechanism before trusting this scenario.
-  Scenario: PLP - Load more results or pagination works
+  # Confirmed live (2026-09-10): this category paginates via a prev/next
+  # chevron control plus an "N of M" indicator, sitting at the very bottom
+  # of the results with no data-testid of its own - not a "Load more"/
+  # accumulating button (a prior scenario here wrongly assumed that shape
+  # and never found a matching control). Pagination REPLACES the visible
+  # page of results rather than appending to them, so the real signal that
+  # it worked is the indicator advancing, not the product-card count
+  # changing (it stays at a fixed page size on every page).
+  Scenario: PLP - Pagination moves to the next page
     Given I am on the "air-conditioning-plp" page
     And I click on the "Accept cookies" button if present
-    And I remember the number of "product card" elements as "initial count"
-    When I click on the "Load more results" button if present
-    Then the number of "product card" elements should be more than the remembered "initial count"
+    Then the "PLP page indicator" should contain the text "1 of"
+    When I click on the "PLP next page button" element
+    Then the "PLP page indicator" should contain the text "2 of"
 
-  Scenario Outline: Search - Search by SKU and product name
+  Scenario Outline: Search - Search by SKU and product name - "<term>"
     Given I am on the "home" page
     And I click on the "Accept cookies" button if present
     When I fill in the "Search products" input field with "<term>"

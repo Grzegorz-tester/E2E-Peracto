@@ -10,9 +10,7 @@ Feature: Menu side draw
   # Sheets, Flyers, Conditions Of Use), identical for guest and logged-in
   # users - no user-type-gated item like HIB's "Request a Sample" was found.
 
-  Scenario Outline: Verify menu elements for:
-  - a Logged in User
-  - a Guest User
+  Scenario Outline: Verify menu elements for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     And I click on the "Menu" icon
     Then the "Brochures draw menu item" should be displayed

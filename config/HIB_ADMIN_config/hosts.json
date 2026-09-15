@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.hib.pub"
+  "staging": "https://staging-peracto.hib.pub",
+  "release_branch": "https://hib-170-peracto.hib.pub"
 }

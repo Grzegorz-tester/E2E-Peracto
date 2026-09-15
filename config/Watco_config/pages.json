@@ -90,5 +90,13 @@
   "order-detail": {
     "route": "/account/order/details",
     "regex": "^/account/order/details/[0-9]+$"
+  },
+  "quote-list": {
+    "route": "/account/quote/list",
+    "regex": "^/account/quote/list$"
+  },
+  "quote-where-to-add": {
+    "route": "/quote/where-to-add",
+    "regex": "^/quote/where-to-add/[0-9]+$"
   }
 }

@@ -19,7 +19,7 @@ Feature: What's On filters, views and search
   # share "results wrapper" while Calendar has no such element at all (see
   # the View toggles scenario below), so asserting against the wrong one
   # for Calendar would silently check nothing.
-  Scenario Outline: Venue filter narrows results in every view
+  Scenario Outline: Venue filter narrows results in the "<view button>" view
     Given I am on the "whats-on" page
     When I click on the "<view button>" element
     And I click on the "All Venues combobox" element
@@ -44,7 +44,7 @@ Feature: What's On filters, views and search
   # month, e.g. including days earlier in it than today - not just a
   # tighter version of the default "upcoming from today" view). Same
   # per-view results-container split as the venue outline above.
-  Scenario Outline: Month filter narrows results in every view
+  Scenario Outline: Month filter narrows results in the "<view button>" view
     Given I am on the "whats-on" page
     When I click on the "<view button>" element
     And I remember the text of "<results key>" as "results before month filter"
@@ -65,7 +65,7 @@ Feature: What's On filters, views and search
   # entirely and a real day-of-week calendar grid renders instead) - an
   # outline sharing one "results key" column across all three would have
   # silently passed Calendar against the wrong element.
-  Scenario Outline: View toggles render event data
+  Scenario Outline: The "<view button>" view toggle renders event data
     Given I am on the "whats-on" page
     When I click on the "<view button>" element
     Then the "<results key>" should be displayed

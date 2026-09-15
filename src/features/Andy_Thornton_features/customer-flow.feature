@@ -8,9 +8,26 @@ Feature: Guest product purchase flow
   # real order on staging, which is fine per this repo's staging rules -
   # "Velstar Test" is used as the customer name per CLAUDE.md's convention
   # for checkout test data.
+  #
+  # FLAGGED (2026-09-14): was missing @places-real-order until now - since
+  # Andy_Thornton_PROD.env was added pointing at the same FEATURE_PATH,
+  # this scenario would otherwise have run a real payment attempt against
+  # the live production site the moment the unrelated Cookiebot-banner
+  # failure below got fixed (it had been failing at "Add to basket"
+  # first, which accidentally masked this gap). Tagged now so
+  # src/index.ts's productionExclusion strips it whenever
+  # UI_AUTOMATION_HOST=production, same as every other order-placing
+  # scenario in this repo.
+  #
+  # CONFIRMED (live, production/www.andythornton.com, 2026-09-14): see
+  # PDP.feature - an undismissed Cookiebot banner intercepts "Add to
+  # basket" on a fresh consent-less context, leaving the basket empty.
+  @places-real-order
   Scenario: Successful guest checkout purchase
     Given I am on the "pdp" page
+    And I click on the "Allow all cookies" button if present
     When I click on the "Add to basket" button
+    And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "Checkout" button
     Then I should be redirected to the "checkout" page

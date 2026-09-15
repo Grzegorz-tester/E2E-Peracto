@@ -1,9 +1,18 @@
 @regression
 Feature: Basket page
 
+  # CONFIRMED (live, production/www.andythornton.com, 2026-09-14): see
+  # PDP.feature - an undismissed Cookiebot banner intercepts "Add to
+  # basket" on a fresh consent-less context, leaving the basket empty.
+  # Also see PDP.feature's second note: even with the banner dismissed,
+  # navigating to "basket" too fast after clicking can still race the
+  # add-to-basket request itself - "I wait for the page to settle" first.
+
   Background:
     Given I am on the "pdp" page
+    And I click on the "Allow all cookies" button if present
     When I click on the "Add to basket" button
+    And I wait for the page to settle
     And I am on the "basket" page
     Then the "basket item" should be displayed
 

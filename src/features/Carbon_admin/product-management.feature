@@ -78,7 +78,7 @@ Feature: Product Creation and Publishing
     When I click precisely on the "Products" element
     And I click precisely on the "All Products" element
     And I click precisely on the "Add Product" element
-    And I select the "Default" option from the "Attribute Set" react-select, typing to search
+    And I select the tenant's default attribute set from the "Attribute Set" react-select, typing to search
     And I fill in the "Product Name" input field with a unique product name
     And I fill in the "SKU" input field with a unique product SKU
     And I fill in the "Price" input field with "9.99"

@@ -90,6 +90,18 @@ Feature: Editing Existing Attributes, Attribute Groups, Attribute Sets, Location
     Then the "Name" input field should have the remembered "original attribute group name"
 
 
+  # CONFIRMED SITE BUG - MIPA_ADMIN_RELEASE, release-2-8-1 (live, 2026-09-15):
+  # this scenario edits whichever Attribute Set happens to be first in the
+  # list (currently "Default", id 1) - that specific Attribute Set's own
+  # data is broken and rejects EVERY save, even a no-op rename, with a 422:
+  # "Cannot save Attribute Set, an Attribute references multiple
+  # AttributeGroups in AttributeSet." Instrumented the real network
+  # response to confirm - not a UI/toast timing issue, the API genuinely
+  # rejects the write due to a real data-integrity problem with this
+  # specific record (one of its Attributes references more than one
+  # AttributeGroup, which the backend's own validation won't allow to be
+  # saved). Expected to stay red until that Attribute Set's data is fixed
+  # (or it's no longer first in the list) - not a test bug.
   Scenario: Editing an Attribute Set's name persists after a reload, and can be restored
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user
@@ -134,6 +146,15 @@ Feature: Editing Existing Attributes, Attribute Groups, Attribute Sets, Location
     Then the "Name" input field should have the remembered "original location name"
 
 
+  # Tagged and excluded for HIB specifically (2026-09-12, per the user
+  # directly) - not because the "Shipping Services" nav tab is missing (it
+  # exists identically to every other tenant), but because HIB's own
+  # Shipping Services list is empty on this environment and out of scope
+  # for HIB's suite. Every other Peracto Admin tenant using this shared
+  # suite keeps this scenario - see src/index.ts's EXCLUDE_TAGS mechanism
+  # and CLAUDE.md's "a tenant is missing a tab the shared suite expects"
+  # guidance for the same per-tenant-opt-out pattern.
+  @requires-shipping-services
   Scenario: Editing a Shipping Service's name persists after a reload, and can be restored
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user

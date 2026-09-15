@@ -6,6 +6,7 @@
   "basket item title": ".basket-item__detail__title a",
   "basket line total price": ".basket-item__detail__final-price",
   "Order total": ".basket-summary__total.basket-summary__price",
+  "basket sub total": ".basket-summary__row.basket-summary__sub-total .basket-summary__price",
   "empty basket message": "p:has-text(\"There are currently no items in your basket\")",
   "basket quantity increase": ".basket-item .qty-plus"
 }

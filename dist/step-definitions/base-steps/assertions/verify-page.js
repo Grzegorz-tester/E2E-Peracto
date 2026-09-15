@@ -45,14 +45,14 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
 // For state that lives in the URL itself rather than a distinct page (e.g.
 // an Algolia InstantSearch refinement like ?refinementList[...]=Soft+Close),
 // where pagesConfig's page-identity matching doesn't apply.
-(0, _cucumber.Then)(/^the current URL should contain "([^"]*)"$/, async function (expectedText) {
+(0, _cucumber.Then)(/^the current URL should( not)? contain "([^"]*)"$/, async function (negate, expectedText) {
   const {
     screen: {
       page
     }
   } = this;
-  await (0, _waitForBehaviour.waitFor)(() => page.url().includes(expectedText), {
-    expected: `current URL to contain "${expectedText}"`,
+  await (0, _waitForBehaviour.waitFor)(() => page.url().includes(expectedText) === !negate, {
+    expected: `current URL to ${negate ? "not " : ""}contain "${expectedText}"`,
     describeActual: async () => `current URL is "${page.url()}"`
   });
 });

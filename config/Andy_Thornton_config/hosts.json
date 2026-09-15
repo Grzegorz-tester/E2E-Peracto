@@ -1,4 +1,5 @@
 {
   "release_branch": "",
-  "staging": "https://staging.andythornton.pub/"
+  "staging": "https://staging.andythornton.pub/",
+  "production": "https://www.andythornton.com/"
 }

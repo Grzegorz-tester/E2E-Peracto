@@ -19,9 +19,21 @@
     "route": "/products",
     "regex": "^/products$"
   },
+  "products-export": {
+    "route": "/products/export",
+    "regex": "^/products/export$"
+  },
   "variants": {
     "route": "/variants",
     "regex": "^/variants$"
+  },
+  "product-restrictions": {
+    "route": "/product-restrictions",
+    "regex": "^/product-restrictions$"
+  },
+  "product-restrictions-export": {
+    "route": "/product-restrictions/export",
+    "regex": "^/product-restrictions/export$"
   },
   "categories": {
     "route": "/categories",
@@ -119,6 +131,34 @@
     "route": "/test-harnesses/get-product",
     "regex": "^/test-harnesses/get-product$"
   },
+  "get-prices": {
+    "route": "/test-harnesses/get-prices",
+    "regex": "^/test-harnesses/get-prices$"
+  },
+  "get-invoices": {
+    "route": "/test-harnesses/get-invoices",
+    "regex": "^/test-harnesses/get-invoices$"
+  },
+  "get-account-balance": {
+    "route": "/test-harnesses/get-account-balance",
+    "regex": "^/test-harnesses/get-account-balance$"
+  },
+  "get-customer": {
+    "route": "/test-harnesses/get-customer",
+    "regex": "^/test-harnesses/get-customer$"
+  },
+  "get-sales-orders": {
+    "route": "/test-harnesses/get-sales-orders",
+    "regex": "^/test-harnesses/get-sales-orders$"
+  },
+  "send-order": {
+    "route": "/test-harnesses/send-order",
+    "regex": "^/test-harnesses/send-order$"
+  },
+  "import-payment": {
+    "route": "/test-harnesses/import-payment",
+    "regex": "^/test-harnesses/import-payment$"
+  },
   "orphaned-pages": {
     "route": "/menus/orphaned_pages",
     "regex": "^/menus/orphaned_pages$"
@@ -131,7 +171,6 @@
     "route": "/menus/footer",
     "regex": "^/menus/footer$"
   },
-
   "product-detail": {
     "route": "/products/:id",
     "regex": "^/products/[^/]+$"

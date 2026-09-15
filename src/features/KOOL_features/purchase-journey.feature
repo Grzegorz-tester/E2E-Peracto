@@ -38,7 +38,8 @@ Feature: Purchase Journey
   # logged-in journey and confirmed correct.
   @places-real-order
   Scenario: Guest user - Card payment - Complete purchase from cart to confirmation
-    Given I am on the "hose-set-pdp" page
+    Given I require staging for this scenario
+    And I am on the "hose-set-pdp" page
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page
     Then the "no items message" should not be displayed
@@ -64,7 +65,8 @@ Feature: Purchase Journey
   # explicitly clicked (Billing) - both required, not just recommended.
   @places-real-order
   Scenario: Logged-in user - Payment on Account - Complete purchase successfully
-    Given I am navigating the page as a "logged in" user
+    Given I require staging for this scenario
+    And I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
     When I slowly click on the "Add to basket" button
     And I am on the "basket" page

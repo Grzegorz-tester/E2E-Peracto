@@ -7,7 +7,8 @@ Feature: Purchase journey (Guest)
 
   @smoke @places-real-order
   Scenario: Guest can complete a real order end-to-end
-    Given I navigate directly to the path "/products/walterscheid-universal-joint-32-x-76mm-standard-duty"
+    Given I require staging for this scenario
+    And I navigate directly to the path "/products/walterscheid-universal-joint-32-x-76mm-standard-duty"
     And I click on the "Accept cookies" button if present
     And I remember the text of "product name" as "product name"
     And I remember the text of "product SKU" as "product sku"

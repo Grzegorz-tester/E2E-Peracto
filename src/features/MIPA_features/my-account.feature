@@ -3,10 +3,7 @@
 Feature: Operations in the users account
 
 
-  Scenario: Verify:
-  - the presence of Dashboard tab elements
-  - presence of the orders table
-  - redirection to "All Orders"
+  Scenario: Verify: - the presence of Dashboard tab elements, the orders table and redirection to "All Orders"
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page
     And I click on the "Dashboard" tab
@@ -17,11 +14,7 @@ Feature: Operations in the users account
     When I click on the "orders - View all" link
     Then I should be redirected to the "account-orders" page
 
-  Scenario: Verify:
-  - a presence of the Profile tab elements
-  - if the not editable fields are disabled
-  - if the editable fields are not disabled
-  - if the required fields are not empty
+  Scenario: Verify: - a presence of the Profile tab elements, that non-editable fields are disabled, editable fields are not disabled, and required fields are not empty
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page
     And I click on the "Profile" tab
@@ -41,8 +34,7 @@ Feature: Operations in the users account
     And the "Save Changes" should be enabled
 
 
-  Scenario: Verify:
-  - a presence of Address Book tab elements
+  Scenario: Verify: - a presence of Address Book tab elements
 
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page
@@ -52,8 +44,7 @@ Feature: Operations in the users account
     And the "Billing Address" should be displayed
 
 
-  Scenario: Verify:
-  - a presence of Orders tab elements
+  Scenario: Verify: - a presence of Orders tab elements
 
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page
@@ -63,8 +54,7 @@ Feature: Operations in the users account
     And the "Refresh" should be displayed
     And the "Orders table" should be displayed
 
-  Scenario: Verify:
-  - a presence of My Lists tab elements
+  Scenario: Verify: - a presence of My Lists tab elements
 
     Given I am navigating the page as a "logged in" user
     When I am on the "account" page

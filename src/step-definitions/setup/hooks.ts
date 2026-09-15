@@ -1,4 +1,4 @@
-import { Before, After, ITestCaseHookParameter, setDefaultTimeout, BeforeStep } from '@cucumber/cucumber';
+import { Before, BeforeAll, After, ITestCaseHookParameter, setDefaultTimeout, BeforeStep } from '@cucumber/cucumber';
 import { env } from '../../env/parseEnv';
 import { ScenarioWorld } from './world';
 import { ITestStepHookParameter } from "@cucumber/cucumber/lib/support_code_library_builder/types";
@@ -11,6 +11,24 @@ function sanitize(name: string): string {
 }
 
 setDefaultTimeout(Number(env('SCRIPT_TIMEOUT')));
+
+// Same projectName derivation the reporters use, so a project's own
+// failure screenshots live in their own subfolder - screenshots are keyed
+// only by scenario name (see sanitize() below), so a flat shared directory
+// meant two projects with an identically-named scenario (e.g. any pair of
+// tenants sharing the Carbon_admin suite) silently overwrote each other's
+// screenshot.
+const projectName = path.basename(env('COMMON_CONFIG_FILE', 'env/common.env'), '.env');
+const screenshotDir = path.join(env('SCREENSHOT_PATH'), projectName);
+
+BeforeAll(async function () {
+    // Reset this project's screenshot folder once per run, not once per
+    // scenario - without this, a scenario that used to fail (and was since
+    // fixed) left its old failure screenshot behind forever, since nothing
+    // else ever removed a screenshot once written.
+    fs.rmSync(screenshotDir, { recursive: true, force: true });
+    fs.mkdirSync(screenshotDir, { recursive: true });
+});
 
 BeforeStep(async function (this: ScenarioWorld, scenario: ITestStepHookParameter) {
     console.log(`🥒 Running cucumber step: "${scenario.pickleStep.text}"`);
@@ -37,10 +55,6 @@ After(async function (this: ScenarioWorld, scenario: ITestCaseHookParameter) {
 
     if (scenarioStatus === 'FAILED') {
         try {
-            const screenshotDir = env('SCREENSHOT_PATH');
-            if (!fs.existsSync(screenshotDir)) {
-                fs.mkdirSync(screenshotDir, { recursive: true });
-            }
             const screenshotPath = path.join(screenshotDir, `${scenarioName}.png`);
             const screenshot = await page.screenshot({ path: screenshotPath });
             await this.attach(screenshot, 'image/png');

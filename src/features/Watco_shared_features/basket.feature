@@ -35,3 +35,28 @@ Feature: Basket
     When I click on the "remove basket line" element
     Then the "basket item title" should not be displayed
     And the "empty basket message" should be displayed
+
+  # Every prior basket scenario here only ever has ONE product line at a
+  # time - this checks the previously-untested case of the basket holding
+  # two DIFFERENT products at once, and that its order total is genuinely
+  # the sum of both lines rather than, say, only reflecting whichever line
+  # was added last.
+  Scenario: Adding two different products keeps the basket total consistent with both line totals
+    Given I am on the "home" page
+    And I click on the "Accept cookies" button if present
+    When I fill in the "Search products" input field with "epoxy"
+    And I press Enter in the "Search products" input field
+    And I wait for the search results to update
+    And I click on the "first search result" link via its href on this origin
+    And I click on the "Add to basket" button
+
+    When I am on the "home" page
+    And I fill in the "Search products" input field with "mixing stick"
+    And I press Enter in the "Search products" input field
+    And I wait for the search results to update
+    And I click on the "first search result" link via its href on this origin
+    And I click on the "Add to basket" button
+
+    When I am on the "basket" page
+    Then the "basket header link" should contain the text "2"
+    And the basket sub total should equal the sum of all basket line totals

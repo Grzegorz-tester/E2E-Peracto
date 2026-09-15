@@ -14,7 +14,7 @@ Feature: Sitemap redirects
     Then I should be redirected to the "sitemap" page
     And the "sitemap heading" should equal text "Sitemap"
 
-  Scenario Outline: Each sitemap category's first item redirects correctly
+  Scenario Outline: Each sitemap category's first item redirects correctly - "<category tab>"
     Given I am on the "sitemap" page
     And I click on the "Accept cookies" button if present
     When I click on the "<category tab>" link
