@@ -28,6 +28,8 @@ Feature: Logged-in purchase journey
     Given I am on the "home" page
     When I click on the "Sign In button" link
     Then I should be redirected to the "login" page
+    # Same hydration race as logging-in.feature (2026-09-28).
+    And I wait for the page to settle
     When I fill in the "Email address" input field with the "logged in" user's email
     And I fill in the "Password" input field with the "logged in" user's password
     And I click on the "Sign In" button

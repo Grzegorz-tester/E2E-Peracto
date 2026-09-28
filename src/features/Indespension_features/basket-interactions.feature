@@ -24,7 +24,11 @@ Feature: Basket interactions
     When I click on the "Add to basket" button
     Then the "added to basket confirmation" should be displayed
     When I press the Escape key
-    And I click on the "Basket" icon
+    # Precise (non-forced) click (2026-09-28): the added-to-basket dialog's
+    # fade-out overlay is still animating after Escape, and a forced click
+    # can land on it instead of the header link - the page then stays on
+    # the PDP. The non-forced click waits for the overlay to clear.
+    And I click precisely on the "Basket" icon
     Then I should be redirected to the "basket" page
     When I increment the basket quantity and the total should update correctly
     And I decrement the basket quantity and the total should update correctly
@@ -34,7 +38,11 @@ Feature: Basket interactions
     When I click on the "Add to basket" button
     Then the "added to basket confirmation" should be displayed
     When I press the Escape key
-    And I click on the "Basket" icon
+    # Precise (non-forced) click (2026-09-28): the added-to-basket dialog's
+    # fade-out overlay is still animating after Escape, and a forced click
+    # can land on it instead of the header link - the page then stays on
+    # the PDP. The non-forced click waits for the overlay to clear.
+    And I click precisely on the "Basket" icon
     Then I should be redirected to the "basket" page
     When I click on the "Remove items" element
     Then the "no items message" should be displayed

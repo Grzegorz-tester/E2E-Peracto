@@ -495,7 +495,28 @@ const selectOptionWithEnabledCandidate = async (
 
     for (let i = optionCount - 1; i >= 0; i--) {
         const listOptions = await openListbox();
-        await listOptions.nth(i).click();
+        // CONFIRMED live (Indespension towbar fitting weeks, 2026-09-28):
+        // clicking the LAST option of this Radix Select reproducibly got
+        // "element is not stable" then "detached" on every retry, until the
+        // 30s click timeout (likely Radix's scroll-edge area nudging the
+        // list under the pointer - not proven). Same 1 listbox, same 6 options on
+        // every open (logged live), so it's not a stale index. Falls back
+        // to keyboard selection (focus the option, Enter), which Radix
+        // Select handles natively and which doesn't depend on the list
+        // sitting still under the pointer.
+        //
+        // CONFIRMED live (same day, full regression run): a timed-out click
+        // can still have landed - the option got selected and the listbox
+        // closed - so the fallback only runs if the listbox is genuinely
+        // still open, otherwise focus() waits on an option that's gone.
+        const option = listOptions.nth(i);
+        const clicked = await option.click({ timeout: 5000 }).then(() => true).catch(() => false);
+        const stillOpen = !clicked && await option.isVisible().catch(() => false);
+        if (stillOpen) {
+            console.log(`[week picker] option ${i} click did not settle, selecting via keyboard`);
+            await option.focus({ timeout: 5000 });
+            await page.keyboard.press("Enter");
+        }
 
         const candidates = page.locator(candidateIdentifier);
         const candidatesRendered = await candidates.first()

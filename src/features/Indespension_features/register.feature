@@ -16,8 +16,12 @@ Feature: Register page
     Then I should be redirected to the "register" page
     And the "register form" should be displayed
 
+  # Same hydration race as logging-in.feature (2026-09-28): filling straight
+  # after navigation can beat hydration, leaving fields wiped or the submit
+  # button stuck disabled.
   Scenario: Successful registration signs the user in
     Given I am on the "register" page
+    And I wait for the page to settle
     When I fill in the "First name" input field with "Velstar"
     And I fill in the "Last name" input field with "Test"
     And I fill in the "Register email" input field with a unique guest email

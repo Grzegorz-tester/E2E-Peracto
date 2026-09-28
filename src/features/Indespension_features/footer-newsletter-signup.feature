@@ -15,6 +15,8 @@ Feature: Footer newsletter sign-up, company details and social links
     Then the "newsletter form" should be displayed
     And the "newsletter email input" should be displayed
     And the "newsletter submit button" should be displayed
+    # Same hydration race as logging-in.feature (2026-09-28).
+    And I wait for the page to settle
 
     When I fill in the "newsletter email input" input field with ""
     And I click on the "newsletter submit button" button
