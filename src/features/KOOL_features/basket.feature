@@ -11,6 +11,10 @@ Feature: Basket
     And I am on the "cable-pdp" page
     And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
+    # Wait for the add to actually land before navigating away - same race
+    # checkout.feature documents (basket reads empty 3/3 with no wait);
+    # confirmed again 2026-09-28 on release-2-19-0 AND staging.
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "no items message" should not be displayed
 

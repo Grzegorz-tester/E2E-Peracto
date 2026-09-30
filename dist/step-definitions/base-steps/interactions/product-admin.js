@@ -25,6 +25,16 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, productName);
   this.globalVariables["product name"] = productName;
 });
+
+// Confirmed live (Keylite_ADMIN_RELEASE, 2026-09-16): a plain
+// "VEL-TEST-<Date.now()>" SKU is 22 characters, and Peracto Admin's
+// Product Variant Save rejects any SKU over 20 with a 422 ("Products
+// 'Sku' exceeds the character limit of 20.") - shown as a real error
+// toast, not silence, but easy to miss because it renders alongside (and
+// looks like) any other transient toast if a scenario isn't specifically
+// asserting on it. Truncating to the last 8 digits of Date.now() keeps
+// this comfortably under 20 chars everywhere while remaining unique for
+// any realistic test run (repeats only every ~27.7 hours).
 (0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique product SKU$/, async function (elementKey) {
   const {
     screen: {
@@ -32,7 +42,7 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     },
     globalConfig
   } = this;
-  const productSku = `VEL-TEST-${Date.now()}`;
+  const productSku = `VEL-TEST-${Date.now().toString().slice(-8)}`;
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
   await page.waitForSelector(elementIdentifier, {
     state: "visible",

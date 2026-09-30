@@ -1,0 +1,17 @@
+{
+  "Attribute Set": "[data-testid='set-dropdown']",
+  "Product Name": "[data-testid='product-name']",
+  "SKU": "[data-testid='sku']",
+  "Price": "[data-testid='price']",
+  "Product Status": "//label[text()='Product Status']/following::*[contains(@class,\"-container\") or contains(@class,\"select__control\")][1]",
+  "Index Product": "#saveAndIndex",
+  "Save": "[data-testid='save-form']",
+  "Delete Product": "[data-testid='delete-product']",
+  "Confirm Delete Product": "[data-testid='button-action_delete-product']",
+  "Add New Option": "[data-testid='add-variant-option']",
+  "Option Label": "[data-testid='options_item_0_label'] input",
+  "Option Identifier": "[data-testid='options_item_0_identifier'] input",
+  "Manage Variants": "[data-testid='button-manage-variants']",
+  "Remove Option": "[data-testid='remove-option-entry-0']",
+  "Default Attribute Set Name": "Spare Parts"
+}

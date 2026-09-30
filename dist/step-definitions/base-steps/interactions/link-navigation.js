@@ -47,7 +47,19 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
     }
   };
   const hrefPath = pathOf(href);
-  const [response] = await Promise.all([page.waitForResponse(res => pathOf(res.url()) === hrefPath, {
+
+  // Ignore speculative prefetches of the same URL. Confirmed live on
+  // Indespension production (2026-09-29): hovering the link fires a
+  // browser prefetch that Cloudflare answers with 503 (its "Speed Brain"
+  // behaviour for an uncached page), while the real navigation right
+  // after it is a 200. Without this, that prefetch is the first matching
+  // response and the page is falsely reported as broken.
+  const isPrefetch = res => {
+    const request = res.request();
+    const headers = request.headers();
+    return request.resourceType() === "prefetch" || /prefetch/i.test(headers["sec-purpose"] ?? headers["purpose"] ?? "");
+  };
+  const [response] = await Promise.all([page.waitForResponse(res => pathOf(res.url()) === hrefPath && !isPrefetch(res), {
     timeout: 35000
   }), element.click()]);
   this.globalVariables["noted response status"] = String(response.status());
@@ -113,10 +125,14 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
       page
     }
   } = this;
+  // .first(): some pages repeat their heading (confirmed live on Andy
+  // Thornton's /delivery-and-returns and /privacy-policy, and HIB's /about,
+  // 2026-09-30), which made the strict locator fail even though the heading
+  // was there.
   await (0, _test.expect)(page.getByRole("heading", {
     name: text,
     exact: true
-  })).toBeVisible({
+  }).first()).toBeVisible({
     timeout: 15000
   });
 });

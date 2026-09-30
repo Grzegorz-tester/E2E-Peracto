@@ -70,7 +70,9 @@ Feature: Checkout payment methods by customer type
     Then I should be redirected to the "checkout-review" page
 
     When I check the "delivery fee acknowledgement"
-    And I click on the "Place order" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "Place order" button as the final real submission
     And I pay with the "default" GlobalPayments test card
     Then I should be redirected to the "checkout-thank-you" page
     And the "order reference" should be displayed

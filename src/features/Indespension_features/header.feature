@@ -108,17 +108,45 @@ Feature: Header functionality
   # stays open instead of navigating. "I click precisely" (non-forced) is
   # unaffected - it waits out the overlay like any other actionability
   # check - confirmed live, reliable across repeat runs.
-  Scenario Outline: Verify redirection from the "<menu element>" menu element in the header
+  Scenario Outline: Verify redirection from the "<menu element>" menu element in the header (may fail if the staging firewall blocks the run)
     Given I am on the "home" page
-    When I click on the "Menu" icon
+    # Retry the Menu click until the drawer is really open (2026-09-29):
+    # on production an early click is sometimes swallowed before the header
+    # hydrates, leaving no drawer at all ("no element matched" for every
+    # drawer link, confirmed in the first production runs).
+    When I click on the "Menu" element, retrying until the "open menu drawer" is displayed
     And I click precisely on the "<menu element>" element
     Then I should be redirected to the "<redirection>" page
 
+    # 2026-09-29: the drawer's items differ by environment (confirmed live):
+    # staging has Offers (+ Services), production has News instead.
+    # Careers is on both. The menu keys in common.json are now scoped to the
+    # open drawer by text - the old navigation-drawer-sheet__link-N testids
+    # belong to the desktop header bar behind the drawer's backdrop, which
+    # is what "intercepts pointer events" on production, and N shifts with
+    # the item list anyway.
     Examples:
       | menu element  | redirection    |
       | Trailers      | trailers       |
       | Trailer Parts | trailer-parts  |
       | Trailer Hire  | trailer-hire   |
       | Towbars       | towbars        |
-      | Offers        | special-offers |
       | Used Trailers | used-trailers  |
+      | Careers       | careers        |
+
+    @production-only
+    Examples:
+      | menu element  | redirection    |
+      | News          | news           |
+
+
+  # Staging only (confirmed live 2026-09-29): "Offers" in the drawer opens a
+  # second tier ("View All", "E-Bike Carrier") instead of navigating, so it
+  # needs its own two-click path. Production has no Offers item at all.
+  @not-on-production
+  Scenario: Verify redirection from the "Offers" menu element in the header, via its "View All" sub-menu link
+    Given I am on the "home" page
+    When I click on the "Menu" element, retrying until the "open menu drawer" is displayed
+    And I click precisely on the "Offers" element
+    And I click precisely on the "menu drawer View All" element
+    Then I should be redirected to the "special-offers" page

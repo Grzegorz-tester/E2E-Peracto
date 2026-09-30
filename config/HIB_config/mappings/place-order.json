@@ -7,12 +7,15 @@
   "Remove items": "[data-testid='basket__quantity-input__delete']",
   "product's total price": "[data-testid='basket__total__price']",
   "product's price": "[data-testid='basket__product-price__price']",
-  "order total price": "[data-testid='price']",
+  "order total price": "(//*[normalize-space(text())='RRP Total']/following::*[@data-testid='price'])[1]",
   "Products you may also need": "button:has-text('Products you may also need')",
   "Specification": "button:has-text('Specification')",
   "specification draw": "//h3[text()='Specification']/../..",
   "you may also need draw": "//h3[text()='You may also need']/../..",
   "close": "button:has-text('Close')",
   "Back to Portal": "[data-testid='basket__header__back-link']",
-  "no items message": "//p[text()='You have no items in your basket.']"
+  "no items message": "//p[text()='You have no items in your basket.']",
+  "first search result": ":nth-match([data-testid='search__hits__hit'], 1) button",
+  "basket subtotal": "(//*[normalize-space(text())='Subtotal']/following::*[@data-testid='price'])[1]",
+  "View Options - you may also need": "(//h3[text()='You may also need']/../..//*[@data-testid='add-to-basket_btnlink'])[1]"
 }

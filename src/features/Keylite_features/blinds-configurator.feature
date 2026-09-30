@@ -89,7 +89,7 @@ Feature: PDP blinds configurator (Use Product Size)
     And the "configurator review product price" should be displayed
     When I dismiss the newsletter popup if present
     And I click on the "1st" "configurator add to basket" element via JavaScript
-    And I wait for the page to settle
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "basket item" should be displayed
     And the "basket item name" should contain the text "Blackout Blinds"

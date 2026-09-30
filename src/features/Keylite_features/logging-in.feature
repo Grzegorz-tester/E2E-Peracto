@@ -14,3 +14,13 @@ Feature: Login Page
     And I fill in the "Password" input field with the "logged in" user's password
     And I click on the "Sign In" button
     Then I should be redirected to the "account" page
+
+  Scenario: Logging in with the wrong password is rejected
+    Given I am on the "login" page
+    And I dismiss the newsletter popup if present
+    And I wait for the page to settle
+    When I fill in the "Email address" input field with the "logged in" user's email
+    And I fill in the "Password" input field with "definitely-not-the-password-123"
+    And I click on the "Sign In" button
+    Then the "login alert" should contain the text "Invalid credentials."
+    And I should be redirected to the "login" page

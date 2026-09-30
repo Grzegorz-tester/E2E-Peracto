@@ -57,6 +57,19 @@ Feature: Product Creation and Publishing
   #   ~12s to redirect (its SCRIPT_TIMEOUT is bumped to 35000 for this);
   #   bump SCRIPT_TIMEOUT per-project if login timeouts show up elsewhere.
   #
+  # CONFIRMED SITE-SPECIFIC (live, KOOL_ADMIN_RELEASE, 2026-09-15): KOOL's own
+  # Default Attribute Set has three extra Yes/No custom attributes - "Ugly
+  # Freight", "Searchable in Storefront", "Searchable in Quote Tool" - none
+  # seen on MIPA/Andy Thornton's Default Attribute Set. All three default to
+  # no value ("Please Select") with no client-side requiredness hint, so Save
+  # silently 422s server-side ("Option '""' is not a valid option. Available
+  # options are '"Yes", "No"'") with no toast at all - easy to misdiagnose as
+  # a toast-timing race rather than three genuinely unfilled required fields
+  # (confirmed via the raw network response, not inferred). Filled via the
+  # "... react-select if present" step variant (form.ts) so this stays a
+  # no-op on every tenant without these attributes, same reasoning as
+  # user-management.feature's MIPA-only "Account Number" field.
+  #
   # Deletes what it creates at the end so repeated regression runs don't
   # pile up disposable products in any tenant's real product catalogue.
   #
@@ -84,6 +97,9 @@ Feature: Product Creation and Publishing
     And I fill in the "Price" input field with "9.99"
     And I ensure the "Index Product" checkbox is checked
     And I select the "Active" option from the "Product Status" react-select
+    And I select the "No" option from the "Ugly Freight" react-select if present
+    And I select the "Yes" option from the "Searchable in Storefront" react-select if present
+    And I select the "Yes" option from the "Searchable in Quote Tool" react-select if present
     And I click precisely on the "Save" element
     Then the "success toast" should contain the text "Product successfully added!"
     And the "Price" should equal the value "9.99"

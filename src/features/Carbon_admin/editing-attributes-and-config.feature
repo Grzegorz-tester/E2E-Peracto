@@ -155,6 +155,14 @@ Feature: Editing Existing Attributes, Attribute Groups, Attribute Sets, Location
   # and CLAUDE.md's "a tenant is missing a tab the shared suite expects"
   # guidance for the same per-tenant-opt-out pattern.
   @requires-shipping-services
+  # KNOWN RED on ANDY_THORNTON_ADMIN staging (confirmed live 2026-09-30),
+  # tenant DATA, not a test bug: the first shipping service (id 34,
+  # "Standard Delivery", 488 postcode cost rows) can't be saved even
+  # UNCHANGED - PUT /shipping-services/34 returns 422 ("postcodeCosts[358]:
+  # Cannot set District End value when District Start is not set", plus
+  # dozens more on the same rows), so no success toast ever appears. The
+  # record is left untouched (the save is rejected), so nothing needs
+  # restoring.
   Scenario: Editing a Shipping Service's name persists after a reload, and can be restored
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user

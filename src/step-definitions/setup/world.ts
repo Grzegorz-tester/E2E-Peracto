@@ -43,6 +43,24 @@ export class ScenarioWorld extends World {
         // to click it (found via the "Find a Retailer" page, which
         // requests geolocation and already handles a denial gracefully).
         const context = await browser.newContext({ permissions: [], ...contextOptions });
+
+        // BLOCK_REQUEST_HOSTS (space-separated host substrings, set per
+        // project in env/<Project>.env) aborts every request to those hosts
+        // for the whole scenario. Added for Indespension production
+        // (2026-09-29): its Cookiebot consent banner covers the bottom half
+        // of the viewport on every page and blocks clicks (Sign In, checkout
+        // fields, the towbar booking button), and dismissing it per scenario
+        // proved unreliable. Blocking consent.cookiebot.com removes the banner
+        // with no page errors (confirmed live), and test traffic never
+        // consents to the site's marketing/analytics tags either.
+        const blockedHosts = env('BLOCK_REQUEST_HOSTS', '').split(/\s+/).filter(Boolean);
+        if (blockedHosts.length > 0) {
+            await context.route(
+                (url) => blockedHosts.some((host) => url.hostname.includes(host)),
+                (route) => route.abort()
+            );
+        }
+
         const page = await context.newPage();
 
 

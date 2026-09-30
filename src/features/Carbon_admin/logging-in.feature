@@ -78,7 +78,12 @@ Feature: Login Page
     When I click precisely on the "Forgotten your password?" link
     Then I should be redirected to the "forgotten-password" page
 
-    When I fill in the "Email address" input field with "valid_email_address@test.co.uk"
+    # CONFIRMED live (HIB hib-170-peracto, 2026-09-24): clicking Reset before
+    # the admin app has finished its own startup API calls shows "An unknown
+    # error occurred" with NO reset request ever sent (6/6 with a
+    # domcontentloaded-then-click, 2/2 success after networkidle). Settle first.
+    When I wait for the page to settle
+    And I fill in the "Email address" input field with "valid_email_address@test.co.uk"
     And I click precisely on the "Reset" button
     Then I should be presented with a "reset password message" "If you have an account, an email will be generated to reset your password."
 

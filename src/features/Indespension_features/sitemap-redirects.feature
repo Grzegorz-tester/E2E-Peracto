@@ -12,7 +12,9 @@ Feature: Sitemap redirects
   @smoke
   Scenario: User can navigate to the sitemap page from a content page's footer
     Given I am on the "contact" page
-    When I click on the "sitemap link" link
+    # Retry (2026-09-29): on production the footer click was swallowed once
+    # and the page stayed on /contact - the site's usual early-click race.
+    When I click on the "sitemap link" link, retrying until redirected to the "sitemap" page
     Then I should be redirected to the "sitemap" page
     And the "sitemap heading" should be displayed
 

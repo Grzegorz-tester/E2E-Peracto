@@ -118,3 +118,38 @@ const parsePrice = text => {
     throw new Error(`Expected basket sub total (${subTotal}) to equal the sum of ${linePrices.length} visible basket line total(s) (${JSON.stringify(linePrices)} = ${linesSum}), off by ${diff.toFixed(2)}`);
   }
 });
+
+// For a percentage promotion (e.g. a promo code), without hardcoding the
+// discounted figure - derived from the CURRENT "Y" price, for the same
+// reason as the quantity step above (a literal value silently rots the
+// first time the product's price changes). "equal" is the 0% case, for
+// asserting a removed promotion has restored the original total. Polls,
+// since a basket's totals re-render asynchronously after the promotion
+// request completes. Resolves both keys through getElementLocator, so any
+// project can reuse it with its own "basket total"/"basket subtotal" keys.
+//
+// CONFIRMED live (Keylite staging, 2026-09-23): 20SKI2025 (20% off blinds)
+// takes a £91.20 subtotal to a £72.96 total - total, not subtotal, is the
+// figure that moves; the discount shows as its own summary row.
+(0, _cucumber.Then)(/^the "([^"]*)" price should (?:equal|be "(\d+(?:\.\d+)?)"% less than) the "([^"]*)" price$/, async function (actualKey, percent, referenceKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const actualSelector = (0, _webElementHelper.getElementLocator)(page, actualKey, globalConfig);
+  const referenceSelector = (0, _webElementHelper.getElementLocator)(page, referenceKey, globalConfig);
+  const factor = 1 - Number(percent ?? 0) / 100;
+  const read = async selector => parsePrice(await page.locator(selector).first().textContent().catch(() => null));
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    const reference = await read(referenceSelector);
+    return reference > 0 && Math.abs((await read(actualSelector)) - reference * factor) < 0.02;
+  }, {
+    expected: `"${actualKey}" to equal ${percent ? `"${referenceKey}" less ${percent}%` : `"${referenceKey}"`}`,
+    describeActual: async () => {
+      const reference = await read(referenceSelector);
+      return `"${actualKey}" is ${await read(actualSelector)}, "${referenceKey}" is ${reference} (expected ${(reference * factor).toFixed(2)})`;
+    }
+  });
+});

@@ -35,10 +35,13 @@ Feature: Navigation Menu
     When I click on the "<category link>" element
     Then the current URL should contain "<expected path>"
 
+    # 2026-09-28: both links now go elsewhere - Electrical to the /electrical
+    # landing page, Gas to /category/refrigerant - confirmed identical on
+    # staging and release-2-19-0, so a site change rather than a regression.
     Examples:
       | category link            | expected path              |
-      | Electrical category link | /category/electrical       |
-      | Gas category link        | /category/gas-refrigerant  |
+      | Electrical category link | /electrical                |
+      | Gas category link        | /category/refrigerant      |
 
   # CONFIRMED LIVE (2026-08-19): the mobile hamburger opens a completely
   # separate drawer ([data-testid='nav-tier-one'], inside a HeadlessUI

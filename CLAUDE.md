@@ -170,6 +170,13 @@ Both environments have a storefront site and an admin site.
   **read-only** - no creating, editing, or deleting anything through the admin site; only editing
   the test user's own storefront-side account data is permitted, and only on the storefront.
 
+To run a real-transaction journey on production *up to* its final step rather than excluding the
+whole scenario via `@places-real-order`/`@submits-real-form`/`@completes-registration`, use
+`I click on the "X" button as the final real submission` for the one click that commits it (Place
+order, Confirm Your Booking, a real form submit). Off production it's a plain click; on production
+it asserts the button is visible and enabled, then returns `skipped`, so nothing is clicked and the
+scenario shows as skipped (not passed) in the report. Indespension's storefront uses this throughout.
+
 When writing or tagging a scenario, be clear about which environment and site it's meant for -
 don't assume a step that's safe on staging (placing an order, editing admin content) is safe to
 run against production just because the same feature file's `FEATURE_PATH`/tag also matches a

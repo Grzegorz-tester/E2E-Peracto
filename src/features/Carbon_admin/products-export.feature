@@ -1,4 +1,4 @@
-@regression
+@regression @requires-product-export
 Feature: Exporting Product Data
 
   # Promoted from MIPA_ADMIN_features to the shared Carbon_admin boilerplate
@@ -42,6 +42,17 @@ Feature: Exporting Product Data
   # contain the columns" step (file-download.ts) instead of loosening or
   # removing the assertion - the other 8 exports keep the strict prefix
   # match since those were confirmed to match exactly across tenants.
+  #
+  # @requires-product-export added (2026-09-16) - confirmed live that
+  # Lamona's admin (release branch 2-8-0) genuinely has no "Export Product
+  # Data" link anywhere on the All Products list (dumped every testid on
+  # the page: filters, bulk actions, columns, pagination, but no export
+  # link at all) - a whole-feature capability gap rather than one missing
+  # nav row, so the tag sits on the Feature line and gates every scenario
+  # in this file at once. Every other tenant using this shared suite
+  # already has this working, so it stays in the shared suite per
+  # CLAUDE.md's "a tenant is missing a tab the shared suite expects"
+  # guidance - excluded per-tenant via EXCLUDE_TAGS, not removed here.
 
   Background:
     Given I am navigating the page as a "admin" user

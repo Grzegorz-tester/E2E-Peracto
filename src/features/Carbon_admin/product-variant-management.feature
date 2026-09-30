@@ -1,4 +1,4 @@
-@regression @mutates-admin-data
+@regression @mutates-admin-data @product-variants
 Feature: Product Variant Creation and Deletion
 
   # New coverage (2026-09-10) - Peracto Admin has no standalone "Add
@@ -28,6 +28,21 @@ Feature: Product Variant Creation and Deletion
   #   yet cross-verified against a second tenant like product-detail.json
   #   was (MIPA + Indespension independently matched). Watch for gaps on
   #   other tenants' first real runs.
+  # @product-variants added (2026-09-17) - the same tag the two Product
+  # Variants nav rows already use, so a tenant without variants excludes
+  # this whole file with the tag it already sets. CONFIRMED (live, Lamona
+  # release branch 2-8-0): this tenant has variants switched off entirely,
+  # not just hidden - its Product Type dropdown offers ONE option
+  # ("Standard", no variant-capable type), a saved product's detail page
+  # renders no options/variants section at all (no add-variant-option, and
+  # the page text never contains "Variant" or "Option"), the advanced-
+  # options toggle reveals nothing variant-related, and there's no Product
+  # Variants nav tab. So the scenario fails at "Add New Option" AFTER
+  # creating its product but BEFORE its own delete-product cleanup, leaving
+  # an orphaned test product behind on every run - which is how three
+  # "Velstar Test Product ..." rows accumulated there before this was
+  # tagged.
+  #
   # - Deleting a variant redirects back to the per-product Product Variants
   #   list with the same short async delay as the save-redirect above -
   #   confirmed live an immediate "Add Product Variant" element check right
@@ -50,6 +65,66 @@ Feature: Product Variant Creation and Deletion
   #   very next persistence check. Fixed with "current URL should not
   #   contain '/add'" instead, which genuinely polls (via waitFor) until
   #   the real redirect completes.
+  #
+  # CONFIRMED SITE-SPECIFIC (live, KOOL_ADMIN_RELEASE, 2026-09-15): shares the
+  # same required Ugly Freight/Searchable in Storefront/Searchable in Quote
+  # Tool fields as product-management.feature's own initial product create -
+  # see that file's own note for the full 422 root cause. Filled the same
+  # way here via the "... react-select if present" step.
+  #
+  # RETRACTED "async redirect race" DIAGNOSIS, ROOT-CAUSED (live,
+  # Keylite_ADMIN_RELEASE, 2026-09-16): "current URL should not contain
+  # '/add'" timed out after a variant Save on this tenant only. Looked at
+  # first like the same slow-SPA-redirect pattern documented above (Andy
+  # Thornton), but a raw Playwright repro with network/console logging
+  # showed the Save click never fired any API request at all - client-side
+  # validation silently blocked it. Keylite's product-variant form has two
+  # extra required fields, "Nav SKU"/"Nav Product Name"
+  # ([data-testid='navSku']/[data-testid='navProductName']), presumably
+  # feeding a Nav/ERP integration - not present as a requirement on any
+  # other tenant checked so far. No toast, no error banner, nothing but
+  # inline "is a required field" text under those two fields, so the
+  # scenario had no visible signal at all that it was blocked. Same shape
+  # as MIPA's "Account Number" gap on the Add User form (see form.ts) - a
+  # tenant-only required field, not a real site defect. Fixed generically
+  # with the same "... input field with a unique value if present" step
+  # used there, so every other tenant (where these fields don't exist) is
+  # an unaffected no-op. Added the two testids to Keylite's own
+  # product-variant-detail.json mapping only.
+  #
+  # RETRACTED "REAL BACKEND BUG" CALL, ROOT-CAUSED (live, Keylite_ADMIN_
+  # RELEASE, 2026-09-16): with the Nav SKU/Nav Product Name gap fixed, the
+  # scenario still failed at the same assertion - first mistaken for a
+  # genuine site defect after one raw-script repro returned a hard 500,
+  # but the user manually tested the exact same flow by hand and it worked
+  # fine, which is what prompted a closer look (per this repo's own
+  # "verify before concluding" habit - a manual pass is stronger evidence
+  # than a repeated automated one, same lesson as the HIB "Manage Variants"
+  # retraction above). Two more real gaps stacked on top of each other,
+  # both confirmed via raw network capture:
+  # - product-admin.ts's disposable SKU generator produces
+  #   "VEL-TEST-<Date.now()>", 22 characters - Peracto Admin's Product
+  #   Variant Save rejects any SKU over 20 chars with a 422 ("Products
+  #   'Sku' exceeds the character limit of 20."), shown as a genuine error
+  #   toast the very first repro script missed because it only checked the
+  #   page's body text for "required|error|must|invalid" - "exceeds the
+  #   character limit" matches none of those. Fixed generically in
+  #   product-admin.ts by truncating the generated SKU to a safe length -
+  #   benefits every tenant using this shared step, not just Keylite.
+  # - Even with a safely short SKU, Save still 500'd - Keylite's variant
+  #   form has two more fields, "Lead Time (GB)"/"Lead Time (IE)"
+  #   ([data-testid='leadTimeGB']/[data-testid='leadTimeIE']), that are
+  #   required at the API level but have NO client-side validation at all
+  #   (no "required field" text, no toast) - omitting them serializes as
+  #   missing/null in the POST body and the API answers with a bare
+  #   "500 Internal Server Error" instead of a helpful message, which is
+  #   what made this look like a real site defect for a lot longer than it
+  #   should have. Filling both with any valid number (confirmed live:
+  #   "5"/"7") produces a clean 201 and the real redirect away from
+  #   "/add". Fixed with a new generic "... with 'X' input field... if
+  #   present" step (form.ts) mirroring the existing unique-value one, and
+  #   added both testids to Keylite's own product-variant-detail.json
+  #   mapping only - a no-op on every tenant without these fields.
   #
   # Cleanup order matters: delete the variant record first, THEN remove the
   # Option row from the product and save, THEN delete the disposable
@@ -113,6 +188,9 @@ Feature: Product Variant Creation and Deletion
     And I fill in the "Product Name" input field with a unique product name
     And I fill in the "SKU" input field with a unique product SKU
     And I fill in the "Price" input field with "9.99"
+    And I select the "No" option from the "Ugly Freight" react-select if present
+    And I select the "Yes" option from the "Searchable in Storefront" react-select if present
+    And I select the "Yes" option from the "Searchable in Quote Tool" react-select if present
     And I click precisely on the "Save" element
     Then the "success toast" should contain the text "Product successfully added!"
 
@@ -129,6 +207,10 @@ Feature: Product Variant Creation and Deletion
     Then the current URL should contain "/variants/add"
 
     When I fill in the "SKU" input field with a unique product SKU
+    And I fill in the "Nav SKU" input field with a unique value if present
+    And I fill in the "Nav Product Name" input field with a unique value if present
+    And I fill in the "Lead Time (GB)" input field with "5" if present
+    And I fill in the "Lead Time (IE)" input field with "7" if present
     And I fill in the "Option Value" input field with "Large"
     And I fill in the "Price" input field with "12.99"
     And I select the "Active" option from the "Product Status" react-select

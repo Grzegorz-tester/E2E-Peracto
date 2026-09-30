@@ -82,5 +82,161 @@
   "opayo-card-confirmation": {
     "route": "/gateway/service/cardconfirmation",
     "regex": "^/gateway/service/cardconfirmation$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "contract-furniture": {
+    "route": "/contract-furniture",
+    "regex": "^/contract-furniture$"
+  },
+  "by-venue": {
+    "route": "/by-venue",
+    "regex": "^/by-venue$"
+  },
+  "interior-fittings-antiques": {
+    "route": "/interior-fittings-antiques",
+    "regex": "^/interior-fittings-antiques$"
+  },
+  "architectural-metalwork": {
+    "route": "/architectural-metalwork",
+    "regex": "^/architectural-metalwork$"
+  },
+  "articles-projects": {
+    "route": "/articles/projects",
+    "regex": "^/articles/projects$"
+  },
+  "about": {
+    "route": "/about",
+    "regex": "^/about$"
+  },
+  "bespoke-furniture": {
+    "route": "/bespoke-furniture",
+    "regex": "^/bespoke-furniture$"
+  },
+  "sales-support": {
+    "route": "/sales-support",
+    "regex": "^/sales-support$"
+  },
+  "outdoor-furniture": {
+    "route": "/outdoor-furniture",
+    "regex": "^/outdoor-furniture$"
+  },
+  "banquette-seating": {
+    "route": "/banquette-seating",
+    "regex": "^/banquette-seating$"
+  },
+  "vintage-furniture": {
+    "route": "/vintage-furniture",
+    "regex": "^/vintage-furniture$"
+  },
+  "pub-furniture": {
+    "route": "/pub-furniture",
+    "regex": "^/pub-furniture$"
+  },
+  "hotel-furniture": {
+    "route": "/hotel-furniture",
+    "regex": "^/hotel-furniture$"
+  },
+  "cafe-furniture": {
+    "route": "/cafe-furniture",
+    "regex": "^/cafe-furniture$"
+  },
+  "bar-furniture": {
+    "route": "/bar-furniture",
+    "regex": "^/bar-furniture$"
+  },
+  "restaurant-furniture": {
+    "route": "/restaurant-furniture",
+    "regex": "^/restaurant-furniture$"
+  },
+  "articles-news-from-the-workshop": {
+    "route": "/articles/news-from-the-workshop",
+    "regex": "^/articles/news-from-the-workshop$"
+  },
+  "best-hospitality-furniture-2024": {
+    "route": "/best-hospitality-furniture-2024",
+    "regex": "^/best-hospitality-furniture-2024$"
+  },
+  "showroom": {
+    "route": "/showroom",
+    "regex": "^/showroom$"
+  },
+  "downloads": {
+    "route": "/downloads",
+    "regex": "^/downloads$"
+  },
+  "privacy-policy": {
+    "route": "/privacy-policy",
+    "regex": "^/privacy-policy$"
+  },
+  "services": {
+    "route": "/services",
+    "regex": "^/services$"
+  },
+  "seating-guide-table-tops-pdf": {
+    "route": "/seating-guide:-table-tops-pdf",
+    "regex": "^/seating-guide:-table-tops-pdf$"
+  },
+  "table-top-stains": {
+    "route": "/table-top-stains",
+    "regex": "^/table-top-stains$"
+  },
+  "choose-your-fabric": {
+    "route": "/choose-your-fabric",
+    "regex": "^/choose-your-fabric$"
+  },
+  "standard-furniture-stains": {
+    "route": "/standard-furniture-stains",
+    "regex": "^/standard-furniture-stains$"
+  },
+  "furniture-care": {
+    "route": "/furniture-care",
+    "regex": "^/furniture-care$"
+  },
+  "stainless-steel-care": {
+    "route": "/stainless-steel-care",
+    "regex": "^/stainless-steel-care$"
+  },
+  "delivery-and-returns": {
+    "route": "/delivery-and-returns",
+    "regex": "^/delivery-and-returns$"
+  },
+  "environmental-policy": {
+    "route": "/environmental-policy",
+    "regex": "^/environmental-policy$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "our-clients": {
+    "route": "/our-clients",
+    "regex": "^/our-clients$"
+  },
+  "terms-conditions": {
+    "route": "/terms-conditions",
+    "regex": "^/terms-conditions$"
+  },
+  "product": {
+    "route": "/products/vienna-stackable-side-chair-atfuof1104",
+    "regex": "^/products/[^/]+$"
+  },
+  "article": {
+    "route": "/article/the-3-acres",
+    "regex": "^/article/[^/]+$"
+  },
+  "account-order-detail": {
+    "route": "/account/orders",
+    "regex": "^/account/orders/\\d+$"
+  },
+  "account-moodboard-detail": {
+    "route": "/account/moodboards",
+    "regex": "^/account/moodboards/[0-9a-f-]+$"
+  },
+  "category": {
+    "route": "/category/contract-furniture/dining-chairs",
+    "regex": "^/category/.+$"
   }
 }

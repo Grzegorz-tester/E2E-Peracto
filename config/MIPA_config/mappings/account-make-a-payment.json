@@ -1,0 +1,5 @@
+{
+  "Account Balance": "[data-testid='account-balance']",
+  "Amount to pay": "input[placeholder='Enter Amount']",
+  "MAKE A PAYMENT": "//button[normalize-space(.)='Make a Payment']"
+}

@@ -28,7 +28,9 @@ Feature: Register page
     And I fill in the "Register phone" input field with "07377777777"
     And I fill in the "Register password" input field with "Testing123!"
     And I fill in the "Confirm password" input field with "Testing123!"
-    And I click on the "Register submit button" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "Register submit button" button as the final real submission
     Then I should be redirected to the "account" page
 
   Scenario: Registering with an invalid email address is rejected

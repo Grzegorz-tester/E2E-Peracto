@@ -71,6 +71,7 @@ Feature: My account
       | Postcode        | LS1 1AA       |
     And I remove the last added billing address
 
+  @requires-order-history
   Scenario: User can view a real order in the Orders page
     When I am on the "account-orders" page
     And I click on the "Accept cookies" button if present

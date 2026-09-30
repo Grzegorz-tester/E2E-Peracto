@@ -16,5 +16,12 @@
   "CSV structural error banner": "//*[contains(text(), 'No valid product rows found')]",
   "basket items": "[data-testid='basket__product-card']",
   "basket contents": "[data-testid='basket']",
-  "remove basket line": "[data-testid='basket__quantity-input__delete']"
+  "remove basket line": "[data-testid='basket__quantity-input__delete']",
+  "Add a promo code": "[data-testid='promotion-code__add']",
+  "Promo code input": "[data-testid='basket__promotion-code'] input",
+  "Apply promo code": "[data-testid='promotion-code__apply']",
+  "invalid promo code message": "//*[@data-testid='basket__promotion-code']//p[contains(., 'This is not a valid promo code.')]",
+  "applied promo code tag": "//*[@data-testid='basket__promotion-code']//*[@data-testid='tag']",
+  "total discount": "//*[@data-testid='basket__summary']//p[normalize-space(.)='Total discount']/following-sibling::div",
+  "basket summary total": "//*[@data-testid='basket__summary']//h3[normalize-space(.)='Total']/../following-sibling::*[@data-testid='price']"
 }

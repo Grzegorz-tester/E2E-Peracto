@@ -70,7 +70,6 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
     Examples:
       | parent        | nav item           | url fragment           | heading key           |
       | Products      | All Products       | /products/             | page heading          |
-      | Products      | Product Variants   | /variants/             | page heading          |
       | Products      | Categories         | /categories/           | page heading          |
       | Content       | Pages              | /content/edit/page/    | content edit heading  |
       | Content       | Articles           | /content/edit/article/ | content edit heading  |
@@ -94,6 +93,21 @@ Feature: Clicking The First Item In Each Tab Redirects Correctly
     Examples:
       | parent | nav item    | url fragment  | heading key  |
       | Users  | User Groups | /user-groups/ | page heading |
+
+    # Split into its own tagged Examples block (2026-09-16) - confirmed live
+    # Lamona's admin (release branch 2-8-0) genuinely has no "Product
+    # Variants" tab under Products (dumped every nav-products-* testid in
+    # the DOM: only All Products/Categories/Attributes render, no
+    # nav-products-product-variants at all). Every other Peracto Admin
+    # tenant using this shared suite already has Product Variants mapped
+    # and passing, so this stays in the shared suite rather than being
+    # removed outright - see src/index.ts's EXCLUDE_TAGS mechanism and
+    # CLAUDE.md's "a tenant is missing a tab the shared suite expects"
+    # guidance.
+    @product-variants
+    Examples:
+      | parent   | nav item         | url fragment | heading key  |
+      | Products | Product Variants | /variants/   | page heading |
 
   Scenario Outline: The first item in the "<grandparent>" > "<parent>" > "<nav item>" tab opens its own detail page, or the list is genuinely empty
     When I click precisely on the "<grandparent>" element

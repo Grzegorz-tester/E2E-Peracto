@@ -31,3 +31,24 @@ Feature: Checkout sign-in step
   Scenario: Verify choosing Guest checkout reveals the guest email field
     When I click on the "Guest checkout radio" button
     Then the "Guest email" should be displayed
+
+
+  # 2026-09-30: confirmed live - the guest delivery form keeps "Use this
+  # address" disabled until first name, last name, address line 1, city and
+  # postcode are all filled (no error text; the button state is the check).
+  # Stops on the Delivery step, so no order is placed.
+  Scenario: The guest delivery address can't be used until its required fields are filled
+    When I click on the "Guest checkout radio" button
+    And I fill in the "Guest email" input field with a unique guest email
+    And I click on the "Continue as guest" button
+    Then I should be redirected to the "checkout-delivery" page
+    When I click on the "Manually enter your address" element
+    Then the "Use this address" should not be enabled
+    When I fill in the "address first name" input field with "Velstar"
+    And I fill in the "address last name" input field with "Test"
+    Then the "Use this address" should not be enabled
+    When I fill in the "address line 1" input field with "221B Baker Street"
+    And I fill in the "address city" input field with "London"
+    Then the "Use this address" should not be enabled
+    When I fill in the "address postcode" input field with "NW1 6XE"
+    Then the "Use this address" should be enabled

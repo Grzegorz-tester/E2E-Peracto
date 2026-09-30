@@ -16,13 +16,15 @@ Feature: Menu side draw
     # the "logged in"/"guest" step itself lands.
     Given I am navigating the page as a "<user type>" user
     And I am on the "home" page
-    And I click on the "Menu" icon
+    # Retry the Menu click until the drawer is really open (2026-09-29):
+    # on production an early click is sometimes swallowed before the header
+    # hydrates, leaving no drawer at all ("no element matched" for every
+    # drawer link, confirmed in the first production runs).
+    And I click on the "Menu" element, retrying until the "open menu drawer" is displayed
     Then the "Trailers" should be displayed
     And the "Trailer Parts" should be displayed
     And the "Trailer Hire" should be displayed
     And the "Towbars" should be displayed
-    And the "Offers" should be displayed
-    And the "Services" should be displayed
     And the "Used Trailers" should be displayed
     Examples:
       | user type |
@@ -30,8 +32,37 @@ Feature: Menu side draw
       | guest     |
 
 
+  # 2026-09-29: items that only exist on one environment (confirmed live -
+  # staging has Offers + Services, production has News instead). Before
+  # the drawer-scoped selectors, "Offers"/"Services" silently passed on
+  # production by matching whatever header link sat at that index.
+  Scenario Outline: The environment-specific "<menu element>" item is in the menu drawer
+    Given I am on the "home" page
+    # Retry the Menu click until the drawer is really open (2026-09-29):
+    # on production an early click is sometimes swallowed before the header
+    # hydrates, leaving no drawer at all ("no element matched" for every
+    # drawer link, confirmed in the first production runs).
+    And I click on the "Menu" element, retrying until the "open menu drawer" is displayed
+    Then the "<menu element>" should be displayed
+
+    @not-on-production
+    Examples:
+      | menu element |
+      | Offers       |
+      | Services     |
+
+    @production-only
+    Examples:
+      | menu element |
+      | News         |
+
+
   Scenario: Navigating from the side draw menu reaches the right page
     Given I am on the "home" page
-    When I click on the "Menu" icon
+    # Retry the Menu click until the drawer is really open (2026-09-29):
+    # on production an early click is sometimes swallowed before the header
+    # hydrates, leaving no drawer at all ("no element matched" for every
+    # drawer link, confirmed in the first production runs).
+    When I click on the "Menu" element, retrying until the "open menu drawer" is displayed
     And I click on the "Towbars" element
     Then I should be redirected to the "towbars" page

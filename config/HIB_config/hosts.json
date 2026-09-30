@@ -1,5 +1,5 @@
 {
-  "release_branch": "https://release-2-0-0.hib.pub",
+  "release_branch": "https://feature-hib-170.hib.pub",
   "staging": "https://staging.hib.pub",
   "dev": "http://localhost:3001"
 }

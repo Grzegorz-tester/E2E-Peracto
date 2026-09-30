@@ -1,3 +1,6 @@
 {
-  "first item link": "[data-testid='row-0-name'] a"
+  "first item link": "[data-testid='row-0-name'] a",
+  "Add Promotion": "[data-testid='add-promotion']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "promotion name": "[data-testid$='-name'] a"
 }

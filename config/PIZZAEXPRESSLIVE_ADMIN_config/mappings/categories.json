@@ -1,7 +1,6 @@
 {
-  "Order picker": "[data-testid='order-number-input']",
-  "Date picker": "//button[@id='date']",
-  "Refresh": "[data-testid='refresh-query-button']",
-  "Orders table": "//tbody",
-  "first item link": "a[data-testid='row-0-name']"
+  "first item link": "a[data-testid='row-0-name']",
+  "Add Category": "[data-testid='add-category']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "category name": "[data-testid$='-name'] a"
 }

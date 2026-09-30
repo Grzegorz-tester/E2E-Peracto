@@ -1,0 +1,10 @@
+{
+  "First name": "[name=\"/form-fields/4\"]",
+  "Last name": "[name=\"/form-fields/5\"]",
+  "Email address": "[name=\"/form-fields/1\"]",
+  "Message": "[name=\"/form-fields/2\"]",
+  "Company": "[name=\"/form-fields/6\"]",
+  "Telephone Number": "[name=\"/form-fields/15\"]",
+  "Send Enquiry": "//button[@type=\"submit\" and normalize-space()=\"Send Enquiry\"]",
+  "location map": "iframe[src*=\"google.com/maps/embed\"]"
+}

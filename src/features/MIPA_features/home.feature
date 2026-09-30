@@ -23,7 +23,7 @@ Feature: Home page
       | Refinishing card    | refinishing | Mipa Refinishing     |
       | Industrial card     | industrial  | Mipa ProMix Industrial |
       | Aerosols card       | aerosols    | Aerosols             |
-      | MP Products card    | mp-products | MP Products          |
+      | MP Products card    | mp-products | MP Master Products   |
 
 
   Scenario: Verify: - redirection to the blog from the "View Articles" link

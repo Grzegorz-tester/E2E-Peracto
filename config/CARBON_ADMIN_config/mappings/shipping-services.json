@@ -1,3 +1,6 @@
 {
-  "first item link": "[data-testid='row-0-service-name'] a"
+  "first item link": "[data-testid='row-0-service-name'] a",
+  "Add Service": "a:has-text('Add Service')",
+  "Service Name filter": "[data-testid='text-filter-service-name']",
+  "service name": "[data-testid$='-service-name'] a"
 }

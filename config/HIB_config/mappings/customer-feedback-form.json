@@ -1,0 +1,8 @@
+{
+  "relationship question": "text=What is your relationship with hib?",
+  "recommend question": "text=how likely are you to recommend us",
+  "additional comments question": "text=Do you have any additional comments or feedback for us?",
+  "feedback dropdowns": "input[id^='react-select-']",
+  "feedback text areas": "textarea[name^='/form-fields/']",
+  "feedback Submit": "//button[@type='submit' and normalize-space()='Submit']"
+}

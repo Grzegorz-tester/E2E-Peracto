@@ -1,0 +1,6 @@
+{
+  "Category Name": "[data-testid='category-name']",
+  "Title": "[data-testid='title']",
+  "Locale": "[data-testid='locale']",
+  "Save": "[data-testid='save-form']"
+}

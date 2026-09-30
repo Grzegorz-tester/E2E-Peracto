@@ -1,4 +1,15 @@
 {
   "Name": "[data-testid='location-name']",
-  "Save": "[data-testid='save-form']"
+  "Identifier": "[data-testid='location-identifier']",
+  "Alias": "[data-testid='location-alias']",
+  "Address 1": "[data-testid='location-address1']",
+  "Town City": "[data-testid='location-city']",
+  "County State": "[data-testid='location-county']",
+  "Postal Code": "[data-testid='location-postcode']",
+  "Country": "[data-testid='location-country']",
+  "Latitude": "[data-testid='location-latitude']",
+  "Longitude": "[data-testid='location-longitude']",
+  "Save": "[data-testid='save-form']",
+  "Delete Location": "button.btn--outline-primary:has-text('Delete Location')",
+  "Confirm Delete Location": "[data-testid='button-action_delete-location']"
 }

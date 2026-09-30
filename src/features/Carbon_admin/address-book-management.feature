@@ -130,7 +130,9 @@ Feature: Adding, Editing And Deleting A Billing Or Delivery Address
     And I fill in the "User Last Name" input field with a unique value, remembering it as "disposable user name"
     And I fill in the "User Email" input field with a unique email, remembering it as "disposable user email"
     And I fill in the "User Account Number" input field with a unique value if present
+    And I fill in the "User Company Name" input field with a unique value if present
     And I click precisely on the "Save" element
+    And I wait for the save to complete
     Then the "success toast" should be displayed
 
     When I click precisely on the "Users" element

@@ -1,0 +1,5 @@
+{
+  "Invoices table": "//table[.//p[normalize-space(.)='Document Number']]",
+  "invoice row": "(//table[.//p[normalize-space(.)='Document Number']]//tbody/tr[not(.//td[contains(., 'no results')])])[1]",
+  "no invoices message": "//table[.//p[normalize-space(.)='Document Number']]//td[contains(., 'Sorry, no results')]"
+}

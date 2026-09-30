@@ -1,4 +1,6 @@
 {
-  "Apex checkbox": "//button[text()='Apex']",
-  "first item link": "a[data-testid='row-0-name']"
+  "first item link": "a[data-testid='row-0-name']",
+  "Add Attribute Group": "[data-testid='add-attribute-group']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "attribute group name": "[data-testid$='-name'] a"
 }

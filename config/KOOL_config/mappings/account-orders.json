@@ -1,4 +1,5 @@
 {
   "orders table": "[data-testid='orders']",
-  "order number search input": "input[placeholder='Order no.']"
+  "order number search input": "input[placeholder='Order no.']",
+  "first order number": "[data-testid='orders'] tbody tr:first-child td:first-child a"
 }

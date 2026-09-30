@@ -11,10 +11,6 @@
     "route": "/account",
     "regex": "^/account$"
   },
-  "quotes": {
-    "route": "/quotes",
-    "regex": "^/quotes$"
-  },
   "basket": {
     "route": "/basket",
     "regex": "^/basket$"
@@ -63,17 +59,21 @@
     "route": "/account/invoices",
     "regex": "^/account/invoices$"
   },
+  "account-order-detail": {
+    "route": "/account/orders/MSO-146892",
+    "regex": "^/account/orders/[^/]+$"
+  },
   "brochures": {
     "route": "/brochures",
     "regex": "^/brochures$"
   },
   "all-refinishing": {
-    "route": "/category/all-refinishing",
-    "regex": "^/category/all-refinishing$"
+    "route": "/category/refinishing/all-refinishing-products",
+    "regex": "^/category/refinishing/all-refinishing-products$"
   },
   "ready-mixed-colours": {
-    "route": "/category/products/refinishing/ready-mixed-colours",
-    "regex": "^/category/products/refinishing/ready-mixed-colours$"
+    "route": "/category/refinishing/ready-mixed-colours",
+    "regex": "^/category/refinishing/ready-mixed-colours$"
   },
   "test-product": {
     "route": "/products/2k-hs-wet-on-wet-filler-f37-light-grey-1lt",

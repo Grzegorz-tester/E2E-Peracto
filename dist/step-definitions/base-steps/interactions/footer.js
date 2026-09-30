@@ -22,7 +22,11 @@ const checkLinksResolve = async (page, hrefs) => {
     // profile link (confirmed live, 3/3 attempts via this same request
     // context - a plain curl to the identical URL gets a normal 200 via
     // its x.com redirect), so it's excluded for the same reason.
-    if (url.includes("facebook.com") || url.includes("twitter.com") || url.includes("x.com")) {
+    //
+    // LinkedIn likewise answers automated requests with its own
+    // non-standard 999 anti-bot status (confirmed live on KOOL
+    // release-2-19-0, 2026-09-28) whether or not the page exists.
+    if (url.includes("facebook.com") || url.includes("twitter.com") || url.includes("x.com") || url.includes("linkedin.com")) {
       continue;
     }
     try {

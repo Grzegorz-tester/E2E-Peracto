@@ -1,0 +1,11 @@
+{
+  "Create a new Moodboard": "button:has-text(\"Create a new Moodboard\")",
+  "moodboard name input": "[role=\"dialog\"] input",
+  "Create Moodboard": "[role=\"dialog\"] button:has-text(\"Create Moodboard\")",
+  "moodboard rows": "tr[data-testid^=\"account-moodboards-row-\"]",
+  "moodboard delete": "[data-testid$=\"-cell-delete\"] button",
+  "moodboards table": "tbody",
+  "confirm moodboard delete": "//button[normalize-space()=\"Delete\"]",
+  "moodboard name cell": "[data-testid$=\"-cell-name\"]",
+  "first moodboard name": "[data-testid=\"account-moodboards-row-0-cell-name\"]"
+}

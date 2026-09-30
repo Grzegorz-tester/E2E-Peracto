@@ -105,6 +105,11 @@ Feature: Creating A Page Or Article Adds It To The Orphaned Pages Menu
     When I click precisely on the "Content" element
     And I click precisely on the "Pages" element
     And I click precisely on the "Create New Page" element
+    # CONFIRMED (HIB hib-170-peracto, 2026-09-24, 2/2 full runs): without a
+    # settle, Save was clicked ~220ms after the editor opened, before it was
+    # ready - the save menu stayed open and no save ever fired. Same class of
+    # startup race as logging-in.feature's "Resetting password".
+    And I wait for the page to settle
     And I fill in the "Page Name" input field with a unique test title
     And I click precisely on the "Open save menu" element if present
     And I click precisely on the "Save content" element

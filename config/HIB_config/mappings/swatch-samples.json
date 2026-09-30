@@ -1,0 +1,4 @@
+{
+  "Order samples link": "a[href='/category/bathroom-swatches']:has-text('Order samples')",
+  "first featured swatch": ":nth-match(a[href^='/products/'][href$='-swatch'], 1)"
+}

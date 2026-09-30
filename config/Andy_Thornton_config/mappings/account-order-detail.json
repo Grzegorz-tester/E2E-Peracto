@@ -1,0 +1,6 @@
+{
+  "order detail reference": "[data-testid=\"orders-details__reference\"]",
+  "order delivery address": "[data-testid=\"orders-details__order-delivery-address\"]",
+  "order lines": "[data-testid=\"orders-details__order-lines-list\"]",
+  "order product card": "[data-testid=\"order-product-card\"]"
+}

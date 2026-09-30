@@ -110,7 +110,19 @@ const common = `${(0, _parseEnv.env)('FEATURE_PATH', './src/features/**/*.featur
 // production, 2026-09-09): the account's order-list page renders fine
 // (no error, no email-verification gate) but is genuinely empty, so
 // "first order view link" never appears - not a selector/config gap.
-const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history' : '';
+//
+// @submits-real-form gets the same automatic exclusion: a scenario that
+// submits a real storefront form (contact enquiry, newsletter signup)
+// creates a real submission that emails the client's own staff and/or
+// lands on their live marketing list - agreed for staging/release
+// (Keylite, 2026-09-24), never for production.
+//
+// @not-on-production / @production-only are for CONTENT that genuinely
+// differs between environments rather than for safety - e.g. Indespension's
+// menu drawer has "Offers" on staging but "News" on production
+// (confirmed live, 2026-09-29). Tag the Examples row (or scenario) that
+// only exists on one side, instead of maintaining per-env EXCLUDE_TAGS.
+const productionExclusion = (0, _parseEnv.env)('UI_AUTOMATION_HOST', 'staging') === 'production' ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history and not @submits-real-form and not @not-on-production' : ' and not @production-only';
 
 // EXCLUDE_TAGS (set per-project in env/<Project>.env, space-separated) lets a
 // single tenant opt out of specific rows/scenarios in the SHARED Carbon_admin

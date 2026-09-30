@@ -23,6 +23,7 @@ Feature: Guest purchase journey
   # by re-dismissing it immediately before each such click.
 
   @smoke
+  @places-real-order
   Scenario: User can complete a guest purchase through to the thank-you page
     Given I am on the "home" page
     And I click on the "Accept cookies" button if present

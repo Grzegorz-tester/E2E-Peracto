@@ -12,7 +12,11 @@ Feature: Contact Us page
   # covered below rather than a section that doesn't exist.
 
   Background:
+    # Settle before interacting (2026-09-29): a valid submission intermittently
+    # stayed on /contact with the fields still filled, the same hydration race
+    # confirmed live on this site's login, register and add-to-basket.
     Given I am on the "contact" page
+    And I wait for the page to settle
 
   Scenario: Contact form and page content are present
     Then the "Contact subject dropdown" should be displayed
@@ -28,7 +32,9 @@ Feature: Contact Us page
     When I fill in the "Contact full name" input field with "Velstar Test"
     And I fill in the "Contact email" input field with a unique guest email
     And I fill in the "Contact message" input field with "Velstar QA test message - please ignore."
-    And I click on the "Contact submit button" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "Contact submit button" button as the final real submission
     Then I should be redirected to the "contact-success" page
 
   Scenario: Submitting the form with an invalid email is rejected

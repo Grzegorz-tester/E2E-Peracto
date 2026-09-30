@@ -8,6 +8,10 @@ Feature: SEO & Infrastructure
   # structure (tabs/categories, like Insinkerator_EU's sitemap) hasn't
   # been explored - this checks the first product link only.
 
+  # 2026-09-28: the "sitemap" page id now opens /sitemap/products - the
+  # sitemap is tabbed (Shop/Products/Content/...) with Shop as the default,
+  # and product links only render on the Products tab (confirmed identical
+  # on staging and release-2-19-0).
   Scenario: Sitemap - URLs are accessible and linked pages load
     Given I am on the "sitemap" page
     And I click on the "Accept cookies" button if present

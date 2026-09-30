@@ -11,8 +11,13 @@ Feature: Basket interactions
   # persists across runs, which would make "start from empty" unreliable.
 
   Background:
+    # Settle before the first click (2026-09-29): same Next.js hydration race
+    # as logging-in/register. Confirmed live on the PDP: clicking Add to
+    # Basket straight after load gave no confirmation 3/3 times, and after
+    # settling it worked 3/3. A click that lands before hydration does nothing.
     Given I am navigating the page as a "guest" user
     And I am on the "blueline-trailer-pdp" page
+    And I wait for the page to settle
 
   Scenario: Adding a product to the basket
     When I click on the "Add to basket" button

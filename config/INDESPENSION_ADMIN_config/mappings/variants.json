@@ -1,3 +1,5 @@
 {
-  "first item link": "a[data-testid='row-0-sku']"
+  "first item link": "a[data-testid='row-0-sku']",
+  "SKU filter": "[data-testid='text-filter-sku']",
+  "variant SKU": "td[data-testid$='-sku']:not([data-testid$='-product-sku'])"
 }

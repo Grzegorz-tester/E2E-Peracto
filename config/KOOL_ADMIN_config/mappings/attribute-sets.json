@@ -1,3 +1,6 @@
 {
-  "first item link": "a[data-testid='row-0-name']"
+  "first item link": "a[data-testid='row-0-name']",
+  "Add Attribute Set": "[data-testid='add-attribute-set']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "attribute set name": "[data-testid$='-name'] a"
 }

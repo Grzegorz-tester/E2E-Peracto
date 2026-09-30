@@ -32,6 +32,10 @@ Feature: Payment on Account purchase flow
     And I click on the "Continue" button
     And I click on the "Delivery Address" element
     And I click on the "Continue" button
+    # 2026-09-25: "3 Day Courier Delivery - Under 30KG" (£13.35) no longer
+    # exists on feature-next-15 or staging - "Courier delivery option" now
+    # maps to "Next Day Courier Delivery - Under 30KG" (£18.53), the
+    # cheapest courier option left, hence the total below changing too.
     And I click on the "Courier delivery option" element
     And I click on the "Continue" button
     And I click on the "Billing Address" element
@@ -43,4 +47,4 @@ Feature: Payment on Account purchase flow
     And the "basket header title" should contain the text "Thank you for your order"
     And the "order reference" should be displayed
     And the "order confirmation email" should contain the "logged in" user's email
-    And the "order total price" should contain the text "25.58"
+    And the "order total price" should contain the text "30.76"

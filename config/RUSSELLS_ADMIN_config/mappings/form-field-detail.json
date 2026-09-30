@@ -1,0 +1,7 @@
+{
+  "Label": "[data-testid='label']",
+  "Input Type": "[data-testid='input-type']",
+  "Save": "[data-testid='save-form']",
+  "Delete Form Field": "[data-testid='delete-form-field']",
+  "Confirm Delete Form Field": "[data-testid='button-action_delete-form-field']"
+}

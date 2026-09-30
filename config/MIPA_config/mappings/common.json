@@ -18,6 +18,7 @@
   "Brochures draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Brochures')]",
   "Video Gallery draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Video Gallery')]",
   "Contact Us draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Contact Us')]",
+  "Help & Advice draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Help & Advice')]",
   "Blog draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Blog')]",
   "Industrial Product Finder draw menu item": "//*[@data-testid='nav-menu__popup-list']//a[contains(., 'Industrial Product Finder')]",
   "PLP hit count": "[data-testid='algolia-list-page__hit-count']",

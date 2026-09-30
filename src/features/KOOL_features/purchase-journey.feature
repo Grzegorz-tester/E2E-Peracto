@@ -39,8 +39,12 @@ Feature: Purchase Journey
   @places-real-order
   Scenario: Guest user - Card payment - Complete purchase from cart to confirmation
     Given I require staging for this scenario
-    And I am on the "hose-set-pdp" page
-    When I slowly click on the "Add to basket" button
+    # 2026-09-28: switched from the hose set (no Add to basket for guests on
+    # staging or release-2-19-0) to the cable product, which guests can add.
+    And I am on the "cable-pdp" page
+    And I click on the "Accept cookies" button if present
+    When I slowly click on the "PDP add to basket" button
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "no items message" should not be displayed
     # TODO: guest sign-in/continue step here (not yet identified), then:
@@ -69,6 +73,9 @@ Feature: Purchase Journey
     And I am navigating the page as a "logged in" user
     And I am on the "cable-pdp" page
     When I slowly click on the "Add to basket" button
+    # Same add-then-navigate race as basket.feature (basket read as empty
+    # in the 2026-09-28 full run) - wait for the add to land first.
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "no items message" should not be displayed
 

@@ -35,7 +35,12 @@ Feature: Account Area Gaps
     And I click on the "Add Address submit button" button
     Then the number of "delivery address card" elements should be more than the remembered "delivery count before"
 
-    When I click on the "TestAuto delete link" element
+    # The address book only shows 4 cards per section until "View more" is
+    # clicked - confirmed live on release-2-19-0 (2026-09-28): with other
+    # test addresses on the account, the new card lands past the first 4 and
+    # its Delete link is hidden.
+    When I click on the "View more delivery addresses" element if present
+    And I click on the "TestAuto delete link" element
     And I click on the "Delete Address confirm button" element
     # Confirmed live: the in-memory list doesn't drop the deleted card within
     # this framework's normal 15s assertion window when a delete follows an
@@ -48,8 +53,13 @@ Feature: Account Area Gaps
     Given I am navigating the page as a "logged in" user
     And I am on the "account-orders" page
     And I click on the "Accept cookies" button if present
-    When I fill in the "order number search input" input field with "000522"
-    Then the "orders table" should contain the text "000522"
+    # Searches for whichever order is listed first rather than a fixed
+    # number: the list is filtered to a rolling date range, so a hardcoded
+    # order (000522) aged out and started failing on 2026-09-28 on both
+    # staging and release-2-19-0.
+    When I remember the text of "first order number" as "order to search"
+    And I fill in the "order number search input" input field with the remembered "order to search"
+    Then the "orders table" should contain the remembered "order to search"
 
     When I fill in the "order number search input" input field with "999999999"
     Then the "orders table" should contain the text "Sorry, no results found for your search."

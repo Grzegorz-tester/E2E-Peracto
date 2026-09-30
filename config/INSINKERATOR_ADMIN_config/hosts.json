@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.insinkerator.work"
+  "staging": "https://staging-peracto.insinkerator.work",
+  "production": "https://peracto.insinkerator.co.uk/"
 }

@@ -40,7 +40,9 @@ Feature: User Group Business Rules
     Given I am on the "gas-pdp" page
     And I click on the "Accept cookies" button if present
     Then the "F-Gas registration warning" should contain the text "F Gas Registration Required"
-    And the "PDP add to basket" should not be displayed
+    # 2026-09-28: guests now get the same DISABLED button as logged-in users
+    # rather than no button at all (4/4 on staging and release-2-19-0).
+    And the "PDP add to basket" should not be enabled
 
   @smoke
   Scenario: A logged-in, non-F-Gas-registered user sees the same warning and gating

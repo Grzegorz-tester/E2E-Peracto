@@ -20,7 +20,7 @@ Feature: Basket
     When I click on the "1st" "variant lozenge options" element
     And the "Add to basket" should be enabled
     And I click on the "Add to basket" button
-    And I wait for the page to settle
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "basket item" should be displayed
     And the "basket total" should be displayed

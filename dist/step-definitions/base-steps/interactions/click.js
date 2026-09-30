@@ -590,7 +590,9 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
 // scenario) matches the same "retry the action itself, not just the
 // wait" pattern the checkbox retry step above already uses. Reusable by
 // any project with a similarly flaky client-side navigation.
-(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|element), retrying until redirected to the "([^"]*)" page$/, async function (elementKey, pageId) {
+(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|element), retrying until redirected to the "([^"]*)" page$/, {
+  timeout: 60000
+}, async function (elementKey, pageId) {
   const {
     screen: {
       page
@@ -598,16 +600,26 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
     globalConfig
   } = this;
   const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+
+  // Give each click up to 8s to redirect before re-clicking, rather than a
+  // fixed 1s. Confirmed live (HIB feature-hib-170 login, 2026-09-29): the
+  // sign-in POST /auth routinely takes 2-4s+ on a slow release API, so a
+  // re-click after 1s landed mid-submission and kept interrupting it until
+  // the 20s budget ran out - even though a single click would have worked.
   await (0, _waitForBehaviour.waitFor)(async () => {
     if ((0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig)) return true;
     await (0, _htmlBehaviour.clickElement)(page, elementIdentifier, {
       timeout: 15000,
       force: true
     });
-    await page.waitForTimeout(1000);
-    return (0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig);
+    const deadline = Date.now() + 8000;
+    while (Date.now() < deadline) {
+      await page.waitForTimeout(500);
+      if ((0, _navigationBehaviour.currentPathMatchesPageId)(page, pageId, globalConfig)) return true;
+    }
+    return false;
   }, {
-    timeout: 20000,
+    timeout: 45000,
     wait: 500
   });
 });
@@ -617,7 +629,13 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
 // a page redirect - confirmed live on MIPA's Register form: the SEND
 // button click occasionally no-ops the same way (no error, nothing
 // happens) with no navigation involved to detect it by.
-(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|element), retrying until the "([^"]*)" is displayed$/, async function (elementKey, targetKey) {
+(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|element), retrying until the "([^"]*)" is displayed$/,
+// Explicit budget: the 20s retry window below plus a slow click can exceed
+// SCRIPT_TIMEOUT (20s on Indespension) - confirmed 2026-09-29, cucumber cut
+// this step off mid-retry on staging's Menu button.
+{
+  timeout: 45000
+}, async function (elementKey, targetKey) {
   const {
     screen: {
       page
@@ -638,4 +656,36 @@ var _navigationBehaviour = require("../../support-functions/navigation-behaviour
     timeout: 20000,
     wait: 500
   });
+});
+
+// For a list/table where the action belongs to ONE specific row - the row
+// holding a value this scenario created and remembered - rather than a
+// positional "first row". Confirmed live on Andy Thornton's account
+// Moodboards list (2026-09-30): the test account is shared with other people
+// and already holds their moodboards, so a delete must target only the
+// scenario's own row. All three are mapping keys/variable names: the control
+// to click, the row selector, and the remembered text that identifies it.
+(0, _cucumber.When)(/^I click on the "([^"]*)" inside the "([^"]*)" containing the remembered "([^"]*)"$/, async function (elementKey, rowKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const remembered = this.globalVariables[variableName];
+  if (remembered === undefined) {
+    throw new Error(`No remembered text found for "${variableName}" - remember it first.`);
+  }
+  const row = page.locator((0, _webElementHelper.getElementLocator)(page, rowKey, globalConfig)).filter({
+    hasText: remembered
+  });
+  await row.first().waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+  const count = await row.count();
+  if (count !== 1) {
+    throw new Error(`Expected exactly one "${rowKey}" containing "${remembered}", found ${count} - refusing to guess which to act on.`);
+  }
+  await row.locator((0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig)).first().click();
 });

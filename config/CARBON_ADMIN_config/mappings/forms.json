@@ -1,3 +1,6 @@
 {
-  "first item link": "[data-testid='row-0-label'] a"
+  "first item link": "[data-testid='row-0-label'] a",
+  "Add Form": "[data-testid='add-form']",
+  "Label filter": "[data-testid='text-filter-label']",
+  "form label": "[data-testid$='-label'] a"
 }

@@ -47,8 +47,20 @@ When(/^I click on the "([^"]*)" element and note the response status$/, { timeou
     };
     const hrefPath = pathOf(href);
 
+    // Ignore speculative prefetches of the same URL. Confirmed live on
+    // Indespension production (2026-09-29): hovering the link fires a
+    // browser prefetch that Cloudflare answers with 503 (its "Speed Brain"
+    // behaviour for an uncached page), while the real navigation right
+    // after it is a 200. Without this, that prefetch is the first matching
+    // response and the page is falsely reported as broken.
+    const isPrefetch = (res: { request(): { resourceType(): string; headers(): Record<string, string> } }) => {
+        const request = res.request();
+        const headers = request.headers();
+        return request.resourceType() === "prefetch" || /prefetch/i.test(headers["sec-purpose"] ?? headers["purpose"] ?? "");
+    };
+
     const [response] = await Promise.all([
-        page.waitForResponse((res) => pathOf(res.url()) === hrefPath, { timeout: 35000 }),
+        page.waitForResponse((res) => pathOf(res.url()) === hrefPath && !isPrefetch(res), { timeout: 35000 }),
         element.click(),
     ]);
 
@@ -113,7 +125,11 @@ Then(/^the noted response status should equal (\d+)$/, async function (this: Sce
 // no matching pagesConfig entry.
 Then(/^a heading with the text "([^"]*)" should be displayed$/, async function (this: ScenarioWorld, text: string) {
     const { screen: { page } } = this;
-    await expect(page.getByRole("heading", { name: text, exact: true })).toBeVisible({ timeout: 15000 });
+    // .first(): some pages repeat their heading (confirmed live on Andy
+    // Thornton's /delivery-and-returns and /privacy-policy, and HIB's /about,
+    // 2026-09-30), which made the strict locator fail even though the heading
+    // was there.
+    await expect(page.getByRole("heading", { name: text, exact: true }).first()).toBeVisible({ timeout: 15000 });
 });
 
 // CONFIRMED SITE BUG (Watco, staging): every search-result product link's

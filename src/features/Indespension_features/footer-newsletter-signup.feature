@@ -29,7 +29,9 @@ Feature: Footer newsletter sign-up, company details and social links
     And the "newsletter alert" should not be displayed
 
     When I fill in the "newsletter email input" input field with a unique guest email
-    And I click on the "newsletter submit button" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "newsletter submit button" button as the final real submission
     Then the "newsletter alert" should contain the text "Thank you"
 
   Scenario: Company registration details are displayed in the footer

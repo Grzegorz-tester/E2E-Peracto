@@ -24,7 +24,7 @@ Feature: Logged-in purchase journey
   # a live card charge). Fine per this repo's staging rules (Indespension
   # is not HIB) but don't repeat needlessly across retries/configs.
 
-  Scenario: Logged-in trade customer can search, add to basket, and complete an order via Pay on Account
+  Scenario: Logged-in trade customer can search, add to basket, and complete an order via Pay on Account (may fail if the staging firewall blocks the run)
     Given I am on the "home" page
     When I click on the "Sign In button" link
     Then I should be redirected to the "login" page
@@ -68,12 +68,21 @@ Feature: Logged-in purchase journey
     # address form), an account customer's Billing step shows the same
     # saved-address picker as Delivery - the default address is already
     # selected, so this is just another "Address continue".
-    When I click on the "Address continue" button
+    # Retry until Review loads (2026-09-29): confirmed on production, the
+    # Billing Continue click can register visually but not advance.
+    When I click on the "Address continue" button, retrying until redirected to the "checkout-review" page
     Then I should be redirected to the "checkout-review" page
     And the "review content" should be displayed
 
-    When I fill in the "PO Number" input field with "VELSTAR TEST"
+    # "if present" (2026-09-29): the staging test account is a credit
+    # customer (Pay on Account + mandatory PO Number), but the production
+    # account is not - its Review step shows "Pay now" with no PO field
+    # (confirmed live). "Pay now" uses the same Place order testid, so the
+    # final-submission gate below still stops the journey on production.
+    When I fill in the "PO Number" input field with "VELSTAR TEST" if present
     And I check the "delivery fee acknowledgement"
-    And I click on the "Place order" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "Place order" button as the final real submission
     Then I should be redirected to the "checkout-thank-you" page
     And the "order reference" should be displayed

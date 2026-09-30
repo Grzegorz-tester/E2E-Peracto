@@ -5,5 +5,6 @@
   "Email": "[name='/form-fields/6']",
   "Message": "textarea",
   "Consent checkbox": "[name='/form-fields/113']",
-  "Submit Query": "button:has-text('Submit Query')"
+  "Submit Query": "button:has-text('Submit Query')",
+  "Subject": "form:has([name='/form-fields/141']) button[role='combobox']"
 }

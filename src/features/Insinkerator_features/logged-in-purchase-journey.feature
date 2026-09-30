@@ -15,6 +15,7 @@ Feature: Logged-in purchase journey
   # product used by guest-purchase-journey.feature.
 
   @smoke
+  @places-real-order
   Scenario: User can proceed from PDP through to a completed order
     Given I am on the "home" page
     And I click on the "Accept cookies" button if present

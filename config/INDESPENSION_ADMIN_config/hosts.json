@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.indespension.pub"
+  "staging": "https://staging-peracto.indespension.pub",
+  "production": "https://peracto.indespension.co.uk"
 }

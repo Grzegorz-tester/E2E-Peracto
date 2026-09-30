@@ -142,5 +142,13 @@
   "blueline-trailer-pdp": {
     "route": "/products/blueline-14-x-6-box-trailer-3500kg",
     "regex": "^/products/blueline-14-x-6-box-trailer-3500kg$"
+  },
+  "news": {
+    "route": "/articles/articles",
+    "regex": "^/articles/articles$"
+  },
+  "careers": {
+    "route": "/careers",
+    "regex": "^/careers$"
   }
 }

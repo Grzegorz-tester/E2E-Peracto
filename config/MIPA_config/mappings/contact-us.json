@@ -1,10 +1,10 @@
 {
-  "Name field": "[placeholder='Name']",
-  "Email address field": "[placeholder='Email Address']",
-  "Telephone number field": "[placeholder='Telephone Number']",
-  "Message field": "[data-testid='form-component'] textarea",
-  "Send button": "button:has-text('Send')",
-  "Sales email link": "a[href='mailto:sales@mipa-paints.co.uk']",
-  "Technical email link": "a[href='mailto:technical@mipa-paints.co.uk']",
+  "page heading": "//h1[contains(., 'Help & Advice')]",
+  "Technical enquiry tile": "[data-testid='content-page'] a[href$='/technical-enquiries']",
+  "General enquiry tile": "[data-testid='content-page'] a[href$='/supply-enquiries']",
+  "Sales enquiry tile": "[data-testid='content-page'] a[href$='/sales-enquiries']",
+  "Training enquiry tile": "[data-testid='content-page'] a[href$='/training-enquiries']",
+  "Opening hours heading": "//h2[contains(., 'Our Opening Hours')] | //h3[contains(., 'Our Opening Hours')] | //h4[contains(., 'Our Opening Hours')]",
+  "Telephone heading": "//*[self::h2 or self::h3 or self::h4][normalize-space(.)='Telephone']",
   "map": "[data-testid='map-component']"
 }

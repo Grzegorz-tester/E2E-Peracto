@@ -1,11 +1,8 @@
 {
-  "Email": "//input[@id='email']",
-  "First name": "//input[@id='firstName']",
-  "Last name": "//input[@id='lastName']",
-  "Contact number": "//input[@id='telephone']",
-  "Company Name": "//input[@id='companyName']",
-  "Account Number": "//input[@id='accountNumber']",
-  "Currency": "//input[@id='currency']",
-  "Save Changes": "//button[text()='Save Changes']",
-  "first item link": "a[data-testid='row-0-label']"
+  "first item link": "a[data-testid='row-0-label']",
+  "Add Attribute": "[data-testid='add-attribute']",
+  "Label filter": "[data-testid='text-filter-label']",
+  "Code filter": "[data-testid='text-filter-code']",
+  "attribute label": "[data-testid$='-label'] a",
+  "attribute code": "td[data-testid$='-code']"
 }

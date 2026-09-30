@@ -1,4 +1,5 @@
 {
   "release_branch": "https://at-172-peracto.andythornton.pub",
-  "staging": "https://staging-peracto.andythornton.pub"
+  "staging": "https://staging-peracto.andythornton.pub",
+  "production": "https://peracto.andythornton.com"
 }

@@ -37,6 +37,7 @@
 # COMMON_CONFIG_FILE=env/Andy_Thornton_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_PROD.env ./run_tests.sh regression
 
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
 # COMMON_CONFIG_FILE=env/CARBON_ADMIN.env ./run_tests.sh regression
@@ -51,10 +52,14 @@
 # COMMON_CONFIG_FILE=env/Indespension.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/Indespension_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Indespension_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_PROD.env ./run_tests.sh regression
 
 # ---- Insinkerator ----
 # COMMON_CONFIG_FILE=env/Insinkerator.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/Insinkerator_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/Insinkerator_EU.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INSINKERATOR_EU_ADMIN.env ./run_tests.sh regression
 
@@ -71,9 +76,13 @@
 # ---- KOOL ----
 # COMMON_CONFIG_FILE=env/KOOL.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/KOOL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOL_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/KOOL_ADMIN.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/KOOL_ADMIN_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/KOOL_ADMIN_RELEASE.env ./run_tests.sh regression
+
+# ---- Lamona ----
+# COMMON_CONFIG_FILE=env/Lamona_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- MIPA ----
 # COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
@@ -114,6 +123,24 @@
 # ============================================================
 
 # ---- Andy Thornton ----
+# PRODUCTION (2026-09-30): Andy_Thornton_PROD.env (www.andythornton.com) and
+# ANDY_THORNTON_ADMIN_PROD.env (peracto.andythornton.com). The production admin
+# is strictly READ-ONLY: never create, edit or delete anything there. Only the
+# automatic production tag exclusion (@mutates-admin-data etc.) keeps writes
+# out, so check any new shared Carbon_admin scenario is tagged before it can
+# reach this env. First admin prod run: 83/84 read-only scenarios passed. The
+# only failure was Promotions list-filtering (production has no active
+# promotions), now excluded here via EXCLUDE_TAGS=@requires-active-promotions.
+# Credentials: ANDY_THORNTON_PROD_LOGGED_IN_*/_NON_ADMIN_* and
+# ANDY_THORNTON_ADMIN_PROD_ADMIN_* in .env.
+# First full storefront prod run (2026-09-30): 92/111. After blocking Cookiebot
+# (BLOCK_REQUEST_HOSTS) and splitting the home/services rows per environment
+# (@not-on-production/@production-only - production runs different home page
+# content), 4 real failures remain: Profile tab + profile save (/account/profile
+# unreachable on prod, raised 2026-09-14), /best-hospitality-furniture-2024 is a
+# 404 on prod only, and price sort puts a "From £72.00" product after £78.00.
+# Production 429s fast traffic, so expect the odd rate-limit failure on a full run.
+#
 # Old project, due for a rework. env/Andy_Thornton_Peracto.env was removed
 # (2026-08-25) - it pointed at config/Peracto_Andy_Thornton_config/, which
 # never existed, so it errored on every run; its LOGIN_URL/GUEST_URL also
@@ -222,6 +249,85 @@
 # save-toast bug documented above needs rechecking there before assuming
 # it's still present.
 
+# ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
+# Two rounds of new shared coverage built and live-verified here 2026-09-18
+# (Carbon Admin is the natural place to build new shared Peracto Admin
+# coverage - it's the boilerplate source, and staging admin@9xb.com/engage
+# credentials, not grzegorz.hajduk@velstar.co.uk which isn't a registered
+# account there, work for CRUD).
+#
+# Round 1 - forms-management.feature: Forms/Form Fields/Form Submissions
+# only had the generic list-loads/first-item sweep before; nothing created
+# a form, created a form field, or checked a submission's own content.
+# Added all three - see the feature file's own comments for the exact
+# required fields/toasts confirmed live. Also cleaned form-submissions.json
+# repo-wide (11 of 13 tenants had it full of unrelated storefront basket/
+# checkout selectors - KOOL/Indespension were always clean).
+#
+# Round 2 - entity-creation.feature: audited every Peracto Admin entity,
+# found Categories/Attributes/Attribute Groups/Attribute Sets/Promotions/
+# Article Categories/Locations/Shipping Services had ONLY edit-or-generic-
+# sweep coverage, nothing ever created or deleted one. Built all eight -
+# see that feature file's own extensive comments for exact requirements
+# per entity (several real gotchas: Attribute's Code field rejects
+# auto-generated hyphens, Location's Identifier is a genuinely blank
+# required-and-unique field with zero auto-generation, Shipping Service
+# needs a real cost row and uses a second, different react-select CSS
+# shape entirely). Also found and cleaned the SAME storefront-selector
+# contamination as form-submissions.json in 7 more files (categories/
+# attributes/attribute-groups/promotions/templates/elements/element-areas/
+# products/variants.json) across all 13 tenants - KOOL/Indespension were
+# always the clean reference copies, used to restore everyone else.
+#
+# Investigated but deliberately NOT built: User Groups and Element Areas
+# have no creation UI at all on Carbon (confirmed live - both render a
+# not-found/read-only page for "add"), same non-CRUD-able category as
+# Settings/Countries/Tasks. Templates couldn't be verified - Carbon
+# currently has zero real templates to test an edit-and-restore scenario
+# against (per user decision 2026-09-18, left as a documented gap rather
+# than added unverified). Settings was investigated and left out - it's a
+# large multi-tab (16+ tabs: Uploads/Sitemaps/Shipping/Recaptcha/...)
+# site-wide config hub with literally zero data-testids anywhere except
+# its outer shell (page-heading/save-form/reset-form) - no safe, stable
+# field to target without extensive per-tab selector discovery on
+# genuinely high-blast-radius infrastructure config.
+#
+# Both new feature files' scenarios repeat-verified (3-4 clean runs each)
+# before being trusted - two apparent "flaky toast" failures during
+# development turned out to be genuine silently-rejected saves (a hyphen
+# in an auto-generated Code, an unfilled unique Identifier), not timing
+# races - see each file's own comments. Not yet live-verified against any
+# tenant other than Carbon Admin itself; each tenant's own regression run
+# will surface any real gap the same way every other promotion in this
+# file has.
+#
+# Round 3 (same day) - list-filtering.feature: user asked directly whether
+# every list had filtering coverage. Only Products/Orders did
+# (product-filtering.feature/order-filtering.feature) - audited every
+# other list live and found 13 more with real, working filter fields
+# (Product Variants, Categories, Attributes, Attribute Groups, Attribute
+# Sets, Promotions, Pages, Articles, Article Categories, Forms, Form
+# Fields, Users, Redirects, Shipping Services), all now covered by adding
+# Examples rows to fresh Scenario Outlines reusing product-filtering.
+# feature's own already-generic mechanism (Apply/Reset, "remember the
+# first non-empty row value", fill filter, assert) - no new step
+# definitions needed. Confirmed NOT filterable at all (no filter fields
+# exist): Locations, User Groups, Tasks, Countries, Templates, Elements,
+# Element Areas, Form Submissions - Locations' config even had a stale
+# "Name" key pointing at a non-existent testid, removed across all 13
+# tenants rather than left as a trap.
+#
+# One real gotcha: Product Variants' own SKU column and its filter INPUT
+# both have testids ending in "-sku" (text-filter-sku vs row-N-sku) - an
+# untagged suffix selector matched the empty filter input itself (first
+# in DOM order) instead of the table cell, silently "succeeding" at
+# reading nothing rather than erroring. Scoping the selector to `td`
+# specifically (excluding the `<input>`) fixed it - every other list's
+# row-value selector already happened to exclude filter inputs for
+# unrelated structural reasons (most require an anchor descendant, which
+# a bare `<input>` never has), so this was the only one affected.
+# Repeat-verified (2 clean runs, 15/15 both times) before trusting it.
+
 # ---- HIB ----
 # NEVER place a real order for HIB (see CLAUDE.md). HIB's staging site also
 # has known intermittent flakiness - don't over-invest chasing it.
@@ -248,18 +354,103 @@
 # Storefront+admin scaffolded 2026-09-06 but never added to this reference
 # file until now (2026-09-14). Keylite_ADMIN_RELEASE.env added 2026-09-14 to
 # target the release branch (config/Keylite_ADMIN_config/hosts.json's own
-# release_branch host, https://2-0-1-peracto.keyliteroofwindows.pub/) -
-# treated as staging like MIPA/Indespension's release envs, so admin CRUD is
+# release_branch host) - treated as staging like MIPA/Indespension's
+# release envs, so admin CRUD is fine there.
+#
+# TEMPORARY (2026-09-15, per user, "for the time being"): release_branch
+# rolled back from 2-0-1-peracto to https://2-0-0-peracto.keyliteroofwindows.pub/
+# - unlike a normal per-sprint bump, this is a deliberate step BACK, so
+# don't assume it should move forward again without checking first. Each
+# release branch has its own seeded database - the existing admin account
+# initially failed with "Invalid credentials" on 2-0-0 (confirmed live,
+# site reachable, real login form, just this account rejected); user reset
+# the password on 2-0-0 to match, re-verified live afterwards
+# (logging-in.feature 5/5).
+#
+# is
 # fine there.
 
 # ---- KOOL ----
 # KOOL_ADMIN_RELEASE.env added 2026-09-15, targets the 2.19.0 release branch
 # (config/KOOL_ADMIN_config/hosts.json's own release_branch host,
 # https://2-19-0-peracto.kooltech.pub/) - treated as staging like MIPA/
-# Indespension/Keylite's release envs, so admin CRUD is fine there. Not yet
-# live-verified (no login/dry-run smoke test done yet) - given the KOOL
-# production-orders incident (see CLAUDE.md/memory), double-check
+# Indespension/Keylite's release envs, so admin CRUD is fine there. Given the
+# KOOL production-orders incident (see CLAUDE.md/memory), double-check
 # UI_AUTOMATION_HOST actually resolves to release_branch before any run.
+#
+# Live-verified via its first full regression run the same day: 94
+# scenarios, 5 failed, both now fixed and re-verified. (1) 3 failures
+# ("Delete User" click timing out) - this Peracto version renders that
+# trigger as a <button>, not the <a> every other tenant uses; fixed with a
+# tag-agnostic XPath in KOOL_ADMIN_config/mappings/user-detail.json. (2) 2
+# failures (product create/variant scenarios) - initially misdiagnosed as a
+# broken Default Attribute Set (a real 422 was involved, but the fields
+# ["Ugly Freight"/"Searchable in Storefront"/"Searchable in Quote Tool"] are
+# ordinary working react-selects the shared scenario just never filled in,
+# not broken tenant data); fixed with a new "... react-select if present"
+# step (form.ts) used in product-management.feature and
+# product-variant-management.feature, mapped in KOOL_ADMIN_config only.
+#
+# KOOL_RELEASE.env added the same day - the storefront counterpart, targets
+# https://release-2-19-0.kooltech.pub/ (config/KOOL_config/hosts.json's own
+# release_branch host, added alongside) - a DIFFERENT subdomain from the
+# admin release branch above, same 2.19.0 version. Mirrors KOOL.env exactly
+# otherwise. Live-verified via a narrow smoke run (header.feature, @smoke
+# tag): 3/3 scenarios, 18/18 steps passed.
+
+# ---- Lamona ----
+# Brand new project, scaffolded 2026-09-16 - admin only "for the time
+# being" (per user), no storefront project exists yet. Only a release
+# branch is known so far: https://2-8-0-peracto.lamonasparescouk.pub/
+# (config/Lamona_ADMIN_config/hosts.json's only entry, no staging host yet -
+# add one when it's known). PROJECT=lamona_admin, wired to the shared
+# Carbon_admin suite like every other Peracto Admin tenant.
+# config/Lamona_ADMIN_config/{pages.json,mappings/} were copied verbatim
+# from CARBON_ADMIN_config (the canonical boilerplate) rather than from a
+# more-customised tenant like KOOL, to avoid pulling in another tenant's
+# version-specific fixes (e.g. KOOL's <button>-vs-<a> Delete User XPath) -
+# Lamona is on Peracto 2-8-0, an unverified version for this suite.
+#
+# FULLY LIVE-VERIFIED same day with real credentials
+# (LAMONA_ADMIN_ADMIN_EMAIL/PASSWORD in .env, a distinct account, not the
+# generic ADMIN_EMAIL fallback). First full run: 20/94 failed, all
+# investigated live via a standalone Playwright script dumping real DOM
+# testids/options (not guessed) - 2 real config gaps fixed
+# (Lamona_ADMIN_config only: content-save button has no testid on this
+# build, use button[title='Save']; no "Default" attribute set exists, real
+# tenant sets are "Spare Parts"/random-ID sets/"TEST set", used "Spare
+# Parts") and 3 genuinely-missing tenant features excluded via
+# EXCLUDE_TAGS=@user-groups @product-variants @requires-product-export
+# (no Product Variants tab, no User Groups tab, no Export Product Data
+# link anywhere - confirmed via full nav/page testid dumps). @user-groups
+# already existed (Andy Thornton precedent); @product-variants is new,
+# split out the same way in tabs-contain-expected-data.feature and
+# first-item-redirects.feature.
+#
+# Two further real gaps found on the 2026-09-17 run (the 2026-09-16 run was
+# read off a truncated log tail and wrongly called "81/81 passing" - read
+# reports/<PROJECT>/report.json, not a tail, before claiming a clean run):
+# (1) VARIANTS ARE OFF ENTIRELY for this tenant, not just hidden - its
+# Product Type dropdown offers only "Standard", a saved product's detail
+# page has no options/variants section (page text never contains "Variant"
+# or "Option"), and advanced-options reveals nothing. So
+# product-variant-management.feature now carries @product-variants too (the
+# tag Lamona already excludes) - it was failing at "Add New Option" AFTER
+# creating its product but BEFORE its own cleanup, orphaning a "Velstar
+# Test Product ..." row on every run (3 had accumulated; deleted 2026-09-17).
+# (2) Lamona had ZERO articles, so the shared "edit an existing Article's
+# heading" scenario had nothing to edit. Seeded one article live (id 49,
+# "Velstar Test Article - regression fixture, do not delete", published-at
+# deliberately left blank so it stays unpublished) - same remedy as the
+# Indespension promotions row above. Don't delete it; that scenario goes
+# red again without it. Final state: 80 applicable scenarios.
+#
+# A subsequent overnight background run showed 36/80 failed - false alarm.
+# The first failure was Playwright's net::ERR_NETWORK_IO_SUSPENDED (the
+# machine's own network dropped mid-run, unattended overnight), and every
+# other failure was the same generic 20s step-timeout right after - not 36
+# independent site issues. Confirmed with curl once back online, then a
+# clean re-run: 80/80 passed. FULLY VERIFIED 2026-09-18, 80/80 passing.
 
 # ---- MIPA ----
 # Was tagged @MIPA_regression with its own cucumber profile; retagged

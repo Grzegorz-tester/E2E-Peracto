@@ -1,4 +1,6 @@
 {
   "first item link": "[data-testid='row-0-name'] a",
-  "Create New Page": "[data-testid='create-new-page']"
+  "Create New Page": "[data-testid='create-new-page']",
+  "Name filter": "[data-testid='text-filter-name']",
+  "page name": "[data-testid$='-name'] a"
 }

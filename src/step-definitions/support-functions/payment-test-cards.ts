@@ -123,3 +123,22 @@ export const VERIFONE_TEST_CARDS: Record<string, VerifoneTestCard> = {
         securityCode: "123",
     },
 };
+
+export type BraintreeTestCard = {
+    number: string;
+    // MM/YY - the Drop-in's hosted "expirationDate" field.
+    expiry: string;
+};
+
+// Braintree Drop-in (web 3.103.0) hosted fields, sandbox merchant, with
+// 3-D Secure via Cardinal Commerce's staging ACS - Keylite's checkout.
+// CONFIRMED live (Keylite staging, 2026-09-23): the generic 4111... Visa
+// DOES tokenise, but then opens a 3DS challenge iframe (Cardinal-CCA-IFrame,
+// creq.jsp) and waits there indefinitely - which is why an earlier attempt
+// concluded "Confirm Payment neither errors nor advances". Braintree's own
+// "successful frictionless" 3DS2 test card skips the challenge and goes
+// straight through to /checkout/thank-you (order W000541). No CVV field is
+// rendered by this integration.
+export const BRAINTREE_TEST_CARDS: Record<string, BraintreeTestCard> = {
+    "Visa 3DS frictionless": { number: "4000000000001000", expiry: "12/30" },
+};

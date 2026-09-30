@@ -1,3 +1,5 @@
 {
-  "orders table": "table"
+  "orders table": "table",
+  "first order row": "table tbody tr >> nth=0",
+  "first order reference": "table tbody tr >> nth=0 >> td >> nth=0"
 }

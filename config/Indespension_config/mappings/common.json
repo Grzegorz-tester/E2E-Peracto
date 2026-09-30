@@ -1,38 +1,35 @@
 {
   "Contact Us email": "[data-testid='utility-bar__email-link']",
   "contact phone number": "[data-testid='utility-bar__phone-link']",
-
   "VAT toggle": "[data-testid='switch__indicator']",
   "Sign In button": "[data-testid='utility-bar__sign-in-link'] a:has-text('Sign In')",
   "Register": "[data-testid='utility-bar__sign-in-link'] a:has-text('Register')",
   "Sign Out button": "[data-testid='utility-bar__sign-out-link']",
   "user name": "[data-testid='utility-bar__user-name']",
   "header logo": "[data-testid='brand-bar__logo-link']",
-
   "Search bar": "[data-testid='algolia-autocomplete__input']",
   "Search products": "[data-testid='algolia-autocomplete__input']",
   "magnifier glass": "[data-testid='algolia-autocomplete__search-button']",
   "search results": "[data-testid='algolia-autocomplete-hits']",
   "search result": "[data-testid='algolia-autocomplete-hit-product']",
   "No results found message": "//p[text()='No results found.']",
-
   "title": "//h1",
-
   "Branch Finder": "[data-testid='brand-bar__branches-link']",
   "Download Catalogue": "[data-testid='brand-bar__catalogue-link']",
   "Basket": "[data-testid='brand-bar__basket-link']",
-
   "Menu": "[data-testid='navigation-drawer-sheet__menu-button']",
   "menu draw": "[data-testid='navigation-drawer']",
-
-  "Trailers": "[data-testid='navigation-drawer-sheet__link-0']",
-  "Trailer Parts": "[data-testid='navigation-drawer-sheet__link-1']",
-  "Trailer Hire": "[data-testid='navigation-drawer-sheet__link-2']",
-  "Towbars": "[data-testid='navigation-drawer-sheet__link-3']",
-  "Offers": "[data-testid='navigation-drawer-sheet__link-4']",
-  "Services": "[data-testid='navigation-drawer-sheet__link-5']",
-  "Used Trailers": "[data-testid='navigation-drawer-sheet__link-6']",
-
+  "open menu drawer": "div[role='dialog'][data-state='open']",
+  "Trailers": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Trailers'])[1]",
+  "Trailer Parts": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Trailer Parts'])[1]",
+  "Trailer Hire": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Trailer Hire'])[1]",
+  "Towbars": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Towbars'])[1]",
+  "Offers": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Offers'])[1]",
+  "Services": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Services'])[1]",
+  "Used Trailers": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Used Trailers'])[1]",
+  "News": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='News'])[1]",
+  "Careers": "(//div[@role='dialog' and @data-state='open']//*[self::a or self::button][normalize-space()='Careers'])[1]",
+  "menu drawer View All": "(//div[@role='dialog' and @data-state='open']//a[normalize-space()='View All'])[1]",
   "Add to basket": "[data-testid='product-add-to-basket__button']",
   "added to basket confirmation": "[data-testid='product-added-to-basket__added-to-basket-heading']",
   "basket count": "[data-testid='brand-bar__basket-link']",
@@ -40,12 +37,10 @@
   "View Basket": "[data-testid='product-added-to-basket__view-basket']",
   "Continue": "role=button[name='Continue']",
   "validation message": "//p[contains(@class, 'danger')]",
-
   "newsletter form": "[data-testid='newsletter-form']",
   "newsletter email input": "[data-testid='newsletter-form__input']",
   "newsletter submit button": "[data-testid='newsletter-form__submit-button']",
   "newsletter alert": "[data-testid='newsletter-form__alert']",
-
   "footer company details": "[data-testid='stripped-footer__company-info']",
   "Facebook footer icon": "[data-testid='main-footer__social-link-facebook']",
   "Twitter footer icon": "[data-testid='main-footer__social-link-twitter']",
@@ -53,10 +48,8 @@
   "TikTok footer icon": "[data-testid='main-footer__social-link-tiktok']",
   "YouTube footer icon": "[data-testid='main-footer__social-link-youtube']",
   "LinkedIn footer icon": "[data-testid='main-footer__social-link-linkedin']",
-
   "About Us footer link": "[data-testid='main-footer'] a:has-text('About Us')",
   "Privacy Policy footer link": "[data-testid='main-footer'] a:has-text('Privacy Policy')",
   "Terms and Conditions footer link": "[data-testid='main-footer'] a:has-text('Terms and Conditions')",
-
   "sitemap link": "[data-testid='stripped-footer__sitemap-link']"
 }

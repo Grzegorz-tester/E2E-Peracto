@@ -57,7 +57,7 @@ Feature: Towbar vehicle search
   Background:
     Given I am on the "towbars" page
 
-  Scenario: Vehicle search filter fields are present, cascading correctly
+  Scenario: Vehicle search filter fields are present, cascading correctly (may fail if the staging firewall blocks the run)
     Then the "Make dropdown" should be displayed
     And the "Model dropdown" should not be enabled
     And the "Year dropdown" should not be enabled

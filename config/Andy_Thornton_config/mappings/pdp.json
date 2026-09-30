@@ -8,12 +8,23 @@
   "quantity plus": "[data-testid='quantity-picker__plus-button']",
   "quantity minus": "[data-testid='quantity-picker__minus-button']",
   "Add to basket": "[data-testid='product-add-to-basket__button']:visible",
-
   "Description tab": "[data-testid='product-accordion__trigger']:has-text('Description')",
   "Specifications tab": "[data-testid='product-accordion__trigger']:has-text('Specifications')",
   "Downloads tab": "[data-testid='product-accordion__trigger']:has-text('Downloads')",
   "product accordion content": "[data-testid='product-accordion__content']",
-
   "stock message": "[data-testid='product-messages'] [data-testid='product-message__title']",
-  "also in the range": "[data-testid='product-relations__frequentlyBoughtTogether']"
+  "also in the range": "[data-testid='product-relations__frequentlyBoughtTogether']",
+  "accordion triggers": "[data-testid=\"product-accordion__trigger\"]:visible",
+  "open accordion content": "[data-testid=\"product-accordion__content\"][data-state=\"open\"]:visible",
+  "downloads links": "[data-testid=\"product-accordion__content\"][data-state=\"open\"] a[href]",
+  "first frequently bought together product": "[data-testid=\"product-relations__frequentlyBoughtTogether\"] [data-testid=\"product-card__link\"]",
+  "Add to Quote icon": "[data-testid=\"product-add-to-basket\"] button:not([data-testid]):visible",
+  "add to quote dialog": "[role=\"dialog\"]:has([data-testid=\"add-moodboard__moodboard-select\"])",
+  "selected quote": "[data-testid=\"add-moodboard__moodboard-select\"] [role=\"combobox\"]",
+  "Add to Quote": "[data-testid=\"add-moodboard__add-to-moodboard-btn\"]",
+  "create a new quote": "[role=\"dialog\"] button:has-text(\"create a new quote\")",
+  "new quote name": "//div[@role=\"dialog\"]//p[starts-with(normalize-space(),\"Quote Name\")]/following-sibling::div[1]//input",
+  "new quote customer name": "//div[@role=\"dialog\"]//p[starts-with(normalize-space(),\"Customer Name\")]/following-sibling::div[1]//input",
+  "new quote reference": "//div[@role=\"dialog\"]//p[starts-with(normalize-space(),\"Reference\")]/following-sibling::div[1]//input",
+  "CREATE quote": "//div[@role=\"dialog\"]//button[normalize-space()=\"CREATE\"]"
 }

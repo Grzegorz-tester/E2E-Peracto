@@ -6,10 +6,25 @@
   "basket item total price": "[data-testid='basket-card__total-price']",
   "basket item quantity": "[data-testid='basket-card__quantity-heading']",
   "remove basket line": "[data-testid='basket-card__remove-button']",
-
   "basket available lines": "[data-testid='basket-items__available-lines']",
   "basket subtotal": "[data-testid='basket-summary__subtotal']",
   "basket total": "[data-testid='basket-summary__total']",
   "basket promotions": "[data-testid='basket-summary__promotions']",
-  "Checkout": "[data-testid='basket-summary__checkout-button']:visible"
+  "Checkout": "[data-testid='basket-summary__checkout-button']:visible",
+  "quantity input": "[data-testid='quantity-picker__input']",
+  "quantity plus": "[data-testid='quantity-picker__plus-button']",
+  "quantity minus": "[data-testid='quantity-picker__minus-button']",
+  "no items message": "[data-testid='default-basket-content']",
+  "promo code toggle": "[data-testid='add-promotion-form__button']",
+  "promo code input": "[data-testid='add-promotion-form__input']",
+  "promo code apply button": "[data-testid='add-promotion-form__button'][type='submit']",
+  "promo code message": "[data-testid='add-promotion-form']",
+  "applied promo badge": "[data-testid='add-promotion-form__badge-0']",
+  "remove applied promo": "[data-testid='add-promotion-form__remove-button-0']",
+  "basket discount": "[data-testid='basket-summary__discount']",
+  "quick buy search": "[data-testid='basket-quick-buy'] [data-testid='algolia-autocomplete__input']",
+  "quick buy results": "[data-testid='basket-quick-buy'] [data-testid='algolia-autocomplete-hits']",
+  "quick buy first result": "[data-testid='basket-quick-buy'] [data-testid='algolia-autocomplete-hit-product']",
+  "basket line total price": "[data-testid='basket-card__total-price']",
+  "basket sub total": "[data-testid='basket-summary__subtotal']"
 }

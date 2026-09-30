@@ -23,6 +23,10 @@
     "route": "/account/orders",
     "regex": "^/account/orders$"
   },
+  "account-order-detail": {
+    "route": "/account/orders",
+    "regex": "^/account/orders/\\d+$"
+  },
   "basket": {
     "route": "/basket",
     "regex": "^/basket$"
@@ -47,9 +51,17 @@
     "route": "/checkout/review-and-payment",
     "regex": "^/checkout/review-and-payment$"
   },
+  "checkout-thank-you": {
+    "route": "/checkout/thank-you",
+    "regex": "^/checkout/thank-you$"
+  },
   "products": {
     "route": "/category/all",
     "regex": "^/category/all$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
   },
   "pdp": {
     "route": "/products/ray-lux-flat-glass-with-kerb",
@@ -62,6 +74,22 @@
   "contact": {
     "route": "/contact",
     "regex": "^/contact$"
+  },
+  "thank-you": {
+    "route": "/thank-you",
+    "regex": "^/thank-you$"
+  },
+  "branches": {
+    "route": "/branches",
+    "regex": "^/branches$"
+  },
+  "replace-my-window": {
+    "route": "/replacing-your-roof-window",
+    "regex": "^/replacing-your-roof-window$"
+  },
+  "replacement-enquiry-form": {
+    "route": "/replacing-your-roof-window/replacement-enquiry-form",
+    "regex": "^/replacing-your-roof-window/replacement-enquiry-form$"
   },
   "register": {
     "route": "/register",

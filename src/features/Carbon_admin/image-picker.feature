@@ -1,4 +1,4 @@
-@regression
+@regression @mutates-admin-data
 Feature: Selecting An Image Via The File Manager From A Form Field
 
   # Promoted from MIPA_ADMIN_features to the shared Carbon_admin boilerplate
@@ -9,6 +9,12 @@ Feature: Selecting An Image Via The File Manager From A Form Field
   # file-manager.ts's frame-aware steps, already generalised (the trigger
   # button and the "Choose" confirm step are both parameterised, not fixed
   # to one project).
+  #
+  # Tagged @mutates-admin-data + "I require a staging admin" (2026-09-29):
+  # this uploads and then deletes a real file through CKFinder, exactly like
+  # file-manager.feature, so it must never run against a read-only
+  # production admin. It was missing both guards until a dry run of the new
+  # INDESPENSION_ADMIN_PROD env listed it among the production scenarios.
   #
   # CONFIRMED BUG on TWO independent tenants (live, MIPA_ADMIN staging,
   # 2026-09-09, verified twice via two different navigation paths to rule
@@ -57,7 +63,8 @@ Feature: Selecting An Image Via The File Manager From A Form Field
   # pre-existing tenant content.
 
   Scenario: Choosing an image via Category's Main Image Browse button does not currently populate the field
-    Given I am navigating the page as a "admin" user
+    Given I require a staging admin for this scenario
+    And I am navigating the page as a "admin" user
     When I click precisely on the "Products" element
     And I click precisely on the "Categories" element
     And I click precisely on the "first item link" element if present

@@ -35,7 +35,11 @@ When(/^I save the quote and wait for it to persist$/, async function (this: Scen
 
     const [response] = await Promise.all([
         page.waitForResponse(
-            (r) => /staging-api\.[^/]+\/quotes\/[^/?]+$/.test(r.url()) && r.request().method() === "PUT",
+            // Any API host, not just staging-api: a release branch runs its
+            // own API subdomain (confirmed live on KOOL release-2-19-0,
+            // 2026-09-28 - the staging-only pattern never matched there, so
+            // every save "timed out" even though it had persisted).
+            (r) => /\/quotes\/[^/?]+$/.test(new URL(r.url()).pathname) && r.request().method() === "PUT",
             { timeout: 15000 },
         ),
         page.locator(saveSelector).click(),

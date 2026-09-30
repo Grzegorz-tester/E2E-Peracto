@@ -1,4 +1,6 @@
 {
   "first item link": "[data-testid='row-0-fromPath']",
-  "Add Redirect": "[data-testid='add-redirect']"
+  "Add Redirect": "[data-testid='add-redirect']",
+  "From Path filter": "[data-testid='text-filter-from-path']",
+  "redirect from path": "[data-testid$='-fromPath']"
 }

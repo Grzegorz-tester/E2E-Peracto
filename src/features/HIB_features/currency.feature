@@ -4,7 +4,9 @@ Feature: Currency switching
     header currency picker.
   - PLP (category grid) pages currently show no price at all on this site
     (name/image/variant-count only), so PLP is intentionally out of scope
-    here - only PDP and the basket, where price is actually shown.
+    here - only the PDP, where price is actually shown.
+  - The picker is only offered to guests; logged-in portal users never see
+    it (confirmed correct behaviour, 2026-09-29).
 
 
   Scenario: Currency toggle is visible on the site
@@ -23,20 +25,13 @@ Feature: Currency switching
     Then the "product price" should contain the text "£"
 
 
-  Scenario: Switching currency updates the basket price and total, and reverts back
+  # 2026-09-29: logged-in (portal) users get no currency picker at all - on
+  # /, /account and PDPs alike. Confirmed with the user as correct behaviour,
+  # not a bug. The basket (place-order) is portal-only, so basket currency
+  # switching can't be tested; guard the intended behaviour instead.
+  Scenario: Currency picker is hidden for logged-in users
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
-    When I am on the "place-order" page
-    And I fill in the "Search products" input field with "Vanquish"
-    And I wait for the search results to update
-    And I click on the "first search result" element
-    And I slowly click on the "first variant" element
-    And I slowly click on the "Add to basket" button
-    Then the "product's price" should contain the text "£"
-    And the "order total price" should contain the text "£"
-    When I switch the currency to "EUR"
-    Then the "product's price" should contain the text "€"
-    And the "order total price" should contain the text "€"
-    When I switch the currency to "GBP"
-    Then the "product's price" should contain the text "£"
-    And the "order total price" should contain the text "£"
+    When I am on the "home" page
+    Then the "Search products" should be displayed
+    And the "currency picker" should not appear within "5" seconds

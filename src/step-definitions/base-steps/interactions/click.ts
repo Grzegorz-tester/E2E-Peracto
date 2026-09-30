@@ -567,16 +567,26 @@ When(
 // any project with a similarly flaky client-side navigation.
 When(
   /^I click on the "([^"]*)" (?:button|link|element), retrying until redirected to the "([^"]*)" page$/,
+  { timeout: 60000 },
   async function (this: ScenarioWorld, elementKey: ElementKey, pageId: PageId) {
     const { screen: { page }, globalConfig } = this;
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
+    // Give each click up to 8s to redirect before re-clicking, rather than a
+    // fixed 1s. Confirmed live (HIB feature-hib-170 login, 2026-09-29): the
+    // sign-in POST /auth routinely takes 2-4s+ on a slow release API, so a
+    // re-click after 1s landed mid-submission and kept interrupting it until
+    // the 20s budget ran out - even though a single click would have worked.
     await waitFor(async () => {
       if (currentPathMatchesPageId(page, pageId, globalConfig)) return true;
       await clickElement(page, elementIdentifier, { timeout: 15000, force: true });
-      await page.waitForTimeout(1000);
-      return currentPathMatchesPageId(page, pageId, globalConfig);
-    }, { timeout: 20000, wait: 500 });
+      const deadline = Date.now() + 8000;
+      while (Date.now() < deadline) {
+        await page.waitForTimeout(500);
+        if (currentPathMatchesPageId(page, pageId, globalConfig)) return true;
+      }
+      return false;
+    }, { timeout: 45000, wait: 500 });
   }
 );
 
@@ -587,6 +597,10 @@ When(
 // happens) with no navigation involved to detect it by.
 When(
   /^I click on the "([^"]*)" (?:button|link|element), retrying until the "([^"]*)" is displayed$/,
+  // Explicit budget: the 20s retry window below plus a slow click can exceed
+  // SCRIPT_TIMEOUT (20s on Indespension) - confirmed 2026-09-29, cucumber cut
+  // this step off mid-retry on staging's Menu button.
+  { timeout: 45000 },
   async function (this: ScenarioWorld, elementKey: ElementKey, targetKey: ElementKey) {
     const { screen: { page }, globalConfig } = this;
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
@@ -598,5 +612,30 @@ When(
       await page.waitForTimeout(1000);
       return (await page.$(targetIdentifier)) !== null;
     }, { timeout: 20000, wait: 500 });
+  }
+);
+
+// For a list/table where the action belongs to ONE specific row - the row
+// holding a value this scenario created and remembered - rather than a
+// positional "first row". Confirmed live on Andy Thornton's account
+// Moodboards list (2026-09-30): the test account is shared with other people
+// and already holds their moodboards, so a delete must target only the
+// scenario's own row. All three are mapping keys/variable names: the control
+// to click, the row selector, and the remembered text that identifies it.
+When(
+  /^I click on the "([^"]*)" inside the "([^"]*)" containing the remembered "([^"]*)"$/,
+  async function (this: ScenarioWorld, elementKey: ElementKey, rowKey: ElementKey, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+      throw new Error(`No remembered text found for "${variableName}" - remember it first.`);
+    }
+    const row = page.locator(getElementLocator(page, rowKey, globalConfig)).filter({ hasText: remembered });
+    await row.first().waitFor({ state: "visible", timeout: 15000 });
+    const count = await row.count();
+    if (count !== 1) {
+      throw new Error(`Expected exactly one "${rowKey}" containing "${remembered}", found ${count} - refusing to guess which to act on.`);
+    }
+    await row.locator(getElementLocator(page, elementKey, globalConfig)).first().click();
   }
 );

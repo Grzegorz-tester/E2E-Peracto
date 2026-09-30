@@ -1,0 +1,5 @@
+{
+  "Contact number": "[data-testid=\"account-profile__contact-number-input\"]",
+  "Save Changes": "[data-testid=\"account-profile__save-changes-button--footer\"]",
+  "profile alert": "[data-testid=\"account-profile__alert\"]"
+}

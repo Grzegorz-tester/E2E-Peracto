@@ -40,6 +40,46 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
   await new Promise(resolve => setTimeout(resolve, 1000));
 });
 
+// CONFIRMED live (Keylite blinds configurator, 2026-09-22): clicking "Add
+// to basket" fires an async POST that "I wait for the page to settle"
+// doesn't reliably wait out - a DEBUG_NETWORK trace showed the confirming
+// POST to a basket-related URL still hadn't landed by the time the settle
+// step's own bounded networkidle+buffer window closed. Immediately
+// following up with "I am on the '...' page" (an unconditional page.goto,
+// see navigateToPage) then risks navigating away mid-request, losing the
+// add outright rather than just running slow - a real "acted before the
+// add committed" race, same class as this file's MIPA basket-id comment
+// above but for the WRITE completing rather than an id being ready to
+// receive one. Waits for the real signal: any non-GET response whose URL
+// contains "basket", OR any Next.js server action response (request has a
+// "next-action" header).
+//
+// CONFIRMED live (2026-09-23): the first version of this step didn't
+// actually fix the race. Keylite's add is a server action POSTed to the PDP
+// URL itself ("/products/blackout-blinds", body {productId, variantId, ...}),
+// never a "basket" URL, so the response match never fired - and its
+// networkidle fallback resolves INSTANTLY after a JS click on an
+// already-loaded page (waitForLoadState returns straight away once that
+// state has been reached, it doesn't wait for a fresh idle period). The step
+// was effectively a flat 500ms sleep (502ms in the failing run), and the
+// following page.goto still aborted the add. The networkidle fallback is
+// gone for that reason; a page whose add matches neither pattern waits out
+// the 15s timeout and carries on, rather than cutting the add short at 500ms.
+(0, _cucumber.When)(/^I wait for the basket update to complete$/, async function () {
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  await page.waitForResponse(res => {
+    const req = res.request();
+    return req.method() !== "GET" && (/basket/i.test(res.url()) || req.headers()["next-action"] !== undefined);
+  }, {
+    timeout: 15000
+  }).catch(() => null);
+  await new Promise(resolve => setTimeout(resolve, 500));
+});
+
 // A more precise counterpart to the generic settle step above, for
 // waiting out a SAVE action specifically rather than an arbitrary async
 // page load - e.g. before reloading right after clicking Save, per
@@ -88,7 +128,15 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
 // swallows this one specific transient navigation-level error - a genuine
 // content/assertion failure after a successful reload surfaces normally,
 // unaffected by this retry.
-(0, _cucumber.When)(/^I reload the page$/, async function () {
+//
+// Explicit 65s step timeout (CONFIRMED live, Keylite_ADMIN staging,
+// 2026-09-23): this step's own budget is up to 30s + 1s + 30s, but it ran
+// under cucumber's default step timeout - SCRIPT_TIMEOUT, only 20s on the
+// admin envs - so one slow reload failed as "function timed out" before
+// the reload's own timeout or retry ever got a chance to run.
+(0, _cucumber.When)(/^I reload the page$/, {
+  timeout: 65000
+}, async function () {
   const {
     screen: {
       page

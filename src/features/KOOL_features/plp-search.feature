@@ -14,10 +14,15 @@ Feature: Product Listing Page (PLP) & Search
     When I click on the "product name" element
     Then the current URL should contain "/products/"
 
+  # 2026-09-28: moved from Air Conditioning to Chemicals - every AC unit is
+  # F-Gas gated ("confirm your F Gas registration"), so that listing shows
+  # no Add to basket at all, guest or logged-in (confirmed identical on
+  # staging and release-2-19-0). Chemicals shows it for guests on both.
   Scenario: PLP - Add product to basket from listing
-    Given I am on the "air-conditioning-plp" page
+    Given I am on the "chemicals-plp" page
     And I click on the "Accept cookies" button if present
     When I slowly click on the "Add to basket" button
+    And I wait for the basket update to complete
     And I am on the "basket" page
     Then the "no items message" should not be displayed
 

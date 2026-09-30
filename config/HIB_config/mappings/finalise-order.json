@@ -4,6 +4,6 @@
   "Delivery Address": "[data-testid='checkout__delivery-details-address__address-0']",
   "Billing Address": "[data-testid='checkout__billing-address__address-0']",
   "Phone": "[id='contactNumber']",
-  "PO Number": "[id='poNumber']",
+  "PO Number": "[id='purchaseOrder']",
   "PLACE ORDER": "[data-testid='proceed-to-payment']"
 }

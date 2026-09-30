@@ -83,9 +83,13 @@
     "route": "/products/solas-round-illuminated-bathroom-chrome",
     "regex": "^/products/solas-round-illuminated-bathroom-.*$"
   },
-  "auryn-cabinet": {
-    "route": "/products/auryn-led-aluminium-cabinet-black-aucrobk",
-    "regex": "^/products/auryn-led-aluminium-cabinet-black-aucrobk$"
+  "vanquish-cabinet": {
+    "route": "/products/vanquish-bathroom-cabinet",
+    "regex": "^/products/vanquish-bathroom-cabinet$"
+  },
+  "vanquish-trim": {
+    "route": "/products/vanquish-bathroom-cabinet-trim-black",
+    "regex": "^/products/vanquish-bathroom-cabinet-trim-.*$"
   },
   "products": {
     "route": "/products",
@@ -122,5 +126,65 @@
   "bathroom-ventilation": {
     "route": "/category/bathroom-ventilation",
     "regex": "^/category/bathroom-ventilation$"
+  },
+  "specifiers-developers": {
+    "route": "/specifiers-developers",
+    "regex": "^/specifiers-developers$"
+  },
+  "swatch-samples": {
+    "route": "/swatch-samples",
+    "regex": "^/swatch-samples$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "guarantee": {
+    "route": "/guarantee",
+    "regex": "^/guarantee$"
+  },
+  "customer-feedback-form": {
+    "route": "/customer-feedback-form",
+    "regex": "^/customer-feedback-form$"
+  },
+  "blog": {
+    "route": "/articles/blog",
+    "regex": "^/articles/blog$"
+  },
+  "awards-affiliations": {
+    "route": "/awards-affiliations",
+    "regex": "^/awards-affiliations$"
+  },
+  "corporate-social-responsibility": {
+    "route": "/corporate-social-responsibility",
+    "regex": "^/corporate-social-responsibility$"
+  },
+  "environmental-policy": {
+    "route": "/environmental-policy",
+    "regex": "^/environmental-policy$"
+  },
+  "modern-slavery-statement": {
+    "route": "/modern-slavery-statement",
+    "regex": "^/modern-slavery-statement$"
+  },
+  "privacy-policy": {
+    "route": "/privacy-policy",
+    "regex": "^/privacy-policy$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  },
+  "category": {
+    "route": "/category/bathroom-mirrors",
+    "regex": "^/category/[^/]+$"
+  },
+  "product": {
+    "route": "/products/solas-round-illuminated-bathroom-chrome",
+    "regex": "^/products/[^/]+$"
+  },
+  "article": {
+    "route": "/article/hib-sofa-surf-raises-funds-for-street-angels",
+    "regex": "^/article/[^/]+$"
   }
 }

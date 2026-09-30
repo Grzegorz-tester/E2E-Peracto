@@ -39,7 +39,13 @@ Feature: Login Page
     And I click on the "SUBMIT" button
     Then I should be presented with a "validation message" "Please enter a valid email address"
     When I fill in the "Email address" input field with "valid_email_address@test.co.uk"
-    And I click on the "SUBMIT" button
+    # 2026-09-29: same react-google-recaptcha-v3 race as the login form (see
+    # customer-flow.feature) - confirmed live on feature-hib-170: the first
+    # submit after the client-side /login -> /reset-password navigation throws
+    # "h is not a function" and does nothing (3/3); a second click submits
+    # POST /users/reset-password fine. A full page load plus a 15s settle also
+    # works, so retrying the click is the cheaper fix.
+    And I click on the "SUBMIT" button, retrying until the "reset password message" is displayed
     Then I should be presented with a "reset password message" "Thanks! You should receive an email shortly with instructions on how to proceed."
 
 

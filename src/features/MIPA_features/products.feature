@@ -11,6 +11,13 @@ Feature: Product Listing Page (PLP)
   # link through to the PDP, no basket action. Covered here as the real
   # behaviour instead of the smoke-test assumption that one exists.
 
+  # 2026-09-25: category routes moved under /category/refinishing/ on
+  # feature-next-15 and staging (pages.json updated). The "All Refinishing
+  # Products" link on /refinishing itself 404s on both - a real site bug,
+  # so this scenario deliberately stays on that page and is expected to stay
+  # red until it's fixed. The other PLP scenarios below moved to Ready Mixed
+  # Colours (41 products, paginated, guest login links) so they keep
+  # testing PLP behaviour instead of all failing on the same 404.
   Scenario: PLP loads with products displayed correctly
     Given I am on the "all-refinishing" page
     Then the "category page title" should contain the text "All Refinishing"
@@ -26,7 +33,7 @@ Feature: Product Listing Page (PLP)
   # was intermittently failing for this reason, not a selector problem.
   Scenario: Clicking a product on the PLP navigates to its PDP
     Given I am navigating the page as a "logged in" user
-    And I am on the "all-refinishing" page
+    And I am on the "ready-mixed-colours" page
     When I click on the "PLP first product card view product" element, retrying until redirected to the "pdp" page
     Then the "product title" should be displayed
     And the "product SKU" should be displayed
@@ -34,7 +41,7 @@ Feature: Product Listing Page (PLP)
 
   Scenario: Guest user cannot see prices on the PLP
     Given I am navigating the page as a "guest" user
-    And I am on the "all-refinishing" page
+    And I am on the "ready-mixed-colours" page
     Then the "PLP first product card guest login link" should be displayed
     When I click on the "PLP first product card view product" element, retrying until redirected to the "pdp" page
     Then the "product title" should be displayed
@@ -51,7 +58,7 @@ Feature: Product Listing Page (PLP)
 
 
   Scenario: Pagination loads additional results
-    Given I am on the "all-refinishing" page
+    Given I am on the "ready-mixed-colours" page
     And the "PLP first product card title" should be displayed
     When I click on the "PLP pagination next" element
     Then the "PLP product cards" should be displayed

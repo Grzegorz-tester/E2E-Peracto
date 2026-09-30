@@ -1,5 +1,9 @@
 {
   "SKU": "[data-testid='sku']",
+  "Nav SKU": "[data-testid='navSku']",
+  "Nav Product Name": "[data-testid='navProductName']",
+  "Lead Time (GB)": "[data-testid='leadTimeGB']",
+  "Lead Time (IE)": "[data-testid='leadTimeIE']",
   "Option Value": "[data-testid='option-0-display-value']",
   "Product Status": "[data-testid='product-status-dropdown']",
   "Price": "[data-testid='price']",

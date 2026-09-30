@@ -12,7 +12,6 @@
   "Account": "[data-testid='brand-bar__account-link']",
   "Basket": "[data-testid='brand-bar__basket-link']",
   "Currency": "[data-testid='brand-bar__currency-button']",
-
   "footer": "[data-testid='main-footer']",
   "footer Facebook icon": "[data-testid='main-footer__social-link-facebook']",
   "footer Twitter icon": "[data-testid='main-footer__social-link-twitter']",
@@ -22,13 +21,11 @@
   "footer sitemap link": "[data-testid='stripped-footer__sitemap-link']",
   "footer company info": "[data-testid='stripped-footer__company-info']",
   "footer copyright": "[data-testid='stripped-footer__copyright']",
-
   "Existing customer": "[data-testid='radio-select_option-Existing customer']",
   "Guest checkout": "[data-testid='radio-select_option-Guest checkout']",
   "Guest email": "[data-testid='guest-checkout-form__email-input']",
   "Guest continue": "[data-testid='guest-checkout-form__submit-button']",
   "Signed-in continue": "[data-testid='checkout-sign-in-content'] button:has-text('Continue')",
-
   "address first name": "[data-testid='checkout-address-form__first-name']",
   "address last name": "[data-testid='checkout-address-form__last-name']",
   "address line 1": "[data-testid='checkout-address-form__address-line-1']",
@@ -37,19 +34,30 @@
   "address postcode": "[data-testid='checkout-address-form__postcode']",
   "Use this address": "[data-testid='checkout-address-form__submit-button']",
   "same as delivery checkbox": "[data-testid='checkout-address-form__same-as-delivery-address']",
-
   "Phone number": "[data-testid='delivery-content__form-telephone']",
-  "delivery method option": "[data-testid^='radio-select_option-']",
+  "delivery notes": "[data-testid='checkout-address-form__deliverynotes']",
+  "delivery method option": "[data-testid='delivery-content__radio-select'] [data-testid^='radio-select_option-']",
   "Delivery method continue": "[data-testid='delivery-content__form-continue-button']",
   "Billing continue": "[data-testid='checkout-billing-content__continue-button']",
-
   "saved address": "[data-testid='checkout-select-address__addresses'] [data-testid^='radio-select_option-']",
   "saved address continue": "[data-testid='checkout-select-address__continue-button']",
-
   "review content": "[data-testid='review-content']",
   "review product name": "[data-testid='review-product-card__name']",
   "review product price": "[data-testid='review-product-card__price-price']",
   "review current address": "[data-testid='review-current-address']",
   "terms and conditions checkbox": "[data-testid='review-content__terms-and-conditions']",
-  "Pay now": "[data-testid='review-content__continue-to-payment-account']"
+  "Pay now": "[data-testid='review-content__continue-to-payment-account']",
+  "terms and conditions": "[data-testid='review-content__terms-and-conditions']",
+  "thank you content": "[data-testid='checkout-thank-you-content']",
+  "order reference": "[data-testid='orders-details__reference']",
+  "order email": "[data-testid='orders-details__email']",
+  "order delivery address": "[data-testid='orders-details__order-delivery-address']",
+  "order product name": "[data-testid='order-product-card__name']",
+  "order total": "[data-testid='orders-details__order-summary__total']",
+  "delivery form": "[data-testid='delivery-content__form']",
+  "order payment details": "[data-testid='orders-details__order-payment-details']",
+  "Sign Out": "[data-testid='account-menu__logout']",
+  "newsletter email": "[data-testid='newsletter-form__input']",
+  "newsletter submit": "[data-testid='newsletter-form__submit-button']",
+  "newsletter alert": "[data-testid='newsletter-form__alert']"
 }

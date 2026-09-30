@@ -1,0 +1,5 @@
+{
+  "page heading": "(//h1)[1]",
+  "Request a Quote": "main a[href$='/replacement-enquiry-form'] >> nth=0",
+  "Find Installer link": "main a[href='/branches'] >> nth=0"
+}

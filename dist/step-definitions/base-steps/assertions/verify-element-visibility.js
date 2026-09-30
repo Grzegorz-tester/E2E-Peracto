@@ -2,6 +2,7 @@
 
 var _cucumber = require("@cucumber/cucumber");
 var _webElementHelper = require("../../support-functions/web-element-helper");
+var _test = require("@playwright/test");
 var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 // For a list page where "no rows" can mean two very different things: a
 // genuine empty result set (the site's own "no results" message renders) or
@@ -29,6 +30,25 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   });
 });
 
+// For content that only exists inside a third-party iframe (a MailerLite
+// sign-up pop-up, an embedded form), which page.$ can't see. Both keys are
+// mappings: the iframe itself, and the element inside it. Confirmed live on
+// HIB (2026-09-29): the footer's "Subscribe" link opens MailerLite's form
+// in an iframe, with the email field only reachable through the frame.
+(0, _cucumber.Then)(/^the "([^"]*)" inside the "([^"]*)" iframe should be displayed$/, async function (elementKey, iframeKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const iframeIdentifier = (0, _webElementHelper.getElementLocator)(page, iframeKey, globalConfig);
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _test.expect)(page.frameLocator(iframeIdentifier).locator(elementIdentifier).first(), `"${elementKey}" (${elementIdentifier}) inside the "${iframeKey}" iframe (${iframeIdentifier}) to be displayed`).toBeVisible({
+    timeout: 15000
+  });
+});
+
 // this regex \s*(not)?\s* allows to use it in the Examples when there is an empty string
 (0, _cucumber.Then)(/^the "([^"]*)" should\s*(not)?\s*be displayed$/, async function (elementKey, negate) {
   const {
@@ -45,6 +65,80 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     expected: `"${elementKey}" (${elementIdentifier}) to ${negate ? "not be present" : "be displayed"}`,
     describeActual: () => (0, _webElementHelper.describeElement)(page, elementIdentifier)
   });
+});
+
+// For in-page anchor links ("View all branches" -> #all-branches): the target
+// is already "displayed" before the click, since it's rendered further down
+// the page, so the displayed step can't tell whether the link did anything.
+// Nor can a URL-hash check - confirmed live on Indespension's /branches
+// (2026-09-29): the link scrolls correctly (scrollY 0 -> 1042) but Next.js
+// never adds the hash to the URL. Asserting the target is inside the
+// viewport tests the real behaviour.
+(0, _cucumber.Then)(/^the "([^"]*)" should be scrolled into view$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _test.expect)(page.locator(elementIdentifier).first()).toBeInViewport({
+    timeout: 10000
+  });
+});
+
+// For slow third-party widgets (e.g. an embedded Google Map, confirmed live on
+// Indespension's /branches, 2026-09-29: ~10s before the map first draws) that
+// can take longer than waitFor's default 15s budget on a slow run.
+(0, _cucumber.Then)(/^the "([^"]*)" should be displayed within "(\d+)" seconds$/,
+// Explicit step budget: without it cucumber's own SCRIPT_TIMEOUT (20s on
+// several projects) cuts the wait off early - confirmed 2026-09-29, a
+// "within 30 seconds" step died at 20s. Supports up to 60s.
+{
+  timeout: 65000
+}, async function (elementKey, seconds) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await (0, _waitForBehaviour.waitFor)(async () => (await page.$(elementIdentifier)) != null, {
+    timeout: Number(seconds) * 1000,
+    expected: `"${elementKey}" (${elementIdentifier}) to be displayed within ${seconds}s`,
+    describeActual: () => (0, _webElementHelper.describeElement)(page, elementIdentifier)
+  });
+});
+
+// "should not be displayed" passes the instant the element is absent, so it
+// can't catch something that renders fine and THEN breaks. Confirmed live on
+// Indespension's /branches (2026-09-29): the Google Map draws, then ~1s later
+// Google swaps it for its "Oops! Something went wrong" error overlay - every
+// existing branch-finder assertion had already passed by then. This watches
+// for the whole window and fails as soon as the element shows up.
+(0, _cucumber.Then)(/^the "([^"]*)" should not appear within "(\d+)" seconds$/,
+// Explicit step budget: without it cucumber's own SCRIPT_TIMEOUT (20s on
+// several projects) cuts the wait off early - confirmed 2026-09-29, a
+// "within 30 seconds" step died at 20s. Supports up to 60s.
+{
+  timeout: 65000
+}, async function (elementKey, seconds) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const deadline = Date.now() + Number(seconds) * 1000;
+  while (Date.now() < deadline) {
+    if ((await page.$(elementIdentifier)) != null) {
+      const text = (await page.locator(elementIdentifier).first().innerText().catch(() => "")).replace(/\s+/g, " ").trim();
+      throw new Error(`Expected: "${elementKey}" (${elementIdentifier}) not to appear within ${seconds}s Found: it appeared${text ? ` - "${text}"` : ""}`);
+    }
+    await page.waitForTimeout(250);
+  }
 });
 
 // this regex \s*(not)?\s* allows to use it in the Examples when there is an empty string

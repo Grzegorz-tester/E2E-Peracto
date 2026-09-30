@@ -3,5 +3,6 @@
   "Profile tab": "[data-value='Profile']",
   "Address book tab": "[data-value='Address Book']",
   "Orders tab": "[data-value='Orders']",
-  "Moodboards tab": "[data-value='Moodboards']"
+  "Moodboards tab": "[data-value='Moodboards']",
+  "account welcome": "[data-testid=\"account-menu__welcome\"]"
 }

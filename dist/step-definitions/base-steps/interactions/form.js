@@ -118,6 +118,28 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
   this.globalVariables[variableName] = value;
 });
 
+// Same idea for a phone field that validates its format (so the "qa-<ts>"
+// value above won't do). Unique per run on purpose: a fixed test number
+// would equal whatever a previous run left behind if that run failed
+// before restoring the original, and a dirty-state-gated Save button (e.g.
+// Keylite's account profile) then stays disabled on every run after -
+// a self-inflicted permanent failure. "07" + 9 timestamp-derived digits.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with a unique UK mobile number, remembering it as "([^"]*)"$/, async function (elementKey, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const value = `07${String(Date.now()).slice(-9)}`;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    timeout: 15000
+  });
+  await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, value);
+  this.globalVariables[variableName] = value;
+});
+
 // The fill-side counterpart to verify-element-value.ts's "I remember the
 // text of ... as ..." / "should contain the remembered ..." pair - for
 // carrying a live, page-read value (e.g. a real product's own SKU) INTO a
@@ -153,6 +175,31 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     timeout: 15000
   });
   await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, inputText);
+});
+
+// The literal-value counterpart to "... with a unique value if present"
+// (line 76 above) - for a tenant-only field that needs a specific, real
+// value rather than a disposable unique one, e.g. a numeric field with no
+// client-side validation that still causes a raw 500 if left empty
+// (Keylite's "Lead Time (GB)"/"Lead Time (IE)" on the product-variant
+// form - confirmed live, 2026-09-16). A no-op here (field genuinely
+// absent) is the correct outcome, same reasoning as every other
+// "... if present" step.
+(0, _cucumber.When)(/^I fill in the "([^"]*)" input field with "([^"]*)" if present$/, async function (elementKey, inputText) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const appeared = await page.waitForSelector(elementIdentifier, {
+    state: "visible",
+    timeout: 8000
+  }).then(() => true).catch(() => false);
+  if (appeared) {
+    await (0, _htmlBehaviour.enterValue)(page, elementIdentifier, inputText);
+  }
 });
 
 // See enterValueClearingAutoPopulatedFirst's own comment (html-behaviour.ts)
@@ -328,7 +375,12 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 // its own booking cutoff), and how many weeks ahead are offered shifts
 // over time, so hardcoding a numeric position would silently start
 // picking the wrong week as the list grows or shrinks.
-(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" listbox$/, async function (option, elementKey) {
+// Explicit budget: the visibility wait + first try + retry below can take
+// up to ~35s, past SCRIPT_TIMEOUT (20s on Indespension) - confirmed
+// 2026-09-29, a slow Model dropdown on production was cut off mid-retry.
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" listbox$/, {
+  timeout: 45000
+}, async function (option, elementKey) {
   const {
     screen: {
       page
@@ -402,6 +454,38 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
 // throws its own clear error - confirmed live, that showed up as an
 // opaque "function timed out" from cucumber itself instead, well before
 // every week had even been tried.
+// Clicks the option labelled `option` in an open react-select menu. Exact
+// label match first; if there's none, falls back to the ONE option whose
+// label starts with `option`, and throws (listing what was offered) if zero
+// or several do. CONFIRMED live (Keylite_ADMIN_RELEASE, 2-0-0-peracto,
+// 2026-09-27): that tenant's country is labelled "United Kingdom Of Great
+// Britain & Northern Ireland" (Ireland added alongside it), while every
+// other tenant sharing entity-creation.feature still says "United Kingdom"
+// - an exact-only match timed out on Keylite with the right option sitting
+// in the open menu. Requiring a single unambiguous prefix match keeps the
+// shared feature's short label working without letting it silently pick
+// the wrong option.
+const clickMenuOption = async (menu, optionSelector, option) => {
+  const exact = menu.getByText(option, {
+    exact: true
+  });
+  if ((await exact.count()) > 0) {
+    await exact.first().click();
+    return;
+  }
+  const escaped = option.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const prefixed = menu.locator(optionSelector).filter({
+    hasText: new RegExp(`^\\s*${escaped}`)
+  });
+  const count = await prefixed.count();
+  if (count === 1) {
+    await prefixed.click();
+    return;
+  }
+  const offered = await menu.locator(optionSelector).allInnerTexts();
+  throw new Error(`Expected: exactly one option labelled (or starting with) "${option}"\nFound: ${count} prefix matches among options [${offered.join(" | ")}]`);
+};
+
 // For Peracto Admin's classic react-select widget (classNamePrefix "list",
 // no ARIA roles at all) - confirmed live on Carbon Admin's Add Product
 // form: Product Type/Status/Availability/Sales Unit/Tax rate/Attribute Set
@@ -434,9 +518,78 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     state: "visible",
     timeout: 10000
   });
-  await menu.getByText(option, {
-    exact: true
-  }).click();
+  await clickMenuOption(menu, ".list__option", option);
+});
+
+// A second react-select shape, distinct from the classNamePrefix "list"
+// one above: CONFIRMED (live, Carbon Admin staging, 2026-09-18) Shipping
+// Service's "Available Countries" field (add-a-country-cost-row) renders
+// with classNamePrefix "peracto-select" instead - peracto-select__menu/
+// peracto-select__option, not list__menu/list__option - so the step above
+// can't find its menu at all. Not yet confirmed whether any other field
+// in this suite shares this second shape; kept as its own step rather
+// than guessing a combined selector into the existing one until a second
+// real use turns up.
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" peracto-select$/, async function (option, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const control = page.locator(elementIdentifier);
+  await control.waitFor({
+    state: "visible",
+    timeout: 15000
+  });
+  await control.click();
+  const menu = page.locator(".peracto-select__menu:visible").last();
+  await menu.locator(".peracto-select__option").first().waitFor({
+    state: "visible",
+    timeout: 10000
+  });
+  await clickMenuOption(menu, ".peracto-select__option", option);
+});
+
+// The react-select counterpart to "... with a unique value if present"
+// above - for a react-select field that's only required (or only exists
+// at all) on SOME tenants sharing this suite. CONFIRMED (live, KOOL_ADMIN_RELEASE,
+// 2026-09-15): the Default Attribute Set's "Ugly Freight", "Searchable in
+// Storefront" and "Searchable in Quote Tool" Yes/No custom attributes -
+// none seen on MIPA/Andy Thornton's own Default Attribute Set - default to
+// no value at all ("Please Select") with no client-side requiredness hint,
+// so product-management.feature's Save silently 422s ("Option '""' is not
+// a valid option") with no toast, easy to misread as a toast-timing race
+// rather than three unfilled required fields. A no-op here (field genuinely
+// absent on a tenant without it) is the correct outcome, matching the fill
+// step's own reasoning.
+(0, _cucumber.When)(/^I select the "([^"]*)" option from the "([^"]*)" react-select if present$/, async function (option, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  if (!elementIdentifier) {
+    return;
+  }
+  const control = page.locator(elementIdentifier);
+  const appeared = await control.waitFor({
+    state: "visible",
+    timeout: 8000
+  }).then(() => true).catch(() => false);
+  if (!appeared) {
+    return;
+  }
+  await control.click();
+  const menu = page.locator(".list__menu:visible").last();
+  await menu.locator(".list__option").first().waitFor({
+    state: "visible",
+    timeout: 10000
+  });
+  await clickMenuOption(menu, ".list__option", option);
 });
 
 // Same "list" classNamePrefix react-select shape as above, but for a field
@@ -460,13 +613,21 @@ const selectReactSelectOptionTypingToSearch = async (page, globalConfig, element
   await control.locator("input").first().type(option, {
     delay: 30
   });
+
+  // 20s, not 10s: CONFIRMED live on HIB_ADMIN_RELEASE (hib-170,
+  // 2026-09-27) that the async search itself is occasionally very slow -
+  // 12/12 attempts through the exact nav path the scenario takes answered
+  // in 0.4-0.7s, but one attempt took 9s for the option to appear and a
+  // full regression run hit the old 10s limit with the menu still stuck on
+  // "Loading...". Not a startup race (typing immediately vs after
+  // networkidle made no difference, 22/22 both ways).
   const menu = page.locator(".list__menu:visible").last();
   const match = menu.getByText(option, {
     exact: true
   });
   await match.waitFor({
     state: "visible",
-    timeout: 10000
+    timeout: 20000
   });
   await match.click();
 };
@@ -554,7 +715,32 @@ const selectOptionWithEnabledCandidate = async (page, trigger, candidateIdentifi
   const optionCount = await (await openListbox()).count();
   for (let i = optionCount - 1; i >= 0; i--) {
     const listOptions = await openListbox();
-    await listOptions.nth(i).click();
+    // CONFIRMED live (Indespension towbar fitting weeks, 2026-09-28):
+    // clicking the LAST option of this Radix Select reproducibly got
+    // "element is not stable" then "detached" on every retry, until the
+    // 30s click timeout (likely Radix's scroll-edge area nudging the
+    // list under the pointer - not proven). Same 1 listbox, same 6 options on
+    // every open (logged live), so it's not a stale index. Falls back
+    // to keyboard selection (focus the option, Enter), which Radix
+    // Select handles natively and which doesn't depend on the list
+    // sitting still under the pointer.
+    //
+    // CONFIRMED live (same day, full regression run): a timed-out click
+    // can still have landed - the option got selected and the listbox
+    // closed - so the fallback only runs if the listbox is genuinely
+    // still open, otherwise focus() waits on an option that's gone.
+    const option = listOptions.nth(i);
+    const clicked = await option.click({
+      timeout: 5000
+    }).then(() => true).catch(() => false);
+    const stillOpen = !clicked && (await option.isVisible().catch(() => false));
+    if (stillOpen) {
+      console.log(`[week picker] option ${i} click did not settle, selecting via keyboard`);
+      await option.focus({
+        timeout: 5000
+      });
+      await page.keyboard.press("Enter");
+    }
     const candidates = page.locator(candidateIdentifier);
     const candidatesRendered = await candidates.first().waitFor({
       state: "visible",
@@ -657,11 +843,26 @@ const resolveComboboxTrigger = async (page, elementIdentifier) => {
     for (const [fieldKey, value] of Object.entries(vehicleFields)) {
       const fieldTrigger = await resolveComboboxTrigger(page, (0, _webElementHelper.getElementLocator)(page, fieldKey, globalConfig));
       const listbox = page.locator("[role='listbox']:visible").last();
-      await fieldTrigger.click();
-      await listbox.locator("[role='option']").first().waitFor({
-        state: "visible",
-        timeout: 15000
-      });
+      // Retry opening the dropdown: confirmed live on Indespension
+      // production (2026-09-29), the first Make click straight
+      // after this fresh navigation can land before the combobox
+      // hydrates and open nothing, which previously failed the
+      // whole step after a single 15s wait.
+      let opened = false;
+      for (let attempt = 0; attempt < 3 && !opened; attempt++) {
+        await fieldTrigger.click();
+        opened = await listbox.locator("[role='option']").first().waitFor({
+          state: "visible",
+          timeout: 6000
+        }).then(() => true).catch(() => false);
+        if (!opened) {
+          await page.keyboard.press("Escape").catch(() => {});
+          await page.waitForTimeout(1000);
+        }
+      }
+      if (!opened) {
+        throw new Error(`The "${fieldKey}" dropdown never opened after 3 attempts.`);
+      }
       await listbox.getByText(value, {
         exact: true
       }).click();

@@ -1,5 +1,6 @@
 {
   "release_branch": "",
   "staging": "https://staging.insinkerator.work/",
+  "production": "https://www.insinkerator.co.uk/",
   "dev": "http://localhost:3001"
 }

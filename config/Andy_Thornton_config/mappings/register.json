@@ -7,5 +7,8 @@
   "Company Name": "[data-testid='register-form__company-name-input']",
   "Password": "[data-testid='register-form__password-input']",
   "Confirm Password": "[data-testid='register-form__confirm-password-input']",
-  "Register": "[data-testid='register-form__submit-button']"
+  "Register": "[data-testid='register-form__submit-button']",
+  "register form": "form:has([data-testid=\"register-form__submit-button\"])",
+  "register alert": "[data-testid=\"register-form__alert\"]",
+  "marketing consent email": "[id=\"marketing-consent-email\"], [name=\"marketing-consent-email\"]"
 }

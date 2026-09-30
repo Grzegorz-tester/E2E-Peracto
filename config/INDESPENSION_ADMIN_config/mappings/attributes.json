@@ -1,3 +1,8 @@
 {
-  "first item link": "a[data-testid='row-0-label']"
+  "first item link": "a[data-testid='row-0-label']",
+  "Add Attribute": "[data-testid='add-attribute']",
+  "Label filter": "[data-testid='text-filter-label']",
+  "Code filter": "[data-testid='text-filter-code']",
+  "attribute label": "[data-testid$='-label'] a",
+  "attribute code": "td[data-testid$='-code']"
 }

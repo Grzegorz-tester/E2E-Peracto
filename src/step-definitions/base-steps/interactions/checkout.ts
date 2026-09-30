@@ -3,9 +3,9 @@ import { expect } from "@playwright/test";
 import { ScenarioWorld } from "../../setup/world";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
-import { enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
+import { clickElement, enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 import { ElementKey } from "../../../env/global";
-import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS } from "../../support-functions/payment-test-cards";
+import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS, BRAINTREE_TEST_CARDS } from "../../support-functions/payment-test-cards";
 
 // Second, independent layer of protection beyond the @places-real-order tag
 // exclusion wired into src/index.ts's productionExclusion (see CLAUDE.md's
@@ -37,6 +37,35 @@ function refuseIfProduction(action: string) {
 Given(/^I require staging for this scenario$/, async function () {
     refuseIfProduction("this scenario (places a real order)");
 });
+
+// Production-safe alternative to tagging a whole scenario @places-real-order
+// / @submits-real-form / @completes-registration: use this for the ONE click
+// that commits something real (Place order, Confirm Your Booking, a real
+// form submit), so everything up to it still runs on production. Off
+// production it is the plain "I click on the ... button" step. On
+// production it only asserts the target is visible and enabled - i.e. the
+// journey genuinely reached a submittable state - then returns "skipped",
+// which stops the scenario there (every later step is skipped, nothing is
+// clicked) and shows it as skipped rather than passed in the report, so a
+// production run never claims the confirmation page was verified.
+When(
+    /^I click on the "([^"]*)" (?:button|link|element) as the final real submission$/,
+    async function (this: ScenarioWorld, elementKey: ElementKey) {
+        const { screen: { page }, globalConfig } = this;
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+        if (process.env.UI_AUTOMATION_HOST === "production") {
+            const target = page.locator(elementIdentifier).first();
+            await expect(target, `Expected "${elementKey}" to be visible before the final real submission`).toBeVisible({ timeout: 15000 });
+            await expect(target, `Expected "${elementKey}" to be enabled before the final real submission`).toBeEnabled({ timeout: 10000 });
+            this.attach(`Production run: stopped before clicking "${elementKey}" (the final real submission). It was visible and enabled; this and every later step are intentionally skipped.`);
+            return "skipped";
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        await clickElement(page, elementIdentifier, { timeout: 15000, force: true });
+    }
+);
 
 // Generates a disposable, throwaway guest email (not a real credential) and
 // stashes it in globalVariables so a later step in the same scenario can
@@ -503,5 +532,53 @@ When(/^I pay with the "([^"]*)" GlobalPayments test card$/, { timeout: 30000 }, 
         `to click GlobalPayments "submit"`,
         () => describeLocator(submitButton, `GlobalPayments "submit"`),
         () => submitButton.click()
+    );
+});
+
+// Braintree Drop-in (Card / PayPal / Google Pay sheet), e.g. Keylite's
+// Review & Pay step - assumes the Drop-in is already rendered (Keylite: after
+// clicking "Pay now"). Selects the Card option, fills the two hosted iframe
+// fields (number, expiry - no CVV in this integration), then clicks the
+// Drop-in's own "Confirm Payment". Does NOT wait for the result - follow it
+// with an "I should eventually be redirected to ..." assertion, since
+// tokenising + 3-D Secure + the merchant's own transaction call take ~5-10s.
+// See BRAINTREE_TEST_CARDS for why the frictionless 3DS card is the one to
+// use (the plain 4111... Visa stalls on a 3DS challenge).
+When(/^I pay with the "([^"]*)" Braintree test card$/, { timeout: 60000 }, async function (this: ScenarioWorld, cardName: string) {
+    refuseIfProduction(`I pay with the "${cardName}" Braintree test card`);
+    const { screen: { page } } = this;
+
+    const card = BRAINTREE_TEST_CARDS[cardName];
+    if (!card) {
+        throw new Error(`Unknown Braintree test card "${cardName}". Add it to payment-test-cards.ts.`);
+    }
+
+    const cardOption = page.locator(".braintree-option__card").first();
+    await cardOption.waitFor({ state: "visible", timeout: 20000 });
+    await withActionDiagnostics(
+        `to select the Braintree "Card" option`,
+        () => describeLocator(cardOption, `Braintree ".braintree-option__card"`),
+        () => cardOption.evaluate((element) => (element as HTMLElement).click())
+    );
+
+    await page.waitForSelector('iframe[name="braintree-hosted-field-number"]', { state: "visible", timeout: 15000 });
+    const numberInput = page.frameLocator('iframe[name="braintree-hosted-field-number"]').locator("input#credit-card-number");
+    await withActionDiagnostics(
+        `to fill Braintree "credit-card-number"`,
+        () => describeLocator(numberInput, `Braintree "credit-card-number"`),
+        () => numberInput.fill(card.number)
+    );
+    const expirationInput = page.frameLocator('iframe[name="braintree-hosted-field-expirationDate"]').locator("input#expiration");
+    await withActionDiagnostics(
+        `to fill Braintree "expiration"`,
+        () => describeLocator(expirationInput, `Braintree "expiration"`),
+        () => expirationInput.fill(card.expiry)
+    );
+
+    const confirmButton = page.locator("button:visible", { hasText: "Confirm Payment" }).last();
+    await withActionDiagnostics(
+        `to click Braintree "Confirm Payment"`,
+        () => describeLocator(confirmButton, `Braintree "Confirm Payment"`),
+        () => confirmButton.click()
     );
 });

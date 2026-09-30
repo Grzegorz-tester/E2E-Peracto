@@ -1,4 +1,6 @@
 {
   "first item link": "[data-testid='row-0-heading'] a",
-  "Create New Article": "[data-testid='create-new-article']"
+  "Create New Article": "[data-testid='create-new-article']",
+  "Heading filter": "[data-testid='text-filter-heading']",
+  "article heading": "[data-testid$='-heading'] a"
 }

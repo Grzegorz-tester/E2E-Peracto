@@ -68,7 +68,6 @@ Feature: Admin Tabs Contain Expected Data
     Examples:
       | parent        | nav item           | page id            | heading            |
       | Products      | All Products       | products           | Products           |
-      | Products      | Product Variants   | variants           | Product Variants   |
       | Products      | Categories         | categories         | Categories         |
       | Content       | Pages              | pages              | Pages              |
       | Content       | Articles           | articles           | Articles           |
@@ -94,6 +93,15 @@ Feature: Admin Tabs Contain Expected Data
     Examples:
       | parent | nav item    | page id     | heading     |
       | Users  | User Groups | user-groups | User Groups |
+
+    # Split into its own tagged Examples block (2026-09-16) - confirmed live
+    # Lamona's admin (release branch 2-8-0) genuinely has no "Product
+    # Variants" tab under Products - see the matching note in
+    # first-item-redirects.feature for the live DOM confirmation.
+    @product-variants
+    Examples:
+      | parent   | nav item         | page id  | heading          |
+      | Products | Product Variants | variants | Product Variants |
 
   Scenario Outline: The "<grandparent>" > "<parent>" > "<nav item>" tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<grandparent>" element

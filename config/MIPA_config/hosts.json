@@ -1,5 +1,5 @@
 {
-  "release_branch": "https://release-2-8-1.mipa-paints.pub/",
+  "release_branch": "https://feature-next-15.mipa-paints.pub/",
   "staging": "https://staging.mipa-paints.pub/",
   "dev": "http://localhost:3001"
 }

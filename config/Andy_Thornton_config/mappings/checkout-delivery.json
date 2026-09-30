@@ -9,12 +9,12 @@
   "address postcode": "[data-testid='checkout-address-form__postcode']",
   "address country": "[data-testid='checkout-address-form__country']",
   "Use this address": "[data-testid='checkout-address-form__submit-button']",
-
   "current delivery address": "[data-testid='checkout-current-address__address']",
   "delivery change address": "[data-testid='checkout-current-address__edit-address-button']",
-
   "delivery phone": "[data-testid='delivery-content__form-telephone']",
   "delivery method option": "[data-testid='delivery-content__radio-select'] [data-testid^='radio-select_option']",
   "delivery notes": "[data-testid='delivery-content__form-delivery-notes']",
-  "delivery options continue": "[data-testid='delivery-content__form-continue-button']"
+  "delivery options continue": "[data-testid='delivery-content__form-continue-button']",
+  "saved address option": "[data-testid=\"checkout-select-address__addresses\"] [data-testid^=\"radio-select_option-\"]",
+  "saved address continue": "[data-testid=\"checkout-select-address__continue-button\"]"
 }

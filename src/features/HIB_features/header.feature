@@ -90,6 +90,10 @@ Feature: Header functionality
       | non existent product | NON EXISTENT PRODUCT | Sorry, no results could be found for this search query. |
 
 
+  # 2026-09-28: the SKU example moved from AUCROBK (Auryn LED cabinet) to
+  # 47600 (Vanquish 50 cabinet) - confirmed live on feature-hib-170 that the
+  # Auryn product page is now "Page Not Found" and neither "Auryn" nor
+  # "AUCROBK" returns any search hit, while SKU search itself works.
   Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the header, covering both searching by product name and by SKU/article number - "<search term>"
     Given I am on the "home" page
     And I dismiss the newsletter popup if present
@@ -97,11 +101,15 @@ Feature: Header functionality
     And I wait for the search results to update
     Then the "search results" should be displayed
     When I click on the "first search result" element
-    Then I should be redirected to the "<product>" page
+    # 2026-09-29: "eventually" (30s) rather than the default ~15s - confirmed
+    # live on feature-hib-170: the PDP's server-side data fetch alone takes
+    # 4-6.5s when idle, and blew past 15s during a full regression run (both
+    # rows stayed on "/"), while 8/8 isolated retries redirected fine.
+    Then I should eventually be redirected to the "<product>" page
     Examples:
       | search term | product        |
       | Solas       | solas          |
-      | AUCROBK     | auryn-cabinet  |
+      | 47600       | vanquish-cabinet |
 
 
   Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the menu side-draw
@@ -112,7 +120,11 @@ Feature: Header functionality
     When I fill in the "Search products - draw" input field with "<product name>"
     And I wait for the search results to update
     When I click on the "first search result" element
-    Then I should be redirected to the "<product>" page
+    # 2026-09-29: "eventually" (30s) rather than the default ~15s - confirmed
+    # live on feature-hib-170: the PDP's server-side data fetch alone takes
+    # 4-6.5s when idle, and blew past 15s during a full regression run (both
+    # rows stayed on "/"), while 8/8 isolated retries redirected fine.
+    Then I should eventually be redirected to the "<product>" page
     Examples:
       | product name | product |
       | Solas        | solas   |

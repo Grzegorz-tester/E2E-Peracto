@@ -9,5 +9,6 @@
   "Recent Orders table": "[data-testid='recent-orders']",
   "Delivery Address": "(//*[@data-testid='address-card'])[1]",
   "Billing Address": "(//*[@data-testid='address-card'])[2]",
-  "orders - View all": "(//a[text()='View All'])[last()]"
+  "orders - View all": "(//a[text()='View All'])[last()]",
+  "first recent order link": "(//*[@data-testid='recent-orders']//a[starts-with(@href, '/account/orders/')])[1]"
 }

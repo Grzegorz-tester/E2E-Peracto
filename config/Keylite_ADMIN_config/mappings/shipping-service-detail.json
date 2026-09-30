@@ -1,4 +1,7 @@
 {
   "Name": "input[name='name']",
+  "Code": "input[name='code']",
+  "Available Countries": "//label[contains(text(),'Available Countries')]/following::*[contains(@class,'-control')][1]",
+  "Cost": "input[name='costs[0].cost']",
   "Save": "[data-testid='save-form']"
 }

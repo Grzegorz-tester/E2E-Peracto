@@ -3,6 +3,6 @@
   "User Last Name": "[data-testid='lastname']",
   "User Email": "[data-testid='email']",
   "Save": "[data-testid='save-form']",
-  "Delete User": "//a[text()='Delete User']",
+  "Delete User": "//*[(self::a or self::button) and text()='Delete User' and not(@data-testid)]",
   "Confirm Delete User": "[data-testid='button-action_delete-user']"
 }

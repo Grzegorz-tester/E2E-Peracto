@@ -1,0 +1,6 @@
+{
+  "product support email link": "a[href='mailto:productsupport@hib.co.uk']",
+  "sales email link": "a[href='mailto:sales@hib.co.uk']",
+  "phone link": "a[href^='tel:']",
+  "location map": "iframe[src*='google.com/maps/embed']"
+}

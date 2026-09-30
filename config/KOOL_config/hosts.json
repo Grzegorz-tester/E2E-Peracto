@@ -1,4 +1,5 @@
 {
   "staging": "https://staging.kooltech.pub",
-  "production": "https://www.kooltech.co.uk"
+  "production": "https://www.kooltech.co.uk",
+  "release_branch": "https://release-2-19-0.kooltech.pub"
 }

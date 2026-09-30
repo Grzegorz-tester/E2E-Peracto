@@ -1,7 +1,18 @@
 @regression
+@blocked-by-production-waf
 Feature: Warranty finder
 
   # Ported from Insinkerator_EU's warranty-finder.feature.
+  #
+  # CONFIRMED (live, production, 2026-09-22): every scenario in this file
+  # hits the "warranty-finder" page in its Background, and on production
+  # that page returns "Your request has been blocked for security reasons"
+  # instead of the real form - a WAF/bot-protection block, not a selector
+  # or content issue (staging has no such block). Not something headless
+  # automation can get past, same class of issue as Watco/PizzaExpressLive's
+  # production reCAPTCHA/Cloudflare blocks - excluded from production via
+  # EXCLUDE_TAGS in env/Insinkerator_PROD.env rather than left to fail
+  # noisily every run.
 
   Background:
     Given I am on the "warranty-finder" page

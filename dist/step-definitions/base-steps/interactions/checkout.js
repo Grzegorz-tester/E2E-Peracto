@@ -34,6 +34,42 @@ function refuseIfProduction(action) {
   refuseIfProduction("this scenario (places a real order)");
 });
 
+// Production-safe alternative to tagging a whole scenario @places-real-order
+// / @submits-real-form / @completes-registration: use this for the ONE click
+// that commits something real (Place order, Confirm Your Booking, a real
+// form submit), so everything up to it still runs on production. Off
+// production it is the plain "I click on the ... button" step. On
+// production it only asserts the target is visible and enabled - i.e. the
+// journey genuinely reached a submittable state - then returns "skipped",
+// which stops the scenario there (every later step is skipped, nothing is
+// clicked) and shows it as skipped rather than passed in the report, so a
+// production run never claims the confirmation page was verified.
+(0, _cucumber.When)(/^I click on the "([^"]*)" (?:button|link|element) as the final real submission$/, async function (elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  if (process.env.UI_AUTOMATION_HOST === "production") {
+    const target = page.locator(elementIdentifier).first();
+    await (0, _test.expect)(target, `Expected "${elementKey}" to be visible before the final real submission`).toBeVisible({
+      timeout: 15000
+    });
+    await (0, _test.expect)(target, `Expected "${elementKey}" to be enabled before the final real submission`).toBeEnabled({
+      timeout: 10000
+    });
+    this.attach(`Production run: stopped before clicking "${elementKey}" (the final real submission). It was visible and enabled; this and every later step are intentionally skipped.`);
+    return "skipped";
+  }
+  await new Promise(resolve => setTimeout(resolve, 300));
+  await (0, _htmlBehaviour.clickElement)(page, elementIdentifier, {
+    timeout: 15000,
+    force: true
+  });
+});
+
 // Generates a disposable, throwaway guest email (not a real credential) and
 // stashes it in globalVariables so a later step in the same scenario can
 // assert the thank-you page shows the same address back. Reusable by any
@@ -462,4 +498,46 @@ function refuseIfProduction(action) {
   await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-holder-name"`, () => (0, _webElementHelper.describeLocator)(holderNameInput, `GlobalPayments "card-holder-name"`), () => holderNameInput.fill("Velstar Test"));
   const submitButton = page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first();
   await (0, _htmlBehaviour.withActionDiagnostics)(`to click GlobalPayments "submit"`, () => (0, _webElementHelper.describeLocator)(submitButton, `GlobalPayments "submit"`), () => submitButton.click());
+});
+
+// Braintree Drop-in (Card / PayPal / Google Pay sheet), e.g. Keylite's
+// Review & Pay step - assumes the Drop-in is already rendered (Keylite: after
+// clicking "Pay now"). Selects the Card option, fills the two hosted iframe
+// fields (number, expiry - no CVV in this integration), then clicks the
+// Drop-in's own "Confirm Payment". Does NOT wait for the result - follow it
+// with an "I should eventually be redirected to ..." assertion, since
+// tokenising + 3-D Secure + the merchant's own transaction call take ~5-10s.
+// See BRAINTREE_TEST_CARDS for why the frictionless 3DS card is the one to
+// use (the plain 4111... Visa stalls on a 3DS challenge).
+(0, _cucumber.When)(/^I pay with the "([^"]*)" Braintree test card$/, {
+  timeout: 60000
+}, async function (cardName) {
+  refuseIfProduction(`I pay with the "${cardName}" Braintree test card`);
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  const card = _paymentTestCards.BRAINTREE_TEST_CARDS[cardName];
+  if (!card) {
+    throw new Error(`Unknown Braintree test card "${cardName}". Add it to payment-test-cards.ts.`);
+  }
+  const cardOption = page.locator(".braintree-option__card").first();
+  await cardOption.waitFor({
+    state: "visible",
+    timeout: 20000
+  });
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to select the Braintree "Card" option`, () => (0, _webElementHelper.describeLocator)(cardOption, `Braintree ".braintree-option__card"`), () => cardOption.evaluate(element => element.click()));
+  await page.waitForSelector('iframe[name="braintree-hosted-field-number"]', {
+    state: "visible",
+    timeout: 15000
+  });
+  const numberInput = page.frameLocator('iframe[name="braintree-hosted-field-number"]').locator("input#credit-card-number");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Braintree "credit-card-number"`, () => (0, _webElementHelper.describeLocator)(numberInput, `Braintree "credit-card-number"`), () => numberInput.fill(card.number));
+  const expirationInput = page.frameLocator('iframe[name="braintree-hosted-field-expirationDate"]').locator("input#expiration");
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to fill Braintree "expiration"`, () => (0, _webElementHelper.describeLocator)(expirationInput, `Braintree "expiration"`), () => expirationInput.fill(card.expiry));
+  const confirmButton = page.locator("button:visible", {
+    hasText: "Confirm Payment"
+  }).last();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Braintree "Confirm Payment"`, () => (0, _webElementHelper.describeLocator)(confirmButton, `Braintree "Confirm Payment"`), () => confirmButton.click());
 });

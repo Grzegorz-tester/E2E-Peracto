@@ -1,0 +1,7 @@
+{
+  "page heading": "(//h1)[1]",
+  "branch finder": "[data-testid='branch-finder']",
+  "branch search": "#react-google-places-autocomplete-input",
+  "branch results": "[data-testid='branch-finder']",
+  "Stockist tab": "[data-testid='branch-finder'] >> text=Stockist >> nth=0"
+}

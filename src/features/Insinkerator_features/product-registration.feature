@@ -27,6 +27,7 @@ Feature: Product registration
     When I fill in a freshly generated product registration except "placeOfPurchase", remembering it as "incomplete registration"
     Then the "Submit" should not be enabled
 
+  @completes-registration
   Scenario: A fully completed registration submits successfully
     When I fill in a freshly generated product registration, remembering it as "uk registration"
     And I click on the "Submit" button

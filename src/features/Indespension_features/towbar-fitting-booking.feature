@@ -117,6 +117,12 @@ Feature: Towbar fitting booking
       | Model dropdown     | A4           |
       | Year dropdown      | 2003         |
       | Body type dropdown | Avant Estate |
+    # Production requires a wiring kit before "Continue to Booking" enables
+    # ("You must select a wiring kit to proceed", confirmed live 2026-09-29).
+    # Select only marks the kit as chosen, it does not add anything to the
+    # basket (checked live, still 0 items). Staging has no picker, so this is
+    # "if present".
+    And I click precisely on the "Wiring kit select button" button if present
     And I click on the first enabled "Fitting slot" button
     # CONFIRMED LIVE: the plain "I click on the ... button" step's
     # force:true can fire before this button's own re-render (from
@@ -130,7 +136,9 @@ Feature: Towbar fitting booking
     And I fill in the "Booking phone" input field with "07377777777"
     And I fill in the "Booking note" input field with "Velstar Test - automated QA, please ignore."
     And I check the "Booking terms checkbox"
-    And I click on the "Confirm Your Booking" button
+    # Final real submission: clicked on staging/release, but on production
+    # the journey stops here (button asserted visible + enabled, rest skipped).
+    And I click on the "Confirm Your Booking" button as the final real submission
     Then the "Confirm Your Booking" should not be displayed
     When I click on the "Finish" button
     Then I should be redirected to the "towbar-booking-complete" page

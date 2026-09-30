@@ -1,4 +1,5 @@
 {
   "Label": "[data-testid='attribute-label']",
-  "Save": "[data-testid='save-form']"
+  "Save": "[data-testid='save-form']",
+  "Code": "[data-testid='attribute-code']"
 }

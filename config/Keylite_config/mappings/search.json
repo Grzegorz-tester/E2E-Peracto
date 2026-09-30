@@ -1,0 +1,9 @@
+{
+  "search results heading": "[data-testid='algolia-hits-heading']",
+  "search result cards": "[data-testid='algolia-hits']",
+  "search result card": "[data-testid='product-card']",
+  "search result name": "[data-testid='product-card__name']",
+  "search sort": "[data-testid='algolia-sort-by']",
+  "no results message": "main",
+  "search result link": "[data-testid='product-card__link']"
+}

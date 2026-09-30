@@ -1,18 +1,15 @@
 {
   "checkout title": "[data-testid='default-checkout-content__title']",
   "back to basket": "[data-testid='default-checkout-content__back-to-basket-link']",
-
   "checkout subtotal": "[data-testid='checkout-summary__subtotal']",
   "checkout total": "[data-testid='checkout-summary__total']",
   "Edit Basket": "[data-testid='checkout-summary__edit-basket']",
-
   "Existing customer radio": "[data-testid='radio-select_option-0']",
   "Guest checkout radio": "[data-testid='radio-select_option-1']",
-
   "Guest email": "[data-testid='guest-checkout-form__email-input']",
   "Continue as guest": "[data-testid='guest-checkout-form__submit-button']",
-
   "Email address": "[data-testid='login-form__email-input']",
   "Password": "[data-testid='login-form__password-input']",
-  "Sign In": "[data-testid='login-form__submit-button']"
+  "Sign In": "[data-testid='login-form__submit-button']",
+  "signed-in Continue": "[data-testid=\"checkout-sign-in-content__continue\"]"
 }

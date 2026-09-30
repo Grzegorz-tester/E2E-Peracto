@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VERIFONE_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = void 0;
+exports.VERIFONE_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = exports.BRAINTREE_TEST_CARDS = void 0;
 // CyberSource Unified Checkout sandbox test cards, shared across any
 // project using the same payment provider (these are CyberSource's own
 // published test values, not tied to a specific merchant/project). Add
@@ -102,5 +102,20 @@ const VERIFONE_TEST_CARDS = exports.VERIFONE_TEST_CARDS = {
     number: "4111111111111111",
     expiry: "01/20",
     securityCode: "123"
+  }
+};
+// Braintree Drop-in (web 3.103.0) hosted fields, sandbox merchant, with
+// 3-D Secure via Cardinal Commerce's staging ACS - Keylite's checkout.
+// CONFIRMED live (Keylite staging, 2026-09-23): the generic 4111... Visa
+// DOES tokenise, but then opens a 3DS challenge iframe (Cardinal-CCA-IFrame,
+// creq.jsp) and waits there indefinitely - which is why an earlier attempt
+// concluded "Confirm Payment neither errors nor advances". Braintree's own
+// "successful frictionless" 3DS2 test card skips the challenge and goes
+// straight through to /checkout/thank-you (order W000541). No CVV field is
+// rendered by this integration.
+const BRAINTREE_TEST_CARDS = exports.BRAINTREE_TEST_CARDS = {
+  "Visa 3DS frictionless": {
+    number: "4000000000001000",
+    expiry: "12/30"
   }
 };

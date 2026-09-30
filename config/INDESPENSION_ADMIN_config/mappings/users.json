@@ -1,5 +1,6 @@
 {
   "first item link": "[data-testid='row-0-first-name'] a",
   "Email filter": "[data-testid='text-filter-email']",
-  "Add User": "[data-testid='add-user']"
+  "Add User": "[data-testid='add-user']",
+  "user email": "td[data-testid$='-email']"
 }

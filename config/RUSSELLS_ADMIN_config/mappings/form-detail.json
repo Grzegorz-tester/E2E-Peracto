@@ -1,0 +1,8 @@
+{
+  "Label": "[data-testid='label']",
+  "Submit Button Text": "[data-testid='submit-btn-text']",
+  "Redirect URL": "[data-testid='redirect-url']",
+  "Save": "[data-testid='save-form']",
+  "Delete Form": "[data-testid='delete-form']",
+  "Confirm Delete Form": "[data-testid='button-action_delete-form']"
+}

@@ -1,0 +1,14 @@
+{
+  "moodboard builder": "[data-testid=\"moodboard-builder\"]",
+  "moodboard details": "[data-testid=\"moodboard-builder__moodboard-details\"]",
+  "moodboard title": "[data-testid=\"moodboard-builder__header\"] h2",
+  "moodboard items": "[data-testid=\"moodboard-builder__groups\"]",
+  "remove moodboard item": "[data-testid=\"moodboard-builder__groups\"] button:has-text(\"Delete\")",
+  "empty moodboard": "[data-testid=\"moodboard-builder\"] :text(\"Shop Now\")",
+  "moodboard actions": "[data-testid=\"moodboard-builder__moodboard-details\"] button >> nth=0",
+  "Edit Moodboard": "[data-testid=\"moodboard-builder__moodboard-details\"] button:has-text(\"Edit Moodboard\")",
+  "Delete Moodboard": "[data-testid=\"moodboard-builder__moodboard-details\"] button:has-text(\"Delete Moodboard\")",
+  "edit moodboard name": "[role=\"dialog\"] input:visible",
+  "Save Changes": "[role=\"dialog\"] button:has-text(\"Save Changes\")",
+  "confirm moodboard delete": "//div[@role=\"dialog\"]//button[normalize-space()=\"Delete Moodboard\"]"
+}
