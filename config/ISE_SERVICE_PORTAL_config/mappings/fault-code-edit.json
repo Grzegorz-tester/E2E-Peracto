@@ -1,0 +1,6 @@
+{
+  "Fault code": "#fault_code_code",
+  "Label": "#fault_code_label",
+  "Active": "#fault_code_active",
+  "Save fault code": "main button[type=\"submit\"]"
+}

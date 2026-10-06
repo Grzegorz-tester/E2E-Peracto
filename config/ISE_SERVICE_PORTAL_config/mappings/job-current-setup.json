@@ -1,0 +1,8 @@
+{
+  "On-arrival photo": "#current_setup_on_arrival",
+  "Confirm serial number": "#current_setup_serialNumberConfirmed",
+  "Water pressure": "#current_setup_waterPressure",
+  "Additional readings": "#current_setup_additionalReadings",
+  "form error": "main .form-error",
+  "Next": "main button[type=\"submit\"]"
+}

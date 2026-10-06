@@ -1,0 +1,14 @@
+{
+  "Menu": "details.app-menu > summary",
+  "page title": ".app-bar-title",
+  "Dashboard menu link": "nav.app-menu-panel a[href=\"/\"]",
+  "My files menu link": "nav.app-menu-panel a[href=\"/my/files\"]",
+  "Engineers menu link": "nav.app-menu-panel a[href=\"/engineers\"]",
+  "Companies menu link": "nav.app-menu-panel a[href=\"/companies\"]",
+  "Fault codes menu link": "nav.app-menu-panel a[href=\"/fault-codes\"]",
+  "Users menu link": "nav.app-menu-panel a[href=\"/users\"]",
+  "Tasks menu link": "nav.app-menu-panel a[href=\"/admin/tasks\"]",
+  "Settings menu link": "nav.app-menu-panel a[href=\"/settings\"]",
+  "Logout menu link": "nav.app-menu-panel a[href=\"/logout\"]",
+  "error banner": ".banner[data-level=\"error\"]"
+}

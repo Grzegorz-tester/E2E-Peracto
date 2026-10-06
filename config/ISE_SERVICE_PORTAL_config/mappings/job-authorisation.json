@@ -1,0 +1,7 @@
+{
+  "job summary": "main p:has-text(\" steps\")",
+  "Authorisation code": "#authorisation_authorisationCode",
+  "Authorise & Continue": "main button[type=\"submit\"]:has-text(\"Authorise\")",
+  "waiting message": "main p:has-text(\"Waiting on someone else to complete this step.\")",
+  "Back": "main footer a:text-is(\"Back\")"
+}

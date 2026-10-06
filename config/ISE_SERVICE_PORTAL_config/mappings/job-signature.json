@@ -1,0 +1,9 @@
+{
+  "Product guarantee": "label[for=\"confirm_product_guarantee\"]",
+  "Workmanship guarantee": "label[for=\"confirm_workmanship_guarantee\"]",
+  "Signature photo": "#signature_signature",
+  "form error": "main .form-error",
+  "Next": "main button[type=\"submit\"]",
+  "Back": "main footer a:text-is(\"Back\")",
+  "Product guarantee checkbox": "#confirm_product_guarantee"
+}

@@ -1,0 +1,10 @@
+{
+  "New fault code": "main a[href=\"/fault-codes/new\"]",
+  "Search fault codes": "#q",
+  "Active filter": "main a[href=\"/fault-codes?filter=active\"]",
+  "Inactive filter": "main a[href=\"/fault-codes?filter=inactive\"]",
+  "first record title": ":nth-match(li.record .record-title, 1)",
+  "first record Edit": ":nth-match(li.record a:text-is(\"Edit\"), 1)",
+  "record list": "main ul:has(li.record)",
+  "no records message": "main p.muted"
+}

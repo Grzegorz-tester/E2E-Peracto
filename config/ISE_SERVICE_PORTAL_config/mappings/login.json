@@ -1,0 +1,7 @@
+{
+  "Email address": "#email",
+  "Password": "#password",
+  "Sign In": "button[type=\"submit\"]",
+  "login alert": ".banner[data-level=\"error\"]",
+  "Forgotten your password": "a[href=\"/forgot-password\"]"
+}

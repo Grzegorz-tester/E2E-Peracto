@@ -1,0 +1,102 @@
+{
+  "dashboard": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "login": {
+    "route": "/login",
+    "regex": "^/login$"
+  },
+  "forgot-password": {
+    "route": "/forgot-password",
+    "regex": "^/forgot-password$"
+  },
+  "my-files": {
+    "route": "/my/files",
+    "regex": "^/my/files$"
+  },
+  "engineers": {
+    "route": "/engineers",
+    "regex": "^/engineers$"
+  },
+  "companies": {
+    "route": "/companies",
+    "regex": "^/companies$"
+  },
+  "fault-codes": {
+    "route": "/fault-codes",
+    "regex": "^/fault-codes$"
+  },
+  "users": {
+    "route": "/users",
+    "regex": "^/users$"
+  },
+  "tasks": {
+    "route": "/admin/tasks",
+    "regex": "^/admin/tasks$"
+  },
+  "settings": {
+    "route": "/settings",
+    "regex": "^/settings$"
+  },
+  "job-new": {
+    "route": "/job/new",
+    "regex": "^/job/new$"
+  },
+  "job-detail": {
+    "route": "/job/",
+    "regex": "^/job/\\d+$"
+  },
+  "job-replacement-product": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/replacement-product$"
+  },
+  "job-service-info": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/service-info$"
+  },
+  "job-service-date": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/service-date$"
+  },
+  "job-new-setup": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/new-setup$"
+  },
+  "job-signature": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/signature$"
+  },
+  "job-invoicing": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/invoicing$"
+  },
+  "job-notes": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/notes$"
+  },
+  "job-complete": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/complete$"
+  },
+  "job-diagnosis": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/diagnosis$"
+  },
+  "job-current-setup": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/current-setup$"
+  },
+  "job-authorisation": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/authorisation$"
+  },
+  "fault-code-new": {
+    "route": "/fault-codes/new",
+    "regex": "^/fault-codes/new$"
+  },
+  "fault-code-edit": {
+    "route": "/fault-codes/",
+    "regex": "^/fault-codes/\\d+/edit$"
+  }
+}

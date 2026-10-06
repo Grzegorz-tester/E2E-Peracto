@@ -1,0 +1,8 @@
+{
+  "Back to dashboard": "a[aria-label=\"Back to dashboard\"]",
+  "Continue job": "main a:has-text(\"Continue job\")",
+  "customer email": "dl.card dt:text-is(\"Email\") + dd",
+  "customer phone": "dl.card dt:text-is(\"Phone\") + dd",
+  "customer address": "dl.card dt:text-is(\"Address\") + dd",
+  "step list": "main ul"
+}

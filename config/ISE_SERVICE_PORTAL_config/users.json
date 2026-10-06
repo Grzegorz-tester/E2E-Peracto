@@ -1,0 +1,6 @@
+{
+  "owner": { "email": "", "password": "" },
+  "admin": { "email": "", "password": "" },
+  "engineer": { "email": "", "password": "" },
+  "guest": {}
+}

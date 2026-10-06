@@ -812,3 +812,16 @@ When(/^I search for a vehicle with the details below, retrying with each postcod
         throw new Error(`No postcode in "${postcodesCsv}" left an enabled "${candidateKey}" candidate for the "${weekListboxKey}" listbox, across any of its weeks.`);
     }
 );
+
+// For a native <input type="date"> that must hold a date relative to the
+// run (e.g. a booking that has to be in the future), rather than a
+// hardcoded date that goes stale. Native date inputs take ISO YYYY-MM-DD
+// via fill() regardless of how the browser displays them.
+When(/^I fill in the "([^"]*)" date input field with the date (\d+) days from today$/, async function (this: ScenarioWorld, elementKey: ElementKey, days: string) {
+    const {screen: {page}, globalConfig} = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const date = new Date(Date.now() + Number(days) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+    await page.waitForSelector(elementIdentifier, {state: "visible", timeout: 15000});
+    await page.fill(elementIdentifier, date);
+});

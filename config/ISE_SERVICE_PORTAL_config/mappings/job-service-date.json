@@ -1,0 +1,6 @@
+{
+  "Service date": "#service_date_scheduledDate",
+  "Time": "#service_date_scheduledTime",
+  "Book & Continue": "main button[type=\"submit\"]",
+  "job summary": "main p:has-text(\" steps\")"
+}

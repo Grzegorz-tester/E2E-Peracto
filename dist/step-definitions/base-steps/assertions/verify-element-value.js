@@ -253,6 +253,30 @@ var _htmlBehaviour = require("../../support-functions/html-behaviour");
   throw new Error(`None of the ${count} "${elementKey}" (${elementIdentifier}) candidates match the pattern "${pattern}".`);
 });
 
+// For a value embedded in a longer text, where only that part is useful
+// later (e.g. the postcode at the end of a one-line address, to search by
+// postcode on its own). Remembers the first regex match - or its first
+// capture group, if the pattern has one - rather than the whole text.
+(0, _cucumber.When)(/^I remember the part of the "([^"]*)" text matching the pattern "([^"]*)" as "([^"]*)"$/, async function (elementKey, pattern, variableName) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  await page.waitForSelector(elementIdentifier, {
+    state: "attached",
+    timeout: 15000
+  });
+  const text = (await page.textContent(elementIdentifier))?.trim() ?? "";
+  const match = text.match(new RegExp(pattern));
+  if (!match) {
+    throw new Error(`"${elementKey}" (${elementIdentifier}) text "${text}" does not match the pattern "${pattern}".`);
+  }
+  this.globalVariables[variableName] = match[1] ?? match[0];
+});
+
 // For a value that renders with an extra prefix in one place but not
 // another (e.g. a PDP shows "SKU 12345" while the basket line for the same
 // product shows plain "12345") - stripping the prefix at remember-time

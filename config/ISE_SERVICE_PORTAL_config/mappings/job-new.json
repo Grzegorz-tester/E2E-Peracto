@@ -1,0 +1,17 @@
+{
+  "First name": "#create_job_customerFirstName",
+  "Last name": "#create_job_customerLastName",
+  "Email": "#create_job_customerEmail",
+  "Phone": "#create_job_customerPhone",
+  "Enter manually": "button[data-action=\"address-lookup#enterManually\"]",
+  "Address line 1": "#create_job_installedAddress_line1",
+  "Town": "#create_job_installedAddress_town",
+  "Postcode": "#create_job_installedAddress_postcode",
+  "Next": "button[data-action=\"multi-step#next\"]:visible",
+  "PO number": "#create_job_poNumber",
+  "Warranty Service option": "label[for=\"create_job_serviceType_0\"]",
+  "Installation option": "label[for=\"create_job_serviceType_1\"]",
+  "Inside radius option": "label[for=\"create_job_withinRadius_0\"]",
+  "Outside radius option": "label[for=\"create_job_withinRadius_1\"]",
+  "Create job": "button[type=\"submit\"]:visible"
+}

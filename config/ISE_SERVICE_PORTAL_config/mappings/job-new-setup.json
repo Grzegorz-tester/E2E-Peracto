@@ -1,0 +1,7 @@
+{
+  "New product serial number": "#new_setup_newSerialNumber",
+  "Above sink photo": "#new_setup_above_sink",
+  "Below sink photo": "#new_setup_below_sink",
+  "form error": "main .form-error",
+  "Next": "main button[type=\"submit\"]"
+}

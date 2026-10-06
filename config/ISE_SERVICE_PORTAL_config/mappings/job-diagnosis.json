@@ -1,0 +1,8 @@
+{
+  "Complaint code": "#diagnosis_complaintCode",
+  "Fault code": "#diagnosis_faultCode",
+  "Existing serial number": "#diagnosis_existingSerialNumber",
+  "Original installation date": "#diagnosis_originalInstallationDate",
+  "Water pressure": "#diagnosis_waterPressure",
+  "Next": "main button[type=\"submit\"]"
+}

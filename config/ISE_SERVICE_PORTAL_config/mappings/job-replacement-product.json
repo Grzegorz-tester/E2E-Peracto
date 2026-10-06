@@ -1,0 +1,4 @@
+{
+  "Standard 460 product": "label:has-text(\"Standard 460 (80367H-ISE)\")",
+  "Next": "main button[type=\"submit\"]"
+}

@@ -1,0 +1,7 @@
+{
+  "PO number": "#service_information_poNumber",
+  "Next": "main button[type=\"submit\"]",
+  "Excess miles": "#service_information_mileageClaim_excessMiles",
+  "Flat amount": "#service_information_mileageClaim_flatAmount",
+  "Mileage comments": "#service_information_mileageClaim_comments"
+}

@@ -1,0 +1,4 @@
+{
+  "completion confirmation": "main p:has-text(\"Confirm that all work for\")",
+  "Submit": "main button[type=\"submit\"]"
+}

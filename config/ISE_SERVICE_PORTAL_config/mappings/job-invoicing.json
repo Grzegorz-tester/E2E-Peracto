@@ -1,0 +1,13 @@
+{
+  "Part quantity": "#invoice_parts_0_quantity",
+  "Part number": "#invoice_parts_0_partNumber",
+  "Part description": "#invoice_parts_0_description",
+  "Part price": "#invoice_parts_0_unitPrice",
+  "Labour": "#invoice_labourAmount",
+  "Standard call-out amount": "dl.card dt:text-is(\"Standard call-out\") + dd",
+  "Parts total": "dl.card dt:text-is(\"Parts\") + dd",
+  "VAT amount": "dl.card dt:has-text(\"VAT\") + dd",
+  "Total amount": "dl.card dt:text-is(\"Total\") + dd",
+  "Next": "main button[type=\"submit\"]",
+  "Excess mileage amount": "dl.card dt:text-is(\"Excess mileage\") + dd"
+}

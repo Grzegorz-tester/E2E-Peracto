@@ -1,0 +1,23 @@
+{
+  "welcome message": "p.welcome",
+  "New job": "a[href=\"/job/new\"]",
+  "Search jobs": "#q",
+  "Warranty filter": "nav.chips a:text-is(\"Warranty\")",
+  "Installation filter": "nav.chips a:text-is(\"Installation\")",
+  "New filter": "nav.chips a:text-is(\"New\")",
+  "Awaiting authorisation filter": "nav.chips a:text-is(\"Awaiting authorisation\")",
+  "Awaiting part filter": "nav.chips a:text-is(\"Awaiting part\")",
+  "Booked filter": "nav.chips a:text-is(\"Booked\")",
+  "Complete filter": "nav.chips a:text-is(\"Complete\")",
+  "active filter": "nav.chips a[aria-current=\"true\"]",
+  "job card": "a.job-card",
+  "first job card": ":nth-match(a.job-card, 1)",
+  "job card name": "a.job-card .job-card-head > span:first-child",
+  "first job card name": ":nth-match(a.job-card .job-card-head > span:first-child, 1)",
+  "job card reference": "a.job-card .job-card-reference",
+  "first job card reference": ":nth-match(a.job-card .job-card-reference, 1)",
+  "job card status": "a.job-card .job-card-status",
+  "pagination": "nav.pagination",
+  "Next page": "nav.pagination a:text-is(\"Next\")",
+  "no jobs message": "p.muted:text-is(\"No jobs to show.\")"
+}
