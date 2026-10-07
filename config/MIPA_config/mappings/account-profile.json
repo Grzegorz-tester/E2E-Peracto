@@ -6,5 +6,11 @@
   "Company Name": "//input[@id='companyName']",
   "Account Number": "//input[@id='accountNumber']",
   "Currency": "//input[@id='currency']",
-  "Save Changes": "[data-testid='save-changes-button']"
+  "Save Changes": "[data-testid='save-changes-button']",
+  "Change Password": "[data-testid='my-details__reset-password-form-btn']",
+  "Change password form": "[data-testid='my-details__reset-password-form']",
+  "Current password": "//input[@id='existingPassword']",
+  "New password": "//input[@id='newPassword']",
+  "Repeat new password": "//input[@id='repeatNewPassword']",
+  "Back to User Form": "[data-testid='my-details__reset-password-form'] a:has-text('Back to User Form')"
 }

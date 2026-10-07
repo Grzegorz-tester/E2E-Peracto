@@ -31,6 +31,10 @@
     "route": "/account/wishlists",
     "regex": "^/account/wishlists$"
   },
+  "account-wishlist-detail": {
+    "route": "/account/wishlists/:id",
+    "regex": "^/account/wishlists/\\d+$"
+  },
   "checkout": {
     "route": "/checkout",
     "regex": "^/checkout$"

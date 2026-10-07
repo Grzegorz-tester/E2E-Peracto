@@ -18,5 +18,18 @@
   "added to list modal": "[data-testid='add-wishlist__add-to-wishlist-btn']",
   "Add to Wishlist confirm button": "[data-testid='add-wishlist__add-to-wishlist-btn']",
   "Continue Shopping": "[data-testid='success-popup-continue-shopping']",
-  "Checkout": "[data-testid='success-popup-checkout']"
+  "Checkout": "[data-testid='success-popup-checkout']",
+  "Add to List modal": "[data-testid='modal']:has([data-testid='add-wishlist__add-to-wishlist-btn'])",
+  "Create a new list link": "[data-testid='modal'] a:has-text('Create a new list')",
+  "New list name input": "[data-testid='modal'] input[placeholder='Enter list name']",
+  "Create list submit": "[data-testid='modal__body'] button:not([data-testid])",
+  "added to list success": "[data-testid='modal__body']:has-text('Successfully added to list')",
+  "View List": "[data-testid='modal__body'] button:has-text('View List')",
+  "Enquiry form": "[data-testid='product-enquiry-form']",
+  "Enquiry name": "[data-testid='product-enquiry-form__name']",
+  "Enquiry business name": "[data-testid='product-enquiry-form__business-name']",
+  "Enquiry email": "[data-testid='product-enquiry-form__email-address']",
+  "Enquiry telephone": "[data-testid='product-enquiry-form__telephone-number']",
+  "Enquiry message": "[data-testid='product-enquiry-form__product-message']",
+  "Enquiry submit": "[data-testid='product-enquiry-form__submit']"
 }

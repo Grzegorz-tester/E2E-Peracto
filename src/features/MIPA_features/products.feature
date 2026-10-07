@@ -13,11 +13,12 @@ Feature: Product Listing Page (PLP)
 
   # 2026-09-25: category routes moved under /category/refinishing/ on
   # feature-next-15 and staging (pages.json updated). The "All Refinishing
-  # Products" link on /refinishing itself 404s on both - a real site bug,
-  # so this scenario deliberately stays on that page and is expected to stay
-  # red until it's fixed. The other PLP scenarios below moved to Ready Mixed
-  # Colours (41 products, paginated, guest login links) so they keep
-  # testing PLP behaviour instead of all failing on the same 404.
+  # Products" page 404'd on both until it was fixed on MIPA's side between
+  # 2026-09-30 and 2026-10-01 (re-verified live: staging and mipa-paints.uk
+  # both return 200, page title "All Automotive Paint Supplies", and this
+  # scenario passes again). The other PLP scenarios below were moved to
+  # Ready Mixed Colours (41 products, paginated, guest login links) during
+  # the outage and stay there.
   Scenario: PLP loads with products displayed correctly
     Given I am on the "all-refinishing" page
     Then the "category page title" should contain the text "All Refinishing"

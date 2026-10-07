@@ -1,4 +1,8 @@
 {
   "Delivery Address": "//div[@data-testid='address-book__delivery']//div[@data-testid='address-book__address-0']",
-  "Billing Address": "//div[@data-testid='address-book__billing']//div[@data-testid='address-book__address-0']"
+  "Billing Address": "//div[@data-testid='address-book__billing']//div[@data-testid='address-book__address-0']",
+  "1st delivery address": "[data-testid='address-book__delivery'] [data-testid='address-book__address-0']",
+  "2nd delivery address": "[data-testid='address-book__delivery'] [data-testid='address-book__address-1']",
+  "1st delivery address Make default": "[data-testid='address-book__delivery'] [data-testid='address-book__address-0'] [data-testid='address__set-default-address-button']",
+  "2nd delivery address Make default": "[data-testid='address-book__delivery'] [data-testid='address-book__address-1'] [data-testid='address__set-default-address-button']"
 }

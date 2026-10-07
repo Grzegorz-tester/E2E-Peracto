@@ -20,12 +20,17 @@ Feature: Content Editing Known Issues
   # scenario, so it starts failing loudly (a useful signal) the moment
   # Template saving is fixed and this scenario needs to be rewritten to
   # expect success instead.
+  #
+  # RE-VERIFIED (live, MIPA_ADMIN staging, 2026-10-01): templates 53 and 52
+  # still reject with the same warning, but the list is no longer led by
+  # a broken template - "TDS Update Row" (id 101) is now first and saves
+  # fine (PUT /contents/101 -> 200, no toast). Clicking "first item link"
+  # therefore stopped reproducing the bug, so this scenario now opens the
+  # known-broken template 53 directly instead of whichever row is first.
 
   Scenario: Saving a Template is currently rejected due to a real content-structure validation bug
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user
-    When I click precisely on the "Content" element
-    And I click precisely on the "Templates" element
-    And I click precisely on the "first item link" element if present
+    When I navigate directly to the path "/content/edit/template/53"
     And I click precisely on the "Save content" element
     Then the "warning toast" should contain the text "Templates can only support a single row"

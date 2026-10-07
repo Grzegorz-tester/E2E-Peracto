@@ -3,5 +3,10 @@
   "Refresh": "[data-testid='refresh-query-button']",
   "Create a new Wishlist": "text=Create a new List",
   "Wishlists table": "[data-testid='wishlists-list']",
-  "wishlist add to basket": "[data-testid='wishlist-item__add-to-basket-button']"
+  "wishlist add to basket": "[data-testid='wishlist-item__add-to-basket-button']",
+  "Search button": "[data-testid='wishlists'] button:has-text('SEARCH')",
+  "New list name input": "[data-testid='modal'] input[placeholder='Enter list name']",
+  "Create list submit": "[data-testid='modal__body'] button:not([data-testid])",
+  "Wishlist rows": "[data-testid='wishlist-item']",
+  "Confirm deletion proceed": "[data-testid='modal__action-button']"
 }

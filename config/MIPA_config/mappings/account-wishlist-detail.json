@@ -1,0 +1,5 @@
+{
+  "Wishlist title": "[data-testid='wishlist-header__title']",
+  "Wishlist product title": "[data-testid='wishlist__product-card__title']",
+  "Wishlist product cards": "[data-testid='wishlist__product-card']"
+}

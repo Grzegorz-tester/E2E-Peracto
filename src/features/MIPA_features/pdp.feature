@@ -75,15 +75,58 @@ Feature: Product Detail Page (PDP)
     And the "order total price" should contain the text "36.69"
 
 
+  # Until 2026-10-01 this scenario only opened the Add to List modal, so
+  # nothing was ever created or added despite its name. Confirmed live:
+  # the modal has its own "or Create a new list" link, which reveals a name
+  # input and an icon-only submit button. Submitting it creates the list
+  # AND adds this product to it in one go (POST /wishlists), going straight
+  # to a "Successfully added to list..." state with a "View List" button -
+  # there's no separate "Add to Wishlist" click on this path. The list is
+  # deleted at the end so runs don't pile up throwaway lists.
   Scenario: PDP - Create a wishlist and add a product to it
     Given I am navigating the page as a "logged in" user
     And I am on the "test-product" page
     When I click on the "Add to List" button
-    Then the "added to list modal" should be displayed
+    Then the "Add to List modal" should be displayed
+    When I click on the "Create a new list link" element
+    And I fill in the "New list name input" input field with a unique value, remembering it as "list name"
+    And I click on the "Create list submit" button
+    Then the "added to list success" should contain the remembered "list name"
+    When I click on the "View List" button
+    Then I should be redirected to the "account-wishlist-detail" page
+    And the "Wishlist title" should contain the remembered "list name"
+    And I should see "1" "Wishlist product cards" displayed
+    And the "Wishlist product title" should contain the text "Mipa 2K HS F37 Filler (1L) Light Grey"
+
+    When I am on the "account-wishlist" page
+    And I wait for the page to settle
+    And I fill in the "search bar" input field with the remembered "list name"
+    And I click on the "Search button" button
+    And I delete the row containing the remembered "list name" from the "Wishlist rows" table
 
 
-  Scenario: PDP - Guest user cannot see prices and can submit an enquiry
+  Scenario: PDP - Guest user cannot see prices and is offered an enquiry instead
     Given I am navigating the page as a "guest" user
     And I am on the "test-product" page
     Then the "guest sign in prompt" should be displayed
     And the "Add to Enquiry" should be displayed
+
+
+  # Confirmed live (staging, 2026-10-01): "Add to Enquiry" opens a form
+  # (Name, Business Name, Email Address, Telephone Number, Message - all
+  # required) whose Submit button stays disabled until every field is
+  # filled. Submit is deliberately NEVER clicked: a real enquiry is very
+  # likely emailed to MIPA staff (same reasoning as Keylite's forms).
+  Scenario: PDP - Guest enquiry form keeps Submit disabled until every required field is filled
+    Given I am navigating the page as a "guest" user
+    And I am on the "test-product" page
+    When I click on the "Add to Enquiry" button
+    Then the "Enquiry form" should be displayed
+    And the "Enquiry submit" should not be enabled
+    When I fill in the "Enquiry name" input field with "Velstar Test"
+    And I fill in the "Enquiry business name" input field with "Velstar Test"
+    And I fill in the "Enquiry email" input field with "velstar.qa.enquiry@velstar.co.uk"
+    And I fill in the "Enquiry telephone" input field with "07700900000"
+    Then the "Enquiry submit" should not be enabled
+    When I fill in the "Enquiry message" input field with "Velstar Test - automated check, never submitted"
+    Then the "Enquiry submit" should be enabled
