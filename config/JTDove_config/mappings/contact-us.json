@@ -1,0 +1,19 @@
+{
+  "page heading": "(//main//h1)[1]",
+  "form": "[data-testid='form-component']",
+  "Name": "[id='/form-fields/1']",
+  "Email Address": "[data-testid='form-component'] [id='/form-fields/53']",
+  "Mobile Phone": "[id='/form-fields/24']",
+  "Contact Number": "[id='/form-fields/3']",
+  "Address Line 1": "[id='/form-fields/13']",
+  "Postcode": "[data-testid='form-component'] [id='/form-fields/4']",
+  "Preferred Date": "[id='/form-fields/43']",
+  "Notes": "[id='/form-fields/40']",
+  "Message": "[data-testid='form-component'] textarea",
+  "enquiry type select": "[data-testid='form-component'] select >> nth=0",
+  "Submit": "[data-testid='form-component'] button[type='submit']",
+  "privacy policy link": "[data-testid='form-component'] a[href^='/privacy-policy'], main a:has-text('Privacy Policy')",
+  "phone numbers": "main a[href^='tel:']",
+  "web support email": "main a[href='mailto:websupport@jtdove.co.uk']",
+  "Branch Finder link": "main a[href='/branches']"
+}

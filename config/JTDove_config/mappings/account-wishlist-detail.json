@@ -8,7 +8,8 @@
   "Invoices menu item": "[data-testid='account-menu__item']:has-text('Invoices')",
   "My Lists menu item": "[data-testid='account-menu__item']:has-text('My Lists')",
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
-  "dashboard cards": "[data-testid='account-card']",
-  "dashboard card titles": "[data-testid='account-card__title']",
-  "dashboard addresses": "[data-testid='address-book-address']"
+  "Wishlist title": "(//main//h1 | //main//h2)[last()]",
+  "Wishlist product cards": "main [data-testid*='product-card']:visible, main [data-testid*='wishlist-item']:visible",
+  "Wishlist lines": "[data-testid='wishlist-builder__lines']",
+  "ADD WISHLIST TO BASKET": "main button:has-text('Add wishlist to basket')"
 }

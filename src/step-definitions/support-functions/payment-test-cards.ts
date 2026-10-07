@@ -142,3 +142,21 @@ export type BraintreeTestCard = {
 export const BRAINTREE_TEST_CARDS: Record<string, BraintreeTestCard> = {
     "Visa 3DS frictionless": { number: "4000000000001000", expiry: "12/30" },
 };
+
+// Opayo (Elavon) sandbox hosted payment pages. CONFIRMED live on JTDove
+// staging (2026-10-05, sandbox.opayo.eu.elavon.com): the default Visa card
+// below completed order 010629 with no 3-D Secure challenge - card
+// selection -> card details -> "Pay £X now" confirmation -> merchant
+// thank-you page. cardType is the label of the card-type button Opayo
+// shows first ("How do you want to pay?").
+export type OpayoTestCard = TestCard & { cardType: string };
+
+export const OPAYO_TEST_CARDS: Record<string, OpayoTestCard> = {
+    default: {
+        cardType: "Visa",
+        number: "4929000000006",
+        expiryMonth: "12",
+        expiryYear: "29",
+        securityCode: "123",
+    },
+};

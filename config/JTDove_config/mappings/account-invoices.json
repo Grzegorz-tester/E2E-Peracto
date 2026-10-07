@@ -8,7 +8,11 @@
   "Invoices menu item": "[data-testid='account-menu__item']:has-text('Invoices')",
   "My Lists menu item": "[data-testid='account-menu__item']:has-text('My Lists')",
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
-  "dashboard cards": "[data-testid='account-card']",
-  "dashboard card titles": "[data-testid='account-card__title']",
-  "dashboard addresses": "[data-testid='address-book-address']"
+  "invoices title": "[data-testid='account-invoices__title']",
+  "invoices table header": "[data-testid='account-orders-header-row']",
+  "invoice rows": "[data-testid^='account-invoices-row-']:visible",
+  "first invoice document number": "[data-testid='account-orders-row-0-cell-documentNumber']",
+  "first invoice download": "[data-testid='account-orders-row-0-cell-download'] a, [data-testid='account-orders-row-0-cell-download'] button",
+  "document number filter": "[data-testid='account-orders-documentNumber-filter'] input, input[data-testid='account-orders-documentNumber-filter']",
+  "Reset filters": "[data-testid='account-orders-filter-reset']"
 }

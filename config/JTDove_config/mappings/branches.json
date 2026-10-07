@@ -1,0 +1,13 @@
+{
+  "branch finder": "[data-testid='branch-finder']",
+  "branch search input": "#react-google-places-autocomplete-input",
+  "address autocomplete listbox": "#react-google-places-autocomplete-input-listbox",
+  "address autocomplete options": "[id^='react-google-places-autocomplete-input-option']",
+  "branch cards": "[data-testid='branches_section__branch']:visible",
+  "first branch card link": "a[data-testid='branches_section__branch']:visible >> nth=0",
+  "Hexham branch link": "a[data-testid='branches_section__branch'][href='/branches/hexham']:visible",
+  "J filter": "[data-testid='branches_filter-bar_btn--j']",
+  "N filter": "[data-testid='branches_filter-bar_btn--n']",
+  "H filter": "[data-testid='branches_filter-bar_btn--h']",
+  "All filter": "[data-testid='branches_filter-bar_btn--All']"
+}

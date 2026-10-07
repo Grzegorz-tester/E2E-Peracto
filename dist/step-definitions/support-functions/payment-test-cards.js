@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VERIFONE_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = exports.BRAINTREE_TEST_CARDS = void 0;
+exports.VERIFONE_TEST_CARDS = exports.OPAYO_TEST_CARDS = exports.GLOBALPAYMENTS_TEST_CARDS = exports.CYBERSOURCE_TEST_CARDS = exports.BRAINTREE_TEST_CARDS = void 0;
 // CyberSource Unified Checkout sandbox test cards, shared across any
 // project using the same payment provider (these are CyberSource's own
 // published test values, not tied to a specific merchant/project). Add
@@ -117,5 +117,22 @@ const BRAINTREE_TEST_CARDS = exports.BRAINTREE_TEST_CARDS = {
   "Visa 3DS frictionless": {
     number: "4000000000001000",
     expiry: "12/30"
+  }
+};
+
+// Opayo (Elavon) sandbox hosted payment pages. CONFIRMED live on JTDove
+// staging (2026-10-05, sandbox.opayo.eu.elavon.com): the default Visa card
+// below completed order 010629 with no 3-D Secure challenge - card
+// selection -> card details -> "Pay £X now" confirmation -> merchant
+// thank-you page. cardType is the label of the card-type button Opayo
+// shows first ("How do you want to pay?").
+
+const OPAYO_TEST_CARDS = exports.OPAYO_TEST_CARDS = {
+  default: {
+    cardType: "Visa",
+    number: "4929000000006",
+    expiryMonth: "12",
+    expiryYear: "29",
+    securityCode: "123"
   }
 };

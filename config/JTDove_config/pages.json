@@ -1,54 +1,45 @@
 {
-  "home": {
-    "route": "/",
-    "regex": "^/$"
-  },
-  "login": {
-    "route": "/login",
-    "regex": "^/login$"
-  },
-  "account": {
-    "route": "/account",
-    "regex": "^/account$"
-  },
-  "account-profile": {
-    "route": "/account/profile",
-    "regex": "^/account/profile$"
-  },
-  "account-address-book": {
-    "route": "/account/address-book",
-    "regex": "^/account/address-book$"
-  },
-  "account-invoices": {
-    "route": "/account/invoices",
-    "regex": "^/account/invoices$"
-  },
-  "wishlists": {
-    "route": "/account/wishlists",
-    "regex": "^/account/wishlists$"
-  },
-  "make-a-payment": {
-    "route": "/account/make-a-payment",
-    "regex": "^/account/make-a-payment$"
-  },
-  "basket": {
-    "route": "/basket",
-    "regex": "^/basket$"
-  },
-  "checkout": {
-    "route": "/checkout",
-    "regex": "^/checkout$"
-  },
-  "thank-you": {
-    "route": "/checkout/thank-you",
-    "regex": "^/checkout/thank-you$"
-  },
-  "reset-password": {
-    "route": "/reset-password",
-    "regex": "^/reset-password$"
-  },
-  "Oatmeal brick": {
-    "route": "/products/65mm-oatmeal-textured-brick-ibstock-519340",
-    "regex": "^/products/65mm-oatmeal-textured-brick-ibstock-519340$"
-  }
+  "home": { "route": "/", "regex": "^/$" },
+  "login": { "route": "/login", "regex": "^/login$" },
+  "register": { "route": "/register", "regex": "^/register$" },
+  "register-credit-account": { "route": "/register/credit-account", "regex": "^/register/credit-account$" },
+  "register-cash-account": { "route": "/register/cash-account", "regex": "^/register/cash-account$" },
+  "register-self-build-account": { "route": "/register/self-build-account", "regex": "^/register/self-build-account$" },
+  "reset-password": { "route": "/reset-password", "regex": "^/reset-password$" },
+  "account": { "route": "/account", "regex": "^/account$" },
+  "account-profile": { "route": "/account/profile", "regex": "^/account/profile$" },
+  "account-address-book": { "route": "/account/address-book", "regex": "^/account/address-book$" },
+  "account-invoices": { "route": "/account/invoices", "regex": "^/account/invoices$" },
+  "account-wishlist": { "route": "/account/wishlists", "regex": "^/account/wishlists$" },
+  "account-wishlist-detail": { "route": "/account/wishlists", "regex": "^/account/wishlists/[^/]+$" },
+  "account-make-a-payment": { "route": "/account/make-a-payment", "regex": "^/account/make-a-payment$" },
+  "basket": { "route": "/basket", "regex": "^/basket$" },
+  "checkout-sign-in": { "route": "/checkout/sign-in", "regex": "^/checkout/sign-in$" },
+  "checkout-delivery": { "route": "/checkout/delivery", "regex": "^/checkout/delivery$" },
+  "checkout-click-and-collect": { "route": "/checkout/click-and-collect", "regex": "^/checkout/click-and-collect$" },
+  "checkout-billing": { "route": "/checkout/billing", "regex": "^/checkout/billing$" },
+  "checkout-review": { "route": "/checkout/review-and-payment", "regex": "^/checkout/review-and-payment$" },
+  "thank-you": { "route": "/checkout/thank-you", "regex": "^/checkout/thank-you$" },
+  "opayo": { "route": "/gateway/service/cardselection", "regex": "^/gateway/service/" },
+  "search": { "route": "/search?q=plywood", "regex": "^/search$" },
+  "test-product": { "route": "/products/2440x1220x18mm-marine-plywood", "regex": "^/products/2440x1220x18mm-marine-plywood$" },
+  "pdp": { "route": "/products/2440x1220x18mm-marine-plywood", "regex": "^/products/[^/]+$" },
+  "plywood": { "route": "/category/timber-sheet/sheet-material/plywood", "regex": "^/category/timber-sheet/sheet-material/plywood$" },
+  "special-offers": { "route": "/category/Special-Offers", "regex": "^/category/Special-Offers$" },
+  "plp": { "route": "/category/Special-Offers", "regex": "^/category/.+$" },
+  "category-landing": { "route": "/building-materials", "regex": "^/(building-materials|timber-sheet|bathrooms|Landscaping-&-Gardening|Landscaping-%26-Gardening|roofing-landing|Workwear|Painting-Decorating|doors-flooring-joinery|plumbing-and-heating|kitchens)$" },
+  "branches": { "route": "/branches", "regex": "^/branches$" },
+  "branch-hexham": { "route": "/branches/hexham", "regex": "^/branches/hexham$" },
+  "branch": { "route": "/branches/hexham", "regex": "^/branches/[^/]+$" },
+  "contact-us": { "route": "/contact", "regex": "^/contact$" },
+  "bathroom-appointment": { "route": "/bathroom-appointment-request", "regex": "^/bathroom-appointment-request$" },
+  "kitchen-appointment": { "route": "/kitchen-appointment-request", "regex": "^/kitchen-appointment-request$" },
+  "kitchen-showrooms": { "route": "/kitchen-showrooms", "regex": "^/kitchen-showrooms$" },
+  "about-us": { "route": "/about-us", "regex": "^/about-us$" },
+  "delivery-and-collection": { "route": "/Delivery-and-Collection-Information", "regex": "^/(D|d)elivery-and-(C|c)ollection-(I|i)nformation$" },
+  "faqs": { "route": "/faqs", "regex": "^/faqs$" },
+  "sitemap": { "route": "/sitemap", "regex": "^/sitemap$" },
+  "privacy-policy": { "route": "/privacy-policy", "regex": "^/privacy-policy" },
+  "cookie-policy": { "route": "/cookie-policy", "regex": "^/cookie-policy$" },
+  "content-page": { "route": "/about-us", "regex": "^/[^/]+$" }
 }

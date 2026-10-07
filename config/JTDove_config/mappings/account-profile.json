@@ -8,7 +8,12 @@
   "Invoices menu item": "[data-testid='account-menu__item']:has-text('Invoices')",
   "My Lists menu item": "[data-testid='account-menu__item']:has-text('My Lists')",
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
-  "dashboard cards": "[data-testid='account-card']",
-  "dashboard card titles": "[data-testid='account-card__title']",
-  "dashboard addresses": "[data-testid='address-book-address']"
+  "profile form": "[data-testid='account__my-details-form']",
+  "profile email": "[data-testid='account-profile__email-input']",
+  "profile title": "[data-testid='account-profile__title-input']",
+  "profile first name": "[data-testid='account-profile__first-name-input']",
+  "profile last name": "[data-testid='account-profile__last-name-input']",
+  "profile contact number": "[data-testid='account-profile__contact-number-input']",
+  "Save changes": "[data-testid='account-profile__save-changes-button--footer']",
+  "success toast": "text=User successfully updated >> visible=true"
 }

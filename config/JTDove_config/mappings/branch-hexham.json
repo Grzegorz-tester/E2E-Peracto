@@ -1,0 +1,13 @@
+{
+  "branch heading": "[data-testid='branch__heading']",
+  "branch opening hours": "[data-testid='branch__opening-hours']",
+  "branch monday hours": "[data-testid='branch__opening-hours--monday']",
+  "branch sunday hours": "[data-testid='branch__opening-hours--sunday']",
+  "branch address": "[data-testid='branch__address']",
+  "branch telephone": "[data-testid='branch__telephone']",
+  "branch email": "[data-testid='branch__email']",
+  "Enlarge map": "[data-testid='branch__enlarge-map']",
+  "Get directions": "[data-testid='branch__get-directions']",
+  "branch general information": "[data-testid='branch__general-information']",
+  "other branches nearby": "//main//*[normalize-space()='Other Branches Nearby']"
+}

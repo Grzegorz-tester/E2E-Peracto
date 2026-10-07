@@ -3,7 +3,9 @@
 var _cucumber = require("@cucumber/cucumber");
 var _parseEnv = require("../../../env/parseEnv");
 var _newsletterPopup = require("../interactions/newsletter-popup");
-(0, _cucumber.Given)(/^I am navigating the page as a "([^"]*)" user$/, async function (userType) {
+(0, _cucumber.Given)(/^I am navigating the page as a "([^"]*)" user$/, {
+  timeout: 120000
+}, async function (userType) {
   const {
     screen: {
       page
@@ -66,8 +68,25 @@ var _newsletterPopup = require("../interactions/newsletter-popup");
     state: "visible",
     timeout: 30000
   });
-  await page.fill(emailSelector, user.email);
-  await page.fill(passwordSelector, user.password);
+  // CONFIRMED live (JTDove staging, 2026-10-06): the form is visible well
+  // before React hydrates it, and hydration resets the inputs - the
+  // failure screenshot showed both fields empty and the user never left
+  // /login (same race as Indespension's, see logging-in.feature there).
+  // Wait for the network to go quiet first (bounded - trackers that never
+  // idle mustn't hang login), then confirm the values actually stuck and
+  // refill if hydration wiped them.
+  await page.waitForLoadState("networkidle", {
+    timeout: 8000
+  }).catch(() => {});
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    await page.fill(emailSelector, user.email);
+    await page.fill(passwordSelector, user.password);
+    await page.waitForTimeout(500);
+    const stuck = (await page.inputValue(emailSelector)) === user.email && (await page.inputValue(passwordSelector)) === user.password;
+    if (stuck) {
+      break;
+    }
+  }
   await page.waitForSelector(signInButtonSelector, {
     state: "visible",
     timeout: 30000

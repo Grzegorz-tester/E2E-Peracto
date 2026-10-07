@@ -1,0 +1,5 @@
+{
+  "page heading": "(//main//h1)[1]",
+  "first FAQ question": "[data-testid='accordion__item-0--header']",
+  "open FAQ answer": "main [id^='headlessui-disclosure-panel']"
+}

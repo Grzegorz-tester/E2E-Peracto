@@ -66,7 +66,9 @@ const gatherHrefs = async (page, elementIdentifier) => {
   const hrefs = await page.locator(elementIdentifier).evaluateAll(els => els.map(el => el.getAttribute("href")).filter(href => !!href && !href.startsWith("mailto:") && !href.startsWith("tel:")));
   return [...new Set(hrefs)];
 };
-(0, _cucumber.Then)(/^all "([^"]*)" links should resolve without an error$/, async function (elementKey) {
+(0, _cucumber.Then)(/^all "([^"]*)" links should resolve without an error$/, {
+  timeout: 180000
+}, async function (elementKey) {
   const {
     screen: {
       page
@@ -84,7 +86,9 @@ const gatherHrefs = async (page, elementIdentifier) => {
 // unnecessarily heavy crawl of the site) - checks a bounded sample instead,
 // same as the smoke test itself asks for ("open sample product/page/
 // article URLs"), not every one of them.
-(0, _cucumber.Then)(/^the first (\d+) "([^"]*)" links should resolve without an error$/, async function (count, elementKey) {
+(0, _cucumber.Then)(/^the first (\d+) "([^"]*)" links should resolve without an error$/, {
+  timeout: 180000
+}, async function (count, elementKey) {
   const {
     screen: {
       page

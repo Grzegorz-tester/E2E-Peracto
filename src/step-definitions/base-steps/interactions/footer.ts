@@ -71,7 +71,7 @@ const gatherHrefs = async (page: ScenarioWorld["screen"]["page"], elementIdentif
     return [...new Set(hrefs)];
 };
 
-Then(/^all "([^"]*)" links should resolve without an error$/, async function (this: ScenarioWorld, elementKey: string) {
+Then(/^all "([^"]*)" links should resolve without an error$/, { timeout: 180000 }, async function (this: ScenarioWorld, elementKey: string) {
     const {
         screen: { page },
         globalConfig,
@@ -89,7 +89,7 @@ Then(/^all "([^"]*)" links should resolve without an error$/, async function (th
 // unnecessarily heavy crawl of the site) - checks a bounded sample instead,
 // same as the smoke test itself asks for ("open sample product/page/
 // article URLs"), not every one of them.
-Then(/^the first (\d+) "([^"]*)" links should resolve without an error$/, async function (this: ScenarioWorld, count: string, elementKey: string) {
+Then(/^the first (\d+) "([^"]*)" links should resolve without an error$/, { timeout: 180000 }, async function (this: ScenarioWorld, count: string, elementKey: string) {
     const {
         screen: { page },
         globalConfig,

@@ -1,0 +1,11 @@
+{
+  "register form": "[data-testid='register-form']",
+  "Account number": "[data-testid='register-form__account-number-input']",
+  "First name": "[data-testid='register-form__first-name-input']",
+  "Last name": "[data-testid='register-form__last-name-input']",
+  "Email": "[data-testid='register-form__email-input']",
+  "Telephone": "[data-testid='register-form__telephone-input']",
+  "Password": "[data-testid='register-form__password-input']",
+  "Confirm password": "[data-testid='register-form__confirm-password-input']",
+  "Submit registration": "[data-testid='register-form__submit-button']"
+}

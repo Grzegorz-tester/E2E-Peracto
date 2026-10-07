@@ -1,0 +1,9 @@
+{
+  "application title": "[data-testid='multi-step-form__title']",
+  "application subtitle": "[data-testid='multi-step-form__subtitle']",
+  "application step circles": "[data-testid^='multi-step-form__step-circle-']",
+  "application first step": "[data-testid='multi-step-form__step-0']",
+  "application second step": "[data-testid='multi-step-form__step-1']",
+  "application form": "[data-testid='multi-step-form-0__component']",
+  "Next": "[data-testid='multi-step-form__next']"
+}

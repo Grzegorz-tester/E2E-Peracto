@@ -1,0 +1,5 @@
+{
+  "page heading": "(//main//h1)[1]",
+  "showroom headings": "//main//h3[contains(., 'Kitchen Showroom')]",
+  "first showroom link": "main a[href$='-kitchen-showroom'] >> nth=0"
+}

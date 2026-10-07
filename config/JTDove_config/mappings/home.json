@@ -1,9 +1,12 @@
 {
-  "page title": "[data-testid='text-component']",
-  "Mirrors card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-mirrors']",
-  "Cabinets card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-cabinets']",
-  "Furniture card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-furniture']",
-  "Lighting card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-lighting']",
-  "Accessories card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-accessories']",
-  "Ventilation card": "//div[@data-testid='image-component']//a[@href='/category/bathroom-ventilation']"
+  "hero banner link": "main a[href='/category/Winter-Essentials'] >> nth=0",
+  "Popular Categories heading": "//main//h2[normalize-space()='Popular Categories']",
+  "Shop Categories heading": "//main//h2[normalize-space()='Shop Categories']",
+  "popular category tiles": "//main//h2[normalize-space()='Popular Categories']/following::h3",
+  "Plywood tile": "main a[href='/category/timber-sheet/sheet-material/plywood'] >> nth=0",
+  "Special Offers tile": "main a[href='/category/Special-Offers'] >> nth=0",
+  "Kitchens tile": "main a[href='/kitchens'] >> nth=0",
+  "Bathroom showrooms link": "main a[href='/bathroom-appointment-request'] >> nth=0",
+  "Kitchen showrooms link": "main a[href='/kitchen-showrooms'] >> nth=0",
+  "production login link": "main a[href*='www.jtdove.co.uk']"
 }

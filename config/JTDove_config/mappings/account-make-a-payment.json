@@ -8,7 +8,9 @@
   "Invoices menu item": "[data-testid='account-menu__item']:has-text('Invoices')",
   "My Lists menu item": "[data-testid='account-menu__item']:has-text('My Lists')",
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
-  "dashboard cards": "[data-testid='account-card']",
-  "dashboard card titles": "[data-testid='account-card__title']",
-  "dashboard addresses": "[data-testid='address-book-address']"
+  "make a payment online": "[data-testid='make-a-payment-online']",
+  "payment billing address": "[data-testid='make-a-payment-online'] [data-testid='address-book-address']",
+  "payment amount": "[data-testid='make-a-payment-online'] input[type='number'], [data-testid='make-a-payment-online'] input[inputmode='decimal'], [data-testid='make-a-payment-online'] input:not([type='hidden'])",
+  "MAKE A PAYMENT": "[data-testid='make-a-payment-online'] button[type='submit'], [data-testid='make-a-payment-online'] button:has-text('Make a payment')",
+  "BACS details": "//main//*[contains(normalize-space(), 'Make a Payment - BACS')]"
 }

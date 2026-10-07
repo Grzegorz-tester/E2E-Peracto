@@ -1,0 +1,4 @@
+{
+  "page heading": "(//main//h1)[1]",
+  "sitemap links": "main a[href^='/']"
+}

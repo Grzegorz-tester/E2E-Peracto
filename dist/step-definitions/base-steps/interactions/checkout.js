@@ -198,6 +198,82 @@ function refuseIfProduction(action) {
   });
 });
 
+// Loqate (postcodeanywhere "pca") widget, postcode-driven. Two things the
+// generic step above can't cope with, both CONFIRMED live on JTDove
+// (2026-10-05, network-logged):
+// - The widget sends its Find requests with $block=true, so a new lookup is
+//   dropped while one is still in flight. Typing quickly (30ms/key) means
+//   only the first keystroke's request ("N") is ever answered, and the list
+//   shows Leeds addresses starting with N for a typed "NE46 4DQ". Typing at
+//   ~150ms/key lets each lookup complete, and the list then correctly leads
+//   with "NE46 4DQ Hexham - 32 Addresses".
+// - JTDove's "Use this address" button is enabled before anything is
+//   picked, so "the submit button enabled" can't be the success signal - a
+//   stale wrong-area suggestion would pass. Instead this waits until the
+//   "address postcode" field holds the searched postcode.
+// searchTerm must therefore be a postcode. Reusable by any project on the
+// same widget via its own "address autocomplete options" and "address
+// postcode" mapping keys.
+(0, _cucumber.When)(/^I pick the first Loqate address for the postcode "([^"]*)" in the "([^"]*)" field$/, {
+  timeout: 90000
+}, async function (postcode, elementKey) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const searchInput = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const options = page.locator(`${(0, _webElementHelper.getElementLocator)(page, "address autocomplete options", globalConfig)} >> visible=true`);
+  const postcodeSelector = (0, _webElementHelper.getElementLocator)(page, "address postcode", globalConfig);
+  const normalise = text => text.replace(/\s+/g, "").toUpperCase();
+  const target = normalise(postcode);
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    await page.fill(searchInput, "");
+    await page.click(searchInput);
+    await page.type(searchInput, postcode, {
+      delay: 150
+    });
+    const deadline = Date.now() + 8000;
+    while (Date.now() < deadline) {
+      if ((await options.count()) > 0 && normalise(await options.first().innerText()).includes(target)) {
+        return true;
+      }
+      await page.waitForTimeout(300);
+    }
+    return false;
+  }, {
+    timeout: 45000,
+    wait: 500,
+    expected: `the first "address autocomplete options" suggestion to contain "${postcode}" after typing it into "${elementKey}" (${searchInput})`,
+    describeActual: async () => `first suggestion: "${await options.first().innerText({
+      timeout: 1000
+    }).catch(() => "none")}"`
+  });
+  await (0, _waitForBehaviour.waitFor)(async () => {
+    // Short timeout: the postcode field often isn't rendered until an
+    // address is picked, and inputValue() would otherwise sit out
+    // Playwright's 30s default, eating this whole retry window.
+    const value = await page.locator(postcodeSelector).first().inputValue({
+      timeout: 1000
+    }).catch(() => "");
+    if (normalise(value) === target) {
+      return true;
+    }
+    if ((await options.count()) > 0) {
+      await options.first().click();
+    }
+    return false;
+  }, {
+    timeout: 20000,
+    wait: 1000,
+    expected: `"address postcode" (${postcodeSelector}) to be filled with "${postcode}" after picking a Loqate suggestion`,
+    describeActual: async () => `"address postcode" value: "${await page.locator(postcodeSelector).first().inputValue({
+      timeout: 1000
+    }).catch(() => "not present")}"`
+  });
+});
+
 // CyberSource Unified Checkout. Card fields live inside real iframes with
 // no data-testid on the frames themselves, only stable ids. frameLocator()
 // is required here since a plain CSS selector string cannot reach across
@@ -498,6 +574,57 @@ function refuseIfProduction(action) {
   await (0, _htmlBehaviour.withActionDiagnostics)(`to fill GlobalPayments "card-holder-name"`, () => (0, _webElementHelper.describeLocator)(holderNameInput, `GlobalPayments "card-holder-name"`), () => holderNameInput.fill("Velstar Test"));
   const submitButton = page.frameLocator('iframe[name="submit"]').locator('#secure-payment-field, button, input[type="submit"]').first();
   await (0, _htmlBehaviour.withActionDiagnostics)(`to click GlobalPayments "submit"`, () => (0, _webElementHelper.describeLocator)(submitButton, `GlobalPayments "submit"`), () => submitButton.click());
+});
+
+// Opayo (Elavon) hosted payment pages, e.g. JTDove's "PROCEED TO PAYMENT".
+// Unlike the iframe gateways above these are full-page redirects to
+// sandbox.opayo.eu.elavon.com, so plain page locators work - but the pages
+// are Opayo's own markup, identical for every merchant, so (as with the
+// other gateways) the selectors live here rather than in a project mapping.
+// Three pages: pick a card type, enter the card, then confirm on a review
+// page ("Pay £X now"). Does NOT wait for the merchant redirect - follow it
+// with an "I should eventually be redirected to ..." assertion.
+(0, _cucumber.When)(/^I pay with the "([^"]*)" Opayo test card$/, {
+  timeout: 90000
+}, async function (cardName) {
+  refuseIfProduction(`I pay with the "${cardName}" Opayo test card`);
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  const card = _paymentTestCards.OPAYO_TEST_CARDS[cardName];
+  if (!card) {
+    throw new Error(`Unknown Opayo test card "${cardName}". Add it to payment-test-cards.ts.`);
+  }
+  await page.waitForURL(/opayo/, {
+    timeout: 30000
+  });
+  const cardTypeButton = page.locator('button[name="cardselected"]').filter({
+    hasText: new RegExp(`^\\s*${card.cardType}\\s*$`)
+  }).first();
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click the Opayo "${card.cardType}" card type`, () => (0, _webElementHelper.describeLocator)(cardTypeButton, `Opayo "${card.cardType}" card type`), () => cardTypeButton.click());
+  const numberInput = page.locator('input[name="cardnumber"]');
+  await numberInput.waitFor({
+    state: "visible",
+    timeout: 30000
+  });
+  await numberInput.fill(card.number);
+  await page.locator('input[name="expirymonth"]').fill(card.expiryMonth);
+  await page.locator('input[name="expiryyear"]').fill(card.expiryYear);
+  await page.locator('input[name="securitycode"]').fill(card.securityCode);
+  const confirmCard = page.locator('button[name="action"]').filter({
+    hasText: "Confirm card details"
+  });
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Opayo "Confirm card details"`, () => (0, _webElementHelper.describeLocator)(confirmCard, `Opayo "Confirm card details"`), () => confirmCard.click());
+  const payNow = page.locator('button[name="action"]').filter({
+    hasText: /Pay .* now/
+  });
+  await payNow.waitFor({
+    state: "visible",
+    timeout: 30000
+  });
+  await (0, _htmlBehaviour.withActionDiagnostics)(`to click Opayo "Pay now"`, () => (0, _webElementHelper.describeLocator)(payNow, `Opayo "Pay now"`), () => payNow.click());
 });
 
 // Braintree Drop-in (Card / PayPal / Google Pay sheet), e.g. Keylite's

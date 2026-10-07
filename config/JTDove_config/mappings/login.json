@@ -1,6 +1,13 @@
 {
-  "Email address": "[id='email']",
-  "Password": "[id='input-password']",
-  "SIGN IN": "button:has-text('Sign In')",
-  "Forgotten your password?": "[data-testid='login-form__forgotten-password-link']"
+  "Email address": "[data-testid='login-form__email-input']",
+  "Password": "[data-testid='login-form__password-input']",
+  "Sign In": "[data-testid='login-form__submit-button']",
+  "login heading": "//h1[normalize-space()='MyDove Login']",
+  "Forgotten your password?": "[data-testid='login-form__forgot-password-link'] >> nth=0",
+  "Have an account but not an online login?": "main a[href='/register'] >> nth=0",
+  "Start credit account application": "main a[href='/register/credit-account']",
+  "Start cash account application": "main a[href='/register/cash-account']",
+  "Start self build account application": "main a[href='/register/self-build-account']",
+  "login error": "main div[class*='danger-alert']",
+  "validation message": "main div[class*='danger-alert']"
 }
