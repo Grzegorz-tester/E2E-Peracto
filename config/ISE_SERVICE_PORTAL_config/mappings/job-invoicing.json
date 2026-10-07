@@ -9,5 +9,12 @@
   "VAT amount": "dl.card dt:has-text(\"VAT\") + dd",
   "Total amount": "dl.card dt:text-is(\"Total\") + dd",
   "Next": "main button[type=\"submit\"]",
-  "Excess mileage amount": "dl.card dt:text-is(\"Excess mileage\") + dd"
+  "Excess mileage amount": "dl.card dt:text-is(\"Excess mileage\") + dd",
+  "form error": "main .form-error",
+  "Add part": "main button[data-action=\"collection#add\"]",
+  "Second part quantity": "#invoice_parts_1_quantity",
+  "Second part number": "#invoice_parts_1_partNumber",
+  "Second part description": "#invoice_parts_1_description",
+  "Second part price": "#invoice_parts_1_unitPrice",
+  "invoice summary": "main dl.card"
 }

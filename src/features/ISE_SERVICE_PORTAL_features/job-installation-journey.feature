@@ -11,10 +11,8 @@ Feature: Installation job journey
   # Complete. No Diagnosis or Current setup step for Installation, as the
   # SoW says.
   #
-  # The final "Submit" on the Complete Job screen is deliberately never
-  # clicked: completing a job sends real emails to the customer, the
-  # service company and InSinkErator's configured recipients. The journey
-  # stops at that screen and checks Submit is there.
+  # Completing a job sends the job-complete emails (approved for staging by
+  # the user, 2026-10-07).
   #
   # Inside the radius, the status goes Assigned -> Booked as soon as Service
   # info is saved, which looks like the automatic order placement (SP.24).
@@ -51,7 +49,7 @@ Feature: Installation job journey
     Then I should be redirected to the "job-new-setup" page
 
   @smoke
-  Scenario: An engineer can take an Installation job through to the Complete screen
+  Scenario: An engineer can take an Installation job through to completion
     When I fill in the "New product serial number" input field with "VELSTAR-TEST-SN"
     And I upload the "velstar-test-job-photo.jpg" file to the "Above sink photo" input
     And I upload the "velstar-test-job-photo.jpg" file to the "Below sink photo" input
@@ -75,13 +73,24 @@ Feature: Installation job journey
     And I click on the "Next" button
     Then I should be redirected to the "job-complete" page
     And the "completion confirmation" should be displayed
-    And the "Submit" should be displayed
+    And I remember the current URL path as "complete step"
     # Server-side totals (SP.32): £85 call-out + 2 x £10 parts + £20 labour
     # = £125, plus 20% VAT.
     When I navigate directly to the remembered path "invoicing step"
     Then the "Parts total" should equal text "£20.00"
     And the "VAT amount" should equal text "£25.00"
     And the "Total amount" should equal text "£150.00"
+    # SP.30: completing the job. Sends the job-complete emails (customer
+    # address is a Velstar alias; the company and InSinkErator recipient
+    # lists are empty on staging as of 2026-10-06).
+    When I navigate directly to the remembered path "complete step"
+    And I click on the "Submit" button
+    Then the "completion message" should contain the text "has been completed."
+    And the "completion message" should not contain the text "Aquatherm"
+    When I click on the "Back to job" link
+    Then I should be redirected to the "job-detail" page
+    And the "job summary" should contain the text "Complete"
+    And the "Continue job" should not be displayed
 
   Scenario: New setup rejects a job with only the above-sink photo
     # SP.27: both photos are a deliberate anti-fraud control.

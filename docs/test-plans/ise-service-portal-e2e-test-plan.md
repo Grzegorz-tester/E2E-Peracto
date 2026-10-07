@@ -68,17 +68,51 @@ flags the difference.
 - New-job step 1 needs the customer email (or phone) to move on, though only the names are marked
   required.
 
-Built: `health-check`, `logging-in`, `reset-password`, `access-control`, `dashboard`,
-`job-installation-journey`, `job-warranty-journey`, `job-mileage-authorisation` and `fault-codes`.
+### Round 3 (2026-10-07): full coverage
 
-Not built yet:
-- Settings edits (charges, radius and notifications are global config, so changing them risks other
-  people's testing on staging).
-- Company management (SP.13/14: as built, these sit under Owner/Admin Companies/Engineers rather than a
-  company-user account screen).
-- Users.
-- Manual product sync / Aquatherm export (Tasks; the export emails a real recipient list).
-- Job completion (blocked, see above).
+Approved by the user for staging: completing jobs, running the Aquatherm export, running the product
+sync, editing global Settings (always restored), and covering the Service Manager and Developer roles
+(Manager assigned to Test Company).
+
+**Confirmed defects (each has a deliberately red scenario):**
+
+| # | Area | Defect | SoW |
+|---|---|---|---|
+| 1 | Dashboard | Search by customer email returns nothing | SP.10 |
+| 2 | Signature | Installation guarantees not enforced (checkboxes have no `name`) | SP.28 |
+| 3 | Job detail | "Continue job" always points at an early step, not the next one that isn't done | SP.19 |
+| 4 | Invoicing | VAT/total don't update while typing (correct after saving) | SP.31 |
+| 5 | Invoicing | "Add part" does nothing (no `collection` controller on the page), so only one part per invoice | SP.31 |
+| 6 | Mileage | "Can authorise mileage" not enforced: an Admin without it authorised a job | SP.24 |
+| 7 | Users | Active / Inactive / Delete silently fail for real users (CSRF: row forms lack the JS CSRF controller that the login form uses) | SP.16 |
+| 8 | Tasks | Product sync fails every run since 2026-09-29, log says only "Task failed." | SP.2 |
+| 9 | Engineers | Manager's "+ Engineer" button does nothing (submit button outside a form) | SP.13 |
+| 10 | Jobs | A job with no engineer is "Assigned", never "New", so the New filter is always empty (likely, confirm) | - |
+
+**Differences from the SoW and open questions (asserted as built, not red):**
+- Aquatherm export has 6 columns, not Aquatherm's 25. It includes Installation jobs.
+- Notification recipient lists in Settings are all empty, so exports email only the person who ran them.
+- Export files show "Expires: Never", although token links are set to expire after 72 hours.
+- No complaint code management screen (SP.17). Company has no billing or shipping addresses (SP.13).
+  Warranty jobs take one address at creation (SP.20). No on-screen signature pad (SP.28). No product
+  search (SP.22).
+- Admin can open Users, Companies, Engineers, Fault codes and Tasks (the SoW puts these in Owner-only
+  Settings).
+- Diagnosis accepts an empty form. Warranty Service is pre-selected as the Service Type.
+- "Change engineer" and "Edit job" are still offered on completed jobs.
+- Manager gets 404 on another company's job, Engineer gets 403 (both deny).
+
+**Feature files (18, 104 scenarios):** `health-check`, `logging-in`, `reset-password`,
+`access-control`, `dashboard`, `job-installation-journey`, `job-warranty-journey`,
+`job-mileage-authorisation`, `job-invoicing`, `job-step-validation`, `job-management`, `fault-codes`,
+`users`, `engineers`, `companies`, `settings`, `tasks`, `mobile`.
+
+**Still not automated:**
+- Password reset link and expiry (needs a test inbox).
+- Email delivery generally (triggers covered, delivery not).
+- Real iOS/Android devices and Safari (Chromium mobile viewport only).
+- An Admin who *does* have the mileage permission is checked only through Settings, since enforcement
+  is broken anyway.
 
 ## 1. Scope
 

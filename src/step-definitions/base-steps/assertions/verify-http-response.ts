@@ -26,3 +26,27 @@ Then(
         expect(response.headers()["content-type"] ?? "").toContain(expectedContentType);
     }
 );
+
+// Fetches a path remembered earlier in the scenario (e.g. a share link's
+// href) directly, rather than navigating to it - navigating to a URL that
+// serves an attachment makes Playwright's goto() throw "Download is
+// starting". Uses the page's own request context, so it carries the
+// current session (or the lack of one, after logging out), which is what
+// "can someone without a login open this link" checks need.
+Then(
+    /^requesting the remembered path "([^"]*)" should return status (\d+)(?: with content-type "([^"]*)")?$/,
+    async function (this: ScenarioWorld, variableName: string, expectedStatus: string, expectedContentType: string | undefined) {
+        const { screen: { page } } = this;
+        const urlPath = this.globalVariables[variableName];
+        if (urlPath === undefined) {
+            throw new Error(`No remembered path found for "${variableName}".`);
+        }
+        const url = new URL(urlPath, page.url()).toString();
+
+        const response = await page.request.get(url, { timeout: 15000, maxRedirects: 0 });
+        expect(response.status(), `${url} -> ${response.status()}`).toBe(Number(expectedStatus));
+        if (expectedContentType !== undefined) {
+            expect(response.headers()["content-type"] ?? "").toContain(expectedContentType);
+        }
+    }
+);

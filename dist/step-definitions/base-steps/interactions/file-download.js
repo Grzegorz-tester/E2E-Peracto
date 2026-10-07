@@ -65,9 +65,29 @@ function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; 
   const savedPath = this.globalVariables[`${variableName}__path`];
   const content = fs.readFileSync(savedPath, "utf-8");
   const headerRow = content.split(/\r?\n/, 1)[0];
-  const actualColumns = headerRow.split(",");
+  // Strip CSV quoting ("Job Reference" -> Job Reference) so quoted and
+  // unquoted headers compare the same.
+  const actualColumns = headerRow.split(",").map(column => column.trim().replace(/^"(.*)"$/, "$1"));
   const missingColumns = expectedColumns.split(",").filter(column => !actualColumns.includes(column));
   if (missingColumns.length > 0) {
     throw new Error(`Expected the "${variableName}" download (${this.globalVariables[variableName]}) header row to contain the columns "${missingColumns.join(", ")}", but the header row was "${headerRow}"`);
+  }
+});
+
+// Checks a downloaded file mentions a value captured earlier in the same
+// scenario (e.g. the reference of a job just completed should appear in the
+// export that follows), optionally on the same line as some literal text
+// (e.g. that job's expected total) - a plain "contains" for each would pass
+// even if the two values sat on different rows.
+(0, _cucumber.Then)(/^the remembered "([^"]*)" download should( not)? contain the remembered "([^"]*)"(?: on a line containing "([^"]*)")?$/, async function (variableName, negate, rememberedName, sameLineText) {
+  const savedPath = this.globalVariables[`${variableName}__path`];
+  const remembered = this.globalVariables[rememberedName];
+  if (savedPath === undefined || remembered === undefined) {
+    throw new Error(`Missing remembered download "${variableName}" or value "${rememberedName}".`);
+  }
+  const lines = fs.readFileSync(savedPath, "utf-8").split(/\r?\n/);
+  const found = lines.some(line => line.includes(remembered) && (sameLineText === undefined || line.includes(sameLineText)));
+  if (found === Boolean(negate)) {
+    throw new Error(`Expected the "${variableName}" download (${this.globalVariables[variableName]}) to ${negate ? "not " : ""}contain "${remembered}"${sameLineText ? ` on a line containing "${sameLineText}"` : ""}. First lines: ${lines.slice(0, 5).join(" / ")}`);
   }
 });

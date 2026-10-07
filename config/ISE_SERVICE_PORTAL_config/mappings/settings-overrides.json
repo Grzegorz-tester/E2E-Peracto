@@ -1,0 +1,5 @@
+{
+  "overrides list": "main",
+  "Go to companies": "main a[href=\"/companies\"]",
+  "Go to users": "main a[href=\"/users\"]"
+}

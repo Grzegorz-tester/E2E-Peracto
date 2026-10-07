@@ -1,0 +1,6 @@
+{
+  "Company name": "#company_name",
+  "Active": "#company_active",
+  "Save company": "main button[type=\"submit\"]",
+  "form error": "main .form-error"
+}

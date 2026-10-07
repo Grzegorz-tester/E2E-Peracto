@@ -194,3 +194,45 @@ var _webElementHelper = require("../../support-functions/web-element-helper");
   } = this;
   await page.keyboard.press("Escape");
 });
+// For a status that's only updated server-side by a background worker
+// (e.g. a queued task run going "Pending" -> "Success"), so the page never
+// changes on its own: reloads every few seconds until the element shows
+// the expected text, instead of a single fixed wait that's either too long
+// or too short.
+(0, _cucumber.When)(/^I reload the page until the "([^"]*)" (contains|no longer contains) the (text|remembered) "([^"]*)", for up to (\d+) seconds$/, {
+  timeout: 200000
+}, async function (elementKey, mode, source, value, seconds) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const expectedText = source === "remembered" ? this.globalVariables[value] : value;
+  if (expectedText === undefined) {
+    throw new Error(`No remembered text found for "${value}".`);
+  }
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const deadline = Date.now() + Number(seconds) * 1000;
+  let lastText = null;
+  while (Date.now() < deadline) {
+    // An input's value isn't in its textContent - read the value instead,
+    // so a saved form field can be polled too (JTDove's profile page
+    // keeps serving the pre-save value for a while after a successful
+    // save, confirmed live 2026-10-07).
+    await page.waitForSelector(elementIdentifier, {
+      state: "attached",
+      timeout: 5000
+    }).catch(() => null);
+    lastText = await page.$eval(elementIdentifier, el => el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement ? el.value : el.textContent).catch(() => null);
+    if (lastText !== null && lastText.includes(expectedText) === (mode === "contains")) {
+      return;
+    }
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    await page.reload({
+      waitUntil: "domcontentloaded",
+      timeout: 30000
+    });
+  }
+  throw new Error(`"${elementKey}" (${elementIdentifier}) still ${mode === "contains" ? "didn't contain" : "contained"} "${expectedText}" after ${seconds}s of reloading; last text was "${lastText?.trim() ?? "(could not read text)"}".`);
+});

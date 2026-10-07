@@ -212,3 +212,27 @@ var _waitForBehaviour = require("../../support-functions/wait-for-behaviour");
     describeActual: async () => `${(await page.$$(elementIdentifier)).length} matching element(s) found`
   });
 });
+
+// A true visibility check, unlike "should be displayed" above, which only
+// checks the element is in the DOM. Needed for content that's always
+// rendered but hidden until something happens (a multi-step form's later
+// steps, a collapsed menu panel).
+(0, _cucumber.Then)(/^the "([^"]*)" should( not)? be visible$/, async function (elementKey, negate) {
+  const {
+    screen: {
+      page
+    },
+    globalConfig
+  } = this;
+  const elementIdentifier = (0, _webElementHelper.getElementLocator)(page, elementKey, globalConfig);
+  const locator = page.locator(elementIdentifier).first();
+  if (negate) {
+    await (0, _test.expect)(locator, `"${elementKey}" (${elementIdentifier}) to be hidden`).toBeHidden({
+      timeout: 15000
+    });
+  } else {
+    await (0, _test.expect)(locator, `"${elementKey}" (${elementIdentifier}) to be visible`).toBeVisible({
+      timeout: 15000
+    });
+  }
+});

@@ -11,8 +11,8 @@ Feature: Warranty job journey
   # Service info is saved (Installation goes to Booked instead), which looks
   # like the warranty replacement order being placed (SP.24).
   #
-  # As in the Installation journey, the final Complete Job "Submit" is never
-  # clicked: it sends real job-complete emails.
+  # Completing a job sends the job-complete emails (approved for staging by
+  # the user, 2026-10-07).
   #
   # CONFIRMED live, open question (not asserted): Diagnosis accepts an
   # entirely empty form (no complaint code, no fault code) and marks the
@@ -62,7 +62,7 @@ Feature: Warranty job journey
     Then I should be redirected to the "job-current-setup" page
 
   @smoke
-  Scenario: An engineer can take a Warranty job through to the Complete screen
+  Scenario: An engineer can take a Warranty job through to completion
     When I upload the "velstar-test-job-photo.jpg" file to the "On-arrival photo" input
     And I fill in the "Confirm serial number" input field with "VELSTAR-TEST-OLD-SN"
     And I fill in the "Water pressure" input field with "3 bar"
@@ -91,11 +91,24 @@ Feature: Warranty job journey
     And I click on the "Next" button
     Then I should be redirected to the "job-complete" page
     And the "completion confirmation" should be displayed
-    And the "Submit" should be displayed
+    And I remember the current URL path as "complete step"
+    # Server-side totals (SP.32): £85 call-out + 2 x £10 parts + £20 labour
+    # = £125, plus 20% VAT.
     When I navigate directly to the remembered path "invoicing step"
     Then the "Parts total" should equal text "£20.00"
     And the "VAT amount" should equal text "£25.00"
     And the "Total amount" should equal text "£150.00"
+    # SP.30: completing the job. Sends the job-complete emails (customer
+    # address is a Velstar alias; the company and InSinkErator recipient
+    # lists are empty on staging as of 2026-10-06).
+    When I navigate directly to the remembered path "complete step"
+    And I click on the "Submit" button
+    Then the "completion message" should contain the text "has been completed."
+    And the "completion message" should contain the text "This job will be included in the next Aquatherm export."
+    When I click on the "Back to job" link
+    Then I should be redirected to the "job-detail" page
+    And the "job summary" should contain the text "Complete"
+    And the "Continue job" should not be displayed
 
   Scenario: Current setup requires the on-arrival photo
     # SP.26: photo of the product before removal.

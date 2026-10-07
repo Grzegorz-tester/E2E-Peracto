@@ -34,7 +34,9 @@ Feature: Fault code management
   Scenario: The Owner edits a fault code and hides it
     When I fill in the "Search fault codes" input field with the remembered "fault code"
     And I press Enter in the "Search fault codes" input field
-    Then the current URL should contain "q="
+    # Turbo changes the URL before the list re-renders; wait for the code
+    # itself before clicking a row action.
+    Then the "first record title" should contain the remembered "fault code"
     When I click on the "first record Edit" link
     Then I should be redirected to the "fault-code-edit" page
     When I fill in the "Label" input field with "Velstar Test fault (edited)"
@@ -53,7 +55,9 @@ Feature: Fault code management
     # A hidden code must stop being offered, while staying on historic jobs.
     When I fill in the "Search fault codes" input field with the remembered "fault code"
     And I press Enter in the "Search fault codes" input field
-    Then the current URL should contain "q="
+    # Turbo changes the URL before the list re-renders; wait for the code
+    # itself before clicking a row action.
+    Then the "first record title" should contain the remembered "fault code"
     When I click on the "first record Edit" link
     Then I should be redirected to the "fault-code-edit" page
     When I uncheck the "Active"

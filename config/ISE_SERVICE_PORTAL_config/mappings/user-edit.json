@@ -1,0 +1,14 @@
+{
+  "Email": "#user_email",
+  "First name": "#user_firstName",
+  "Last name": "#user_lastName",
+  "Phone": "#user_phone",
+  "Admin role": "label[for=\"user_roles_0\"]",
+  "Service Manager role": "label[for=\"user_roles_1\"]",
+  "Service Engineer role": "label[for=\"user_roles_2\"]",
+  "Company": "#user_company",
+  "Account status": "#user_accountStatus",
+  "Save user": "main button[type=\"submit\"]:text-is(\"Save user\")",
+  "form error": "main .form-error",
+  "Email input": "#user_email"
+}

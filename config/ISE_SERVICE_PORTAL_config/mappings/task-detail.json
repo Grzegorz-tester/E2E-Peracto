@@ -1,0 +1,7 @@
+{
+  "Run now": "main button[type=\"submit\"]:has-text(\"Run now\")",
+  "latest run link": ":nth-match(main table tr a[href*=\"/runs/\"], 1)",
+  "latest run outcome": ":nth-match(main table tr .badge, 1)",
+  "task heading": "main h1",
+  "flash message": ".banner"
+}

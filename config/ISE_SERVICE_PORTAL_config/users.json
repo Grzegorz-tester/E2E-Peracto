@@ -1,6 +1,23 @@
 {
-  "owner": { "email": "", "password": "" },
-  "admin": { "email": "", "password": "" },
-  "engineer": { "email": "", "password": "" },
+  "owner": {
+    "email": "",
+    "password": ""
+  },
+  "admin": {
+    "email": "",
+    "password": ""
+  },
+  "manager": {
+    "email": "",
+    "password": ""
+  },
+  "engineer": {
+    "email": "",
+    "password": ""
+  },
+  "developer": {
+    "email": "",
+    "password": ""
+  },
   "guest": {}
 }

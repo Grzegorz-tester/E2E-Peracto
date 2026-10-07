@@ -4,5 +4,13 @@
   "customer email": "dl.card dt:text-is(\"Email\") + dd",
   "customer phone": "dl.card dt:text-is(\"Phone\") + dd",
   "customer address": "dl.card dt:text-is(\"Address\") + dd",
-  "step list": "main ul"
+  "step list": "main ul",
+  "job summary": "main p:has-text(\" steps\")",
+  "Edit job": "main a[href$=\"/edit\"]",
+  "Change engineer": "main a[href$=\"/assign\"]",
+  "Assign engineer": "main a[href$=\"/assign\"]",
+  "engineer name": "main dl.card dt:text-is(\"Engineer\") + dd",
+  "flash message": ".banner",
+  "job heading": "main h1",
+  "no engineer warning": "main .banner[data-level=\"error\"]"
 }

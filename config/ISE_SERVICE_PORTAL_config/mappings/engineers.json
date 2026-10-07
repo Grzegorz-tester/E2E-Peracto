@@ -1,0 +1,12 @@
+{
+  "Search engineers": "#q",
+  "New engineer": "main a[href^=\"/engineers/new/\"]",
+  "+ Engineer button": "main button:has-text(\"+ Engineer\")",
+  "Active filter": "main a:text-is(\"Active\")",
+  "Inactive filter": "main a:text-is(\"Inactive\")",
+  "Deleted filter": "main a:text-is(\"Deleted\")",
+  "first engineer": ":nth-match(main a[href^=\"/engineers/\"]:not([href*=\"/new\"]), 1)",
+  "engineer list": "main",
+  "no engineers message": "main p.muted",
+  "flash message": ".banner"
+}

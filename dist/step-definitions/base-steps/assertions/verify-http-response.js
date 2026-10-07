@@ -27,3 +27,30 @@ var _test = require("@playwright/test");
   (0, _test.expect)(response.status(), `${url} -> ${response.status()}`).toBe(200);
   (0, _test.expect)(response.headers()["content-type"] ?? "").toContain(expectedContentType);
 });
+
+// Fetches a path remembered earlier in the scenario (e.g. a share link's
+// href) directly, rather than navigating to it - navigating to a URL that
+// serves an attachment makes Playwright's goto() throw "Download is
+// starting". Uses the page's own request context, so it carries the
+// current session (or the lack of one, after logging out), which is what
+// "can someone without a login open this link" checks need.
+(0, _cucumber.Then)(/^requesting the remembered path "([^"]*)" should return status (\d+)(?: with content-type "([^"]*)")?$/, async function (variableName, expectedStatus, expectedContentType) {
+  const {
+    screen: {
+      page
+    }
+  } = this;
+  const urlPath = this.globalVariables[variableName];
+  if (urlPath === undefined) {
+    throw new Error(`No remembered path found for "${variableName}".`);
+  }
+  const url = new URL(urlPath, page.url()).toString();
+  const response = await page.request.get(url, {
+    timeout: 15000,
+    maxRedirects: 0
+  });
+  (0, _test.expect)(response.status(), `${url} -> ${response.status()}`).toBe(Number(expectedStatus));
+  if (expectedContentType !== undefined) {
+    (0, _test.expect)(response.headers()["content-type"] ?? "").toContain(expectedContentType);
+  }
+});

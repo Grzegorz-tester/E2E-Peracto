@@ -1,0 +1,9 @@
+{
+  "Expand all": "button:text-is(\"Expand all\")",
+  "Call-out charge override": "#company_invoicing_callout_amount",
+  "Mileage rate override": "#company_invoicing_mileage_rate_per_mile",
+  "Call-out radius override": "#company_invoicing_standard_callout_radius_miles",
+  "Save invoicing settings": "main button[type=\"submit\"]:has-text(\"Save invoicing\")",
+  "flash message": ".banner",
+  "company settings page": "main"
+}

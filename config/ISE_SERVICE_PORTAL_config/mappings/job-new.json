@@ -13,5 +13,9 @@
   "Installation option": "label[for=\"create_job_serviceType_1\"]",
   "Inside radius option": "label[for=\"create_job_withinRadius_0\"]",
   "Outside radius option": "label[for=\"create_job_withinRadius_1\"]",
-  "Create job": "button[type=\"submit\"]:visible"
+  "Create job": "button[type=\"submit\"]:visible",
+  "Service company": "#create_job_company",
+  "Warranty Service radio": "#create_job_serviceType_0",
+  "First name input": "#create_job_customerFirstName",
+  "Step 2 heading": "h1:has-text(\"Step 2\")"
 }

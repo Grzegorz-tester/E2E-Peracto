@@ -1,0 +1,5 @@
+{
+  "run outcome": "main dd .badge, main .badge",
+  "run logs": "main table",
+  "Back to task": "main a:has-text(\"Back to task\")"
+}

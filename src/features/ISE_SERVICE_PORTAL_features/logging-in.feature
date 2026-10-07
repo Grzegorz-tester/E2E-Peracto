@@ -19,10 +19,12 @@ Feature: Login and logout
     And the "welcome message" should contain the text "Welcome back"
 
     Examples:
-      | user     |
-      | owner    |
-      | admin    |
-      | engineer |
+      | user      |
+      | owner     |
+      | admin     |
+      | manager   |
+      | engineer  |
+      | developer |
 
   Scenario: Submitting an empty login form is rejected by client-side validation
     Given I am on the "login" page

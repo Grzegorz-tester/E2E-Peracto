@@ -1,0 +1,8 @@
+{
+  "Active button": "main button[value=\"enabled\"]",
+  "Inactive button": "main button[value=\"disabled\"]",
+  "Back to Engineers": "main a[href=\"/engineers\"]",
+  "engineer name": "main h1",
+  "flash message": ".banner",
+  "current status": "main button[aria-current=\"true\"]"
+}

@@ -31,6 +31,9 @@ Feature: Dashboard job list
     And the "pagination" should contain the text "Page 2 of"
     And the "first job card" should be displayed
 
+  # "New" isn't in this list: no job is ever "New" on staging (CONFIRMED
+  # 2026-10-07 - even a job raised with no engineer is "Assigned"), so that
+  # filter is always empty. See job-management.feature.
   Scenario Outline: Filtering by "<filter>" only shows matching jobs
     When I click on the "<filter> filter" link
     Then the "active filter" should equal text "<filter>"
@@ -38,8 +41,10 @@ Feature: Dashboard job list
 
     Examples:
       | filter                 | status                 |
-      | Complete               | Complete               |
       | Awaiting authorisation | Awaiting authorisation |
+      | Awaiting part          | Awaiting part          |
+      | Booked                 | Booked                 |
+      | Complete               | Complete               |
 
   Scenario Outline: The "<filter>" Service Type filter can be applied
     # Job cards don't show the Service Type, so this checks the filter is

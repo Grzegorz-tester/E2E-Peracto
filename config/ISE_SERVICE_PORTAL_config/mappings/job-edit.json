@@ -1,0 +1,16 @@
+{
+  "Status": "#edit_job_status",
+  "Phone": "#edit_job_customerPhone",
+  "Billing address line 1": "#edit_job_billingAddress_line1",
+  "Billing town": "#edit_job_billingAddress_town",
+  "Billing postcode": "#edit_job_billingAddress_postcode",
+  "Delivery address line 1": "#edit_job_deliveryAddress_line1",
+  "Delivery town": "#edit_job_deliveryAddress_town",
+  "Delivery postcode": "#edit_job_deliveryAddress_postcode",
+  "Billing Enter manually": "button[data-action=\"address-lookup#enterManually\"] >> nth=1",
+  "Delivery Enter manually": "button[data-action=\"address-lookup#enterManually\"] >> nth=2",
+  "Assigned engineer": "#edit_job_assignedEngineer",
+  "Notes": "#edit_job_notes",
+  "Save changes": "main button[type=\"submit\"]:has-text(\"Save changes\")",
+  "form error": "main .form-error"
+}

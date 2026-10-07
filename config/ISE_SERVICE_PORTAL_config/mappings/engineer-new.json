@@ -1,0 +1,9 @@
+{
+  "Email": "#engineer_email",
+  "First name": "#engineer_firstName",
+  "Last name": "#engineer_lastName",
+  "Phone": "#engineer_phone",
+  "Account status": "#engineer_accountStatus",
+  "Add engineer": "main button[type=\"submit\"]",
+  "form error": "main .form-error"
+}

@@ -1,0 +1,5 @@
+{
+  "first file link": ":nth-match(main a[href^=\"/share/\"], 1)",
+  "file list": "main",
+  "no files message": "main p.muted"
+}

@@ -1,0 +1,6 @@
+{
+  "Aquatherm export task": "main a[href=\"/admin/tasks/aquatherm_export\"]",
+  "Product sync task": "main a[href=\"/admin/tasks/product_sync\"]",
+  "Ping task": "main a[href=\"/admin/tasks/ping\"]",
+  "task table": "main table"
+}

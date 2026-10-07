@@ -283,6 +283,23 @@ When(
   }
 );
 
+// For a link or other attribute value only known at runtime (e.g. a
+// generated share link's href), to revisit or request it later in the
+// same scenario.
+When(
+  /^I remember the "([^"]*)" attribute of the "([^"]*)" as "([^"]*)"$/,
+  async function (this: ScenarioWorld, attribute: string, elementKey: ElementKey, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    await page.waitForSelector(elementIdentifier, { state: "attached", timeout: 15000 });
+    const value = await page.getAttribute(elementIdentifier, attribute);
+    if (value === null) {
+      throw new Error(`"${elementKey}" (${elementIdentifier}) has no "${attribute}" attribute.`);
+    }
+    this.globalVariables[variableName] = value;
+  }
+);
+
 // For a value embedded in a longer text, where only that part is useful
 // later (e.g. the postcode at the end of a one-line address, to search by
 // postcode on its own). Remembers the first regex match - or its first

@@ -1,0 +1,9 @@
+{
+  "Can authorise mileage": "#user_job_authorisation_can_authorise_mileage",
+  "Save job authorisation settings": "main button[type=\"submit\"]:has-text(\"Save job authorisation\")",
+  "Receives stock emails": "#user_user_notifications_receives_stock_emails",
+  "Save user notifications settings": "main button[type=\"submit\"]:has-text(\"Save user notifications\")",
+  "Expand all": "button:text-is(\"Expand all\")",
+  "flash message": ".banner",
+  "user settings page": "main"
+}

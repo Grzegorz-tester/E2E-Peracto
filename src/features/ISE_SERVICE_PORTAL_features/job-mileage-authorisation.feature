@@ -8,11 +8,15 @@ Feature: Mileage authorisation
   #
   # CONFIRMED live (2026-10-06): the Engineer sees the code field disabled,
   # with no button and "Waiting on someone else to complete this step.".
-  # Admin and Owner get an enabled field and "Authorise & Continue". The
-  # +admin test account can authorise. The permission's default is set in
-  # Settings with no per-user overrides, so an Admin WITHOUT the permission
-  # isn't covered: that needs a second Admin account, or an override that
-  # would change behaviour for every Admin on staging.
+  # Admin and Owner get an enabled field and "Authorise & Continue".
+  #
+  # CONFIRMED DEFECT (live, 2026-10-07): the permission isn't enforced. The
+  # +admin test account does NOT have "can authorise mileage" (Settings:
+  # global default No, no override on user 79), yet it got the enabled
+  # field and its authorisation went through (job 282 moved on to
+  # "Awaiting part"). Settings also says only ticked users get the mileage
+  # authorisation request email - with nobody ticked, it's unclear who is
+  # told a job is waiting.
   #
   # Submitting the claim sends the mileage authorisation request email
   # (SP.34). Authorising releases the order: the status goes Awaiting
@@ -56,13 +60,13 @@ Feature: Mileage authorisation
     And the "Authorisation code" should not be enabled
     And the "Authorise & Continue" should not be displayed
 
-  Scenario: An Admin with the mileage permission can authorise
-    # Checks the control only; doesn't submit, so the job stays pending.
+  Scenario: An Admin without the mileage permission can't authorise
+    # Currently FAILS on the defect above: the field is enabled. Left red.
     When I navigate directly to the path "/logout"
     And I am navigating the page as a "admin" user
     And I navigate directly to the remembered path "authorisation step"
-    Then the "Authorisation code" should be enabled
-    And the "Authorise & Continue" should be displayed
+    Then the "Authorisation code" should not be enabled
+    And the "Authorise & Continue" should not be displayed
 
   @smoke
   Scenario: The Owner authorises and the mileage carries through to the invoice

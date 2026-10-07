@@ -98,5 +98,57 @@
   "fault-code-edit": {
     "route": "/fault-codes/",
     "regex": "^/fault-codes/\\d+/edit$"
+  },
+  "user-new": {
+    "route": "/users/new",
+    "regex": "^/users/new$"
+  },
+  "user-edit": {
+    "route": "/users/",
+    "regex": "^/users/\\d+/edit$"
+  },
+  "user-settings": {
+    "route": "/settings/user/",
+    "regex": "^/settings/user/\\d+$"
+  },
+  "company-new": {
+    "route": "/companies/new",
+    "regex": "^/companies/new$"
+  },
+  "company-edit": {
+    "route": "/companies/",
+    "regex": "^/companies/\\d+/edit$"
+  },
+  "company-settings": {
+    "route": "/settings/company/",
+    "regex": "^/settings/company/\\d+$"
+  },
+  "engineer-new": {
+    "route": "/engineers/new/",
+    "regex": "^/engineers/new/\\d+$"
+  },
+  "engineer-detail": {
+    "route": "/engineers/",
+    "regex": "^/engineers/\\d+$"
+  },
+  "task-detail": {
+    "route": "/admin/tasks/",
+    "regex": "^/admin/tasks/[a-z_]+$"
+  },
+  "task-run": {
+    "route": "/admin/tasks/",
+    "regex": "^/admin/tasks/[a-z_]+/runs/\\d+$"
+  },
+  "job-edit": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/edit$"
+  },
+  "job-assign": {
+    "route": "/job/",
+    "regex": "^/job/\\d+/assign$"
+  },
+  "settings-overrides": {
+    "route": "/settings/",
+    "regex": "^/settings/[a-z_]+/[a-z_]+/(company|user)-overrides$"
   }
 }
