@@ -14,9 +14,17 @@ Feature: Menu side draw
   # staging): Video Gallery, Contact Us, Technical & Safety Data Sheets and
   # Conditions Of Use were dropped from it (still linked from the footer),
   # and Help & Advice (the new /contact-us page) was added.
+  #
+  # 2026-10-14: staging's header was redesigned into a desktop mega menu. The
+  # old "Menu" button (navigation-bar__nav-menu-button) is gone; the drawer is
+  # now the mobile-only nav (brand-bar__menu-button, "lg:hidden"), so these
+  # scenarios resize to a mobile viewport first. The drawer container testid
+  # (nav-menu__popup-list) and its Brochures/Help & Advice/Blog/Industrial
+  # Product Finder links are unchanged - confirmed live.
 
   Scenario Outline: Verify menu elements for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
+    And I resize the browser to a "mobile" viewport
     And I click on the "Menu" icon
     Then the "Brochures draw menu item" should be displayed
     And the "Help & Advice draw menu item" should be displayed
@@ -30,6 +38,7 @@ Feature: Menu side draw
 
   Scenario: Navigating from the side draw menu reaches the right page
     Given I am on the "home" page
+    And I resize the browser to a "mobile" viewport
     When I click on the "Menu" icon
     And I click on the "Brochures draw menu item" element
     Then I should be redirected to the "brochures" page

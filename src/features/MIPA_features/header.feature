@@ -112,6 +112,8 @@ Feature: Header functionality
 
   Scenario Outline: Verify: - search box functionality using the Algolia search results autocomplete in the menu side-draw
     Given I am on the "home" page
+    # The drawer is mobile-only since the 2026-10-14 header redesign (see menu-draw.feature)
+    And I resize the browser to a "mobile" viewport
     When I click on the "Menu" link
     Then the "menu draw" should be displayed
     When I fill in the "menu draw search bar" input field with "<product name>"
