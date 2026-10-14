@@ -1,0 +1,8 @@
+{
+  "Add address": "main a[href=\"/company/addresses/new\"]",
+  "address list": "ul.address-list",
+  "address row": "ul.address-list > li",
+  "Edit link": "a[href$=\"/edit\"]",
+  "Remove button": "button:has-text(\"Remove\")",
+  "flash message": ".banner"
+}

@@ -102,7 +102,7 @@ sync, editing global Settings (always restored), and covering the Service Manage
 - "Change engineer" and "Edit job" are still offered on completed jobs.
 - Manager gets 404 on another company's job, Engineer gets 403 (both deny).
 
-**Feature files (18, 104 scenarios):** `health-check`, `logging-in`, `reset-password`,
+**Feature files (18, 104 scenarios; 19 and 111 after round 4 added `company-addresses`):** `health-check`, `logging-in`, `reset-password`,
 `access-control`, `dashboard`, `job-installation-journey`, `job-warranty-journey`,
 `job-mileage-authorisation`, `job-invoicing`, `job-step-validation`, `job-management`, `fault-codes`,
 `users`, `engineers`, `companies`, `settings`, `tasks`, `mobile`.
@@ -113,6 +113,46 @@ sync, editing global Settings (always restored), and covering the Service Manage
 - Real iOS/Android devices and Safari (Chromium mobile viewport only).
 - An Admin who *does* have the mileage permission is checked only through Settings, since enforcement
   is broken anyway.
+
+### Round 4 (2026-10-14): QA phase review
+
+The build is now in full QA. The Jira project **IWS** (velstargroup.atlassian.net) has replaced the SoW as
+the most current scope: several tickets change or add stories after SoW V1.0 (last edited 19 Aug). When
+the SoW and an IWS ticket disagree, test the ticket.
+
+**Full run on staging:** 93/104, the same as 2026-10-07 (one network drop on our side passed on rerun).
+All 10 defects in the round 3 table are still present, including on IWS-58 (invoicing: live VAT, "Add
+part") and IWS-59 ("Continue job"), which are both in QA. None of the 10 is raised as a bug in IWS yet.
+
+**Added this round (live on staging, all passing):**
+- `company-addresses.feature` (IWS-56): the Service Manager adds, edits and removes a company address,
+  and line 1, town and postcode are required.
+- `access-control.feature`: Owner, Admin, Engineer and Developer all get 403 on `/company/addresses`.
+- CONFIRMED live: the page is Manager-only and linked from the dashboard, not the menu. Remove deletes
+  straight away with no confirmation. Another company's address id by direct URL is 403.
+- Open questions (asserted as built): there's no billing/shipping split (IWS-56 asks for one billing
+  address and several shipping addresses), and nothing in the job flow offers these addresses yet
+  (IWS-56: "see it available when starting a new job").
+
+**Decided by IWS tickets (open questions closed):**
+- Admin managing Users and Companies is intended (IWS-55: "Give owners and admins the screens they
+  need"). It's no longer an open question.
+- Fault codes are "no longer used" (IWS-49, IWS-55, IWS-62). Complaint codes replace them.
+
+**In QA or peer review but NOT on staging yet (checked 2026-10-14).** Each changes the suite when it lands:
+
+| Ticket | Change | Suite impact |
+|---|---|---|
+| IWS-62 | Fault code removed from Diagnosis. Complaint category dropdown (Food Waste Disposer, Hot Water Taps). Codes with no category in every list. Changing category clears the code. "Can't be selected" codes visible but disabled | The warranty journey, mileage journey and `tasks.feature` all select "F-134": these break. Add category filtering scenarios |
+| IWS-49 | Complaint code management: list with search and Active/Inactive filter, detail with Active/Old toggle, categories and "Can't be selected". No delete | Replace `fault-codes.feature` with `complaint-codes.feature` (add, edit, mark Old, Old code not offered at Diagnosis) |
+| IWS-16 | Settings hub (Engineers, Companies, Users, Complaint codes, System settings). "Sync from website" with "Last synced", "Export all data", both showing success or failure | Menu checks in `access-control.feature`, and `tasks.feature` / `settings.feature` routes and mappings |
+| IWS-55 | Companies and Users redesign: Active/Old toggle on the detail page, Save disabled until something changes, Company email and phone | `companies.feature`, `users.feature` (the two Users CSRF reds need reworking against the new screens) |
+| IWS-64 | "Repaired" / "Replaced" radio on the Notes step, Warranty only | Add to the warranty journey; assert it's absent on Installation |
+| IWS-65 | Country select on every address, United Kingdom and Republic of Ireland only, default UK | Job step 1 and company addresses: default, both options, and that it persists |
+| IWS-5 | Export moves to the ETQ format (blocked on the client) | Rewrite the 6-column export check when it lands |
+
+No suite change needed: IWS-63 (styled 403/404/500 pages) is already live and the access checks still pass.
+IWS-46 (dashboard lazy-loading) is To Do: recheck pagination when it lands.
 
 ## 1. Scope
 
@@ -285,7 +325,7 @@ The SoW tests the admin panel on desktop only, and engineer-facing screens acros
    company engineer.
 10. **Completing a job:** who should receive the job-complete emails on staging, and can the suite
     click the final Submit? The SoW's QA section counts completing a job as a red route.
-9. Is email search (SP.10) descoped or a defect? Should Admin have Users/Tasks access?
+9. Is email search (SP.10) descoped or a defect? (Admin access to Users/Companies: answered by IWS-55, intended.)
 4. **Does staging place real orders through the ISE UK site to Oracle?** (SP.24)
 5. Admin account flags: which test account has "can authorise mileage"?
 6. Staging recipient for InSinkErator and sales admin emails, and for the Aquatherm export file.

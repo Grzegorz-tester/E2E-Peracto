@@ -63,22 +63,29 @@ Feature: Role-based access control
     Then the "page title" should contain the text "Access Denied"
 
     Examples:
-      | user      | path         |
-      | engineer  | /users       |
-      | engineer  | /companies   |
-      | engineer  | /engineers   |
-      | engineer  | /fault-codes |
-      | engineer  | /admin/tasks |
-      | manager   | /users       |
-      | manager   | /companies   |
-      | manager   | /fault-codes |
-      | manager   | /admin/tasks |
-      | developer | /users       |
-      | developer | /companies   |
-      | developer | /engineers   |
-      | developer | /fault-codes |
-      | developer | /admin/tasks |
-      | developer | /job/new     |
+      | user      | path               |
+      | engineer  | /users             |
+      | engineer  | /companies         |
+      | engineer  | /engineers         |
+      | engineer  | /fault-codes       |
+      | engineer  | /admin/tasks       |
+      | manager   | /users             |
+      | manager   | /companies         |
+      | manager   | /fault-codes       |
+      | manager   | /admin/tasks       |
+      | developer | /users             |
+      | developer | /companies         |
+      | developer | /engineers         |
+      | developer | /fault-codes       |
+      | developer | /admin/tasks       |
+      | developer | /job/new           |
+      # Company addresses (IWS-56) is the Service Manager's own page.
+      # CONFIRMED live (2026-10-14): every other role gets 403, including
+      # the Owner, who has no company.
+      | owner     | /company/addresses |
+      | admin     | /company/addresses |
+      | engineer  | /company/addresses |
+      | developer | /company/addresses |
 
   Scenario: A Service Manager can only add engineers to their own company
     # /engineers/new/<company id>: Test Company is 1, any other id is

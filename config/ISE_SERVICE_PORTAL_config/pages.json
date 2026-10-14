@@ -150,5 +150,17 @@
   "settings-overrides": {
     "route": "/settings/",
     "regex": "^/settings/[a-z_]+/[a-z_]+/(company|user)-overrides$"
+  },
+  "company-addresses": {
+    "route": "/company/addresses",
+    "regex": "^/company/addresses$"
+  },
+  "company-address-new": {
+    "route": "/company/addresses/new",
+    "regex": "^/company/addresses/new$"
+  },
+  "company-address-edit": {
+    "route": "/company/addresses/",
+    "regex": "^/company/addresses/\\d+/edit$"
   }
 }

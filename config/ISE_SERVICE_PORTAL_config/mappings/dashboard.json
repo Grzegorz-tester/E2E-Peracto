@@ -19,5 +19,6 @@
   "job card status": "a.job-card .job-card-status",
   "pagination": "nav.pagination",
   "Next page": "nav.pagination a:text-is(\"Next\")",
-  "no jobs message": "p.muted:text-is(\"No jobs to show.\")"
+  "no jobs message": "p.muted:text-is(\"No jobs to show.\")",
+  "Company addresses link": "main a[href=\"/company/addresses\"]"
 }

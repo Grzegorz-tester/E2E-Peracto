@@ -1,0 +1,9 @@
+{
+  "Enter manually": "button[data-action=\"address-lookup#enterManually\"]",
+  "Address line 1": "#address_line1",
+  "Address line 2": "#address_line2",
+  "Town": "#address_town",
+  "County": "#address_county",
+  "Postcode": "#address_postcode",
+  "Save address": "main button[type=\"submit\"]"
+}
