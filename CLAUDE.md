@@ -16,10 +16,10 @@ as the customer's name/surname: "Velstar Test").
 
 ## Commands
 
-Tests are run per-project via `COMMON_CONFIG_FILE`, which points at that project's `env/<Project>.env`:
+Tests are run per-project via `COMMON_CONFIG_FILE`, which points at that project's `env/<PROJECT>_<ENV>.env`:
 
 ```bash
-COMMON_CONFIG_FILE=env/KOOL.env ./run_tests.sh regression
+COMMON_CONFIG_FILE=env/KOOLTECH_STAGING.env ./run_tests.sh regression
 ```
 
 Cucumber profiles (`dev`, `smoke`, `regression`, plus a few project-specific ones like
@@ -54,11 +54,20 @@ yarn test                  # cucumber + HTML/PDF report generation
 yarn clean                 # rimraf dist reports
 ```
 
+**Parallel runs:** `PARALLEL` in `env/<PROJECT>_<ENV>.env` sets the number of cucumber workers (default
+1). `src/step-definitions/setup/parallel.ts` keeps it safe: two scenarios that log in (via `I am
+navigating the page as a "X" user`) as the same resolved account never run at the same time,
+since they share one real basket/address book/wishlist; guest scenarios and different accounts
+run freely. Tag a scenario `@serial` if it touches shared state some other way (logging in by
+hand through the Sign In form, editing global admin settings) - it then runs with nothing else
+in flight. Logged-in-heavy suites (every admin suite) gain little, and slow or WAF/rate-limited
+sites (HIB staging, Andy Thornton prod, Insinkerator) may get worse with more workers.
+
 Run a single feature file or scenario by narrowing `FEATURE_PATH` (set per-project in
-`env/<Project>.env`) or by tagging the scenario and filtering with `--tags`:
+`env/<PROJECT>_<ENV>.env`) or by tagging the scenario and filtering with `--tags`:
 
 ```bash
-COMMON_CONFIG_FILE=env/KOOL.env FEATURE_PATH=src/features/KOOL_features/basket.feature ./run_tests.sh regression
+COMMON_CONFIG_FILE=env/KOOLTECH_STAGING.env FEATURE_PATH=src/features/KOOLTECH_features/basket.feature ./run_tests.sh regression
 ```
 
 (Appending the feature path as a bare CLI argument instead does **not** narrow the run - cucumber-js
@@ -76,24 +85,24 @@ silently pass code `tsc` would reject).
 
 ## Architecture
 
-**Everything is data-driven per project.** A project = one `env/<Project>.env` file + one
-`config/<Project>_config/` directory. There is no per-project TypeScript; behaviour is entirely
+**Everything is data-driven per project.** A project = one `env/<PROJECT>_<ENV>.env` file + one
+`config/<PROJECT>_config/` directory. There is no per-project TypeScript; behaviour is entirely
 generic step definitions parameterized by config.
 
-- `env/<Project>.env` - points at that project's config paths (`HOSTS_URL_PATH`,
+- `env/<PROJECT>_<ENV>.env` - points at that project's config paths (`HOSTS_URL_PATH`,
   `PAGES_URL_PATH`, `PAGE_ELEMENTS_PATH`, `USERS_CONFIG_PATH`), its `LOGIN_URL`/`LOGIN_SUCCESS_URL`,
   a `PROJECT` slug (used for env-var credential overrides), and `FEATURE_PATH` (scopes a run to
-  that project's own `src/features/<Project>_features/` folder so shared tags like `@smoke`
+  that project's own `src/features/<PROJECT>_features/` folder so shared tags like `@smoke`
   don't pull in every other project's scenarios).
-- `config/<Project>_config/hosts.json` - environment name (e.g. `staging`) -> base URL.
-- `config/<Project>_config/pages.json` - page ID -> `{ route, regex }`. The `regex` is how the
+- `config/<PROJECT>_config/hosts.json` - environment name (e.g. `staging`) -> base URL.
+- `config/<PROJECT>_config/pages.json` - page ID -> `{ route, regex }`. The `regex` is how the
   framework identifies "what page am I on" from the current URL path
   (`getCurrentPageId` / `pathMatchesPageId` in `src/step-definitions/support-functions/navigation-behaviour.ts`).
-- `config/<Project>_config/mappings/*.json` - one file per page ID (filename = page ID, e.g.
+- `config/<PROJECT>_config/mappings/*.json` - one file per page ID (filename = page ID, e.g.
   `basket.json`, `checkout.json`), each an element-key -> CSS/text selector map, plus a
   `common.json` used as a fallback when a key isn't found on the current page
   (`getElementLocator` in `src/step-definitions/support-functions/web-element-helper.ts`).
-- `config/<Project>_config/users.json` - defines which user types exist (e.g. `"logged in"`,
+- `config/<PROJECT>_config/users.json` - defines which user types exist (e.g. `"logged in"`,
   `"guest"`) with blank credentials; real credentials come from environment variables at runtime
   (see `.env.example`), never committed. `loadGlobalConfig` (`src/env/loadGlobalConfig.ts`)
   resolves `<PROJECT>_<USER_TYPE>_EMAIL`/`_PASSWORD` first, falling back to the generic
@@ -126,8 +135,8 @@ mis-splits selector values containing an escaped quote followed by a space (e.g.
   (`html-behaviour.ts` clickElement/clickElementAtIndex, `wait-for-behaviour.ts`, page-ID
   resolution, payment test card data) that the step layers above call into.
 
-**Feature files** live under `src/features/<Project>_features/` (or nested subfolders for larger
-admin suites, e.g. `Carbon_admin/Configuration`, `Carbon_admin/Products`). Prefer the existing
+**Feature files** live under `src/features/<PROJECT>_features/` (or nested subfolders for larger
+admin suites, e.g. `CARBON_ADMIN_SHARED_features/Configuration`, `CARBON_ADMIN_SHARED_features/Products`). Prefer the existing
 generic steps over writing new ones - most interactions are already covered: `I click on the "X"
 button/link/element`, `I fill in the "X" input field with "Y"`, `I check the "X"`, assertion
 steps, and the ordinal `I click on the "1st" "X" element` for positional clicks. Two escape
@@ -141,16 +150,29 @@ Only add a new bespoke step when the action genuinely can't be expressed with th
 stashing a dynamic value for later reuse in the same scenario, a multi-step retry loop like
 address autocomplete, or reaching into an iframe via `frameLocator`). Make it reusable by other
 projects, not just the one being built for it: resolve elements through `getElementLocator`
-(the selector belongs in that project's `config/<Project>_config/mappings/*.json`, not in
+(the selector belongs in that project's `config/<PROJECT>_config/mappings/*.json`, not in
 TypeScript) and parametrize whatever varies as step arguments.
 
 ## Setting up a new project
 
 Adding a new project means creating its skeleton, not writing new TypeScript:
 
-- `env/<Project>.env` (and `env/<Project>_<Region>.env` per regional variant, as Watco does).
-- `config/<Project>_config/{hosts.json,pages.json,users.json,mappings/*.json}`.
-- `src/features/<Project>_features/*.feature`.
+- `env/<PROJECT>_<ENV>.env`, one per environment (e.g. `env/KOOLTECH_STAGING.env`,
+  `env/KOOLTECH_PROD.env`, `env/WATCO_DE_STAGING.env`, `env/HIB_ADMIN_RELEASE.env`).
+- `config/<PROJECT>_config/{hosts.json,pages.json,users.json,mappings/*.json}`.
+- `src/features/<PROJECT>_features/*.feature`.
+
+**Naming convention (2026-10-19):** project names are ALL CAPS with underscores between words:
+`<CLIENT>[_<REGION>][_ADMIN]`, e.g. `ANDY_THORNTON`, `INSINKERATOR_EU_ADMIN`, `WATCO_BEFR`,
+`KOOLTECH` (not "KOOL"). Env files always end in the environment they actually target, matching
+their `UI_AUTOMATION_HOST`: `_STAGING` (staging), `_RELEASE` (release_branch) or `_PROD`
+(production) - never leave it implicit, since an unsuffixed env once quietly pointed at
+production (PizzaExpressLive). Config and feature folders are shared across that project's
+environments, so they carry no environment suffix; the `_config`/`_features` suffixes stay
+lowercase. Shared suites are `<CLIENT>_SHARED_features` (`CARBON_ADMIN_SHARED_features`,
+`WATCO_SHARED_features`). The report folder (`reports/<name>/`, via `JSON_REPORT_FILE`) must equal
+the env file's basename. `PROJECT=` stays a lowercase slug (it only selects the credential
+prefix in `.env`, e.g. `PROJECT=kool` -> `KOOL_LOGGED_IN_EMAIL`), so it was not renamed.
 
 A storefront and its admin site (e.g. Carbon Admin alongside its storefront) are set up as
 **separate projects**, each with its own `env/*.env` and `config/*_config/` - the admin site is
@@ -189,11 +211,11 @@ underlying Peracto Admin product - confirmed live across multiple tenants: ident
 data-testid selectors, routes, nav structure and error copy. Rather than maintaining a
 near-identical copy of the same admin feature files per project, the shared scenarios (login,
 every tab has real content or a genuine empty state, clicking a tab's first item redirects to
-its own detail page) live once in `src/features/Carbon_admin/`, since Carbon Admin is the
+its own detail page) live once in `src/features/CARBON_ADMIN_SHARED_features/`, since Carbon Admin is the
 boilerplate project most Peracto admin projects are set up from. Each tenant's own
-`env/<Project>_ADMIN.env` points its `FEATURE_PATH` at that same shared folder
-(`./src/features/Carbon_admin/**/*.feature`) rather than copying the files - only the host URL,
-credentials and `config/<Project>_ADMIN_config/` mapping/route specifics differ per project,
+`env/<PROJECT>_ADMIN_<ENV>.env` points its `FEATURE_PATH` at that same shared folder
+(`./src/features/CARBON_ADMIN_SHARED_features/**/*.feature`) rather than copying the files - only the host URL,
+credentials and `config/<PROJECT>_ADMIN_config/` mapping/route specifics differ per project,
 never the scenarios themselves.
 
 Because the shared scenarios assume a "typical" Peracto Admin tab set, a new tenant won't
@@ -209,10 +231,10 @@ always fit exactly:
   and excluding the tag for tenants that lack it) rather than silently breaking for that one
   project.
 - **A tenant has its own bespoke tab that the others don't** (e.g. a "Test Harness" section):
-  don't add it to the shared `Carbon_admin` feature files - that would run a tab that doesn't
+  don't add it to the shared `CARBON_ADMIN_SHARED_features` feature files - that would run a tab that doesn't
   exist against every other tenant. Give that tenant its own small project-specific feature file
-  alongside the shared ones (e.g. `src/features/<Project>_features/admin-extras.feature`, or a
-  file within its own `<Project>_ADMIN` feature path added in addition to the shared
+  alongside the shared ones (e.g. `src/features/<PROJECT>_features/admin-extras.feature`, or a
+  file within its own `<PROJECT>_ADMIN` feature path added in addition to the shared
   `FEATURE_PATH` glob) covering just its bespoke tab, following the same generic step /
   `getElementLocator` conventions as everywhere else.
 - Before assuming a shared-suite failure is a tab genuinely missing from a tenant, verify it
@@ -220,8 +242,8 @@ always fit exactly:
   other quirk in this document, so a real config mistake doesn't get waved off as "this tenant
   doesn't have that".
 
-**Before promoting any feature file to `src/features/Carbon_admin/`**, run
-`scripts/check-duplicate-admin-features.sh` (or check by hand: does any `<Project>_ADMIN_features/`
+**Before promoting any feature file to `src/features/CARBON_ADMIN_SHARED_features/`**, run
+`scripts/check-duplicate-admin-features.sh` (or check by hand: does any `<PROJECT>_ADMIN_features/`
 folder already have a file with the exact same name?). Because every tenant runs the same
 underlying Peracto Admin product, it's common for a tenant-specific version of a scenario to have
 been independently built (and independently live-verified) before that scenario is promoted to

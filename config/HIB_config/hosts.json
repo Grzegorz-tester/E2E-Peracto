@@ -1,5 +1,6 @@
 {
   "release_branch": "https://feature-hib-170.hib.pub",
   "staging": "https://staging.hib.pub",
-  "dev": "http://localhost:3001"
+  "dev": "http://localhost:3001",
+  "production": "https://www.hib.co.uk"
 }

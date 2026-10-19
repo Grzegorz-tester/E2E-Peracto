@@ -1,7 +1,7 @@
 @regression
 Feature: Test Harness - Get Product
 
-  # Bespoke to MIPA, not the shared Carbon_admin boilerplate suite - the
+  # Bespoke to MIPA, not the shared CARBON_ADMIN_SHARED_features boilerplate suite - the
   # "Test Harnesses" section (Get Prices, Get Invoices, Get Account
   # Balance, Get Product, Get Customer, Get Sales Orders, Send Order,
   # Import Payment) is MIPA's own bespoke tab, not part of the standard

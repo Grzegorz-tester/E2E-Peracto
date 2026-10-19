@@ -1,5 +1,5 @@
 #!/bin/bash
-# Detects filename collisions between the shared Carbon_admin boilerplate
+# Detects filename collisions between the shared CARBON_ADMIN_SHARED_features boilerplate
 # suite and any tenant's own bespoke <PROJECT>_ADMIN_features folder.
 #
 # Why this exists: every Peracto Admin tenant runs the same underlying
@@ -20,7 +20,7 @@
 # direct user question, not by any automated check. This script exists so
 # the same class of gap doesn't require another manual audit next time.
 #
-# Run this after promoting ANY file to src/features/Carbon_admin/, or
+# Run this after promoting ANY file to src/features/CARBON_ADMIN_SHARED_features/, or
 # periodically as a sanity check. A collision found here means: read both
 # files, merge any unique CONFIRMED findings from the tenant-specific copy
 # into the shared file's comments (don't lose real live-verified
@@ -29,7 +29,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-SHARED_DIR="src/features/Carbon_admin"
+SHARED_DIR="src/features/CARBON_ADMIN_SHARED_features"
 FOUND=0
 
 for shared_file in "$SHARED_DIR"/*.feature; do
@@ -45,7 +45,7 @@ for shared_file in "$SHARED_DIR"/*.feature; do
 done
 
 if [ "$FOUND" -eq 0 ]; then
-  echo "No filename collisions found between Carbon_admin and any tenant's bespoke features folder."
+  echo "No filename collisions found between CARBON_ADMIN_SHARED_features and any tenant's bespoke features folder."
 else
   echo
   echo "Found collisions above - each one is a scenario silently running twice for that tenant."

@@ -245,7 +245,7 @@ can be tested. **None** = backend only, covered indirectly or not at all.
 
 ## 5. Feature files and core scenarios
 
-Project: separate from the Insinkerator storefront and admin, e.g. `env/ISE_SERVICE_PORTAL.env`,
+Project: separate from the Insinkerator storefront and admin, e.g. `env/ISE_SERVICE_PORTAL_STAGING.env`,
 `config/ISE_SERVICE_PORTAL_config/`, `src/features/ISE_SERVICE_PORTAL_features/`. File names follow the
 Insinkerator storefront convention (kebab-case, by area).
 

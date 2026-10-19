@@ -1,4 +1,6 @@
 @regression
+# Adds to the real account basket - excluded on production (read-only).
+@not-on-production
 Feature: Checkout validation (no order placed)
 
   # NEVER place an HIB order, on any environment (staging, release or

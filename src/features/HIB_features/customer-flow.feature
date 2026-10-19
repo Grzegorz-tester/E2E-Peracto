@@ -1,9 +1,11 @@
 @smoke
 @regression
+# Adds to the real account basket - excluded on production (read-only).
+@not-on-production
 Feature: Product purchase flow
 
   # Ported from the Insinkerator_EU guest/logged-in purchase journeys
-  # (src/features/Insinkerator_EU_features/logged-in-purchase-journey.feature)
+  # (src/features/INSINKERATOR_EU_features/logged-in-purchase-journey.feature)
   # and adjusted for HIB's single-page basket + finalise-order checkout.
   #
   # IMPORTANT: never create real orders for the HIB project (see README).

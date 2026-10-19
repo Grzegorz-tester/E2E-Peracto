@@ -10,7 +10,7 @@
 # their own profile name.
 #
 # Admin projects (2026-08-25): every Peracto Admin instance we've verified
-# live shares the same suite - src/features/Carbon_admin/**/*.feature - via
+# live shares the same suite - src/features/CARBON_ADMIN_SHARED_features/**/*.feature - via
 # each tenant's own env/<Project>_ADMIN.env, per CLAUDE.md's "Peracto Admin:
 # shared boilerplate across tenants". All admin credentials read from
 # ADMIN_EMAIL/ADMIN_PASSWORD (or a <PROJECT>_ADMIN_EMAIL override - see
@@ -33,101 +33,103 @@
 # ============================================================
 
 # ---- Andy Thornton ----
-# COMMON_CONFIG_FILE=env/Andy_Thornton.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Andy_Thornton_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/ANDY_THORNTON_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/ANDY_THORNTON_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_PROD.env ./run_tests.sh regression
 
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
-# COMMON_CONFIG_FILE=env/CARBON_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/CARBON_ADMIN_STAGING.env ./run_tests.sh regression
 
 # ---- HIB ----
-# COMMON_CONFIG_FILE=env/HIB.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/HIB_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/HIB_RELEASE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/HIB_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/HIB_ADMIN_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/HIB_ADMIN_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/HIB_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/HIB_ADMIN_PROD.env ./run_tests.sh regression
 
 # ---- Indespension ----
-# COMMON_CONFIG_FILE=env/Indespension.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Indespension_RELEASE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Indespension_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_PROD.env ./run_tests.sh regression
 
 # ---- Insinkerator ----
-# COMMON_CONFIG_FILE=env/Insinkerator.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Insinkerator_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INSINKERATOR_ADMIN_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Insinkerator_EU.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/INSINKERATOR_EU_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_EU_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INSINKERATOR_EU_ADMIN_STAGING.env ./run_tests.sh regression
 
 # ---- JTDove ----
-# COMMON_CONFIG_FILE=env/JTDove.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/JTDOVE_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/JTDOVE_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/JTDOVE_ADMIN_STAGING.env ./run_tests.sh regression
 
 # ---- Keylite ----
-# COMMON_CONFIG_FILE=env/Keylite.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Keylite_ADMIN.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Keylite_RELEASE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Keylite_ADMIN_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KEYLITE_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KEYLITE_ADMIN_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KEYLITE_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KEYLITE_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- KOOL ----
-# COMMON_CONFIG_FILE=env/KOOL.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/KOOL_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/KOOL_RELEASE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/KOOL_ADMIN.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/KOOL_ADMIN_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/KOOL_ADMIN_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_ADMIN_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_ADMIN_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/KOOLTECH_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- Lamona ----
-# COMMON_CONFIG_FILE=env/Lamona_ADMIN_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/LAMONA_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- MIPA ----
-# COMMON_CONFIG_FILE=env/MIPA.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/MIPA_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/MIPA_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/MIPA_ADMIN_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/MIPA_ADMIN_RELEASE.env ./run_tests.sh regression
 
 # ---- Pizza Express Live ----
-# COMMON_CONFIG_FILE=env/PizzaExpressLive.env ./run_tests.sh PizzaExpressLive_regression
-# COMMON_CONFIG_FILE=env/PIZZAEXPRESSLIVE_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/PIZZAEXPRESSLIVE_PROD.env ./run_tests.sh PizzaExpressLive_regression
+# COMMON_CONFIG_FILE=env/PIZZAEXPRESSLIVE_ADMIN_STAGING.env ./run_tests.sh regression
 
 # ---- Russells ----
-# COMMON_CONFIG_FILE=env/Russells.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/RUSSELLS_ADMIN.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/RUSSELLS_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/RUSSELLS_ADMIN_STAGING.env ./run_tests.sh regression
 
 # ---- Watco (UK + regional variants) ----
-# COMMON_CONFIG_FILE=env/Watco.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_BEFR.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_BENL.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_DE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_FR.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_IE.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_NL.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_PL.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_BEFR_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_BENL_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_DE_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_FR_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_IE_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_NL_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_PL_STAGING.env ./run_tests.sh regression
 
 # ---- Watco PROD (UK + regional variants) ----
-# COMMON_CONFIG_FILE=env/Watco_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_BEFR_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_BENL_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_DE_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_FR_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_IE_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_NL_PROD.env ./run_tests.sh regression
-# COMMON_CONFIG_FILE=env/Watco_PL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_BEFR_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_BENL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_DE_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_FR_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_IE_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_NL_PROD.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/WATCO_PL_PROD.env ./run_tests.sh regression
 
 # ============================================================
 # 2. NOTES
 # ============================================================
 
 # ---- Andy Thornton ----
-# PRODUCTION (2026-09-30): Andy_Thornton_PROD.env (www.andythornton.com) and
+# PRODUCTION (2026-09-30): ANDY_THORNTON_PROD.env (www.andythornton.com) and
 # ANDY_THORNTON_ADMIN_PROD.env (peracto.andythornton.com). The production admin
 # is strictly READ-ONLY: never create, edit or delete anything there. Only the
 # automatic production tag exclusion (@mutates-admin-data etc.) keeps writes
-# out, so check any new shared Carbon_admin scenario is tagged before it can
+# out, so check any new shared CARBON_ADMIN_SHARED_features scenario is tagged before it can
 # reach this env. First admin prod run: 83/84 read-only scenarios passed. The
 # only failure was Promotions list-filtering (production has no active
 # promotions), now excluded here via EXCLUDE_TAGS=@requires-active-promotions.
@@ -146,7 +148,7 @@
 # never existed, so it errored on every run; its LOGIN_URL/GUEST_URL also
 # turned out to be https://staging-peracto.andythornton.pub, which is the
 # Peracto Admin login (confirmed live), not a storefront - already correctly
-# covered by ANDY_THORNTON_ADMIN.env below. Revisit both when the rework
+# covered by ANDY_THORNTON_ADMIN_STAGING.env below. Revisit both when the rework
 # happens, in case the storefront itself is moving onto Peracto too.
 # Was tagged @Andy_Thornton_regression with its own cucumber profile;
 # retagged @regression and the Andy_Thornton_regression profile removed
@@ -167,7 +169,7 @@
 # split into its own @user-groups-tagged Examples block and excluded here
 # via the new EXCLUDE_TAGS env var (space-separated tags, appended as
 # "and not <tag>" to every profile in src/index.ts) - both
-# ANDY_THORNTON_ADMIN.env and ANDY_THORNTON_ADMIN_RELEASE.env set
+# ANDY_THORNTON_ADMIN_STAGING.env and ANDY_THORNTON_ADMIN_RELEASE.env set
 # EXCLUDE_TAGS=@user-groups. Reuse this same mechanism for any future
 # tenant missing a different shared tab - see src/index.ts's own comment.
 #
@@ -187,7 +189,7 @@
 # don't apply here. Not yet resolved - needs either real selectors for the
 # visual builder or a tag exclusion, same EXCLUDE_TAGS mechanism as above.
 #
-# Andy_Thornton_PROD.env added 2026-09-14 - storefront only, targets the
+# ANDY_THORNTON_PROD.env added 2026-09-14 - storefront only, targets the
 # real live site (https://www.andythornton.com/, config/Andy_Thornton_
 # config/hosts.json's own production host). UI_AUTOMATION_HOST=production
 # means src/index.ts's productionExclusion auto-strips @places-real-order
@@ -342,18 +344,29 @@
 # created live on the release branch admin (2026-09-12) so the shared
 # Promotions-editing scenario has an Active row to edit - previously zero
 # active promotions existed there.
+#
+# PRODUCTION (2026-10-15): HIB_PROD.env (www.hib.co.uk) and HIB_ADMIN_PROD.env
+# (peracto.hib.co.uk), both strictly READ-ONLY. Every scenario that adds to
+# the real account basket (basket, checkout, customer-flow, Quick Order) is
+# tagged @not-on-production; the admin runs only the shared CARBON_ADMIN_SHARED_features
+# suite, where the production tag exclusion drops every write. HIB_PROD blocks
+# the CookieYes banner (BLOCK_REQUEST_HOSTS=cookieyes.com) - it swallowed
+# clicks. HIB_ADMIN_PROD also excludes @requires-active-promotions (production
+# has none). First runs: storefront 130/131 (one flake, passed on re-run),
+# admin 80/84 - the 4 Orders failures are a REAL production defect: the Orders
+# API (prod-api.hib.pub/orders) returns 500 after ~29s, so the list never loads.
 
 # ---- JTDove ----
 # Feature files were previously untagged for regression; now tagged @regression
-# in line with the rest of the projects. NOTE: env/JTDove.env is missing
-# USERS_CONFIG_PATH and config/JTDove_config/users.json doesn't exist yet, so
+# in line with the rest of the projects. NOTE: env/JTDOVE_STAGING.env is missing
+# USERS_CONFIG_PATH and config/JTDOVE_config/users.json doesn't exist yet, so
 # any scenario needing a logged-in user will fail World setup until that's
 # added - unrelated to tagging, flagging separately.
 
 # ---- Keylite ----
 # Storefront+admin scaffolded 2026-09-06 but never added to this reference
-# file until now (2026-09-14). Keylite_ADMIN_RELEASE.env added 2026-09-14 to
-# target the release branch (config/Keylite_ADMIN_config/hosts.json's own
+# file until now (2026-09-14). KEYLITE_ADMIN_RELEASE.env added 2026-09-14 to
+# target the release branch (config/KEYLITE_ADMIN_config/hosts.json's own
 # release_branch host) - treated as staging like MIPA/Indespension's
 # release envs, so admin CRUD is fine there.
 #
@@ -371,8 +384,8 @@
 # fine there.
 
 # ---- KOOL ----
-# KOOL_ADMIN_RELEASE.env added 2026-09-15, targets the 2.19.0 release branch
-# (config/KOOL_ADMIN_config/hosts.json's own release_branch host,
+# KOOLTECH_ADMIN_RELEASE.env added 2026-09-15, targets the 2.19.0 release branch
+# (config/KOOLTECH_ADMIN_config/hosts.json's own release_branch host,
 # https://2-19-0-peracto.kooltech.pub/) - treated as staging like MIPA/
 # Indespension/Keylite's release envs, so admin CRUD is fine there. Given the
 # KOOL production-orders incident (see CLAUDE.md/memory), double-check
@@ -382,19 +395,19 @@
 # scenarios, 5 failed, both now fixed and re-verified. (1) 3 failures
 # ("Delete User" click timing out) - this Peracto version renders that
 # trigger as a <button>, not the <a> every other tenant uses; fixed with a
-# tag-agnostic XPath in KOOL_ADMIN_config/mappings/user-detail.json. (2) 2
+# tag-agnostic XPath in KOOLTECH_ADMIN_config/mappings/user-detail.json. (2) 2
 # failures (product create/variant scenarios) - initially misdiagnosed as a
 # broken Default Attribute Set (a real 422 was involved, but the fields
 # ["Ugly Freight"/"Searchable in Storefront"/"Searchable in Quote Tool"] are
 # ordinary working react-selects the shared scenario just never filled in,
 # not broken tenant data); fixed with a new "... react-select if present"
 # step (form.ts) used in product-management.feature and
-# product-variant-management.feature, mapped in KOOL_ADMIN_config only.
+# product-variant-management.feature, mapped in KOOLTECH_ADMIN_config only.
 #
-# KOOL_RELEASE.env added the same day - the storefront counterpart, targets
-# https://release-2-19-0.kooltech.pub/ (config/KOOL_config/hosts.json's own
+# KOOLTECH_RELEASE.env added the same day - the storefront counterpart, targets
+# https://release-2-19-0.kooltech.pub/ (config/KOOLTECH_config/hosts.json's own
 # release_branch host, added alongside) - a DIFFERENT subdomain from the
-# admin release branch above, same 2.19.0 version. Mirrors KOOL.env exactly
+# admin release branch above, same 2.19.0 version. Mirrors KOOLTECH_STAGING.env exactly
 # otherwise. Live-verified via a narrow smoke run (header.feature, @smoke
 # tag): 3/3 scenarios, 18/18 steps passed.
 
@@ -402,10 +415,10 @@
 # Brand new project, scaffolded 2026-09-16 - admin only "for the time
 # being" (per user), no storefront project exists yet. Only a release
 # branch is known so far: https://2-8-0-peracto.lamonasparescouk.pub/
-# (config/Lamona_ADMIN_config/hosts.json's only entry, no staging host yet -
+# (config/LAMONA_ADMIN_config/hosts.json's only entry, no staging host yet -
 # add one when it's known). PROJECT=lamona_admin, wired to the shared
-# Carbon_admin suite like every other Peracto Admin tenant.
-# config/Lamona_ADMIN_config/{pages.json,mappings/} were copied verbatim
+# CARBON_ADMIN_SHARED_features suite like every other Peracto Admin tenant.
+# config/LAMONA_ADMIN_config/{pages.json,mappings/} were copied verbatim
 # from CARBON_ADMIN_config (the canonical boilerplate) rather than from a
 # more-customised tenant like KOOL, to avoid pulling in another tenant's
 # version-specific fixes (e.g. KOOL's <button>-vs-<a> Delete User XPath) -
@@ -416,7 +429,7 @@
 # generic ADMIN_EMAIL fallback). First full run: 20/94 failed, all
 # investigated live via a standalone Playwright script dumping real DOM
 # testids/options (not guessed) - 2 real config gaps fixed
-# (Lamona_ADMIN_config only: content-save button has no testid on this
+# (LAMONA_ADMIN_config only: content-save button has no testid on this
 # build, use button[title='Save']; no "Default" attribute set exists, real
 # tenant sets are "Spare Parts"/random-ID sets/"TEST set", used "Spare
 # Parts") and 3 genuinely-missing tenant features excluded via
@@ -461,9 +474,9 @@
 # bumped each sprint) - treated as staging, real orders OK.
 #
 # MIPA_ADMIN (2026-09-08+): built up a lot of scenarios beyond the shared
-# Carbon_admin sweep. Most of the "editing an existing entity" ones turned
+# CARBON_ADMIN_SHARED_features sweep. Most of the "editing an existing entity" ones turned
 # out to be standard Peracto Admin functionality, not MIPA-specific -
-# promoted to the shared Carbon_admin boilerplate (2026-09-10): Redirects
+# promoted to the shared CARBON_ADMIN_SHARED_features boilerplate (2026-09-10): Redirects
 # (add/delete), Category/Promotion editing, Page/Article/Element editing,
 # and Attribute/Attribute Group/Attribute Set/Location/Shipping Service
 # editing. Their detail-page selectors (previously only in MIPA's config)

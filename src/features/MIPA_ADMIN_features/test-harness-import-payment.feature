@@ -3,7 +3,7 @@ Feature: Test Harness - Import Payment
 
   # Bespoke to MIPA - see test-harness-get-product.feature for why the
   # whole Test Harnesses section lives in its own project-specific path
-  # rather than the shared Carbon_admin folder.
+  # rather than the shared CARBON_ADMIN_SHARED_features folder.
   #
   # Only the REJECTION path is covered here, deliberately. Unlike Send
   # Order (which is safely resendable under a fresh reference each time),

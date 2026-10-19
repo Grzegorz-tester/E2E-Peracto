@@ -29,7 +29,6 @@ Feature: Category pages (PLP)
       | /category/wall-hung-bathroom-units      |
       | /category/bathroom-cloakroom-units      |
       | /category/bathroom-floor-standing-units |
-      | /category/bathroom-fitted-furniture     |
       | /category/bathroom-washbasins           |
       | /category/bathroom-brassware            |
       | /category/bathroom-countertops          |
@@ -41,6 +40,14 @@ Feature: Category pages (PLP)
       | /category/bathroom-accessories          |
       | /category/bathroom-ventilation          |
       | /category/bathroom-lighting             |
+
+    # Fitted Furniture exists on staging only - confirmed live 2026-10-15
+    # that www.hib.co.uk/category/bathroom-fitted-furniture is Page Not Found
+    # and nothing on production links to it.
+    @not-on-production
+    Examples: Staging-only categories
+      | path                                    |
+      | /category/bathroom-fitted-furniture     |
 
 
   Scenario Outline: Clicking a product on the "<path>" category opens its PDP

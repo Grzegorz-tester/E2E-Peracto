@@ -28,7 +28,7 @@ by other projects, not just the one you're building it for:
 - Resolve every element through `getElementLocator(page, elementKey,
   globalConfig)`, the same way every other step does - never hardcode a raw
   CSS selector as a constant inside the step-definition file. The selector
-  belongs in that project's `config/<Project>_config/mappings/*.json`, not
+  belongs in that project's `config/<PROJECT>_config/mappings/*.json`, not
   in TypeScript. This is what actually makes a bespoke step reusable:
   another project just needs matching keys in its own mapping file, no
   TypeScript changes.

@@ -222,7 +222,7 @@ const buildHtml = (features, generatedAt) => {
   const completionRate = total === 0 ? '-' : `${Math.round(passed / total * 100)}%`;
 
   // Derived from COMMON_CONFIG_FILE's own filename (e.g. "PizzaExpressLive"
-  // from env/PizzaExpressLive.env) rather than the PROJECT env var - PROJECT
+  // from env/PIZZAEXPRESSLIVE_PROD.env) rather than the PROJECT env var - PROJECT
   // is only set by projects needing per-project credential overrides (see
   // loadGlobalConfig.ts), so it's blank for several projects, while every
   // run always sets COMMON_CONFIG_FILE.

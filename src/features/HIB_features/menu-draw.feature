@@ -5,7 +5,10 @@ Feature: Menu side draw
   Scenario Outline: Verify menu elements for a "<user type>" user
     Given I am navigating the page as a "<user type>" user
     And I dismiss the newsletter popup if present
-    And I click on the "Menu" icon
+    # Retrying: confirmed on staging (2026-10-14) that straight after login the
+    # first Menu click can land before the header hydrates, so the drawer never
+    # opens (failed on attempt 1, passed on the cucumber retry).
+    And I click on the "Menu" icon, retrying until the "Products draw menu item" appears
     Then the "Products draw menu item" should be displayed
     And the "Inspiration draw menu item" should be displayed
     And the "About draw menu item" should be displayed

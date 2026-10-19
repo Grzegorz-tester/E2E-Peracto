@@ -2,6 +2,7 @@
 
 var _cucumber = require("@cucumber/cucumber");
 var _parseEnv = require("../../env/parseEnv");
+var _blockPageDetection = require("../support-functions/block-page-detection");
 var _fs = _interopRequireDefault(require("fs"));
 var _path = _interopRequireDefault(require("path"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -15,7 +16,7 @@ function sanitize(name) {
 // failure screenshots live in their own subfolder - screenshots are keyed
 // only by scenario name (see sanitize() below), so a flat shared directory
 // meant two projects with an identically-named scenario (e.g. any pair of
-// tenants sharing the Carbon_admin suite) silently overwrote each other's
+// tenants sharing the CARBON_ADMIN_SHARED_features suite) silently overwrote each other's
 // screenshot.
 const projectName = _path.default.basename((0, _parseEnv.env)('COMMON_CONFIG_FILE', 'env/common.env'), '.env');
 const screenshotDir = _path.default.join((0, _parseEnv.env)('SCREENSHOT_PATH'), projectName);
@@ -24,16 +25,42 @@ const screenshotDir = _path.default.join((0, _parseEnv.env)('SCREENSHOT_PATH'), 
   // scenario - without this, a scenario that used to fail (and was since
   // fixed) left its old failure screenshot behind forever, since nothing
   // else ever removed a screenshot once written.
-  _fs.default.rmSync(screenshotDir, {
-    recursive: true,
-    force: true
-  });
+  // With PARALLEL > 1, BeforeAll runs once in EVERY worker process, so only
+  // worker 0 wipes - otherwise a slower-starting worker could delete
+  // screenshots another worker had already captured.
+  const workerId = process.env.CUCUMBER_WORKER_ID;
+  if (workerId === undefined || workerId === '0') {
+    _fs.default.rmSync(screenshotDir, {
+      recursive: true,
+      force: true
+    });
+  }
   _fs.default.mkdirSync(screenshotDir, {
     recursive: true
   });
 });
 (0, _cucumber.BeforeStep)(async function (scenario) {
   console.log(`🥒 Running cucumber step: "${scenario.pickleStep.text}"`);
+});
+
+// Fail fast, with a clear message, when the site's WAF serves its block
+// page instead of the real one (see block-page-detection.ts). An AfterStep
+// error fails the step it ran after, so the scenario goes red on the
+// navigation step that got blocked - not 15-20s later on whichever selector
+// timed out first. A step that already failed keeps its own error; the
+// block is attached as a note alongside it instead.
+(0, _cucumber.AfterStep)(async function (_ref) {
+  let {
+    result
+  } = _ref;
+  const page = this.screen?.page;
+  const blockedText = await (0, _blockPageDetection.detectBlockPage)(page);
+  if (!blockedText) return;
+  const message = (0, _blockPageDetection.blockPageMessage)(page.url(), blockedText);
+  if (result?.status === 'PASSED') {
+    throw new Error(message);
+  }
+  await this.attach(message, 'text/plain');
 });
 (0, _cucumber.Before)(async function (scenario) {
   console.log(`🥒 Running cucumber "${scenario.pickle.name}"`);
@@ -56,6 +83,9 @@ const screenshotDir = _path.default.join((0, _parseEnv.env)('SCREENSHOT_PATH'), 
   const scenarioName = sanitize(scenario.pickle.name);
   if (scenarioStatus === 'FAILED') {
     try {
+      _fs.default.mkdirSync(screenshotDir, {
+        recursive: true
+      });
       const screenshotPath = _path.default.join(screenshotDir, `${scenarioName}.png`);
       const screenshot = await page.screenshot({
         path: screenshotPath

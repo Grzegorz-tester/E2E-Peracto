@@ -122,7 +122,11 @@ Feature: Operations in the users account
   # 2026-09-28: expected prices updated for feature-hib-170 - confirmed
   # live the first "Vanquish" hit is now "Vanquish Bathroom Cabinet" (first
   # variant W53 x H73 x D12.5cm, £749.00; 3 = £2,247.00) rather than the
-  # £84.00 item the search ranked first before.
+  # £84.00 item the search ranked first before. 2026-10-13: it then moved to
+  # £779.00, so the unit price is now read live and totals are checked as
+  # unit price x quantity rather than hard-coded.
+  # Adds to the real account basket - excluded on production (read-only).
+  @not-on-production
   Scenario Outline: Search, add, adjust quantity and add a recommended product via Stock Check & Quick Order
     Given I am navigating the page as a "logged in" user
     And I dismiss the newsletter popup if present
@@ -135,18 +139,18 @@ Feature: Operations in the users account
     When I click on the "first search result" element
     And I slowly click on the "first variant" element
     And I slowly click on the "Add to basket" button
-    Then the "product's price" should contain the text "<price>"
-    And the "Quantity selector" should equal the value "1"
-    And the "product's total price" should contain the text "<price>"
+    And I remember the price in "product's price" as "unit price"
+    Then the "Quantity selector" should equal the value "1"
+    And the price in "product's total price" should equal the remembered "unit price"
     When I fill in the "Quantity selector" input field with "<new quantity>"
     And I click on the "Update" button
-    Then the "product's total price" should contain the text "<new total>"
+    Then the price in "product's total price" should equal the remembered "unit price" times <new quantity>
     # "basket subtotal", not "order total price": confirmed live on
     # feature-hib-170 (2026-09-28) that a 10% "Total discount" line now
     # appears (Subtotal £2,247.00, discount £224.70, RRP Total £2,022.30), so
     # the RRP total no longer equals the line total. The subtotal is what
     # reflects the quantity change being tested.
-    And the "basket subtotal" should contain the text "<new total>"
+    And the price in "basket subtotal" should equal the remembered "unit price" times <new quantity>
     When I click on the "Products you may also need" button
     Then the "you may also need draw" should be displayed
     # 2026-09-28: the drawer's recommendations (Vanquish trims) are now
@@ -163,5 +167,5 @@ Feature: Operations in the users account
     Then I should be redirected to the "place-order" page
     And the "second basket item" should be displayed
     Examples:
-      | product  | price | new quantity | new total |
-      | Vanquish | 749.00 | 3            | 2,247.00  |
+      | product  | new quantity |
+      | Vanquish | 3            |

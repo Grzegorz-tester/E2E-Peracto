@@ -11,7 +11,7 @@ import { ScenarioWorld } from "../../setup/world";
 // Peracto Admin boilerplate - that finding turned out to be stale:
 // re-verified live 2026-09-10 and found it genuinely present and working
 // on Carbon Admin too (as well as MIPA and Andy Thornton), so the feature
-// file using these steps now lives in the shared Carbon_admin suite, not
+// file using these steps now lives in the shared CARBON_ADMIN_SHARED_features suite, not
 // a project-specific path.
 //
 // CKFinder renders inside a real <iframe> - Playwright can drive it via

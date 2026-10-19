@@ -24,14 +24,14 @@ type QaseSuite = {
 }
 
 const MARKETS: { dir: string; label: string }[] = [
-    { dir: 'Watco_features', label: 'Watco UK' },
-    { dir: 'Watco_BEFR_features', label: 'Watco BE (FR)' },
-    { dir: 'Watco_BENL_features', label: 'Watco BE (NL)' },
-    { dir: 'Watco_DE_features', label: 'Watco DE' },
-    { dir: 'Watco_FR_features', label: 'Watco FR' },
-    { dir: 'Watco_IE_features', label: 'Watco IE' },
-    { dir: 'Watco_NL_features', label: 'Watco NL' },
-    { dir: 'Watco_PL_features', label: 'Watco PL' },
+    { dir: 'WATCO_features', label: 'Watco UK' },
+    { dir: 'WATCO_BEFR_features', label: 'Watco BE (FR)' },
+    { dir: 'WATCO_BENL_features', label: 'Watco BE (NL)' },
+    { dir: 'WATCO_DE_features', label: 'Watco DE' },
+    { dir: 'WATCO_FR_features', label: 'Watco FR' },
+    { dir: 'WATCO_IE_features', label: 'Watco IE' },
+    { dir: 'WATCO_NL_features', label: 'Watco NL' },
+    { dir: 'WATCO_PL_features', label: 'Watco PL' },
 ]
 
 const FEATURES_ROOT = path.join(process.cwd(), 'src', 'features')

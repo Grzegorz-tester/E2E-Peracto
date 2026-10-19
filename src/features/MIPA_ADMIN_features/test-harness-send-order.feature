@@ -3,7 +3,7 @@ Feature: Test Harness - Send Order
 
   # Bespoke to MIPA - see test-harness-get-product.feature for why the
   # whole Test Harnesses section lives in its own project-specific path
-  # rather than the shared Carbon_admin folder.
+  # rather than the shared CARBON_ADMIN_SHARED_features folder.
   #
   # Unlike the "Get ..." harnesses, this genuinely WRITES a real order
   # record into MIPA's Business Central ERP - confirmed live via its own

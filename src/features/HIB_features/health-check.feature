@@ -21,6 +21,13 @@ Feature: Health check
   # Known red on feature-hib-170 (2026-09-29), both fine on production:
   # - /specifiers-developers: "Application error" client-side crash
   # - /articles/blog ("Our Blog" in the footer): Page Not Found
+  #
+  # 2026-10-14, staging.hib.pub: /specifiers-developers renders again, but its
+  # banner heading is now literally "SPECIFIERS & DEVELOPERS" in the DOM (CMS
+  # content change, not CSS), hence the uppercase row. /articles/blog was a
+  # Page Not Found because staging had no "Blog" article category at all -
+  # created in staging admin the same day (article category 8, title "Our
+  # blog", path "blog"), now passing.
 
   Scenario Outline: The "<path>" page loads with its own content
     Given I navigate directly to the path "<path>"
@@ -30,13 +37,11 @@ Feature: Health check
 
     Examples: Header and menu draw
       | path                   | heading                                                   |
-      | /specifiers-developers | Specifiers & Developers                                   |
       | /samples               | Request Swatch Sample                                     |
       | /brochure              | Brochures                                                 |
       | /products              | BATHROOM PRODUCTS                                         |
       | /inspiration           | Inspiration                                               |
       | /about                 | hib. Corporate Film                                       |
-      | /support               | SUPPORT                                                   |
       | /swatch-samples        | Swatches                                                  |
       | /articles/news         | News                                                      |
       | /careers               | Join Our Growing Family Tree: Explore Your Career at hib. |
@@ -47,8 +52,6 @@ Feature: Health check
       | /guarantee                       | Our Guarantee                   |
       | /customer-feedback-form          | Customer Feedback Form          |
       | /articles/blog                   | Our blog                        |
-      | /awards-affiliations             | AWARDS & AFFILIATIONS           |
-      | /corporate-social-responsibility | CORPORATE SOCIAL RESPONSIBILITY |
       | /environmental-policy            | ENVIRONMENTAL POLICY            |
       | /modern-slavery-statement        | Modern Slavery Statement        |
       | /privacy-policy                  | PRIVACY NOTICE                  |
@@ -56,13 +59,11 @@ Feature: Health check
 
     Examples: Category pages (menu draw and footer)
       | path                                   | heading                       |
-      | /bathroom-furniture                    | BATHROOM FURNITURE            |
       | /category/bathroom-mirrors             | BATHROOM MIRRORS              |
       | /category/bathroom-cabinets            | BATHROOM CABINETS             |
       | /category/wall-hung-bathroom-units     | BATHROOM WALL HUNG UNITS      |
       | /category/bathroom-cloakroom-units     | BATHROOM CLOAKROOM UNITS      |
       | /category/bathroom-floor-standing-units | BATHROOM FLOOR STANDING UNITS |
-      | /category/bathroom-fitted-furniture    | BATHROOM FITTED FURNITURE     |
       | /category/bathroom-washbasins          | BATHROOM WASHBASINS           |
       | /category/bathroom-brassware           | BATHROOM BRASSWARE            |
       | /category/bathroom-countertops         | BATHROOM COUNTERTOPS          |
@@ -74,3 +75,26 @@ Feature: Health check
       | /category/bathroom-accessories         | BATHROOM ACCESSORIES          |
       | /category/bathroom-ventilation         | BATHROOM VENTILATION          |
       | /category/bathroom-lighting            | BATHROOM LIGHTING             |
+
+    # Same pages, different heading text per environment: staging's CMS
+    # content is literally uppercase in the DOM, production's is title case
+    # (confirmed live on www.hib.co.uk 2026-10-15). Fitted Furniture doesn't
+    # exist on production (Page Not Found, not linked from anywhere there).
+    @not-on-production
+    Examples: Staging headings
+      | path                                | heading                         |
+      | /specifiers-developers              | SPECIFIERS & DEVELOPERS         |
+      | /support                            | SUPPORT                         |
+      | /awards-affiliations                | AWARDS & AFFILIATIONS           |
+      | /corporate-social-responsibility    | CORPORATE SOCIAL RESPONSIBILITY |
+      | /bathroom-furniture                 | BATHROOM FURNITURE              |
+      | /category/bathroom-fitted-furniture | BATHROOM FITTED FURNITURE       |
+
+    @production-only
+    Examples: Production headings
+      | path                             | heading                         |
+      | /specifiers-developers           | Specifiers & Developers         |
+      | /support                         | Support                         |
+      | /awards-affiliations             | Awards & Affiliations           |
+      | /corporate-social-responsibility | Corporate Social Responsibility |
+      | /bathroom-furniture              | Bathroom Furniture              |

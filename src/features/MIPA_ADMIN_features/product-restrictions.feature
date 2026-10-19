@@ -1,7 +1,7 @@
 @regression
 Feature: Product Restrictions
 
-  # Bespoke to MIPA, not the shared Carbon_admin boilerplate suite -
+  # Bespoke to MIPA, not the shared CARBON_ADMIN_SHARED_features boilerplate suite -
   # confirmed live "Product Restrictions" (a Products sub-nav item,
   # between Product Variants and Categories) is NOT part of the common
   # Peracto Admin setup: present on MIPA Admin, absent on Carbon Admin,

@@ -82,9 +82,9 @@ const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
 // @mutates-admin-data gets the same automatic exclusion for CLAUDE.md's
 // "Staging vs production rules" on the ADMIN side specifically: a
 // production admin must stay read-only (no creating/editing/deleting
-// anything through it), but the shared Carbon_admin feature folder is
+// anything through it), but the shared CARBON_ADMIN_SHARED_features feature folder is
 // reused by tenants that DO have a production admin env (e.g.
-// KOOL_ADMIN_PROD.env). Tag any admin scenario that adds/edits/deletes
+// KOOLTECH_ADMIN_PROD.env). Tag any admin scenario that adds/edits/deletes
 // real data (e.g. address-book-management.feature) with this so it can't
 // run there even if picked up by a profile's tags. Each such scenario's
 // own steps also independently refuse to run against
@@ -117,7 +117,7 @@ const productionExclusion = env('UI_AUTOMATION_HOST', 'staging') === 'production
     : ' and not @production-only';
 
 // EXCLUDE_TAGS (set per-project in env/<Project>.env, space-separated) lets a
-// single tenant opt out of specific rows/scenarios in the SHARED Carbon_admin
+// single tenant opt out of specific rows/scenarios in the SHARED CARBON_ADMIN_SHARED_features
 // suite that don't apply to it - e.g. a nav tab the shared suite's Examples
 // table expects but this tenant genuinely doesn't have. Per CLAUDE.md's
 // "shared boilerplate" rules: only use this when the tab is missing for SOME

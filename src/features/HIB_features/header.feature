@@ -140,6 +140,17 @@ Feature: Header functionality
       | menu element          | page        | title       |
       | Inspiration menu item | inspiration | Inspiration |
       | About menu item       | about       | About hib.  |
-      | Support menu item     | support     | SUPPORT     |
       | News menu item        | news        | News        |
       | Careers               | careers     |             |
+
+    # Support's heading is uppercase in staging's DOM, title case on
+    # production (confirmed live 2026-10-15).
+    @not-on-production
+    Examples: Staging-only heading text
+      | menu element          | page        | title       |
+      | Support menu item     | support     | SUPPORT     |
+
+    @production-only
+    Examples: Production-only heading text
+      | menu element          | page        | title       |
+      | Support menu item     | support     | Support     |

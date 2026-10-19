@@ -3,7 +3,7 @@ Feature: Content Editing Known Issues
 
   # Split out of editing-content.feature when that file's portable
   # scenarios (Page/Article/Element edit-and-restore) were promoted to the
-  # shared Carbon_admin boilerplate (2026-09-10). This scenario asserts a
+  # shared CARBON_ADMIN_SHARED_features boilerplate (2026-09-10). This scenario asserts a
   # CURRENT, MIPA-specific broken result as the expected outcome, so it
   # isn't safe to assume for every tenant using the shared suite.
   #

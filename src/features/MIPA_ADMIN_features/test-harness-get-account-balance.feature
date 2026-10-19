@@ -3,7 +3,7 @@ Feature: Test Harness - Get Account Balance
 
   # Bespoke to MIPA - see test-harness-get-product.feature for why the
   # whole Test Harnesses section lives in its own project-specific path
-  # rather than the shared Carbon_admin folder.
+  # rather than the shared CARBON_ADMIN_SHARED_features folder.
   #
   # CONFIRMED (live, MIPA_ADMIN staging, 2026-09-08): a real live call to
   # MIPA's Business Central ERP by customer email alone (Account Number
