@@ -8,8 +8,9 @@
   "scripts": {
     "clean": "rimraf dist reports",
     "precucumber": "mkdir -p reports",
+    "typecheck": "tsc --noEmit -p .",
     "transpile": "rimraf dist && babel --extensions .ts --out-dir dist src",
-    "cucumber-compile": "yarn transpile && cucumber-js",
+    "cucumber-compile": "yarn typecheck && yarn transpile && cucumber-js",
     "cucumber": "yarn cucumber-compile",
     "postcucumber": "ts-node ./src/reporter/cucumber-report.ts && ts-node ./src/reporter/pdf-report.ts",
     "test": "yarn cucumber && yarn postcucumber",

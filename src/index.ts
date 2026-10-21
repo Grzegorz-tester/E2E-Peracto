@@ -2,9 +2,11 @@ import dotenv from 'dotenv'
 import fs from 'fs'
 import path from 'path'
 import { env } from './env/parseEnv'
+import { assertEnvNameMatchesHost, isProductionRun, PRODUCTION_UNSAFE_TAGS } from './env/run-environment'
 
 dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 dotenv.config() // optional local .env (gitignored) for real login credentials
+assertEnvNameMatchesHost()
 
 // Each project now points JSON_REPORT_FILE at its own ./reports/<Project>/report.json
 // (rather than every project sharing the same ./reports/report.json, which let two
@@ -112,8 +114,10 @@ const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
 // menu drawer has "Offers" on staging but "News" on production
 // (confirmed live, 2026-09-29). Tag the Examples row (or scenario) that
 // only exists on one side, instead of maintaining per-env EXCLUDE_TAGS.
-const productionExclusion = env('UI_AUTOMATION_HOST', 'staging') === 'production'
-    ? ' and not @places-real-order and not @completes-registration and not @mutates-admin-data and not @requires-order-history and not @submits-real-form and not @not-on-production'
+// isProductionRun() treats a run as production if EITHER UI_AUTOMATION_HOST
+// is "production" OR the env file's name ends in _PROD.
+const productionExclusion = isProductionRun()
+    ? PRODUCTION_UNSAFE_TAGS.map(tag => ` and not ${tag}`).join('')
     : ' and not @production-only';
 
 // EXCLUDE_TAGS (set per-project in env/<Project>.env, space-separated) lets a

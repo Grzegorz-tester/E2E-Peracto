@@ -5,6 +5,7 @@ import os from 'os'
 import { execSync } from 'child_process'
 import { chromium } from 'playwright'
 import { env, getJsonFromFile } from '../env/parseEnv'
+import { RETRY_PASS_MARKER } from '../env/report-markers'
 
 dotenv.config({path: env('COMMON_CONFIG_FILE', 'env/common.env')})
 
@@ -37,6 +38,10 @@ const displayStatusLabel = (raw?: string): string => {
     const status = raw ?? 'skipped'
     return status.charAt(0).toUpperCase() + status.slice(1)
 }
+
+// Amber, distinct from the pass/fail/skip colours: a retried pass is a
+// pass, but one worth a second look.
+const RETRY_COLOR = '#B76E00'
 
 const escapeHtml = (value: string) =>
     value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -116,6 +121,19 @@ const resolveTargetUrl = (): string => {
         return '-'
     }
 }
+
+// hooks.ts attaches RETRY_PASS_MARKER (as text/plain, on the hidden After
+// hook step) to a passing attempt whose earlier attempts failed. Cucumber's
+// JSON formatter stores it base64-encoded (confirmed in report.json), so
+// decode before matching. Returns the marker's full text, or null for a
+// clean first-attempt result.
+const retryNote = (element: CucumberElement): string | null =>
+    (element.steps ?? []).flatMap(step => step.embeddings ?? [])
+        .filter(embedding => (embedding.mime_type ?? embedding.media?.type) === 'text/plain')
+        .map(embedding => embedding.data.startsWith(RETRY_PASS_MARKER)
+            ? embedding.data
+            : Buffer.from(embedding.data, 'base64').toString('utf-8'))
+        .find(text => text.startsWith(RETRY_PASS_MARKER)) ?? null
 
 const sumDurations = (element: CucumberElement): number =>
     (element.steps ?? []).reduce((sum, step) => sum + (step.result?.duration ?? 0), 0)
@@ -206,10 +224,11 @@ const renderScenarioPage = (scenario: CucumberElement, projectName: string, feat
         <div class="breadcrumb">${escapeHtml(projectName)} / ${escapeHtml(featureName)}</div>
         <h1>${escapeHtml(scenario.name)}</h1>
         <div class="meta-grid meta-grid-3">
-            <div><span class="meta-label">Status</span><span class="meta-value"><span class="badge" style="background:${STATUS_COLOR[status]}">${status.toUpperCase()}</span></span></div>
+            <div><span class="meta-label">Status</span><span class="meta-value"><span class="badge" style="background:${STATUS_COLOR[status]}">${status.toUpperCase()}</span>${retryNote(scenario) ? ` <span class="badge" style="background:${RETRY_COLOR}">RETRIED</span>` : ''}</span></div>
             <div><span class="meta-label">Time spent</span><span class="meta-value">${timeSpent}</span></div>
             <div><span class="meta-label">Run by</span><span class="meta-value">${escapeHtml(runner)}</span></div>
         </div>
+        ${retryNote(scenario) ? `<p class="retry-note">${escapeHtml(retryNote(scenario) ?? '')}. This passed, but is unstable - check it before trusting the result.</p>` : ''}
         <h2 class="section-label">Scenario</h2>
         <table class="steps-table">
             <thead><tr><th>#</th><th>Step</th><th>Comment</th><th>Attachments</th><th>Status</th></tr></thead>
@@ -245,6 +264,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
     const passed = allScenarios.filter(el => scenarioStatus(el) === 'passed').length
     const failed = allScenarios.filter(el => scenarioStatus(el) === 'failed').length
     const skipped = allScenarios.length - passed - failed
+    const passedOnRetry = allScenarios.filter(el => scenarioStatus(el) === 'passed' && retryNote(el)).length
     const total = allScenarios.length
     const completionRate = total === 0 ? '-' : `${Math.round((passed / total) * 100)}%`
 
@@ -261,6 +281,8 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
     const totalDurationNs = allScenarios.reduce((sum, el) => sum + sumDurations(el), 0)
 
     const pillLabel = (status: Status): string => status === 'passed' ? 'PASS' : status === 'failed' ? 'FAIL' : 'SKIP'
+    const retryPill = (scenario: CucumberElement): string =>
+        retryNote(scenario) ? ` <span class="pill" style="background:${RETRY_COLOR}">RETRIED</span>` : ''
 
     const featureBlocks = scenariosByFeature.map(({name, scenarios}) => {
         const featurePassed = scenarios.filter(el => scenarioStatus(el) === 'passed').length
@@ -268,7 +290,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
         const bullets = scenarios.map(scenario => {
             const status = scenarioStatus(scenario)
             return `<li class="scenario-bullet">
-                <span class="pill pill-${status}">${pillLabel(status)}</span>
+                <span class="pill pill-${status}">${pillLabel(status)}</span>${retryPill(scenario)}
                 <span>${escapeHtml(scenario.name)}</span>
             </li>`
         }).join('\n')
@@ -334,6 +356,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
   .pill-passed { background: ${STATUS_COLOR.passed}; }
   .pill-failed { background: ${STATUS_COLOR.failed}; }
   .pill-skipped { background: ${STATUS_COLOR.skipped}; }
+  .retry-note { background: #fff4e5; border-left: 3px solid ${RETRY_COLOR}; padding: 8px 12px; margin: 12px 0; }
 
   /* --- Scenario pages --- */
   .scenario-page { page-break-before: always; }
@@ -382,6 +405,7 @@ const buildHtml = (features: CucumberFeature[], generatedAt: Date): string => {
         <li><span class="dot" style="background:${STATUS_COLOR.passed}"></span>Passed <span class="stat-count">(${passed})</span></li>
         <li><span class="dot" style="background:${STATUS_COLOR.failed}"></span>Failed <span class="stat-count">(${failed})</span></li>
         <li><span class="dot" style="background:${STATUS_COLOR.skipped}"></span>Skipped <span class="stat-count">(${skipped})</span></li>
+        <li><span class="dot" style="background:${RETRY_COLOR}"></span>Passed only on retry <span class="stat-count">(${passedOnRetry})</span></li>
       </ul>
     </div>
     <div>
@@ -413,6 +437,13 @@ const run = async () => {
     const features: CucumberFeature[] = JSON.parse(fs.readFileSync(jsonReportPath, 'utf-8'))
     const generatedAt = new Date()
     const html = buildHtml(features, generatedAt)
+
+    const retried = features.flatMap(feature => feature.elements ?? [])
+        .filter(el => scenarioStatus(el) === 'passed' && retryNote(el))
+    if (retried.length > 0) {
+        console.log(`\n⚠️  ${retried.length} scenario(s) passed only on retry (unstable):`)
+        retried.forEach(el => console.log(`   - ${el.name}`))
+    }
 
     // Derived the same way as buildHtml's own reportTitle, so the PDF's
     // filename and its in-document title always agree. One project's own

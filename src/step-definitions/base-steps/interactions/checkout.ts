@@ -5,6 +5,7 @@ import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { describeLocator, getElementLocator } from "../../support-functions/web-element-helper";
 import { clickElement, enterValue, withActionDiagnostics } from "../../support-functions/html-behaviour";
 import { ElementKey } from "../../../env/global";
+import { isProductionRun } from "../../../env/run-environment";
 import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS, BRAINTREE_TEST_CARDS, OPAYO_TEST_CARDS } from "../../support-functions/payment-test-cards";
 
 // Second, independent layer of protection beyond the @places-real-order tag
@@ -18,9 +19,9 @@ import { CYBERSOURCE_TEST_CARDS, VERIFONE_TEST_CARDS, GLOBALPAYMENTS_TEST_CARDS,
 // staging admin for this scenario", the same pattern applied to
 // order-placing instead of admin mutation.
 function refuseIfProduction(action: string) {
-    if (process.env.UI_AUTOMATION_HOST === "production") {
+    if (isProductionRun()) {
         throw new Error(
-            `Refusing to run: "${action}" places a real order and UI_AUTOMATION_HOST is "production". ` +
+            `Refusing to run: "${action}" places a real order and this is a production run (UI_AUTOMATION_HOST=production or a _PROD env file). ` +
             `This should already be excluded via the @places-real-order tag in src/index.ts - seeing this error means that exclusion didn't apply, or this step was reached outside a tag-filtered cucumber run.`
         );
     }
@@ -54,7 +55,7 @@ When(
         const { screen: { page }, globalConfig } = this;
         const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
 
-        if (process.env.UI_AUTOMATION_HOST === "production") {
+        if (isProductionRun()) {
             const target = page.locator(elementIdentifier).first();
             await expect(target, `Expected "${elementKey}" to be visible before the final real submission`).toBeVisible({ timeout: 15000 });
             await expect(target, `Expected "${elementKey}" to be enabled before the final real submission`).toBeEnabled({ timeout: 10000 });

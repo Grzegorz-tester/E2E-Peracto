@@ -4,6 +4,7 @@ import { ElementKey, GlobalConfig } from "../../../env/global";
 import { getElementLocator } from "../../support-functions/web-element-helper";
 import { clickElement, enterValue } from "../../support-functions/html-behaviour";
 import { ScenarioWorld } from "../../setup/world";
+import { isProductionRun } from "../../../env/run-environment";
 
 // Second, independent layer of protection beyond the @mutates-admin-data
 // tag exclusion wired into src/index.ts's productionExclusion - if a
@@ -16,9 +17,9 @@ import { ScenarioWorld } from "../../setup/world";
 // UI_AUTOMATION_HOST check independently, the same source
 // navigation-behaviour.ts's own navigateToPage reads.
 Given(/^I require a staging admin for this scenario$/, async function () {
-  if (process.env.UI_AUTOMATION_HOST === "production") {
+  if (isProductionRun()) {
     throw new Error(
-      "Refusing to run: this scenario mutates admin data (adds/edits/deletes a user's address) and UI_AUTOMATION_HOST is \"production\". " +
+      "Refusing to run: this scenario mutates admin data (adds/edits/deletes a user's address) and this is a production run (UI_AUTOMATION_HOST=production or a _PROD env file). " +
       "This should already be excluded via the @mutates-admin-data tag in src/index.ts - seeing this error means that exclusion didn't apply."
     );
   }
