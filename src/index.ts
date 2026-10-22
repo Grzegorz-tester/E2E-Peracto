@@ -50,14 +50,17 @@ if (!fs.existsSync(jsonReportDir)) {
 // makes the corruption worse. Every other scenario (list checks, filters,
 // real create-then-delete flows with no shared "before" state to
 // corrupt) keeps the normal retry behaviour.
+// cucumber rejects --retry-tag-filter alongside --retry 0, so RETRY=0 (e.g. a
+// login check that must not repeat a failed attempt) drops both flags.
+const retry = Number(env('RETRY', '0'));
+const retryFlags = retry > 0 ? `--retry ${retry} --retry-tag-filter 'not @mutates-admin-data'` : '';
 const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
                 -f json:${env('JSON_REPORT_FILE', './reports/report.json')} \
                 --format progress-bar \
                 --parallel ${env('PARALLEL')} \
-                --retry ${env('RETRY')} \
-                --retry-tag-filter 'not @mutates-admin-data'`;
+                ${retryFlags}`;
 
 // Never place a real order against a live storefront (see CLAUDE.md's
 // "Staging vs production rules"). Rather than relying on picking the right

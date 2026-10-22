@@ -92,6 +92,36 @@ Then(/^I delete the row containing the remembered "([^"]*)" from the "([^"]*)" t
     await deleteRowContaining(page, globalConfig, remembered, rowsKey);
 });
 
+// Clicks an element INSIDE the one row whose text contains a remembered
+// value - e.g. the "View quote" link on the row for the quote this scenario
+// just created, when every row has an identical link. Both keys resolve
+// through the project's mappings: rowsKey to every row, elementKey to the
+// target relative to a row. Refuses to click when the remembered value
+// matches no row or more than one, so it can never act on someone else's
+// record. First used for Watco's quote clean-up (CONFIRMED live,
+// staging-uk 2026-10-22: View quote -> "Delete Quote" deletes immediately,
+// no confirm prompt, and returns to the list).
+Given(/^I click on the "([^"]*)" in the "([^"]*)" row containing the remembered "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: string, rowsKey: string, variableName: string) {
+    const { screen: { page }, globalConfig } = this;
+    const remembered = this.globalVariables[variableName];
+    if (remembered === undefined) {
+        throw new Error(`No remembered text found for "${variableName}" - "I fill in the ... with a unique value, remembering it as ..." must run first.`);
+    }
+    const rowsSelector = getElementLocator(page, rowsKey, globalConfig);
+    const elementSelector = getElementLocator(page, elementKey, globalConfig);
+
+    const rows = page.locator(rowsSelector).filter({ hasText: remembered });
+    const matched = await waitFor(async () => (await rows.count()) === 1 ? true : undefined, {
+        timeout: 15000,
+        expected: `exactly one "${rowsKey}" (${rowsSelector}) row containing "${remembered}"`,
+        describeActual: async () => `${await rows.count()} matching row(s)`,
+    });
+    if (!matched) {
+        throw new Error("waitFor resolved without a single matching row - this should be unreachable.");
+    }
+    await rows.locator(elementSelector).first().click();
+});
+
 // For a sort toggle whose exact collation order isn't worth asserting (a
 // name list mixing letters/digits/spaces can sort non-obviously) - only
 // that clicking once changes the order, and clicking again produces the

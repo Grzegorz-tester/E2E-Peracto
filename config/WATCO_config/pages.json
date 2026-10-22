@@ -95,6 +95,10 @@
     "route": "/account/quote/list",
     "regex": "^/account/quote/list$"
   },
+  "quote-detail": {
+    "route": "/account/quote/request/",
+    "regex": "^/account/quote/request/[0-9]+$"
+  },
   "quote-where-to-add": {
     "route": "/quote/where-to-add",
     "regex": "^/quote/where-to-add/[0-9]+$"

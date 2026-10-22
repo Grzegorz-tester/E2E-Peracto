@@ -1,0 +1,3 @@
+{
+  "Delete Quote": "a[href*='/account/quote/delete/']"
+}

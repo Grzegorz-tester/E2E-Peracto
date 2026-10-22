@@ -49,3 +49,13 @@ Feature: Product quoting
 
     When I am on the "quote-list" page
     Then the remembered "new quote name" should appear in the "quote list content" element
+
+    # Clean-up: delete the quote this scenario created, so runs don't pile up
+    # quotes on the shared test account. CONFIRMED live (staging-uk,
+    # 2026-10-22): "Delete Quote" on the quote page deletes straight away (no
+    # confirm prompt) and returns to the list.
+    When I click on the "View quote link" in the "quote rows" row containing the remembered "new quote name"
+    Then I should be redirected to the "quote-detail" page
+    When I click on the "Delete Quote" link, removing the "cookie preference centre overlay" overlay if it interferes
+    Then I should be redirected to the "quote-list" page
+    And the remembered "new quote name" should not appear in the "quote list content" element
