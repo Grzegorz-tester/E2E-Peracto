@@ -159,4 +159,16 @@ export const OPAYO_TEST_CARDS: Record<string, OpayoTestCard> = {
         expiryYear: "29",
         securityCode: "123",
     },
+    // Any card number not on Opayo's test list is declined in the sandbox:
+    // Opayo stays on its own card-selection page with "The Authorisation has
+    // been declined by the bank. Please try a different card." (confirmed
+    // live on JTDove staging, 2026-10-23). A wrong CV2 on the default card is
+    // NOT declined - the sandbox doesn't enforce CV2.
+    declined: {
+        cardType: "Visa",
+        number: "4111111111111111",
+        expiryMonth: "12",
+        expiryYear: "29",
+        securityCode: "123",
+    },
 };

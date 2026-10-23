@@ -26,5 +26,19 @@
   "Apply promo code": "[data-testid='basket-summary'] [data-testid='add-promotion-form__button']",
   "promo code error": "//*[@data-testid='basket-summary']//*[contains(@class, 'danger') or contains(@class, 'error') or @role='alert' or contains(., 'not a valid')][normalize-space()][not(self::form)]",
   "Go to checkout": "[data-testid='basket-summary'] button:has-text('Go to checkout'):visible",
-  "basket privacy policy link": "[data-testid='basket-summary__privacy-policy-link']"
+  "basket privacy policy link": "[data-testid='basket-summary__privacy-policy-link']",
+  "collect at branch section": "[data-testid='basket-items__available-lines']:has(h3:has-text('Collect at Branch'))",
+  "collect at branch name": "//h3[starts-with(normalize-space(), 'Collect at Branch')]/span/span",
+  "delivery section": "[data-testid='basket-items__available-lines']:has(h3:text-is('Delivery'))",
+  "courier message": "[data-testid='basket-items'] :text('This product will be delivered by courier')",
+  "branch picker": "[role='dialog']:has-text('Check Stock In Our Branches')",
+  "branch picker in stock": "//*[@role='dialog']//div[starts-with(normalize-space(.), 'In stock?') and contains(normalize-space(.), 'Yes') and string-length(normalize-space(.)) < 16]",
+  "branch picker out of stock": "//*[@role='dialog']//div[starts-with(normalize-space(.), 'In stock?') and contains(normalize-space(.), 'No') and string-length(normalize-space(.)) < 16]",
+  "disabled branch select": "[role='dialog'] button:has-text('Select this branch'):disabled",
+  "Select this branch buttons": "[role='dialog'] button:has-text('Select this branch')",
+  "basket summary": "[data-testid='basket-summary']",
+  "basket discount": "[data-testid='basket-summary__discount']",
+  "applied promotions": "[data-testid='basket-summary__promotions']",
+  "sand line total": "//*[starts-with(@data-testid, 'basket-items__available-line-') and not(contains(substring-after(@data-testid, 'line-'), '__'))][.//*[contains(., 'Yellow Building Sand')]]//*[contains(@data-testid, '__total-price')]",
+  "sealant line total": "//*[starts-with(@data-testid, 'basket-items__available-line-') and not(contains(substring-after(@data-testid, 'line-'), '__'))][.//*[contains(., 'Everbuild C3')]]//*[contains(@data-testid, '__total-price')]"
 }

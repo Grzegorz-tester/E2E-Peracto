@@ -50,5 +50,6 @@
   "logged in as": "[data-testid='checkout-sign-in-content']",
   "Signed in Continue": "[data-testid='checkout-sign-in-content__continue']",
   "click and collect branch": "[data-testid='checkout-current-address']",
-  "Click and collect Continue": "main button:has-text('Continue'):visible"
+  "Click and collect Continue": "main button:has-text('Continue'):visible",
+  "page content": "main"
 }

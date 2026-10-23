@@ -6,5 +6,6 @@
   "order subtotal": "[data-testid='orders-details__order-summary__subtotal']",
   "order total price": "[data-testid='orders-details__order-summary__total']",
   "order delivery address": "[data-testid='checkout-current-address'] >> nth=0",
-  "order payment details": "[data-testid='orders-details__order-payment-details']"
+  "order payment details": "[data-testid='orders-details__order-payment-details']",
+  "page content": "main"
 }

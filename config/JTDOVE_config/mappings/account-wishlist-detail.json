@@ -36,5 +36,6 @@
   "first line total": "(//*[@data-testid='wishlist-builder__lines']//span[normalize-space()='Total']/following-sibling::span[1])[1]",
   "wishlist line rows": "[data-testid='wishlist-builder__lines'] > [data-id^='lines.']",
   "first line name": "(//*[@data-testid='wishlist-builder__lines']//a//span[1])[1]",
-  "empty wishlist message": "//main//*[normalize-space()='There are currently no products in this wishlist.']"
+  "empty wishlist message": "//main//*[normalize-space()='There are currently no products in this wishlist.']",
+  "any toast": "[data-sonner-toast]"
 }

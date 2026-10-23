@@ -187,3 +187,34 @@ Feature: Wishlists (My Lists)
     # wishlist's line is the only one here.
     When I click on the "Remove item" button
     Then the "no items message" should be displayed
+
+
+  # Manual cases 163 and 172 (added 2026-10-23). Shares to a Velstar inbox,
+  # so nobody outside Velstar is emailed. Addresses must be tagged with Enter
+  # before Share.
+  # KNOWN SITE ISSUE (confirmed live 2026-10-23): Share does POST successfully
+  # (200 to /account/wishlists/<id>), but the dialog stays open with no
+  # confirmation, so the customer can't tell it worked. Its footer CLOSE
+  # button is also a submit button and doesn't close the dialog (only the X
+  # does). Expected to stay red until the dialog confirms and closes.
+  Scenario: A wishlist can be shared with a valid email address
+    Given I am on the "account-wishlist" page
+    And I wait for the page to settle
+    And I clean up any leftover "qa-" wishlists
+    When I click on the "Create a new Wishlist" element
+    And I fill in the "new wishlist name input" input field with a unique value starting with "qa-", remembering it as "list name"
+    And I click on the "Create wishlist submit" button
+    Then I should eventually be redirected to the "account-wishlist-detail" page
+    And I wait for the page to settle
+    When I click on the "Share" button
+    Then the "share dialog" should be displayed
+    When I fill in the "share email input" input field with "velstar.qa.share@velstar.co.uk"
+    And I press Enter in the "share email input" input field
+    And I click on the "Share submit" button
+    Then the "share dialog" should not be displayed
+    # Clean up (the "qa-" sweep at the start of each wishlist scenario also
+    # catches this list if the assertion above fails first)
+    When I press the Escape key
+    And I click on the "Delete Wishlist" button
+    And I click on the "Confirm delete wishlist" button
+    Then I should eventually be redirected to the "account-wishlist" page

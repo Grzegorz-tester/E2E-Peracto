@@ -41,5 +41,12 @@
   "sitemap": { "route": "/sitemap", "regex": "^/sitemap$" },
   "privacy-policy": { "route": "/privacy-policy", "regex": "^/privacy-policy" },
   "cookie-policy": { "route": "/cookie-policy", "regex": "^/cookie-policy$" },
-  "content-page": { "route": "/about-us", "regex": "^/[^/]+$" }
+  "content-page": { "route": "/about-us", "regex": "^/[^/]+$" },
+  "courier-product": { "route": "/products/t54308-scruffs-trade-neck-warmer", "regex": "^/products/t54308-scruffs-trade-neck-warmer$" },
+  "narrow-stock-product": { "route": "/products/w110wp-215-mm-90deg-waste-white-overflow-tee-brett-martin", "regex": "^/products/w110wp-215-mm-90deg-waste-white-overflow-tee-brett-martin$" },
+  "wide-stock-product": { "route": "/products/yellow-building-sand-prepacked-approx-25kg", "regex": "^/products/yellow-building-sand-prepacked-approx-25kg$" },
+  "min-qty-product": { "route": "/products/17mm-2400mm-quickstep-tennessee-oak-light-wood-laminate-scotia", "regex": "^/products/17mm-2400mm-quickstep-tennessee-oak-light-wood-laminate-scotia$" },
+  "multiples-product": { "route": "/products/65mm-laggan-mixture", "regex": "^/products/65mm-laggan-mixture$" },
+  "timber-product": { "route": "/products/25x50mm-graded-red-treated-roofing-batten-bs-compliant-bs5534", "regex": "^/products/25x50mm-graded-red-treated-roofing-batten-bs-compliant-bs5534$" },
+  "multibuy-product": { "route": "/products/everbuild-c3-roof-gutter-sealant-black-295ml-360384", "regex": "^/products/everbuild-c3-roof-gutter-sealant-black-295ml-360384$" }
 }

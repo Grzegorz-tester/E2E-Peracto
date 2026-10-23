@@ -129,5 +129,15 @@
   "drawer current category": "[data-testid^='navigation-drawer-sheet__current-parent-text-']",
   "drawer Building Materials View All": "[data-testid='navigation-drawer-sheet__view-all-link-building-materials']",
   "drawer back button": "[data-testid='navigation-drawer-sheet__back-button']",
-  "Clear all filters": "[role='dialog'] [data-testid='algolia-clear-refinements']"
+  "Clear all filters": "[role='dialog'] [data-testid='algolia-clear-refinements']",
+  "Select this branch buttons": "[role='dialog'] button:has-text('Select this branch')",
+  "branch picker": "[role='dialog']:has-text('Check Stock In Our Branches')",
+  "branch picker selected branch note": "[role='dialog'] :text('Your selected branch is')",
+  "PDP add to basket panel": "[data-testid='product-add-to-basket']:visible",
+  "first length increment": "[data-testid='product-add-to-basket']:visible [data-testid='quantity-picker__plus-button'] >> nth=0",
+  "second length increment": "[data-testid='product-add-to-basket']:visible [data-testid='quantity-picker__plus-button'] >> nth=1",
+  "disabled branch select": "[role='dialog'] button:has-text('Select this branch'):disabled",
+  "Opayo decline message": "text=The Authorisation has been declined by the bank",
+  "Opayo Cancel": "a:has-text('Cancel'), button:has-text('Cancel')",
+  "Opayo card choices": "button[name='cardselected']"
 }

@@ -5,5 +5,9 @@
   "application first step": "[data-testid='multi-step-form__step-0']",
   "application second step": "[data-testid='multi-step-form__step-1']",
   "application form": "[data-testid='multi-step-form-0__component']",
-  "Next": "[data-testid='multi-step-form__next']"
+  "Next": "[data-testid='multi-step-form__next']",
+  "application trading name": "[id='businessDetails.tradingName']",
+  "application mobile": "[id='businessDetails.mobileTelephone']",
+  "application email": "[id='businessDetails.email']",
+  "application credit limit requested": "[id='businessDetails.creditLimitRequested']"
 }
