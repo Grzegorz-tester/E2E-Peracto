@@ -12,7 +12,12 @@
   "invoices table header": "[data-testid='account-orders-header-row']",
   "invoice rows": "[data-testid^='account-invoices-row-']:visible",
   "first invoice document number": "[data-testid='account-orders-row-0-cell-documentNumber']",
-  "first invoice download": "[data-testid='account-orders-row-0-cell-download'] a, [data-testid='account-orders-row-0-cell-download'] button",
+  "first invoice download": "[data-testid='account-orders-row-0-cell-download'] svg",
   "document number filter": "[data-testid='account-orders-documentNumber-filter'] input, input[data-testid='account-orders-documentNumber-filter']",
-  "Reset filters": "[data-testid='account-orders-filter-reset']"
+  "Reset filters": "[data-testid='account-orders-filter-reset']",
+  "Status filter": "[data-testid='account-orders__filters'] button[role='combobox']",
+  "Paid status option": "[role='option']:has-text('Paid')",
+  "invoice statuses": "[data-testid^='account-orders-row-'][data-testid$='-cell-status']",
+  "invoices next page": "[data-testid='account-invoices'] button:has-text('Next') >> nth=0",
+  "invoices previous page": "[data-testid='account-invoices'] button:has-text('Prev') >> nth=0"
 }

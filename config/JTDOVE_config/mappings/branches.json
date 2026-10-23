@@ -9,5 +9,7 @@
   "J filter": "[data-testid='branches_filter-bar_btn--j']",
   "N filter": "[data-testid='branches_filter-bar_btn--n']",
   "H filter": "[data-testid='branches_filter-bar_btn--h']",
-  "All filter": "[data-testid='branches_filter-bar_btn--All']"
+  "All filter": "[data-testid='branches_filter-bar_btn--All']",
+  "View all branches": "a[href='#all-branches']",
+  "all branches section": "#all-branches"
 }

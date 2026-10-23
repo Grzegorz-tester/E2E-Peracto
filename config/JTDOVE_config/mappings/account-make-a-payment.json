@@ -10,7 +10,8 @@
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
   "make a payment online": "[data-testid='make-a-payment-online']",
   "payment billing address": "[data-testid='make-a-payment-online'] [data-testid='address-book-address']",
-  "payment amount": "[data-testid='make-a-payment-online'] input[type='number'], [data-testid='make-a-payment-online'] input[inputmode='decimal'], [data-testid='make-a-payment-online'] input:not([type='hidden'])",
-  "MAKE A PAYMENT": "[data-testid='make-a-payment-online'] button[type='submit'], [data-testid='make-a-payment-online'] button:has-text('Make a payment')",
-  "BACS details": "//main//*[contains(normalize-space(), 'Make a Payment - BACS')]"
+  "payment amount": "[data-testid='make-a-payment-online'] #currency",
+  "MAKE A PAYMENT": "[data-testid='make-a-payment-online'] [data-testid='save-changes-button']",
+  "BACS details": "//main//*[contains(normalize-space(), 'Make a Payment - BACS')]",
+  "payment balance message": "[data-testid='make-a-payment-online'] :text('greater than your account balance')"
 }

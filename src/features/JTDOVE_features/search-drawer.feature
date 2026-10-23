@@ -69,3 +69,14 @@ Feature: Header search
     And the "PLP hit count" should be displayed
     And the "product card" should be displayed
     And the "PLP first product card title" should contain the text "Plywood"
+
+
+  # Smoke case 201 (added 2026-10-23).
+  Scenario: Searching by SKU suggests the matching product
+    Given I am on the "home" page
+    And I wait for the page to settle
+    When I fill in the "header search input" input field with "310239"
+    And I wait for the search results to update
+    Then the "first search result" should contain the text "Marine Plywood"
+    When I click on the "first search result" element, retrying until redirected to the "pdp" page
+    Then the "product SKU" should contain the text "310239"

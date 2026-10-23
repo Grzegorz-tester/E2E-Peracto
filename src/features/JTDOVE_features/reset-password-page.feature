@@ -12,6 +12,14 @@ Feature: Resetting the password
     Then the "Email address" input should be rejected as invalid
 
 
+  # Manual regression case 42 (added 2026-10-22).
+  Scenario: An empty email address is held back by the browser
+    Given I am on the "reset-password" page
+    And I wait for the page to settle
+    When I click on the "Submit" button
+    Then the "Email address" input should be rejected as empty
+
+
   # KNOWN SITE ISSUE (confirmed live 2026-10-05): submitting a valid email
   # POSTs /reset-password successfully (HTTP 200) but the page shows no
   # confirmation at all - the form just sits there, so the customer can't

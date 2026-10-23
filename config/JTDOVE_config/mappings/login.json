@@ -9,5 +9,7 @@
   "Start cash account application": "main a[href='/register/cash-account']",
   "Start self build account application": "main a[href='/register/self-build-account']",
   "login error": "main div[class*='danger-alert']",
-  "validation message": "main div[class*='danger-alert']"
+  "validation message": "main div[class*='danger-alert']",
+  "login phone link": "[data-testid='login-form__phone-link']",
+  "login email link": "[data-testid='login-form__email-link']"
 }

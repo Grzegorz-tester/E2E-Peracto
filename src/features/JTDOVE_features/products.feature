@@ -61,6 +61,26 @@ Feature: Product Listing Page (PLP)
     And the "Filter" should not contain the text "(0)"
 
 
+  # Smoke case 199 (added 2026-10-23).
+  Scenario: Clearing the filters brings back the full results
+    Given I am on the "special-offers" page
+    And I wait for the page to settle
+    And I remember the text of "PLP hit count" as "unfiltered count"
+    When I click on the "Filter" element
+    And I click on the "first facet checkbox" element
+    And I wait for the search results to update
+    Then the "PLP hit count" text should not equal the remembered "unfiltered count"
+    # The drawer's own "Clear all": the page has a second one that the open
+    # drawer covers.
+    When I click on the "Clear all filters" button
+    And I wait for the search results to update
+    And I click on the "filter drawer close button" element if present
+    Then the "PLP hit count" text should equal the remembered "unfiltered count"
+    # Not asserted: after "Clear all" the Filter button still read "Filter (3)"
+    # although the full results were back (seen 2026-10-23, unconfirmed,
+    # raised with QA).
+
+
   Scenario: Pagination moves to the next page of results
     Given I am on the "special-offers" page
     And I wait for the page to settle

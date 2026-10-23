@@ -57,3 +57,15 @@ Feature: Footer and newsletter sign-up
     And I click on the "newsletter subscribe" button
     Then the "newsletter success message" should be displayed within "30" seconds
     And the "newsletter success message" should contain the text "Thank you for subscribing to our newsletter."
+
+
+  # Manual case 70 and smoke case 212 (added 2026-10-23). The HTML sitemap
+  # is very large (26MB on production); curl without compression gets a 413
+  # from Amplify on staging, but a real browser loads it. The XML sitemaps
+  # (/sitemaps/*.xml) are only served on production.
+  Scenario: The footer sitemap opens and its links resolve
+    Given I am on the "home" page
+    And I wait for the page to settle
+    When I click on the "footer sitemap link" element, retrying until redirected to the "sitemap" page
+    Then the "page heading" should contain the text "Sitemap"
+    And the first 15 "sitemap links" links should resolve without an error

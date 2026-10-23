@@ -21,5 +21,7 @@
   "first wishlist edit link": "[data-testid='account-wishlists-row-0-cell-edit'] a",
   "Wishlist names": "[data-testid^='account-wishlists-row-'][data-testid$='-cell-name']",
   "wishlist created toast": "text=Your wishlist was created!",
-  "Close wishlist dialog": "[role='dialog'] button:has(svg[data-icon='xmark']), [role='dialog'] button:has-text('Close')"
+  "Close wishlist dialog": "[role='dialog'] button:has(svg[data-icon='xmark']), [role='dialog'] button:has-text('Close')",
+  "new wishlist dialog": "[role='dialog']:has-text('Create Wishlist')",
+  "wishlist table": "[data-testid='account-wishlists__content']"
 }

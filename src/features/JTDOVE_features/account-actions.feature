@@ -43,3 +43,41 @@ Feature: Account actions
     And I click on the "Confirm deletion proceed" button
     And I wait for the save to complete
     Then the "delivery addresses" should not contain the remembered "last name"
+
+
+  # Manual regression case 143 (added 2026-10-22).
+  Scenario: An existing delivery address can be edited
+    Given I am on the "account-address-book" page
+    And I wait for the page to settle
+    When I click on the "Add delivery address" button
+    And I fill in the "address first name" input field with "Velstar"
+    And I fill in the "address last name" input field with a unique value, remembering it as "last name"
+    And I pick the first Loqate address for the postcode "NE46 4DQ" in the "address search" field
+    And I click on the "Save address" button
+    And I wait for the save to complete
+    Then the "delivery addresses" should contain the remembered "last name"
+    When I click on the "Edit address" inside the "delivery address cards" containing the remembered "last name"
+    And I wait for the page to settle
+    And I fill in the "address last name" input field with a unique value, remembering it as "edited last name"
+    And I click on the "Save address" button
+    And I wait for the save to complete
+    Then the "delivery addresses" should contain the remembered "edited last name"
+    And the "delivery addresses" should not contain the remembered "last name"
+    When I click on the "Delete address" inside the "delivery address cards" containing the remembered "edited last name"
+    And I click on the "Confirm deletion proceed" button
+    And I wait for the save to complete
+    Then the "delivery addresses" should not contain the remembered "edited last name"
+
+
+  # Smoke case 204 (added 2026-10-23). "Reset Password" on the profile opens
+  # an in-page Change Password form rather than emailing a link (confirmed
+  # live 2026-10-23). The password is never changed: the shared account
+  # must keep its current one.
+  Scenario: Reset Password on the profile opens the change password form
+    Given I am on the "account-profile" page
+    And I wait for the page to settle
+    When I click on the "profile Reset Password" button
+    Then the "change password heading" should be displayed
+    And the "existing password" should be displayed
+    When I click on the "Back to User Form" element
+    Then the "profile first name" should be displayed

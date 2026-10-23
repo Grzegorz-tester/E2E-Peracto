@@ -10,5 +10,11 @@
   "Make a Payment menu item": "[data-testid='account-menu__item']:has-text('Make a Payment')",
   "dashboard cards": "[data-testid='account-card']",
   "dashboard card titles": "[data-testid='account-card__title']",
-  "dashboard addresses": "[data-testid='address-book-address']"
+  "dashboard addresses": "[data-testid='address-book-address']",
+  "Delivery Address card": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Delivery Address'))",
+  "Billing Address card": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Billing Address'))",
+  "Delivery Address default label": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Delivery Address')) [data-testid='address-book-address__is-default-address']",
+  "Billing Address default label": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Billing Address')) [data-testid='address-book-address__is-default-address']",
+  "Delivery Address View all": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Delivery Address')) a:has-text('View all')",
+  "Recent Orders card": "[data-testid='account-card']:has([data-testid='account-card__title']:text-is('Recent Orders'))"
 }

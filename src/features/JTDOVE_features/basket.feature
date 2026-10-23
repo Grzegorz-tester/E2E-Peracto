@@ -36,6 +36,21 @@ Feature: Basket page
     And the "Go to checkout" should be displayed
 
 
+  # Smoke case 196 (added 2026-10-23).
+  Scenario: A quantity chosen on the PDP carries through to the basket
+    Given I am on the "test-product" page
+    And I wait for the page to settle
+    And I remember the price in "product price" as "unit price"
+    When I click precisely on the "Quantity increment" element
+    Then the "Quantity input" should equal the value "2"
+    When I click on the "DELIVERY" button
+    And the "added to basket drawer" should be displayed within "15" seconds
+    And I am on the "basket" page
+    And I wait for the page to settle
+    Then the "basket quantity input" should equal the value "2"
+    And the price in "basket line total price" should equal the remembered "unit price" times 2
+
+
   Scenario: Changing the quantity updates the line and basket totals
     Given I am on the "test-product" page
     And I wait for the page to settle

@@ -38,6 +38,14 @@ Feature: Branch finder
     Then the "branch cards" should all contain the text "JT Dove H"
 
 
+  # Manual regression case 109 (added 2026-10-22).
+  Scenario: "View all branches" scrolls to the full branch list
+    Given I am on the "branches" page
+    And I wait for the page to settle
+    When I click on the "View all branches" link
+    Then the "all branches section" should be scrolled into view
+
+
   # KNOWN SITE ISSUE (confirmed live 2026-10-05): the search box never
   # suggests anything - the page logs "[react-google-places-autocomplete]:
   # Google script not loaded", the same Maps-script failure seen on KOOL's

@@ -25,5 +25,6 @@
   "delivery address names": "[data-testid^='address-book-delivery__address-'][data-testid$='__name']",
   "delivery address cards": "[data-testid^='address-book-delivery__address-']:has([data-testid$='__delete-address-button'])",
   "Delete address": "[data-testid$='__delete-address-button']",
-  "Confirm deletion proceed": "[data-testid$='__delete-address-yes-button']:visible"
+  "Confirm deletion proceed": "[data-testid$='__delete-address-yes-button']:visible",
+  "Edit address": "[data-testid$='__edit-address-button']"
 }

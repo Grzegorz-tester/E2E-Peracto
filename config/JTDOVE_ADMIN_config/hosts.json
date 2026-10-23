@@ -1,3 +1,4 @@
 {
-  "staging": "https://staging-peracto.jtdove.pub"
+  "staging": "https://staging-peracto.jtdove.pub",
+  "release_branch": "https://4-4-0-peracto.jtdove.pub"
 }

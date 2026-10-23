@@ -45,6 +45,7 @@ Feature: Header functionality
       | Branches        | branches   |
       | Basket          | basket     |
       | Contact Us link | contact-us |
+      | Call your local branch link | branches |
 
 
   Scenario Outline: "<link>" redirects a guest to the login page
@@ -72,3 +73,44 @@ Feature: Header functionality
     And the "PDP tax message" should contain the text "Inc"
     When I click on the "VAT toggle" element
     Then the "product price" should contain the text "£56.98"
+
+
+  # Manual regression cases 20, 26, 27, 38 and 39 (added 2026-10-22).
+  Scenario: Clicking the logo returns to the home page
+    Given I am on the "plywood" page
+    And I wait for the page to settle
+    When I click on the "header logo" element, retrying until redirected to the "home" page
+
+
+  Scenario: The site serves its favicon
+    Given I am on the "home" page
+    And I wait for the page to settle
+    And I remember the "href" attribute of the "favicon" as "favicon path"
+    Then requesting the remembered path "favicon path" should return status 200
+
+
+  # The header shows no count at all for an empty basket (not "0 items" as
+  # the manual case describes); a count badge appears once something is in it.
+  Scenario: The header basket count appears and updates when a product is added
+    Given I am on the "home" page
+    And I wait for the page to settle
+    Then the "basket count" should not be displayed
+    When I am on the "test-product" page
+    And I wait for the page to settle
+    And I click on the "DELIVERY" button
+    Then the "added to basket drawer" should be displayed
+    When I am on the "home" page
+    And I wait for the page to settle
+    Then the "basket count" should equal text "1"
+
+
+  Scenario: VAT toggle switches PLP prices between ex. and inc. VAT
+    Given I am on the "plywood" page
+    And I wait for the page to settle
+    And I remember the text of "PLP first product card price" as "ex vat price"
+    Then the "PLP first product card" should contain the text "Ex."
+    When I click on the "VAT toggle" element
+    Then the "PLP first product card price" text should not equal the remembered "ex vat price"
+    And the "PLP first product card" should contain the text "Inc."
+    When I click on the "VAT toggle" element
+    Then the "PLP first product card price" text should equal the remembered "ex vat price"

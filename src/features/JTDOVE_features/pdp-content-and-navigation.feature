@@ -18,6 +18,13 @@ Feature: Product Detail Page (PDP)
     And the "related products" should be displayed
 
 
+  # Smoke case 194 (added 2026-10-23).
+  Scenario: The main product image loads
+    Given I am on the "test-product" page
+    And I wait for the page to settle
+    Then the "product image" image should return a 200 OK response with content-type "image/"
+
+
   Scenario: Changing the quantity updates the PDP total
     Given I am on the "test-product" page
     And I wait for the page to settle
@@ -83,6 +90,18 @@ Feature: Product Detail Page (PDP)
     And the "ask a question postcode" should be displayed
     And the "ask a question text" should be displayed
     And the "Submit question" should be displayed
+
+
+  # Manual regression case 190 (added 2026-10-22). Never submitted: a valid
+  # question would email JT Dove staff. Submit stays disabled until the form
+  # is filled in. It does enable with a malformed email address (checked
+  # live 2026-10-22); whether that's rejected on submit needs a manual check,
+  # since automating it would send a real question.
+  Scenario: Ask A Question won't submit an empty form
+    Given I am on the "test-product" page
+    And I wait for the page to settle
+    When I click on the "Ask A Question" element
+    Then the "Submit question" should not be enabled
 
 
   Scenario: Related products link to their own PDPs

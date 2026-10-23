@@ -15,5 +15,9 @@
   "profile last name": "[data-testid='account-profile__last-name-input']",
   "profile contact number": "[data-testid='account-profile__contact-number-input']",
   "Save changes": "[data-testid='account-profile__save-changes-button--footer']",
-  "success toast": "text=User successfully updated >> visible=true"
+  "success toast": "text=User successfully updated >> visible=true",
+  "profile Reset Password": "[data-testid='account__my-details-form'] button:has-text('Reset Password')",
+  "change password heading": "main h3:text-is('Change Password')",
+  "existing password": "//label[contains(., 'Existing Password')]/following::input[1]",
+  "Back to User Form": "main :text('Back to User Form')"
 }

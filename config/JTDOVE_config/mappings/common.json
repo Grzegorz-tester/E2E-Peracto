@@ -114,5 +114,20 @@
   "PDP new wishlist name input": "[role='dialog'] input:visible",
   "PDP create wishlist submit": "[role='dialog'] button:has-text('Create')",
   "first related product name": "[data-testid='product-relations__item-0'] [data-testid='product-card__name']",
-  "success toast": "[data-sonner-toast]"
+  "success toast": "[data-sonner-toast]",
+  "favicon": "link[rel='icon']",
+  "basket count": "[data-testid='brand-bar__basket-link']:visible span:nth-of-type(2)",
+  "Menu button": "[data-testid='brand-bar__menu-button']:visible",
+  "navigation drawer": "[role='dialog']:has([data-testid^='navigation-drawer-sheet'])",
+  "drawer search input": "[role='dialog'] [data-testid='algolia-autocomplete__input']",
+  "drawer close": "[role='dialog']:has([data-testid^='navigation-drawer-sheet']) > button:has-text('Close')",
+  "drawer category links": "[data-testid^='navigation-drawer-sheet__current-tier-link-']",
+  "drawer Building Materials link": "[data-testid^='navigation-drawer-sheet__current-tier-link-']:has-text('Building Materials')",
+  "drawer Special Offers link": "[data-testid^='navigation-drawer-sheet__current-tier-link-']:has-text('Special Offers')",
+  "drawer Branches link": "[data-testid='navigation-drawer-sheet__branches-link'][href='/branches']",
+  "PLP first product card": "(//*[@data-testid='algolia-hits__hits']//*[@data-testid='product-card'])[1]",
+  "drawer current category": "[data-testid^='navigation-drawer-sheet__current-parent-text-']",
+  "drawer Building Materials View All": "[data-testid='navigation-drawer-sheet__view-all-link-building-materials']",
+  "drawer back button": "[data-testid='navigation-drawer-sheet__back-button']",
+  "Clear all filters": "[role='dialog'] [data-testid='algolia-clear-refinements']"
 }

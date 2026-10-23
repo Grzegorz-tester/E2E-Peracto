@@ -63,3 +63,22 @@ Feature: Login Page
     Then the "Sign In" should be displayed
     When I navigate directly to the path "/account"
     Then I should eventually be redirected to the "login" page
+
+
+  # Manual regression cases 30-32 and 47 (added 2026-10-22). The header has
+  # no phone or email link (it links to /contact and /branches instead); the
+  # login page is where the customer-services phone number and email live.
+  Scenario: Login page shows the customer services phone and email links
+    Given I am on the "login" page
+    And I wait for the page to settle
+    Then the "login phone link" should have attribute "href" containing "tel:"
+    And the "login email link" should have attribute "href" containing "mailto:"
+
+
+  Scenario: Login without a password is held back by the browser
+    Given I am on the "login" page
+    And I wait for the page to settle
+    When I fill in the "Email address" input field with "velstar.qa.login@velstar.co.uk"
+    And I click on the "Sign In" button
+    Then the "Password" input should be rejected as empty
+    And I should be redirected to the "login" page

@@ -35,7 +35,7 @@ Then(
 // "can someone without a login open this link" checks need.
 Then(
     /^requesting the remembered path "([^"]*)" should return status (\d+)(?: with content-type "([^"]*)")?$/,
-    async function (this: ScenarioWorld, variableName: string, expectedStatus: string, expectedContentType: string | undefined) {
+    async function (this: ScenarioWorld, variableName: string, expectedStatus: string, expectedContentType: string | null | undefined) {
         const { screen: { page } } = this;
         const urlPath = this.globalVariables[variableName];
         if (urlPath === undefined) {
@@ -45,7 +45,8 @@ Then(
 
         const response = await page.request.get(url, { timeout: 15000, maxRedirects: 0 });
         expect(response.status(), `${url} -> ${response.status()}`).toBe(Number(expectedStatus));
-        if (expectedContentType !== undefined) {
+        // Cucumber passes null (not undefined) for an unmatched optional group.
+        if (expectedContentType != null) {
             expect(response.headers()["content-type"] ?? "").toContain(expectedContentType);
         }
     }
