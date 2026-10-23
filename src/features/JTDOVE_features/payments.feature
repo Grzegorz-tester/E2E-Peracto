@@ -95,3 +95,41 @@ Feature: Card payment failures
     And I wait for the page to settle
     Then the "not found heading" should not be displayed
     And the current URL should contain "/checkout/"
+
+
+  # Manual cases 86 and 193 (added 2026-10-23). Uses the staging Credit
+  # Account test user (user 73, "Velstar Test Credit", account 103128,
+  # JTDOVE_CREDIT_* in .env). The Credit Account customer group only allows
+  # the "account" payment type, so Review & Pay shows "Pay on Account" and no
+  # card payment. Its billing address (Velstar Test Credit, NE46 4DQ) is saved
+  # on the account. Places a REAL order on staging every run.
+  @places-real-order
+  Scenario: A credit account customer pays on account with no card details
+    Given I require staging for this scenario
+    And I am navigating the page as a "credit" user
+    And I am on the "test-product" page
+    And I wait for the page to settle
+    When I click on the "CLICK & COLLECT" button
+    And I click on the first enabled "Select this branch buttons" button
+    Then the "added to basket drawer" should be displayed within "15" seconds
+    When I am on the "basket" page
+    And I wait for the page to settle
+    And I click on the "Go to checkout" element, retrying until redirected to the "checkout-sign-in" page
+    And I click on the "Signed in Continue" button
+    Then I should eventually be redirected to the "checkout-click-and-collect" page
+    And I wait for the page to settle
+    When I fill in the "contact mobile" input field with "07700900000"
+    And I click on the "Click and collect Continue" button
+    Then I should eventually be redirected to the "checkout-billing" page
+    And I wait for the page to settle
+    When I click on the "Saved address Continue" button
+    Then I should eventually be redirected to the "checkout-review" page
+    And I wait for the page to settle
+    And the "billed to" should be displayed
+    And the "page content" should contain the text "Velstar Test Credit"
+    And the "page content" should not contain the text "Opayo"
+    When I click on the "Pay on Account" button
+    Then I should eventually be redirected to the "thank-you" page
+    And the "thank you heading" should be displayed
+    And the "order reference" should be displayed
+    And the "order line name" should contain the text "Marine Plywood Sheet (2440 x 1220 x 18mm)"

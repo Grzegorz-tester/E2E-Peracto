@@ -1,4 +1,5 @@
 {
   "logged in": { "email": "", "password": "" },
-  "guest": {}
+  "guest": {},
+  "credit": { "email": "", "password": "" }
 }

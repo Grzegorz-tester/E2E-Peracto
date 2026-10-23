@@ -51,5 +51,7 @@
   "Signed in Continue": "[data-testid='checkout-sign-in-content__continue']",
   "click and collect branch": "[data-testid='checkout-current-address']",
   "Click and collect Continue": "main button:has-text('Continue'):visible",
-  "page content": "main"
+  "page content": "main",
+  "Pay on Account": "[data-testid='review-content__continue-to-payment-account']:has-text('Pay on Account')",
+  "billed to": "main :text('Your order will be billed to')"
 }
