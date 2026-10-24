@@ -53,11 +53,19 @@ if (!fs.existsSync(jsonReportDir)) {
 // cucumber rejects --retry-tag-filter alongside --retry 0, so RETRY=0 (e.g. a
 // login check that must not repeat a failed attempt) drops both flags.
 const retry = Number(env('RETRY', '0'));
+
+// Cucumber's own HTML report, written by the run itself next to report.json
+// (reports/<PROJECT>_<ENV>/cucumber-report.html). Unlike the postcucumber
+// reports it doesn't depend on anything running after cucumber exits, and it
+// shows every attempt of a retried scenario (report.json keeps only the last)
+// with its attachments, so a failure smoothed over by RETRY is still visible.
+const messagesHtmlReport = path.join(jsonReportDir, 'cucumber-report.html');
 const retryFlags = retry > 0 ? `--retry ${retry} --retry-tag-filter 'not @mutates-admin-data'` : '';
 const common = `${env('FEATURE_PATH', './src/features/**/*.feature')} \
                 --require-module ts-node/register \
                 --require ./src/step-definitions/**/**/*.ts \
                 -f json:${env('JSON_REPORT_FILE', './reports/report.json')} \
+                -f html:${messagesHtmlReport} \
                 --format progress-bar \
                 --parallel ${env('PARALLEL')} \
                 ${retryFlags}`;

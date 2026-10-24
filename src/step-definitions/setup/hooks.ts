@@ -1,4 +1,4 @@
-import { Before, BeforeAll, After, ITestCaseHookParameter, setDefaultTimeout, BeforeStep, AfterStep } from '@cucumber/cucumber';
+import { Before, BeforeAll, After, ITestCaseHookParameter, setDefaultTimeout, BeforeStep, AfterStep, HookTarget } from '@cucumber/cucumber';
 import { env } from '../../env/parseEnv';
 import { ScenarioWorld } from './world';
 import { detectBlockPage, blockPageMessage } from '../support-functions/block-page-detection';
@@ -24,18 +24,17 @@ setDefaultTimeout(Number(env('SCRIPT_TIMEOUT')));
 const projectName = path.basename(env('COMMON_CONFIG_FILE', 'env/common.env'), '.env');
 const screenshotDir = path.join(env('SCREENSHOT_PATH'), projectName);
 
-BeforeAll(async function () {
+BeforeAll({ on: HookTarget.COORDINATOR }, async function () {
     // Reset this project's screenshot folder once per run, not once per
     // scenario - without this, a scenario that used to fail (and was since
     // fixed) left its old failure screenshot behind forever, since nothing
     // else ever removed a screenshot once written.
-    // With PARALLEL > 1, BeforeAll runs once in EVERY worker process, so only
-    // worker 0 wipes - otherwise a slower-starting worker could delete
-    // screenshots another worker had already captured.
-    const workerId = process.env.CUCUMBER_WORKER_ID;
-    if (workerId === undefined || workerId === '0') {
-        fs.rmSync(screenshotDir, { recursive: true, force: true });
-    }
+    // In parallel mode a plain BeforeAll runs once in EVERY worker, and even
+    // limiting the wipe to worker 0 could still delete a screenshot another,
+    // faster worker had already captured. A COORDINATOR hook runs exactly
+    // once, before any worker starts (and as a normal BeforeAll when not
+    // running in parallel).
+    fs.rmSync(screenshotDir, { recursive: true, force: true });
     fs.mkdirSync(screenshotDir, { recursive: true });
 });
 
