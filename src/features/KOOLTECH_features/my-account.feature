@@ -19,7 +19,7 @@ Feature: My Account & Authentication
     When I click on the "Register" button
     Then the "validation message" should be displayed
 
-  # Anchored on the "quotes user 2" account (grzegorz.hajduk@velstar.co.uk)
+  # Anchored on the "quotes user 2" account (a Velstar test address)
   # since its dashboard/orders content differs from the primary test user.
   Scenario: My Account - Manage profile, addresses and orders
     Given I am navigating the page as a "quotes user 2" user

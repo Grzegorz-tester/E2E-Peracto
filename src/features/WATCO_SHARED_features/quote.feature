@@ -28,6 +28,10 @@ Feature: Product quoting
     And I click on the "Add to quote" element
     Then the "sign-in prompt continue as guest button" should be displayed
 
+  # Kept off production (2026-10-24): it creates a real quote on the prod test
+  # account, and it isn't known whether a new quote notifies Watco's sales
+  # team. Runs on every staging market.
+  @not-on-production
   Scenario: A logged-in customer can create a new quote from a product page
     Given I am on the "login" page
     And I click on the "Accept cookies" button if present

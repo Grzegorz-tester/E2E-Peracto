@@ -2,7 +2,7 @@
 Feature: Quote Tool - Quotes List View
 
   # From KOOL-2026-08-17.json, "Quote Tool > Quotes List View" (cases
-  # 477-485, 512). Runs as the "logged in" user (g.hajduk@9xb.com), which
+  # 477-485, 512). Runs as the "logged in" user (a 9xb staff account), which
   # has full staff Quote Builder access at /account/staff-quotes - the
   # separate "quotes user 2" account is a plain trade customer with only a
   # read-only Quotes section, not the staff tool tested here.

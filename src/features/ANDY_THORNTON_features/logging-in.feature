@@ -2,7 +2,7 @@
 Feature: Login Page
 
   # UPDATED (2026-09-14): a real Andy Thornton production account now
-  # exists (grzegorz.hajduk@velstar.co.uk, credentials in
+  # exists (the Velstar test address, credentials in
   # ANDY_THORNTON_PROD_LOGGED_IN_EMAIL/PASSWORD) - "Successful log in" is
   # no longer blocked. /register still can't be scripted around
   # (reCAPTCHA), so this account was registered manually rather than by
@@ -23,7 +23,7 @@ Feature: Login Page
   # "wrong password" row must use a genuinely REGISTERED email - it
   # previously used the "+andythornton" plus-aliased address, which isn't
   # actually registered on production (only the bare
-  # grzegorz.hajduk@velstar.co.uk is, per ANDY_THORNTON_PROD_LOGGED_IN_
+  # the Velstar test address is, per ANDY_THORNTON_PROD_LOGGED_IN_
   # EMAIL) - the real site correctly returned "Username could not be
   # found." instead of "Invalid credentials.", which is right for an
   # unregistered address but wrong for what this row is meant to test.

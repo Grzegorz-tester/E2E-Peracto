@@ -27,7 +27,7 @@ Feature: Login Page
   # email field with the CONFIGURED "admin" user's own real email (via
   # users.json/env vars), not a hardcoded address - which real email exists
   # differs per tenant (e.g. Carbon's real admin isn't
-  # grzegorz.hajduk@velstar.co.uk), so a hardcoded address would wrongly hit
+  # the Velstar test address), so a hardcoded address would wrongly hit
   # "Username could not be found." on some tenants instead of the intended
   # "Invalid credentials." for a real-account-wrong-password attempt.
   #

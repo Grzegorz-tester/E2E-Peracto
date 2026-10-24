@@ -12,7 +12,7 @@ Feature: Footer newsletter sign-up
     And I click on the "Accept cookies" button if present
 
   @smoke
-  Scenario: User can submit the newsletter form, which validates email input and surfaces a response
+  Scenario: Newsletter form rejects empty and malformed email addresses
     Then the "newsletter form" should be displayed
     And the "newsletter email input" should be displayed
     And the "newsletter submit button" should be displayed
@@ -27,6 +27,11 @@ Feature: Footer newsletter sign-up
     Then the "newsletter email input" input should be rejected as invalid
     And the "newsletter alert" should not be displayed
 
+  # Split out 2026-10-24: this subscribes a real (Velstar-owned) address, so
+  # it is tagged @submits-real-form and never runs on INSINKERATOR_PROD.
+  @smoke
+  @submits-real-form
+  Scenario: A valid email address subscribes to the newsletter
     When I fill in the "newsletter email input" input field with a unique guest email
     And I click on the "newsletter submit button" button
     Then the "newsletter alert" should contain the text "Thank you for subscribing"
