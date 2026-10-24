@@ -75,6 +75,10 @@
     "route": "/products/r407f",
     "regex": "^/products/r407f$"
   },
+  "gas-pdp-prod": {
+    "route": "/products/r407f-refrigerant-9kg",
+    "regex": "^/products/r407f-refrigerant-9kg$"
+  },
   "checkout": {
     "route": "/checkout",
     "regex": "^/checkout$"

@@ -41,7 +41,19 @@ Feature: Navigation Menu
     Examples:
       | category link            | expected path              |
       | Electrical category link | /electrical                |
+
+    # Gas goes to /category/refrigerant on staging/release but to
+    # /category/gas-refrigerant on production (each 404s on the other site,
+    # confirmed 2026-10-24).
+    @not-on-production
+    Examples:
+      | category link            | expected path              |
       | Gas category link        | /category/refrigerant      |
+
+    @production-only
+    Examples:
+      | category link            | expected path              |
+      | Gas category link        | /category/gas-refrigerant  |
 
   # CONFIRMED LIVE (2026-08-19): the mobile hamburger opens a completely
   # separate drawer ([data-testid='nav-tier-one'], inside a HeadlessUI

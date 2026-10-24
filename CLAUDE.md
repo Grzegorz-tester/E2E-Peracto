@@ -188,7 +188,10 @@ lowercase. Shared suites are `<CLIENT>_SHARED_features` (`CARBON_ADMIN_SHARED_fe
 `WATCO_SHARED_features`). The report folder (`reports/<name>/`, via `JSON_REPORT_FILE`) must equal
 the env file's basename. `PROJECT=` is the same name in lowercase without the environment
 suffix (it selects the credential prefix in `.env`, e.g. `PROJECT=kooltech` ->
-`KOOLTECH_LOGGED_IN_EMAIL`). A mismatch between an env file's suffix and its
+`KOOLTECH_LOGGED_IN_EMAIL`). The one exception: a production env whose accounts differ from
+staging's uses a `_prod` slug so it reads its own credentials (`PROJECT=kooltech_prod` ->
+`KOOLTECH_PROD_LOGGED_IN_EMAIL`; also Indespension and Andy Thornton). If no prefixed
+variable exists, login falls back to the generic `LOGGED_IN_*`/`ADMIN_*`, silently. A mismatch between an env file's suffix and its
 `UI_AUTOMATION_HOST` fails the run at startup (`assertEnvNameMatchesHost` in
 `src/env/run-environment.ts`).
 
