@@ -28,6 +28,7 @@ KOOL (Kooltech) trade storefront for air conditioning and refrigeration supplies
 - Mobile nav drawer: clicking the backdrop closes it but the click falls through to the category link underneath. Tests close with Escape instead (2026-08-19).
 - Subcategory nav links exist in markup but carry a bare `hidden` class that never un-hides at any width (2026-08-19). Not covered.
 - Guest card purchase journey (purchase-journey.feature) is incomplete (guest sign-in step not built) and guest pricing is flaky, so it is an accepted failure as of 2026-09-28.
+- Staff quote list Company Name filter (quote-tool.feature, "Filtering by company name"), red since 2026-10-24 on staging: 9 of the 10 unfiltered rows show "Greg Test Test Test Companyy - AEROCOOL LTD", yet filtering on "AEROCOOL", "Greg" or that full text returns nothing ("AARON" filters fine). The API filters on `quoteCustomer.companyName`, which apparently isn't what the column displays. Unconfirmed whether this is a site defect or changed quote data; needs QA input before changing the test term.
 - Final KOOLTECH_RELEASE run 2026-09-28: effectively 54/58, the 4 reds being the branch finder, `/about-us`, section discount and guest card journey.
 
 ## Quirks and gotchas

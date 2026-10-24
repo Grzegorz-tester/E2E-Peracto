@@ -59,8 +59,23 @@ When(/^I click on the "([^"]*)" element and note the response status$/, { timeou
         return request.resourceType() === "prefetch" || /prefetch/i.test(headers["sec-purpose"] ?? headers["purpose"] ?? "");
     };
 
+    // A Next.js client-side navigation never requests the page itself, only
+    // its data file (/_next/data/<build>/<path>.json) - confirmed live on
+    // KOOLTECH staging's sitemap product links (2026-10-24) - so that
+    // response counts as the page's too.
+    const isPageResponse = (url: string) => {
+        if (pathOf(url) === hrefPath) return true;
+        try {
+            const parsed = new URL(url);
+            const nextData = /^\/_next\/data\/[^/]+(\/.+)\.json$/.exec(parsed.pathname);
+            return !!nextData && decodeURI(parsed.origin + nextData[1]) === hrefPath;
+        } catch {
+            return false;
+        }
+    };
+
     const [response] = await Promise.all([
-        page.waitForResponse((res) => pathOf(res.url()) === hrefPath && !isPrefetch(res), { timeout: 35000 }),
+        page.waitForResponse((res) => isPageResponse(res.url()) && !isPrefetch(res), { timeout: 35000 }),
         element.click(),
     ]);
 
