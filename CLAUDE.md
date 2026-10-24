@@ -161,6 +161,13 @@ projects, not just the one being built for it: resolve elements through `getElem
 (the selector belongs in that project's `config/<PROJECT>_config/mappings/*.json`, not in
 TypeScript) and parametrize whatever varies as step arguments.
 
+**Per-project notes.** Each `config/<PROJECT>_config/NOTES.md` records that project's
+environments and their safety rules, test accounts (env var names only) and fixtures not to
+delete, known site defects that are expected to stay red, quirks, coverage gaps and tips. Read
+it before extending or debugging a project, and update it when you confirm something new. Shared
+Peracto Admin quirks live in `config/CARBON_ADMIN_config/NOTES.md`; shared Watco quirks in
+`config/WATCO_config/NOTES.md`. Never put credentials or personal data in them.
+
 ## Setting up a new project
 
 Adding a new project means creating its skeleton, not writing new TypeScript:
