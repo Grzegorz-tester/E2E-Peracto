@@ -1,0 +1,198 @@
+{
+  "login": {
+    "route": "/peracto/login",
+    "regex": "^/peracto/login$"
+  },
+  "dashboard": {
+    "route": "/peracto",
+    "regex": "^/peracto/?$"
+  },
+  "forgotten-password": {
+    "route": "/forgotten",
+    "regex": "^/forgotten$"
+  },
+  "orders": {
+    "route": "/peracto/store/orders",
+    "regex": "^/peracto/store/orders$"
+  },
+  "order-detail": {
+    "route": "/peracto/store/orders/edit/",
+    "regex": "^/peracto/store/orders/edit/\\d+$"
+  },
+  "promotions": {
+    "route": "/peracto/store/promotions",
+    "regex": "^/peracto/store/promotions$"
+  },
+  "promotion-detail": {
+    "route": "/peracto/store/promotions/edit/",
+    "regex": "^/peracto/store/promotions/edit/\\d+$"
+  },
+  "users": {
+    "route": "/peracto/users",
+    "regex": "^/peracto/users$"
+  },
+  "user-detail": {
+    "route": "/peracto/users/edit/",
+    "regex": "^/peracto/users/edit/\\d+$"
+  },
+  "tasks": {
+    "route": "/peracto/tasks",
+    "regex": "^/peracto/tasks$"
+  },
+  "task-detail": {
+    "route": "/peracto/tasks/edit/",
+    "regex": "^/peracto/tasks/edit/\\d+$"
+  },
+  "question-answer": {
+    "route": "/peracto/question-answer",
+    "regex": "^/peracto/question-answer$"
+  },
+  "question-detail": {
+    "route": "/peracto/question-answer/edit/",
+    "regex": "^/peracto/question-answer/edit/\\d+$"
+  },
+  "stockist-settings": {
+    "route": "/peracto/stockists/settings",
+    "regex": "^/peracto/stockists/settings$"
+  },
+  "permission-resources": {
+    "route": "/peracto/permissions/resources",
+    "regex": "^/peracto/permissions/resources$"
+  },
+  "products": {
+    "route": "/peracto/store/products",
+    "regex": "^/peracto/store/products$"
+  },
+  "product-detail": {
+    "route": "/peracto/store/products/edit/",
+    "regex": "^/peracto/store/products/edit/\\d+$"
+  },
+  "categories": {
+    "route": "/peracto/store/categories",
+    "regex": "^/peracto/store/categories$"
+  },
+  "category-detail": {
+    "route": "/peracto/store/categories/edit/",
+    "regex": "^/peracto/store/categories/edit/\\d+$"
+  },
+  "attributes": {
+    "route": "/peracto/store/attributes",
+    "regex": "^/peracto/store/attributes$"
+  },
+  "attribute-set-detail": {
+    "route": "/peracto/store/attributes/sets/edit/",
+    "regex": "^/peracto/store/attributes/sets/edit/\\d+$"
+  },
+  "shipping": {
+    "route": "/peracto/store/shipping",
+    "regex": "^/peracto/store/shipping$"
+  },
+  "shipping-detail": {
+    "route": "/peracto/store/shipping/edit/",
+    "regex": "^/peracto/store/shipping/edit/\\d+$"
+  },
+  "store-settings": {
+    "route": "/peracto/store/settings",
+    "regex": "^/peracto/store/settings$"
+  },
+  "search-settings": {
+    "route": "/peracto/store/search/settings",
+    "regex": "^/peracto/store/search/settings$"
+  },
+  "product-imports": {
+    "route": "/peracto/store/import",
+    "regex": "^/peracto/store/import$"
+  },
+  "content": {
+    "route": "/peracto/content",
+    "regex": "^/peracto/content$"
+  },
+  "content-detail": {
+    "route": "/peracto/content/edit/",
+    "regex": "^/peracto/content/edit/\\d+/content$"
+  },
+  "articles": {
+    "route": "/peracto/articles",
+    "regex": "^/peracto/articles$"
+  },
+  "article-detail": {
+    "route": "/peracto/articles/edit/",
+    "regex": "^/peracto/articles/edit/\\d+/content$"
+  },
+  "content-templates": {
+    "route": "/peracto/content/template",
+    "regex": "^/peracto/content/template$"
+  },
+  "content-template-detail": {
+    "route": "/peracto/content/template/edit/",
+    "regex": "^/peracto/content/template/edit/\\d+/content$"
+  },
+  "forms": {
+    "route": "/peracto/formbuilder",
+    "regex": "^/peracto/formbuilder$"
+  },
+  "form-detail": {
+    "route": "/peracto/formbuilder/edit/",
+    "regex": "^/peracto/formbuilder/edit/\\d+$"
+  },
+  "form-fields": {
+    "route": "/peracto/formbuild/erelements",
+    "regex": "^/peracto/formbuild/erelements$"
+  },
+  "form-field-detail": {
+    "route": "/peracto/formbuilder/elements/edit/",
+    "regex": "^/peracto/formbuilder/elements/edit/\\d+$"
+  },
+  "stockists": {
+    "route": "/peracto/stockists",
+    "regex": "^/peracto/stockists$"
+  },
+  "stockist-detail": {
+    "route": "/peracto/stockists/edit/",
+    "regex": "^/peracto/stockists/edit/\\d+$"
+  },
+  "settings": {
+    "route": "/peracto/settings",
+    "regex": "^/peracto/settings$"
+  },
+  "redirects": {
+    "route": "/peracto/seotools/redirects",
+    "regex": "^/peracto/seotools/redirects$"
+  },
+  "redirect-detail": {
+    "route": "/peracto/seotools/redirects/edit/",
+    "regex": "^/peracto/seotools/redirects/edit/\\d+$"
+  },
+  "permissions": {
+    "route": "/peracto/permissions",
+    "regex": "^/peracto/permissions$"
+  },
+  "store-banner": {
+    "route": "/peracto/banners/store-banner",
+    "regex": "^/peracto/banners/store-banner$"
+  },
+  "announcement-banner": {
+    "route": "/peracto/banners/announcement-banner",
+    "regex": "^/peracto/banners/announcement-banner$"
+  },
+  "dashboard-banner": {
+    "route": "/peracto/banners/dashboard-banner",
+    "regex": "^/peracto/banners/dashboard-banner$"
+  },
+  "product-finder-banner": {
+    "route": "/peracto/banners/product-finder-banner",
+    "regex": "^/peracto/banners/product-finder-banner$"
+  },
+  "marketing-banner": {
+    "route": "/peracto/banners/marketing-banner",
+    "regex": "^/peracto/banners/marketing-banner$"
+  },
+  "professional-message": {
+    "route": "/peracto/banners/professional-message",
+    "regex": "^/peracto/banners/professional-message$"
+  },
+  "bestsellers-category": {
+    "route": "/peracto/store/categories/edit/328",
+    "regex": "^/peracto/store/categories/edit/328$"
+  }
+}

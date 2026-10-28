@@ -1,0 +1,16 @@
+{
+  "page heading": "h1",
+  "list rows": "table tbody tr:not(:has(.dataTables_empty))",
+  "first row link": "table tbody tr:first-child td:first-child a",
+  "first row": "table tbody tr:first-child",
+  "list search": ".dataTables_filter input",
+  "list info": ".dataTables_info",
+  "Logout": "a[href='/peracto/logout']",
+  "logged in user link": "a[href^='/peracto/users/edit/']:not(table a)",
+  "detail form": "form:has(button[type='submit'])",
+  "dashboard tables": "table",
+  "tree items": ".jqtree-tree li",
+  "first category link": ".jqtree-tree a[href*=\"/store/categories/edit/\"]",
+  "permissions table rows": "table.permissions-table tbody tr",
+  "content tree page link": ".jqtree-tree .name a[href^='/peracto/content/edit/']"
+}

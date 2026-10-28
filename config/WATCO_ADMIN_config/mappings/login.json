@@ -1,0 +1,7 @@
+{
+  "Email address": "#inputEmail",
+  "Password": "#inputPassword",
+  "Sign In": "button.btn-signin",
+  "Forgotten your password?": "a[href='/forgotten']",
+  "validation message": ".alert-danger"
+}
