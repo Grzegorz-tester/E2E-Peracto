@@ -1,0 +1,4 @@
+{
+  "Name": "[data-testid='attribute-group-name']",
+  "Save": "[data-testid='save-form']"
+}

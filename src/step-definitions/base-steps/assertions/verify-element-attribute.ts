@@ -29,6 +29,23 @@ Then(
     }
 );
 
+// Compares an attribute against a value remembered earlier in the scenario
+// (via "I remember the "attr" attribute of ..."), e.g. a gallery's main
+// image taking on the alt/src of the thumbnail that was just clicked.
+Then(
+    /^the "([^"]*)" should( not)? have attribute "([^"]*)" equal to the remembered "([^"]*)"$/,
+    async function (this: ScenarioWorld, elementKey: ElementKey, negate: string, attribute: string, variableName: string) {
+        const { screen: { page }, globalConfig } = this;
+        const remembered = this.globalVariables[variableName];
+        if (remembered === undefined) {
+            throw new Error(`No remembered value found for "${variableName}" - a "remembering it as ..." step must run first.`);
+        }
+        const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+        const assertion = expect(page.locator(elementIdentifier));
+        await (negate ? assertion.not : assertion).toHaveAttribute(attribute, remembered, { timeout: 15000 });
+    }
+);
+
 // For a CSS-class-driven state a site toggles via JS rather than a
 // dedicated data-testid/aria attribute - e.g. Watco's ".is-invalid" on a
 // rejected VAT number, or ".js-vat-apply-group--dirty" on an edited-but-

@@ -71,11 +71,18 @@ Feature: Filtering Every Other Peracto Admin List
     Examples:
       | parent        | nav item          | field | row values           | filter field |
       | Products      | Categories        | Name  | category name         | Name filter  |
-      | Products      | Product Variants  | SKU   | variant SKU           | SKU filter   |
       | Content       | Pages             | Name  | page name             | Name filter  |
       | Content       | Articles          | Heading | article heading     | Heading filter |
       | Content       | Article Categories | Name | article category name | Name filter  |
       | Users         | All Users         | Email | user email            | Email filter |
+
+    # Split into its own Examples block so tenants without a Product
+    # Variants tab can opt out via @product-variants, like the tab sweeps.
+    # Benchmarx has no such tab (confirmed live, 2026-10-24).
+    @product-variants
+    Examples:
+      | parent        | nav item          | field | row values           | filter field |
+      | Products      | Product Variants  | SKU   | variant SKU           | SKU filter   |
 
     # Split into its own Examples block so tenants with an empty Redirects
     # list can opt out. Indespension excludes it: its Redirects list is

@@ -1,0 +1,7 @@
+{
+  "branch search input": "[data-testid='branch-finder'] #react-google-places-autocomplete-input",
+  "branch results": "[data-testid='branch-finder'] a[href^='/branches/']",
+  "first branch result": "[data-testid='branch-finder'] a[href^='/branches/'] >> nth=0",
+  "all branches list": "[data-testid='all-branches']",
+  "all branches links": "[data-testid='all-branches'] a[href^='/branches/']"
+}

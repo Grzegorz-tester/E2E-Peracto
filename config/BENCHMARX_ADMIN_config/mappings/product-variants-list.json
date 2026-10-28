@@ -1,0 +1,4 @@
+{
+  "Add Product Variant": "[data-testid='add-product-variant']",
+  "Back to Product": "[data-testid='back-to-product']"
+}

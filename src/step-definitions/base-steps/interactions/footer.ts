@@ -101,3 +101,24 @@ Then(/^the first (\d+) "([^"]*)" links should resolve without an error$/, { time
 
     await checkLinksResolve(page, uniqueHrefs);
 });
+
+// For an XML sitemap (e.g. "/sitemaps/products.xml"), resolved against the
+// current page's origin: checks the file itself loads as a real sitemap
+// (<urlset> or <sitemapindex>, not an error body served with a 200), then
+// samples its first N <loc> URLs the same way as the steps above. Fetched
+// through the request context because a browser renders XML as a tree with
+// no <a> elements to gather.
+Then(/^the first (\d+) URLs in the "([^"]*)" XML sitemap should resolve without an error$/, { timeout: 180000 }, async function (this: ScenarioWorld, count: string, sitemapPath: string) {
+    const { screen: { page } } = this;
+
+    const sitemapUrl = new URL(sitemapPath, page.url()).toString();
+    const response = await page.request.get(sitemapUrl, { timeout: 30000 });
+    const body = await response.text();
+    expect(response.status(), `${sitemapUrl} returned ${response.status()}`).toBeLessThan(400);
+    expect(/<(urlset|sitemapindex)[\s>]/.test(body), `${sitemapUrl} is not a sitemap - it starts with: ${body.slice(0, 200)}`).toBe(true);
+
+    const locs = [...body.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((match) => match[1]);
+    expect(locs.length, `${sitemapUrl} lists no <loc> URLs`).toBeGreaterThan(0);
+
+    await checkLinksResolve(page, [...new Set(locs)].slice(0, Number(count)));
+});

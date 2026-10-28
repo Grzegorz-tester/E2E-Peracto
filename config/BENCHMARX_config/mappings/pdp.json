@@ -1,0 +1,15 @@
+{
+  "breadcrumb": "[data-testid='breadcrumb'] >> visible=true",
+  "product title": "[data-testid='product-info__name'] >> visible=true",
+  "main product image": "[data-testid='product-media__image'] >> visible=true",
+  "product thumbnails": "[data-testid='product-media__thumbnail'] >> visible=true",
+  "product thumbnail images": "[data-testid='product-media__thumbnail'] img >> visible=true",
+  "colour swatches": "[data-testid='product-swatch-options'] >> visible=true",
+  "Book a design consultation button": "[data-testid='pdp__consultation-button'] >> visible=true",
+  "technical specification link": "[data-testid='technical-specification'] a >> visible=true",
+  "at a glance": "[data-testid='pdp__at-a-glance']",
+  "kitchen inspiration": "[data-testid='kitchen-card']",
+  "related products": "[data-testid='product-relations']",
+  "related product cards": "[data-testid='product-relations'] [data-testid='product-card']",
+  "second thumbnail image": "[data-testid='product-media__thumbnail'] img >> visible=true >> nth=1"
+}

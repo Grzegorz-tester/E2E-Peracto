@@ -1,0 +1,4 @@
+{
+  "sitemap links": "main a[href*='staging.benchmarx.pub/'], main a[href^='/']",
+  "sitemap kitchen links": "main a[href*='/kitchens/']"
+}

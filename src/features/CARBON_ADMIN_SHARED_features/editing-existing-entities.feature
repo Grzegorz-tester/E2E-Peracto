@@ -45,6 +45,9 @@ Feature: Editing Existing Categories and Promotions
     Then the "Heading" input field should have the remembered "original category heading"
 
 
+  # Needs at least one existing promotion to edit (Benchmarx staging has
+  # none: no checkout, confirmed 2026-10-24).
+  @requires-active-promotions
   Scenario: Editing a Promotion's success message persists after a reload, and can be restored
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user

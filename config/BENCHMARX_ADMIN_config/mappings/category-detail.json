@@ -1,0 +1,6 @@
+{
+  "Heading": "[data-testid='heading']",
+  "Save": "[data-testid='save-form']",
+  "Main Image": "[data-testid='main_images__input']",
+  "Browse Main Image": "[data-testid='button-resources_Main-Image']:has-text('Browse')"
+}

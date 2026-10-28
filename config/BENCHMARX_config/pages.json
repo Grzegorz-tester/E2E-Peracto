@@ -1,0 +1,42 @@
+{
+  "home": {
+    "route": "/",
+    "regex": "^/$"
+  },
+  "all-kitchens": {
+    "route": "/kitchen-ranges/all-kitchens",
+    "regex": "^/kitchen-ranges/all-kitchens$"
+  },
+  "kitchen-range": {
+    "route": "/kitchen-ranges/shaker",
+    "regex": "^/kitchen-ranges/(?!all-kitchens$)[^/]+$"
+  },
+  "pdp": {
+    "route": "/kitchens/nordica-blue-true-handleless",
+    "regex": "^/kitchens/[^/]+$"
+  },
+  "search": {
+    "route": "/search",
+    "regex": "^/search$"
+  },
+  "customer-kitchens": {
+    "route": "/customer-kitchens",
+    "regex": "^/customer-kitchens$"
+  },
+  "branches": {
+    "route": "/branches",
+    "regex": "^/branches$"
+  },
+  "branch": {
+    "route": "/branches/leeds",
+    "regex": "^/branches/[^/]+$"
+  },
+  "book-a-consultation": {
+    "route": "/book-a-consultation",
+    "regex": "^/book-a-consultation$"
+  },
+  "sitemap": {
+    "route": "/sitemap",
+    "regex": "^/sitemap$"
+  }
+}

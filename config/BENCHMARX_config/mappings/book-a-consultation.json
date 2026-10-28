@@ -1,0 +1,20 @@
+{
+  "step heading": "[data-testid='multi-step-form__subtitle']",
+  "location input": "#react-google-places-autocomplete-input",
+  "SHOW BRANCHES": "button:has-text('Show branches')",
+  "branch options": "[data-testid='radio-select_options'] > *",
+  "first branch option": "[data-testid^='radio-select_option-'] >> nth=0",
+  "consultation type options": "[data-testid^='radio-select_option-']",
+  "Online consultation option": "[data-testid='radio-select_option-Online consultation (approx 30 minutes)']",
+  "In-branch consultation option": "[data-testid='radio-select_option-In-branch design consultation (approx 90 minutes)']",
+  "NEXT": "[data-testid='multi-step-form__next']",
+  "available dates": "[data-testid='multi-step-form-2__component'] button[role='gridcell']",
+  "time slots": "//*[@data-testid='multi-step-form-2__component']//button[string-length(normalize-space())=5 and contains(., ':')]",
+  "first time slot": "(//*[@data-testid='multi-step-form-2__component']//button[string-length(normalize-space())=5 and contains(., ':')])[1]",
+  "First Name": "input[name='stepFour.firstName']",
+  "Last Name": "input[name='stepFour.lastName']",
+  "Email": "input[name='stepFour.email']",
+  "Phone": "input[name='stepFour.phone']",
+  "booking summary": "//*[@data-testid='multi-step-form-3__component']//h3[normalize-space()='Booking summary']/..",
+  "CONFIRM BOOKING": "[data-testid='multi-step-form__next']"
+}

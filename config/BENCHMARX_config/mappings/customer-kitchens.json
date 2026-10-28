@@ -1,0 +1,16 @@
+{
+  "kitchen cards": "[data-testid='kitchen-hits'] [data-testid='kitchen-card']",
+  "first kitchen card": "(//*[@data-testid='kitchen-hits']//*[@data-testid='kitchen-card'])[1]",
+  "kitchen modal": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]",
+  "kitchen modal title": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//h2",
+  "kitchen modal close button": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//button[.//*[@data-icon='xmark']]",
+  "kitchen modal main image": "(//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//img)[1]",
+  "kitchen gallery next arrow": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//button[.//*[@data-icon='chevron-right']]",
+  "kitchen gallery previous arrow": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//button[.//*[@data-icon='chevron-left']]",
+  "kitchen gallery dots": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//button//*[@data-icon='circle']",
+  "style pills": "//div[contains(@class,'max-w-6xl')]//h3[normalize-space()='Browse by style']/following-sibling::*[1]//button",
+  "first style pill": "(//div[contains(@class,'max-w-6xl')]//h3[normalize-space()='Browse by style']/following-sibling::*[1]//button)[1]",
+  "get this look cards": "//div[contains(@class,'max-w-6xl')]//*[@data-testid='pdp__you-may-also-like']//a",
+  "first get this look card": "(//div[contains(@class,'max-w-6xl')]//*[@data-testid='pdp__you-may-also-like']//a)[1]",
+  "kitchen modal Book a design consultation": "//div[contains(@class,'max-w-6xl')][.//h3[normalize-space()='Browse by style']]//a[@href='/book-a-consultation']"
+}

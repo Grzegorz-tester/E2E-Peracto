@@ -267,6 +267,10 @@ Feature: Creating and Deleting Categories, Attributes, Attribute Groups, Attribu
     And I wait for the page to settle
     And I delete the content row containing the stored content title
 
+  # Needs the standard Location form with Identifier and Alias fields.
+  # Benchmarx's Location is a bespoke branch form (name, heading, address,
+  # Acuity calendarId, branch features) with neither: confirmed 2026-10-24.
+  @requires-location-identifier
   Scenario: Creating a new Location, then deleting it
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user

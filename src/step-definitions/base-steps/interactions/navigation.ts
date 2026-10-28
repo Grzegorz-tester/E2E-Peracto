@@ -155,6 +155,28 @@ When(/^I press the Escape key$/, async function (this: ScenarioWorld) {
     const {screen: {page}} = this;
     await page.keyboard.press("Escape");
 });
+
+// Clicks the page just outside an element (a modal's own panel, say) to test
+// "click outside to close". A plain click on a full-screen backdrop lands on
+// its centre, which is usually the panel itself. This picks a point 5px in
+// from the viewport edge beside the element, level with its middle; keep the
+// point on empty margin so the click can't fall through onto a link (see the
+// Escape step above).
+When(/^I click outside the "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey) {
+    const {screen: {page}, globalConfig} = this;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+    const box = await page.locator(elementIdentifier).first().boundingBox();
+    const viewport = page.viewportSize();
+    if (!box || !viewport) {
+        throw new Error(`Could not find the "${elementKey}" (${elementIdentifier}) on the page to click outside of`);
+    }
+    const y = Math.round(box.y + box.height / 2);
+    const x = box.x > 10 ? 5 : viewport.width - 5;
+    if (x >= box.x && x <= box.x + box.width) {
+        throw new Error(`The "${elementKey}" (${elementIdentifier}) fills the viewport width, so there's nowhere beside it to click`);
+    }
+    await page.mouse.click(x, y);
+});
 // For a status that's only updated server-side by a background worker
 // (e.g. a queued task run going "Pending" -> "Success"), so the page never
 // changes on its own: reloads every few seconds until the element shows

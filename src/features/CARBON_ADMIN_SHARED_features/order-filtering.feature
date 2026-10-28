@@ -39,6 +39,10 @@ Feature: Filtering Orders By Order Reference Or Email
     When I click precisely on the "Orders" element
     And I click precisely on the "Reset" element
 
+  # Needs at least one existing order (Benchmarx has no checkout, so its
+  # Orders list is empty: confirmed 2026-10-24). The empty-state scenario
+  # below still runs everywhere.
+  @requires-orders
   Scenario Outline: Filtering orders by <field> returns a matching order
 
     When I remember the text of the first non-empty "<row values>" as "filter term"
