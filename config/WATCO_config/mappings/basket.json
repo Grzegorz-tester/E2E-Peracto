@@ -8,5 +8,12 @@
   "Order total": ".basket-summary__total.basket-summary__price",
   "basket sub total": ".basket-summary__row.basket-summary__sub-total .basket-summary__price",
   "empty basket message": "p:has-text(\"There are currently no items in your basket\")",
-  "basket quantity increase": ".basket-item .qty-plus"
+  "basket quantity increase": ".basket-item .qty-plus",
+  "promo code input": "form[action='/basket/promo/add'] input[name='code']",
+  "promo code apply": "form[action='/basket/promo/add'] button",
+  "applied promo code": ".basket-promos__code",
+  "remove promo code": ".basket-promos__remove",
+  "basket adjustments": ".basket-summary__row.basket-summary__discount:not(.hide)",
+  "basket sub total inc adjustments": ".basket-summary__row.basket-summary__subtotal_minus_discount .basket-summary__price",
+  "basket message": ".alert"
 }
