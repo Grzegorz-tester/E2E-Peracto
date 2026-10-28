@@ -18,6 +18,7 @@ Shared Watco quirks: see config/WATCO_config/NOTES.md
 - Shared PLP price-sort defect.
 
 ## Quirks and gotchas
+- Card is the only payment method: "Pay by card" is pre-checked and hidden, so scenarios assert it checked instead of clicking it (confirmed live 2026-10-24; this was also why PL persistence had never passed).
 - The only market with TWO tax fields: NIP (domestic, no tax effect, no comment) and NIP-EU (reuses the platform-wide "VAT number" input id, has a comment, and is the only one that zero-rates). Any valid NIP-EU zero-rates (23% to 0%), domestic included.
 - Pay on Account is entirely ABSENT from the DOM at every stage (not CSS-hidden as on DE/NL/BE-NL). Validation blocking is shown via card/Adyen instead.
 - Persistence scenario pays with a real Adyen test card (staging Adyen is in test mode, no 3DS challenge, per the source repo 2026-08-06). The feature's docblock says the new Adyen step had not yet been run live in this framework; confirm before trusting a pass or fail (status after that unknown).

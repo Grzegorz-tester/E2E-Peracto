@@ -12,9 +12,10 @@ Feature: Logged-in checkout - NIP-EU persistence to account (PL)
   # this session, built from the source's own already-verified selectors
   # rather than rediscovered from scratch - it has not yet been run live
   # against this framework's actual step timing/overlay quirks, unlike
-  # every Pay-on-Account-based persistence file elsewhere. Confirm this
-  # scenario live before trusting it, the same way every other newly
-  # migrated flow in this project has been.
+  # every Pay-on-Account-based persistence file elsewhere. CONFIRMED live
+  # 2026-10-24 (passed, both orders placed): PL's "Pay by card" radio is
+  # pre-checked and hidden (card is the only method), so it is asserted
+  # rather than clicked.
   #
   # NIP-EU is the field that drives VAT treatment - this test edits
   # NIP-EU, not NIP, matching every other market's single-VAT-field
@@ -57,8 +58,8 @@ Feature: Logged-in checkout - NIP-EU persistence to account (PL)
     Then the "VAT number" should not have class "is-invalid"
     And I remember the text of "VAT summary amount" as "vat before order"
 
-    When I click on the "Pay by card" element
-    And I check the "Adyen terms", retrying until it is checked
+    And the "Pay by card" radio button should be checked
+    When I check the "Adyen terms", retrying until it is checked
     And I fill in the Adyen test card details
     And I click on the "Adyen pay button" button
     Then I should be redirected to the "checkout-thanks" page
@@ -86,8 +87,8 @@ Feature: Logged-in checkout - NIP-EU persistence to account (PL)
     And I click on the "VAT apply" button
     Then the "VAT number" should not have class "is-invalid"
 
-    When I click on the "Pay by card" element
-    And I check the "Adyen terms", retrying until it is checked
+    And the "Pay by card" radio button should be checked
+    When I check the "Adyen terms", retrying until it is checked
     And I fill in the Adyen test card details
     And I click on the "Adyen pay button" button
     Then I should be redirected to the "checkout-thanks" page

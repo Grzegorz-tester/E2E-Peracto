@@ -18,6 +18,7 @@ This file also holds the knowledge shared by every market (see "Shared across al
 - Product links in search results and PLP "View product" cards are absolute URLs to an internal Bloomreach content host that doesn't resolve publicly (confirmed on staging). Use `I click on the "X" link via its href on this origin`, which rewrites the host.
 
 ### Quirks and gotchas (all markets)
+- Adyen drop-in: on markets offering several methods (BE-FR/BE-NL open on "Bancontact card", which has no CVC) the step selects the "scheme" card method and scopes fields to `.adyen-checkout__payment-method--selected`, because unselected methods stay mounted hidden. The pay button mapping must be scoped the same way (done for BEFR/BENL); an unscoped one silently clicks Bancontact's hidden button and the page just stays on payment. Confirmed live 2026-10-24.
 - RETRACTED: "PLP sort/filter/pagination broken on prod" (2026-09-09). Prod `/floors` has a static Bestsellers block above the real grid using the same `.card-fresh` component; unscoped selectors read its never-changing first card. A ticket had already gone to the client before this was caught. UK `plp.json` keys are scoped to `#results-container`; sibling markets still use bare `.card-fresh` (staging has no Bestsellers block, so it is a no-op there, but check any prod "first card" assertion).
 - "Update basket" form action is untranslated `/basket/update` on every market, even where the basket page route is translated. Fixed 2026-09-07 in BENL/NL/FR/DE/PL/BEFR mappings.
 - `added-to-basket` route must be each market's real translated route (FR/DE/PL/BEFR had the English placeholder until 2026-09-07).
@@ -44,7 +45,8 @@ This file also holds the knowledge shared by every market (see "Shared across al
 - `account-profile-vat-save.feature` and the registration success scenario register a new throwaway account each run (accounts accumulate; known leak per the 2026-10-20 audit).
 - Quote clean-up: the logged-in quote scenario deletes its own quote (UK, live-verified 2026-10-22, account at zero quotes). On prod it would create and delete a quote on the test user's account; the other 7 markets fail before creating anything.
 - Prod (`*_PROD.env`): no orders, no registration, no real form submissions. Excluded tags: `@places-real-order`, `@completes-registration`, `@requires-order-history`; persistence scenarios also call `Given I require staging for this scenario`. As of 2026-09-07 the shared suite was wired on prod but not yet run there; UK prod was exercised for the PLP investigation on 2026-09-09.
-- Watco admin: intentionally NOT covered (user, 2026-08-25: "watco is actually slightly different"). Platform never probed; if it comes up, ask what the admin runs on rather than guessing a Peracto host.
+- Watco admin: no automated coverage (user, 2026-08-25: "watco is actually slightly different"). CONFIRMED 2026-10-24: it is the OLD server-rendered Peracto (v6.1) at `<storefront host>/peracto` (e.g. https://staging-uk.watco.pub/peracto), Symfony login form (`_username`/`_password`), DataTables lists; NOT the React Peracto Admin the CARBON_ADMIN_SHARED suite targets. Promotions at `/peracto/store/promotions` (88 legacy ones on staging-uk, all expired 2021-22). Roles are a multi-select on the user edit form (Super Admin/Admin/Sales/Marketing/Trade/User/...).
+- Admin access (staging-uk): the Velstar "Test Automation" account (`grzegorz.hajduk+watcouk_automation@...`, not a storefront test user) was given the Admin role on 2026-10-24 at the user's request, using a 9xb colleague's login that must not be stored or reused. Other markets' admins unchecked.
 
 ### Onboarding a new Watco market
 PLP category-slug regex, translated routes and mapping text, brand-filter/sort ordinal check, "Update basket" form action, real `added-to-basket` route, and whether "account test user 1" is email-verified (order history). Then add the UK-only keys listed above if those scenarios should pass.
@@ -55,6 +57,10 @@ PLP category-slug regex, translated routes and mapping text, brand-filter/sort o
 - Header comments in the `*_PROD.env` files describe the older "UI_AUTOMATION_HOST=production only" exclusion; the gate now also triggers on the `_PROD` suffix (see CLAUDE.md).
 
 ## Test accounts and data
+- Admin login: `WATCO_ADMIN_ADMIN_EMAIL`/`WATCO_ADMIN_ADMIN_PASSWORD` (Velstar "Test Automation" account, Admin role, staging-uk only).
+- FIXTURE, do not delete: staging-uk promotion id 647 "Velstar Test Automation - VELSTARTEST1 (do not delete)", code VELSTARTEST1, 1% basket line items percentage discount, all roles, unlimited, active 2026-10-01 to 2030-12-31. Backs `basket-promo-code.feature`.
+- Admin quirk: saving a promotion with an empty end date fails with "Please enter a valid date and time", although older promotions have none. Set a far-future end date.
+- Basket summary rows (Adjustments, Bulk discount) are always in the DOM, hidden via `hide` with £0.00; map them with `:not(.hide)` for "should not be displayed" checks.
 - `WATCO_ACCOUNT_TEST_USER_1_*`, `WATCO_ACCOUNT_TEST_USER_WITH_VAT_*` (staging); `WATCO_PROD_ACCOUNT_TEST_USER_1_*`, `WATCO_PROD_ACCOUNT_TEST_USER_WITH_VAT_*` (prod). All working at the 2026-10-22 check.
 - "account test user 1" is email-verified on staging-uk and has real past orders, so order-history runs. "account test user with vat" is NOT verified (can't view order history).
 - UK registration requires email verification (unlike FR/BE-FR).
@@ -65,14 +71,18 @@ PLP category-slug regex, translated routes and mapping text, brand-filter/sort o
 ## Quirks and gotchas
 - UK guest Pay on Account enforces a £500 minimum (new-customer minimum-order notice is UK and IE only). Pay on Account is always offered regardless of VAT.
 - VAT validation accepts the XI (Northern Ireland) prefix and rejects a too-long GB number.
-- Real Adyen/3DS card completion and Apple/Google Pay sheets are not automated (Chromium has no ApplePaySession). No email-reading infrastructure.
+- Adyen test-card payments ARE automated (`I fill in the Adyen test card details`, card 4111..., no 3DS on staging): `guest-checkout-card-payment.feature` on all 8 markets, plus PL persistence. Apple/Google Pay sheets are not (Chromium has no ApplePaySession). No email-reading infrastructure.
 - Only UK has the Bestsellers-scoped `#results-container` PLP keys and the quote/search/vat-toggle/pdp-extra mappings.
 - Stale comment: `logged-in-checkout-vat-persistence.feature` still calls profile "Save details" a confirmed bug; superseded by the WAT-305 retraction.
 
 ## Coverage and gaps
 - Staging 28/28 on 2026-09-07 (before the 2026-09-09 shared additions). No full-run result recorded since.
 - UK-only: `pdp-datasheet-and-cross-sell.feature`, pinned to "Watco Epoxy Matt Coat" because tabs/cross-sell are per-product CMS content (the "epoxy" search result has neither).
-- Not covered: order confirmation VAT display via real card, confirmation emails, admin.
+- 2026-10-24 gap audit (live crawl of staging-uk vs every feature file). Closed: guest checkout with card payment on all 8 markets (`guest-checkout-card-payment.feature`, per-market because the address is market data; all 8 passed live 2026-10-24, confirmation total = checkout total).
+- Closed 2026-10-24: promo codes on UK (`basket-promo-code.feature`, valid 1% discount + removal, invalid code rejected; 2/2 live). Other markets need their own fixture in their own admin first.
+- Still open from that audit, in priority order: promo codes on the 7 non-UK markets, delivery option selection/charge, lead-gen forms (Contact us, Request a sample/quote/catalogue, site visits, newsletter; may email real Watco staff, check with the AM before submitting), PDP coverage calculator / "Add all to basket" / Q&A, basket Quick Buy, logout / Contact preferences / Technical library, quote management beyond create, product finder. Plus mapping the 2026-09-09 shared keys on the 7 non-UK markets (see shared suite section).
+- Admin: read-only suite added 2026-10-24 as its own project, `WATCO_ADMIN` (UK staging only, 21/21); see `config/WATCO_ADMIN_config/NOTES.md`.
+- Not covered: confirmation emails.
 
 ## Tips for extending
 - Add new golden-path scenarios to `WATCO_SHARED_features` and map their keys in all 8 configs, not just UK.

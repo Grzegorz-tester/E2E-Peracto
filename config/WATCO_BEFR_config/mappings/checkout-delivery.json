@@ -30,7 +30,7 @@
   "payment on account minimum order notice": "//p[contains(text(),'minimum value for a Pay on account order')]",
   "Adyen dropin ready": ".adyen-checkout__dropin--ready",
   "Adyen cardholder name": "input[name='holderName']",
-  "Adyen pay button": "button.adyen-checkout__button--pay",
+  "Adyen pay button": ".adyen-checkout__payment-method--selected button.adyen-checkout__button--pay",
   "Pay now": ".payment__button-proceed",
   "VAT summary amount": ".basket-summary__row.basket-summary__tax .basket-summary__price",
   "VAT summary row": ".basket-summary__row.basket-summary__tax",

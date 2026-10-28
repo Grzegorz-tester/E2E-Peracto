@@ -1,4 +1,5 @@
 {
   "VAT summary row": ".checkout-thank-you__summary-row:has(+ .checkout-thank-you__summary-total)",
-  "VAT summary amount": ".checkout-thank-you__summary-row:has(+ .checkout-thank-you__summary-total) span:last-child"
+  "VAT summary amount": ".checkout-thank-you__summary-row:has(+ .checkout-thank-you__summary-total) span:last-child",
+  "order total": ".checkout-thank-you__summary-total span:last-child"
 }

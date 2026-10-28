@@ -18,6 +18,7 @@ Shared Watco quirks: see config/WATCO_config/NOTES.md
 - Shared PLP price-sort defect.
 
 ## Quirks and gotchas
+- Adyen drop-in opens on "Bancontact card" (also offers card, Apple Pay, Google Pay). "Adyen pay button" is scoped to the selected method; see the Adyen quirk in `WATCO_config/NOTES.md`. Confirmed 2026-10-24.
 - Behaves like NL: Pay on Account is HIDDEN until a valid VAT number is applied (CSS gating). A logged-in account with a saved VAT sees it on load (field arrives already applied). Without valid VAT, the validation scenario blocks via "Pay by card"/Adyen terms instead.
 - Business-customer comment under the VAT field (same text as NL). Label "Btw-nummer" (NL: "Belasting over de toegevoegde waarde"); not asserted by text.
 - Valid VAT zero-rates (21% to 0%), domestic included.

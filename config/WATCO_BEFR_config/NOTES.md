@@ -20,6 +20,7 @@ Shared Watco quirks: see config/WATCO_config/NOTES.md
 - Shared PLP price-sort defect.
 
 ## Quirks and gotchas
+- Adyen drop-in opens on "Bancontact card" (also offers Carte bancaire, Apple Pay, Google Pay). "Adyen pay button" is scoped to the selected method; see the Adyen quirk in `WATCO_config/NOTES.md`. Confirmed 2026-10-24.
 - Shares FR's URL paths (`/panier`, `/valider-la-commande`, `/se-connecter`, `/sols`).
 - RETRACTED: an earlier note said BE-FR VAT-gates Pay on Account like DE/NL/BE-NL. Live testing (8/8) showed it is ALWAYS offered, like FR/UK/IE.
 - A valid VAT number drops the VAT summary row from 21% to 0%; it sometimes recalculates slowly enough to need a retry.

@@ -475,30 +475,49 @@ When(/^I attempt to pay with the "([^"]*)" Verifone test card$/, { timeout: 3000
 // only handles the drop-in fields themselves, not clicking the final pay
 // button, so it composes with the existing "I click on the ... button"
 // step for that.
-When(/^I fill in the Adyen test card details$/, async function (this: ScenarioWorld) {
+//
+// When the drop-in offers several methods it may open on one that isn't the
+// plain card form - CONFIRMED live on Watco BE-FR/BE-NL (staging,
+// 2026-10-24): it opens on "Bancontact card", which has no security-code
+// field, so filling it timed out. The standard "scheme" (credit/debit
+// card) method is selected first whenever it isn't already. Adyen's own
+// drop-in markup, so hardcoded like the iframe selectors below.
+When(/^I fill in the Adyen test card details$/, { timeout: 60000 }, async function (this: ScenarioWorld) {
     const { screen: { page }, globalConfig } = this;
 
     const dropinReady = getElementLocator(page, "Adyen dropin ready", globalConfig);
     await page.waitForSelector(dropinReady, { state: "visible", timeout: 15000 });
 
-    const cardholderName = getElementLocator(page, "Adyen cardholder name", globalConfig);
-    await enterValue(page, cardholderName, "Test Test");
+    const schemeMethod = page.locator(".adyen-checkout__payment-method--scheme").first();
+    if (await schemeMethod.count() > 0 && !(await schemeMethod.getAttribute("class"))?.includes("--selected")) {
+        await schemeMethod.locator(".adyen-checkout__payment-method__header").first().click();
+        await expect(schemeMethod).toHaveClass(/adyen-checkout__payment-method--selected/, { timeout: 10000 });
+    }
 
-    const cardNumberInput = page.frameLocator('[data-cse="encryptedCardNumber"] iframe')
+    // The unselected methods' forms stay mounted (hidden), so with several
+    // methods every field must be scoped to the selected one.
+    const scope = await page.locator(".adyen-checkout__payment-method--selected").count() > 0
+        ? ".adyen-checkout__payment-method--selected "
+        : "";
+
+    const cardholderName = getElementLocator(page, "Adyen cardholder name", globalConfig);
+    await enterValue(page, `${scope}${cardholderName}`, "Velstar Test");
+
+    const cardNumberInput = page.frameLocator(`${scope}[data-cse="encryptedCardNumber"] iframe`)
         .locator('input[data-fieldtype="encryptedCardNumber"]');
     await withActionDiagnostics(
         `to fill Adyen "encryptedCardNumber"`,
         () => describeLocator(cardNumberInput, `Adyen "encryptedCardNumber"`),
         () => cardNumberInput.fill("4111111111111111")
     );
-    const expiryDateInput = page.frameLocator('[data-cse="encryptedExpiryDate"] iframe')
+    const expiryDateInput = page.frameLocator(`${scope}[data-cse="encryptedExpiryDate"] iframe`)
         .locator('input[data-fieldtype="encryptedExpiryDate"]');
     await withActionDiagnostics(
         `to fill Adyen "encryptedExpiryDate"`,
         () => describeLocator(expiryDateInput, `Adyen "encryptedExpiryDate"`),
         () => expiryDateInput.fill("03/30")
     );
-    const securityCodeInput = page.frameLocator('[data-cse="encryptedSecurityCode"] iframe')
+    const securityCodeInput = page.frameLocator(`${scope}[data-cse="encryptedSecurityCode"] iframe`)
         .locator('input[data-fieldtype="encryptedSecurityCode"]');
     await withActionDiagnostics(
         `to fill Adyen "encryptedSecurityCode"`,
