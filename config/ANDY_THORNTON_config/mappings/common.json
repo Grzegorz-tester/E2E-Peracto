@@ -62,5 +62,9 @@
   "no search results": "[data-testid=\"algolia-hits-heading__no-results\"]",
   "article cards": "[data-testid=\"article-card\"]",
   "first article card": ":nth-match([data-testid=\"article-card\"] a[href^=\"/article/\"], 1)",
-  "page title": "//h1[normalize-space()]"
+  "page title": "//h1[normalize-space()]",
+  "not found heading": "//h1[contains(., \"find the page you\")]",
+  "content page body": "main",
+  "account nav Quotes link": "main a[href='/account/quotes']",
+  "account nav Moodboards link": "main a[href='/account/moodboards']"
 }

@@ -34,3 +34,15 @@ Feature: Search results page
     Then I should eventually be redirected to the "search" page
     And the "no search results" should be displayed
     And the "product card" should not be displayed
+
+
+  # Smoke case 24 (AN-2026-11-19.json): searching by SKU finds that product
+  # first (confirmed live 2026-11-19: ATFUOF1104 is the top hit of 162).
+  Scenario: Searching by SKU lists that product first, and it opens its PDP
+    When I fill in the "Search products" input field with "ATFUOF1104"
+    And I click on the "magnifier glass" element
+    Then I should eventually be redirected to the "search" page
+    And the "first product name" should contain the text "Vienna Stackable Side Chair"
+    When I click on the "first product card" element
+    Then I should eventually be redirected to the "product" page
+    And the "product name" should contain the text "Vienna Stackable Side Chair"

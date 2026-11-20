@@ -273,3 +273,37 @@ Then(
     }
   },
 );
+
+// An <img> can be in the DOM and "visible" while its file 404s or never
+// decodes (a broken image optimiser after a Next.js upgrade, a dead CDN path):
+// a broken image still has a box. This requires every matching image that is
+// visible to have actually decoded (naturalWidth > 0), polling while lazy
+// images finish loading. Added for Andy Thornton's Next.js 16 upgrade (AT-201).
+Then(
+  /^the "([^"]*)" images? should have loaded$/,
+  async function (this: ScenarioWorld, elementKey: string) {
+    const {
+      screen: { page },
+      globalConfig,
+    } = this;
+    const identifier = getElementLocator(page, elementKey, globalConfig);
+    let report = "no matching visible image";
+
+    await waitFor(async () => {
+      const images = await page.locator(identifier).evaluateAll((nodes) =>
+        nodes
+          .map((node) => (node instanceof HTMLImageElement ? node : node.querySelector("img")))
+          .filter((img): img is HTMLImageElement => !!img && img.getClientRects().length > 0)
+          .map((img) => ({ src: img.currentSrc || img.src, ok: img.complete && img.naturalWidth > 0 })),
+      );
+      const broken = images.filter((img) => !img.ok);
+      report = images.length === 0
+        ? "no matching visible image"
+        : `${images.length - broken.length}/${images.length} loaded${broken.length ? `; not loaded: ${broken.map((b) => b.src).slice(0, 3).join(", ")}` : ""}`;
+      return images.length > 0 && broken.length === 0;
+    }, {
+      expected: `every visible "${elementKey}" image to have loaded`,
+      describeActual: async () => report,
+    });
+  },
+);

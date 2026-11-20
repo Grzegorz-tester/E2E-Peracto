@@ -238,5 +238,17 @@
   "category": {
     "route": "/category/contract-furniture/dining-chairs",
     "regex": "^/category/.+$"
+  },
+  "account-quotes": {
+    "route": "/account/quotes",
+    "regex": "^/account/quotes$"
+  },
+  "account-quote-detail": {
+    "route": "/account/quotes",
+    "regex": "^/account/quotes/[0-9a-f-]+$"
+  },
+  "content-page": {
+    "route": "/contract-furniture",
+    "regex": "^/[^/]+$"
   }
 }

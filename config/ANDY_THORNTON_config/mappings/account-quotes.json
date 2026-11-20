@@ -1,0 +1,23 @@
+{
+  "quotes heading": "[data-testid='account-quotes__title']",
+  "quotes filters": "[data-testid='account-quotes__filters']",
+  "quote name filter": "[data-testid='account-quotes-reference-filter']",
+  "quotes header row": "[data-testid='account-quotes-header-row']",
+  "Create a new Quote": "main button:has-text('Create a new Quote')",
+  "quote rows": "[data-testid^='account-quotes-row-']:not([data-testid*='-cell-'])",
+  "quote name cell": "[data-testid$='-cell-name']",
+  "quotes table": "[data-testid='account-quotes__content']",
+  "quote duplicate": "[data-testid$='-cell-duplicate'] button",
+  "quote delete": "[data-testid$='-cell-delete'] button",
+  "confirm quote delete": "//div[@role='dialog'][contains(.,'Delete Quote')]//button[normalize-space()='Delete']",
+  "delete quote dialog": "[role='dialog']:has-text('Delete Quote')",
+  "duplicate quote dialog": "[role='dialog']:has-text('Duplicate Quote')",
+  "duplicate quote name": "[role='dialog']:has-text('Duplicate Quote') input",
+  "confirm duplicate quote": "//div[@role='dialog'][contains(.,'Duplicate Quote')]//button[normalize-space()='Duplicate']",
+  "create quote dialog": "[role='dialog']:has-text('Create Quote')",
+  "create quote name": "//div[@role='dialog']//*[starts-with(normalize-space(),'Quote Name')]/following::input[1]",
+  "create quote customer name": "//div[@role='dialog']//*[starts-with(normalize-space(),'Customer Name')]/following::input[1]",
+  "create quote reference": "//div[@role='dialog']//*[starts-with(normalize-space(),'Reference')]/following::input[1]",
+  "Create Quote": "[role='dialog'] button:has-text('Create Quote')",
+  "toast": ".Toastify__toast"
+}

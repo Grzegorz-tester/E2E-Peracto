@@ -80,6 +80,20 @@ Feature: Guest product purchase flow
     And the "order reference" should be displayed
     And the "order total" should equal text "£158.40"
 
+    # Smoke case 15 (AN-2026-11-19.json, added 2026-11-19): the order reached
+    # Peracto with its payment taken. Read via the admin API (the data the
+    # admin Orders list shows); paid AT orders are "processing" with a
+    # "complete" payment transaction (confirmed on staging orders 2026-11-19).
+    When I remember the part of the "order reference" text matching the pattern "\d{6}" as "order reference"
+    And I authenticate against the API as the "admin" user
+    And I GET the API path "/orders?reference={{order reference}}"
+    Then the response status should be 200
+    And the response JSON at "hydra:totalItems" should equal "1"
+    And the response JSON at "hydra:member[0].status" should equal "processing"
+    And the response JSON at "hydra:member[0].email" should equal the remembered "guest email"
+    And the response JSON at "hydra:member[0].lines" should contain an entry whose "item.sku" is "ATFUOF1104"
+    And the response JSON at "hydra:member[0].paymentTransactions" should contain an entry whose "status" is "complete"
+
 
   # Logged-in purchase with the account's saved delivery/billing address.
   # Built 2026-09-30 now that the Andy Thornton test account works (see
@@ -141,3 +155,14 @@ Feature: Guest product purchase flow
     Then I should eventually be redirected to the "checkout-thank-you" page
     And the "order reference" should be displayed
     And the price in "order total" should equal the remembered "review total"
+
+    # Smoke case 16's admin check (the order itself is paid by card: no AT
+    # customer group allows Payment on Account on staging, 2026-11-19).
+    When I remember the part of the "order reference" text matching the pattern "\d{6}" as "order reference"
+    And I authenticate against the API as the "admin" user
+    And I GET the API path "/orders?reference={{order reference}}"
+    Then the response status should be 200
+    And the response JSON at "hydra:totalItems" should equal "1"
+    And the response JSON at "hydra:member[0].status" should equal "processing"
+    And the response JSON at "hydra:member[0].deliveryNotes" should equal "Velstar Test - automated test order, please ignore"
+    And the response JSON at "hydra:member[0].lines" should contain an entry whose "item.sku" is "ATFUOF1104"

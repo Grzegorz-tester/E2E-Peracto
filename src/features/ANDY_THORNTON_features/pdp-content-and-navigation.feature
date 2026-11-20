@@ -53,3 +53,9 @@ Feature: PDP content and navigation
     And I am on the "basket" page
     Then the "basket item name" should contain the text "Vienna Stackable Side Chair"
     And the "quantity input" should equal the value "2"
+    # Smoke case 19: the line total and basket totals follow the quantity.
+    # The basket shows prices inc VAT (the PDP shows ex VAT), so the line's
+    # own unit price is the base, not the PDP's.
+    When I remember the price in "basket item price" as "unit price"
+    Then the price in "basket item total" should equal the remembered "unit price" times 2
+    And the basket sub total should equal the sum of all basket line totals

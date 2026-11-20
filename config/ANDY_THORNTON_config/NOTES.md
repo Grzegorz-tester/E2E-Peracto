@@ -1,6 +1,6 @@
 # ANDY_THORNTON automation notes
 
-Andy Thornton storefront (contract/hospitality furniture; moodboards act as quotes), a Peracto storefront with Opayo/Elavon hosted card payment. Runs `src/features/ANDY_THORNTON_features/` (21 feature files, roughly 100+ scenarios). Admin is a separate project: see `config/ANDY_THORNTON_ADMIN_config/NOTES.md`.
+Andy Thornton storefront (contract/hospitality furniture; moodboards act as quotes), a Peracto storefront with Opayo/Elavon hosted card payment. Runs `src/features/ANDY_THORNTON_features/` (28 feature files, about 150 scenarios after the 2026-11-19 AT-185/AT-201 gap fill). Admin is a separate project: see `config/ANDY_THORNTON_ADMIN_config/NOTES.md`.
 
 ## Environments
 - `env/ANDY_THORNTON_STAGING.env` -> `staging.andythornton.pub`. Free rein: real orders (guest and logged-in), registrations, moodboard CRUD.
@@ -9,12 +9,14 @@ Andy Thornton storefront (contract/hospitality furniture; moodboards act as quot
 - Prod differences use `@production-only` / `@not-on-production` rows (home sections, `/services`, staging-only `/best-hospitality-furniture-2024`).
 
 ## Test accounts and data
-- users.json types: `logged in`, `non admin`, `guest`, `admin` (features use the first three).
+- users.json types: `logged in`, `non admin`, `guest`, `admin`. `admin` has no AT-specific credentials and falls back to the generic `ADMIN_*` account; it is used only for admin API calls (`API_BASE_URL=https://staging-api.andythornton.pub` in the staging env, plus the public Algolia search key and `ALGOLIA_INDEX=staging_andythornton`).
+- Roles (confirmed via the admin API 2026-11-19): `logged in` is ROLE_ADMIN and in the "Sales Team" customer group (`access_all_quotes`), so it has Quotes; `non admin` is in the plain "User" group and has Moodboards only (`/account/quotes` redirects it to `/account`). No group allows anything but `card` payment, so Payment on Account (smoke case 16) can't be tested on staging. A Sales-Team-only test account (not ROLE_ADMIN) is still needed for smoke case 50.
 - Staging: `ANDY_THORNTON_LOGGED_IN_EMAIL`/`_PASSWORD` and `ANDY_THORNTON_NON_ADMIN_EMAIL`/`_PASSWORD` (non admin is a separate plus-aliased account). Prod: `ANDY_THORNTON_PROD_LOGGED_IN_*` and `ANDY_THORNTON_PROD_NON_ADMIN_*`. Without them the run falls back to generic `LOGGED_IN_*` (the HIB account) and fails "Invalid credentials".
 - The `logged in` account is an admin-type user: it has no Moodboards. Moodboards need `non admin`.
 - The logged-in account is SHARED with other people (their addresses and ~15 moodboards). Only create/delete uniquely named Velstar data; put back anything edited. Its only saved address belongs to another user, so logged-in orders are marked "Velstar Test" in the delivery notes.
 - If a contiguous block of logins fails, check whether someone changed the shared password mid-run (happened 2026-09-30, also hit the admin run).
 - Moodboard test data: every board named "Velstar Test Moodboard <timestamp>"; Background sweeps leftovers with that prefix only.
+- 2026-11-19: promotion 78 was REPURPOSED by someone else on 2026-11-17 (renamed "Black Friday", 20% off, ended 2026-11-18 11:18) but still carries `VELSTARTEST1`, so basket.feature's valid-promo scenario is red. Left alone (not ours to undo); needs a new fixture or 78 handing back. Original note follows.
 - Staging promotion fixture: promotion id 78 "Velstar Test 1% Off", code `VELSTARTEST1`, unlimited uses, staging admin only. Backs basket.feature's valid-promo scenario (£122.40 -> £121.17, discount rounds UP). Do not delete. If it fails "not a valid promo code", check promotion 78 is still Active.
 - Prod account: 0 orders (order history tagged `@requires-order-history`), addresses "Bob Smith" plus a pre-existing "Velstar Test" address not created by these runs; leave both.
 - Registration on staging creates a real `qa-<ts>@velstar-test.co.uk` account each run (known small data leak, 4 accumulated as of 2026-10-20).
@@ -26,7 +28,16 @@ Andy Thornton storefront (contract/hospitality furniture; moodboards act as quot
 - Moodboards list shows only the 15 newest with no pagination (likely UX bug, staging 2026-09-30); new boards still appear as newest.
 - Prod reset password: reCAPTCHA shows "Invalid domain for site key" under Playwright and the success message never appears, while a real browser succeeds. Expected red under automation, not a site misconfiguration (as of 2026-09-14).
 
+- Soft 404 (staging AND prod, 2026-11-19, predates the upgrades): unknown `/products/<x>` and `/branches/<x>` render the 404 page with HTTP 200. platform-upgrade-health.feature keeps two expected-red rows for it.
+- Quote Builder "You have unsaved changes" bar shows on every quote as soon as it loads and stays after a successful save (staging AND prod, 2026-11-19). Smoke case 39's "bar disappears" can't pass; quote-builder.feature checks the save toast and reload instead.
+- Algolia delete sync (staging, 2026-11-19, AT-185 already deployed): a product deleted in Peracto stays in the Algolia index and storefront search (card to a dead PDP) for over an hour, even after re-running `product_indexer`. JTDove removes it within ~30s. Ghost record left: product 7742 `VELSTAR-ALG-1795100828895`. algolia-product-sync.feature is on demand only (`--tags @algolia-sync`) until fixed, because every run leaves another ghost.
+
 ## Quirks and gotchas
+- Quotes and moodboards are the same records: the `logged in` account's moodboards list shows its quotes. Quote Builder lives at `/account/quotes/<uuid>`; toasts are Toastify (`.Toastify__toast`). Each quote line has two quantity pickers: the first is the unit PRICE, the second the QUANTITY. The detail toolbar is Edit / Moodboard view / Delete (no Duplicate, unlike smoke case 38); duplicate is on the list only. On a short quote the sticky Save bar can't be scrolled into view by plain Playwright (the framework click copes).
+- Quote Builder's "Add Custom Item" dropdown lists every admin attribute set, including dozens of leftover "Attribute Set NNNNNN" sets from the shared admin suite (visible on the storefront, 2026-11-19).
+- XML sitemaps live under `/sitemaps/*.xml` (8 files, listed in prod robots.txt); there is no `/sitemap.xml`.
+- PLP product cards have no Add to Basket (smoke case 21 doesn't apply). There is no "clear all" on the filter drawer; unticking the facet restores the count.
+- Basket shows prices inc VAT, the PDP ex VAT (£102.00 vs £122.40).
 - Cloudflare on prod (from 2026-10-01): "Verify you are human" challenges and intermittent "500 Application Error" pages to the headless runner. 13 scenarios passed only on retry, and guest checkout's "delivery address can't be used" scenario went red. Not test-fixable (bypassing it is detection evasion); needs a Cloudflare allowlist from AT via the account manager. Don't "fix" with waits; stop re-running prod while challenged.
 - Prod rate-limits fast crawls: HTTP 429 after ~10 quick page loads (2026-09-30). health-check.feature can trip it; don't crawl prod.
 - Hydration races, each fixed with a settle: basket +/- buttons (no-op for ~3s after render), "Add new address" (prod), signed-in checkout Continue (retried), and Add to basket then immediate basket navigation (can land on an empty basket).
@@ -45,8 +56,9 @@ Andy Thornton storefront (contract/hospitality furniture; moodboards act as quot
 - Contact enquiry and newsletter forms email or subscribe real AT staff/lists: never submitted with valid data on any env (only browser validation is tested).
 
 ## Coverage and gaps
+- Added 2026-11-19 (AN-2026-11-19.json smoke export, AT-185/AT-201): platform-upgrade-health, sitemap, admin-content-on-storefront (API), quote-builder (cases 36-42), quote-builder-access (case 43), algolia-product-sync (on demand), admin order checks in customer-flow, PDP availability/image/basket SKU+price+totals, SKU search, filter clear.
 - Covered: health check (header/menu/footer links), home, header, PLP/category PLP (Contract Furniture sub-categories, venues, price order, pagination), products filter/sort, PDP and PDP content/navigation, search results, basket incl. promo, guest + logged-in checkout with real payment (staging), login/reset password, registration, my account, account actions (profile, address book, orders), moodboards/quotes CRUD, articles, contact us and newsletter validation.
-- Not covered: valid contact/newsletter submissions (deliberately), confirmation emails, anything on prod that writes beyond the user's own profile/addresses.
+- Not covered: valid contact/newsletter submissions (deliberately, incl. Maxemail subscribe), confirmation emails (no inbox access), password reset completion (shared account), Payment on Account (not configured), case 50 (no Sales-Team-only account), CKFinder image inserted into content (case 30), task run completion (case 34), Sage stock/price sync and product feeds (AT-185 checklist), anything on prod that writes beyond the user's own profile/addresses.
 - Andy Thornton was flagged by the user as "an old project we will rework" (2026-08-25); check whether the storefront moves platform before large investment.
 
 ## Tips for extending
@@ -54,4 +66,4 @@ Andy Thornton storefront (contract/hospitality furniture; moodboards act as quot
 - Treat first-attempt prod failures with Cloudflare/500 screenshots as environment noise until an allowlist exists.
 - Prefer uniquely prefixed test data plus a prefix sweep (`I delete every "rows" whose "name" starts with ...`) because the account is shared.
 
-_Last reviewed: 2026-10-24. Sources: memory notes + feature file comments._
+_Last reviewed: 2026-11-19. Sources: memory notes + feature file comments._

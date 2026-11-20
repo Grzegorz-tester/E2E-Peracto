@@ -30,6 +30,11 @@ Feature: Verify PDP functionality
     And the "Description tab" should be displayed
     And the "Specifications tab" should be displayed
     And the "Downloads tab" should be displayed
+    # Smoke case 17: availability is shown, and the main image really loaded
+    # (a broken image optimiser after the Next.js 16 upgrade, AT-201, would
+    # still leave a visible empty box).
+    And the "stock message" should be displayed
+    And the "product image" image should have loaded
 
   Scenario: Verify adding a product to the basket
     Given I am on the "pdp" page
@@ -38,3 +43,8 @@ Feature: Verify PDP functionality
     And I wait for the page to settle
     And I am on the "basket" page
     Then the "basket item name" should contain the text "Vienna Stackable Side Chair"
+    # Smoke case 18: the right SKU at a real price.
+    And the "basket item sku" should contain the text "ATFUOF1104"
+    And the "basket item price" should contain the text "£"
+    When I remember the price in "basket item price" as "unit price"
+    Then the price in "basket item total" should equal the remembered "unit price" times 1
