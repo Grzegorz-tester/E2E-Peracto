@@ -2,5 +2,7 @@
   "Order picker": "[data-testid='order-number-input']",
   "Date picker": "//button[@id='date']",
   "Refresh": "[data-testid='refresh-query-button']",
-  "Orders table": "//tbody"
+  "Orders table": "//tbody",
+  "first order row": "table tbody tr >> nth=0",
+  "first order number": "table tbody tr >> nth=0 >> td >> nth=0"
 }

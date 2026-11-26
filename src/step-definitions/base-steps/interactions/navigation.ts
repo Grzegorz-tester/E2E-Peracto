@@ -1,5 +1,6 @@
 import {Given, When} from "@cucumber/cucumber";
 import {ScenarioWorld} from "../../setup/world";
+import type {Request as PwRequest} from "playwright";
 import {ElementKey, PageId} from "../../../env/global";
 import {
     navigateToPage,
@@ -64,12 +65,40 @@ When(/^I wait for the page to settle$/, async function (this: ScenarioWorld) {
 // following page.goto still aborted the add. The networkidle fallback is
 // gone for that reason; a page whose add matches neither pattern waits out
 // the 15s timeout and carries on, rather than cutting the add short at 500ms.
-When(/^I wait for the basket update to complete$/, async function (this: ScenarioWorld) {
+//
+// CONFIRMED live (Keylite 2-1-0, 2026-11-11): one Add to basket can now be
+// a CHAIN of server actions - the window, then a separate child line for
+// its Operating Kit (body carries parentVariantId), then basket refetches.
+// Returning after the first response let the following page.goto abort the
+// rest: the basket held the window without its rod (configurator), or was
+// empty (PDP). So after the first write response, keep waiting while further
+// writes keep starting, and return only once none has started for a quiet
+// window and none is still in flight (bounded overall).
+When(/^I wait for the basket update to complete$/, { timeout: 45000 }, async function (this: ScenarioWorld) {
     const { screen: { page } } = this;
-    await page.waitForResponse((res) => {
-        const req = res.request();
-        return req.method() !== "GET" && (/basket/i.test(res.url()) || req.headers()["next-action"] !== undefined);
-    }, { timeout: 15000 }).catch(() => null);
+    const isBasketWrite = (req: PwRequest) =>
+        req.method() !== "GET" && (/basket/i.test(req.url()) || req.headers()["next-action"] !== undefined);
+
+    let inFlight = 0;
+    let lastActivity = Date.now();
+    const onRequest = (req: PwRequest) => { if (isBasketWrite(req)) { inFlight++; lastActivity = Date.now(); } };
+    const onDone = (req: PwRequest) => { if (isBasketWrite(req)) { inFlight = Math.max(0, inFlight - 1); lastActivity = Date.now(); } };
+    page.on("request", onRequest);
+    page.on("requestfinished", onDone);
+    page.on("requestfailed", onDone);
+    try {
+        await page.waitForResponse((res) => isBasketWrite(res.request()), { timeout: 15000 }).catch(() => null);
+        lastActivity = Date.now();
+        const quietMs = 2000;
+        const deadline = Date.now() + 20000;
+        while (Date.now() < deadline && (inFlight > 0 || Date.now() - lastActivity < quietMs)) {
+            await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+    } finally {
+        page.off("request", onRequest);
+        page.off("requestfinished", onDone);
+        page.off("requestfailed", onDone);
+    }
     await new Promise((resolve) => setTimeout(resolve, 500));
 });
 

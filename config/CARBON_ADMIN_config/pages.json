@@ -15,9 +15,21 @@
     "route": "/orders",
     "regex": "^/orders$"
   },
+  "orders-create": {
+    "route": "/orders/create",
+    "regex": "^/orders/create$"
+  },
+  "order-detail": {
+    "route": "/orders/:id",
+    "regex": "^/orders/[^/]+$"
+  },
   "products": {
     "route": "/products",
     "regex": "^/products$"
+  },
+  "products-import": {
+    "route": "/products/import",
+    "regex": "^/products/import$"
   },
   "products-export": {
     "route": "/products/export",
@@ -34,6 +46,10 @@
   "attributes": {
     "route": "/attributes",
     "regex": "^/attributes$"
+  },
+  "attributes-import": {
+    "route": "/attributes/import",
+    "regex": "^/attributes/import$"
   },
   "attribute-groups": {
     "route": "/attribute-groups",
@@ -83,17 +99,37 @@
     "route": "/form-submissions",
     "regex": "^/form-submissions$"
   },
+  "form-submissions-export": {
+    "route": "/form-submissions/export",
+    "regex": "^/form-submissions/export$"
+  },
   "locations": {
     "route": "/locations",
     "regex": "^/locations$"
+  },
+  "locations-export": {
+    "route": "/locations/export",
+    "regex": "^/locations/export$"
+  },
+  "locations-import": {
+    "route": "/locations/import",
+    "regex": "^/locations/import$"
   },
   "users": {
     "route": "/users",
     "regex": "^/users$"
   },
+  "users-export": {
+    "route": "/users/export",
+    "regex": "^/users/export$"
+  },
   "user-groups": {
     "route": "/user-groups",
     "regex": "^/user-groups$"
+  },
+  "customer-groups": {
+    "route": "/customer-groups",
+    "regex": "^/customer-groups$"
   },
   "settings": {
     "route": "/settings",
@@ -107,9 +143,21 @@
     "route": "/redirects",
     "regex": "^/redirects$"
   },
+  "redirects-import": {
+    "route": "/redirects/import",
+    "regex": "^/redirects/import$"
+  },
+  "redirects-import-detail": {
+    "route": "/redirects/import/:id",
+    "regex": "^/redirects/import/[^/]+$"
+  },
   "shipping-services": {
     "route": "/shipping-services",
     "regex": "^/shipping-services$"
+  },
+  "shipping-service-rules-import": {
+    "route": "/shipping-service-rules/import",
+    "regex": "^/shipping-service-rules/import$"
   },
   "tasks": {
     "route": "/tasks",
@@ -230,5 +278,9 @@
   "task-detail": {
     "route": "/tasks/:id",
     "regex": "^/tasks/[^/]+$"
+  },
+  "customer-group-detail": {
+    "route": "/customer-groups/:id",
+    "regex": "^/customer-groups/[^/]+$"
   }
 }

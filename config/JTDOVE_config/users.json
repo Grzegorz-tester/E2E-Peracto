@@ -1,5 +1,14 @@
 {
-  "logged in": { "email": "", "password": "" },
+  "logged in": {
+    "email": "",
+    "password": ""
+  },
   "guest": {},
-  "credit": { "email": "", "password": "" }
+  "credit": {
+    "email": "",
+    "password": ""
+  },
+  "admin": {
+    "credentialsEnvPrefix": "JTDOVE_ADMIN_ADMIN"
+  }
 }

@@ -1,0 +1,13 @@
+{
+  "order reference": "[data-testid='orders-details__reference']",
+  "order delivery address": "[data-testid='orders-details__order-delivery-address']",
+  "order delivery method": "[data-testid='orders-details__order-delivery-method']",
+  "order line": "[data-testid='order-product-card'] >> nth=0",
+  "order line name": "[data-testid='order-product-card__name'] >> nth=0",
+  "order subtotal": "[data-testid='orders-details__order-summary__subtotal']",
+  "order shipping": "[data-testid='orders-details__order-summary__shipping-total']",
+  "order discount": "[data-testid='orders-details__order-summary__discount']",
+  "order total": "[data-testid='orders-details__order-summary__total']",
+  "order VAT": "[data-testid='orders-details__order-summary__inc-tax-amount']",
+  "order payment details": "[data-testid='orders-details__order-payment-details']"
+}

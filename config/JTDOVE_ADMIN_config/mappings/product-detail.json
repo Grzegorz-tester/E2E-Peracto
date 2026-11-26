@@ -13,5 +13,6 @@
   "Option Identifier": "[data-testid='options_item_0_identifier'] input",
   "Manage Variants": "[data-testid='button-manage-variants']",
   "Remove Option": "[data-testid='remove-option-entry-0']",
-  "Default Attribute Set Name": "Default"
+  "Product Category": "[data-testid='category-tags']",
+  "Default Attribute Set Name": "Core Only"
 }

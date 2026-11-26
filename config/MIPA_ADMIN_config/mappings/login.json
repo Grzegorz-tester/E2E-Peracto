@@ -3,5 +3,5 @@
   "Password": "[data-testid='password']",
   "Sign In": "[data-testid='sign-in']",
   "Forgotten your password?": "[data-testid='forgotten-password']",
-  "validation message": "//p[@class='text-danger']"
+  "validation message": "//p[contains(@class,'text-danger')]"
 }

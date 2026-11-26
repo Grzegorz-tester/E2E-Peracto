@@ -7,5 +7,14 @@
   "Entries amount number": "[data-testid='rowcount-picker']",
   "order": "//tbody/tr",
   "order reference cells": "td[data-testid$='-order-reference']",
-  "order email cells": "td[data-testid$='-email']"
+  "order email cells": "td[data-testid$='-email']",
+  "first order link": "[data-testid='row-0-order-reference'] a",
+  "first order select": "tbody tr:first-child td:first-child",
+  "pick list panel": "[data-testid='action-panel']",
+  "Download Pick List": "[data-testid='action-panel'] button:has-text('Download')",
+  "Create Order": "[data-testid='create-order']",
+  "Export start date": "input[placeholder='DD/MM/YYYY'] >> nth=0",
+  "Export end date": "input[placeholder='DD/MM/YYYY'] >> nth=1",
+  "Download order export": "button.btn-primary:has-text('Download')",
+  "order reference header": "[data-testid='header-1']"
 }

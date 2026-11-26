@@ -47,6 +47,7 @@
   "review current address": "[data-testid='review-current-address']",
   "terms and conditions checkbox": "[data-testid='review-content__terms-and-conditions']",
   "Pay now": "[data-testid='review-content__continue-to-payment-account']",
+  "handling acknowledgement checkbox": "button[role='checkbox']#delivery-consent__handling-acknowledgement",
   "terms and conditions": "[data-testid='review-content__terms-and-conditions']",
   "thank you content": "[data-testid='checkout-thank-you-content']",
   "order reference": "[data-testid='orders-details__reference']",

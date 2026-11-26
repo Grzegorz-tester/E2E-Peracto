@@ -8,6 +8,7 @@
   "quantity plus": "[data-testid='quantity-picker__plus-button']",
   "quantity minus": "[data-testid='quantity-picker__minus-button']",
   "Add to basket": "[data-testid='product-add-to-basket__button']:visible",
+  "added to basket heading": "[data-testid='product-added-to-basket__added-to-basket-heading']",
   "Description tab": "[data-testid='product-accordion__trigger']:has-text('Description')",
   "Specifications tab": "[data-testid='product-accordion__trigger']:has-text('Specifications')",
   "Downloads tab": "[data-testid='product-accordion__trigger']:has-text('Downloads')",

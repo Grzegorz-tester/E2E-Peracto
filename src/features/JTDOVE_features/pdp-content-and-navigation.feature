@@ -5,6 +5,7 @@ Feature: Product Detail Page (PDP)
   # deterministic: Marine Plywood Sheet (2440 x 1220 x 18mm), product code
   # 310239, £56.98 ex. VAT / £68.38 inc. VAT on staging.
 
+  @smoke
   Scenario: PDP shows the product's details
     Given I am on the "test-product" page
     And I wait for the page to settle
@@ -19,12 +20,14 @@ Feature: Product Detail Page (PDP)
 
 
   # Smoke case 194 (added 2026-10-23).
+  @smoke
   Scenario: The main product image loads
     Given I am on the "test-product" page
     And I wait for the page to settle
     Then the "product image" image should return a 200 OK response with content-type "image/"
 
 
+  @smoke
   Scenario: Changing the quantity updates the PDP total
     Given I am on the "test-product" page
     And I wait for the page to settle

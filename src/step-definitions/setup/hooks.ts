@@ -4,6 +4,7 @@ import { ScenarioWorld } from './world';
 import { detectBlockPage, blockPageMessage } from '../support-functions/block-page-detection';
 import { isProductionRun, PRODUCTION_UNSAFE_TAGS } from '../../env/run-environment';
 import { RETRY_PASS_MARKER } from '../../env/report-markers';
+import { runApiCleanup } from '../base-steps/assertions/verify-api-response';
 import { ITestStepHookParameter } from "@cucumber/cucumber/lib/support_code_library_builder/types";
 import fs from 'fs';
 import path from 'path';
@@ -123,6 +124,13 @@ After(async function (this: ScenarioWorld, scenario: ITestCaseHookParameter) {
         } catch (err) {
             console.error('Error capturing screenshot:', err);
         }
+    }
+
+    // Deletes any API fixture the scenario registered with "I will DELETE the
+    // API path ... after the scenario", pass or fail, while the page's
+    // request context (and its API token) still exists.
+    if (page) {
+        await runApiCleanup(this);
     }
 
     try {

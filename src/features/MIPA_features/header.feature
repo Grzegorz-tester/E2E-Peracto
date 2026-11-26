@@ -57,7 +57,7 @@ Feature: Header functionality
     Examples:
       | user type | page type |
       | guest     | basket    |
-      | logged in | basket    |
+      # 2026-11-22: logged in row removed, same Basket icon and destination as the guest row.
 
 
   Scenario: Verify: - "Sign In" icon functionality

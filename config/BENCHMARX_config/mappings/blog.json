@@ -1,0 +1,11 @@
+{
+  "article cards": "[data-testid='article-card']",
+  "article card links": "[data-testid='article-card_link']",
+  "first article card": "[data-testid='article-card_link'] >> nth=0",
+  "first article card title": "[data-testid='article-card__title'] >> nth=0",
+  "article card titles": "[data-testid='article-card__title']",
+  "category heading": "[data-testid='article-category-heading']",
+  "category chips": "[data-testid='article-category-page'] a[href^='/articles/']:not([href*='page='])",
+  "Appliances category": "[data-testid='article-category-page'] a[href='/articles/appliances']",
+  "page 2 link": "[data-testid='article-category-page'] a[href$='page=2'] >> nth=0"
+}

@@ -7,5 +7,7 @@
   "Entries amount number": "[data-testid='rowcount-picker']",
   "order": "//tbody/tr",
   "order reference cells": "td[data-testid$='-order-reference']",
-  "order email cells": "td[data-testid$='-email']"
+  "order email cells": "td[data-testid$='-email']",
+  "first order link": "[data-testid='row-0-order-reference'] a",
+  "first order total": "[data-testid='row-0-total-(inc.-tax)']"
 }

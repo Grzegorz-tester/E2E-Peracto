@@ -38,11 +38,4 @@ Feature: Header functionality
       | product name              | product |
       | Vienna Stackable Side Chair | pdp   |
 
-  Scenario Outline: Verify search box functionality using the Magnifier glass button
-    Given I am on the "home" page
-    When I fill in the "Search products" input field with "<product name>"
-    And I click on the "magnifier glass" element
-    Then I should be redirected to the "search" page
-    Examples:
-      | product name              |
-      | Vienna Stackable Side Chair |
+  # 2026-11-22: magnifier-glass search scenario removed - search-results.feature makes the same search and redirect checks.

@@ -26,16 +26,24 @@ Feature: Guest product purchase flow
   Scenario: Successful guest checkout purchase
     Given I am on the "pdp" page
     And I click on the "Allow all cookies" button if present
+    # 2026-11-24: an early click before hydration silently did nothing
+    # (logged-in run landed on an empty basket), so let the PDP settle first.
+    # Not a retry: a late add confirmation would double the basket.
+    And I wait for the page to settle
     When I click on the "Add to basket" button
+    # Waits for the add to commit (the "added to basket" panel) before leaving the PDP.
+    Then the "added to basket heading" should be displayed
     And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "Checkout" button
     Then I should be redirected to the "checkout" page
 
-    When I click on the "Guest checkout radio" button
+    # Retried: before hydration the radio click silently does nothing (2026-11-24).
+    When I click on the "Guest checkout radio" button, retrying until the "Guest email" is displayed
     And I fill in the "Guest email" input field with a unique guest email
     And I click on the "Continue as guest" button
     Then I should be redirected to the "checkout-delivery" page
+    And I wait for the page to settle
 
     When I fill in the "address first name" input field with "Velstar"
     And I fill in the "address last name" input field with "Test"
@@ -43,7 +51,9 @@ Feature: Guest product purchase flow
     And I fill in the "address line 1" input field with "221B Baker Street"
     And I fill in the "address city" input field with "London"
     And I fill in the "address postcode" input field with "NW1 6XE"
-    And I click on the "Use this address" button
+    # Retried: the button only enables once React has registered the filled
+    # fields, so an early click can no-op (first attempt failed 2026-11-24).
+    And I click on the "Use this address" button, retrying until the "current delivery address" is displayed
     Then the "current delivery address" should contain the text "221B Baker Street"
 
     When I fill in the "delivery phone" input field with "07700900000"
@@ -106,7 +116,10 @@ Feature: Guest product purchase flow
     Given I am navigating the page as a "logged in" user
     And I click on the "Allow all cookies" button if present
     When I am on the "pdp" page
+    And I wait for the page to settle
     And I click on the "Add to basket" button
+    # Waits for the add to commit (the "added to basket" panel) before leaving the PDP.
+    Then the "added to basket heading" should be displayed
     And I wait for the page to settle
     And I am on the "basket" page
     And I wait for the page to settle

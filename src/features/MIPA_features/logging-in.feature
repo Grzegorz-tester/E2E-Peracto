@@ -39,6 +39,7 @@ Feature: Login Page
     Then I should be presented with a "validation message" "Username could not be found."
 
 
+  # 2026-11-22: reset-password-page.feature removed (broken: literal "<string>", no Then), this scenario covers the reset password page.
   Scenario: Resetting password
     Given I am on the "login" page
     When I click on the "Forgotten your password?" link

@@ -63,6 +63,7 @@ Feature: Footer and newsletter sign-up
   # is very large (26MB on production); curl without compression gets a 413
   # from Amplify on staging, but a real browser loads it. The XML sitemaps
   # (/sitemaps/*.xml) are only served on production.
+  @smoke
   Scenario: The footer sitemap opens and its links resolve
     Given I am on the "home" page
     And I wait for the page to settle

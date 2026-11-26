@@ -4,5 +4,8 @@
   "User Email": "[data-testid='email']",
   "Save": "[data-testid='save-form']",
   "Delete User": "//a[text()='Delete User']",
-  "Confirm Delete User": "[data-testid='button-action_delete-user']"
+  "Confirm Delete User": "[data-testid='button-action_delete-user']",
+  "User Telephone": "[data-testid='telephone']",
+  "User Mobile": "[data-testid='mobile']",
+  "Edit user details": "[data-testid='edit'] button:text-is('Edit')"
 }

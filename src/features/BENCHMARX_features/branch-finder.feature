@@ -29,3 +29,37 @@ Feature: Branch finder
     Given I am on the "branches" page
     Then the "all branches list" should be displayed
     And the first 10 "all branches links" links should resolve without an error
+
+  # ---- BEN-379 (Next.js 15 upgrade) additions, 2026-11-11 ----
+  # R3: on next-15 /branches never renders the branch finder (endless
+  # spinner, no map, no list); staging shows a Google map with clustered
+  # markers. Branch detail pages are in branch-pages.feature.
+
+  # BR-01
+  Scenario: The branch finder shows a map with clustered branch markers
+    Given I am on the "branches" page
+    Then the "branch finder" should be displayed within "20" seconds
+    And the "branch finder map" should be displayed within "20" seconds
+    And the "branch map markers" should be displayed within "20" seconds
+
+  # BR-02: a postcode works like a town.
+  Scenario: Searching a postcode lists the nearest branch first
+    Given I am on the "branches" page
+    And I wait for the page to settle
+    When I fill in the "branch search input" input field with "LS11 0EY"
+    And I press Enter in the "branch search input" input field
+    Then the "first branch result" should contain the text "Leeds"
+    And the "first branch result" should contain the text "miles"
+
+  # BR-03
+  Scenario: View all branches jumps to the A to Z list, which filters by letter
+    Given I am on the "branches" page
+    And I wait for the page to settle
+    When I click on the "View all branches" link
+    Then the "all branches list" should be displayed
+    And the "branch list links" should be displayed
+    When I click on the "letter filter B" button
+    Then the "branch list links" should all contain the text "B"
+    When I click on the "first branch list link" link
+    Then I should be redirected to the "branch" page
+    And the "branch heading" should be displayed

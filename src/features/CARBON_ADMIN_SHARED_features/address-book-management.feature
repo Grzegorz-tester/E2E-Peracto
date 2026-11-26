@@ -172,7 +172,13 @@ Feature: Adding, Editing And Deleting A Billing Or Delivery Address
 
     When I click precisely on the "Delete User" element
     And I click precisely on the "Confirm Delete User" element
-    Then the "success toast" should be displayed
+    # The redirect to the Users list is the real proof of deletion: the
+    # success toast alone can be the address delete's toast still on screen,
+    # which passed while the user silently survived (JTDove 4-4-0, two runs,
+    # 2026-11-23/24; a manual delete redirects to /users with "User deleted
+    # successfully!").
+    Then I should eventually be redirected to the "users" page
+    And the "success toast" should be displayed
 
     Examples:
       | address type |

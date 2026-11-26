@@ -24,6 +24,11 @@ Feature: Moodboards and quotes
     Given I am navigating the page as a "logged in" user
     And I click on the "Allow all cookies" button if present
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
+    # Settle before every list/builder interaction: from 2026-11-24 staging
+    # hydrates slowly enough that an early click (row delete, name cell,
+    # Create a new Moodboard) silently does nothing (confirmed live).
+    And I wait for the page to settle
     And I delete every "moodboard rows" whose "moodboard name cell" starts with "Velstar Test Moodboard", using the "moodboard delete" and "confirm moodboard delete"
 
 
@@ -35,6 +40,7 @@ Feature: Moodboards and quotes
     And the "moodboard title" should contain the remembered "moodboard name"
     And the "empty moodboard" should be displayed
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     Then the "first moodboard name" should contain the remembered "moodboard name"
     When I click on the "moodboard delete" inside the "moodboard rows" containing the remembered "moodboard name"
     And I click on the "confirm moodboard delete" button
@@ -58,6 +64,7 @@ Feature: Moodboards and quotes
     And I wait for the page to settle
 
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     And I click on the "moodboard name cell" inside the "moodboard rows" containing the remembered "moodboard name"
     Then I should eventually be redirected to the "account-moodboard-detail" page
     And the "moodboard items" should contain the text "Vienna Stackable Side Chair"
@@ -67,6 +74,7 @@ Feature: Moodboards and quotes
     Then the "empty moodboard" should be displayed
     And the "moodboard items" should not contain the text "Vienna Stackable Side Chair"
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     And I delete every "moodboard rows" whose "moodboard name cell" starts with "Velstar Test Moodboard", using the "moodboard delete" and "confirm moodboard delete"
     Then the "moodboards table" should not contain the text "Velstar Test Moodboard"
 
@@ -86,11 +94,13 @@ Feature: Moodboards and quotes
     And I wait for the page to settle
 
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     Then the "moodboards table" should contain the remembered "moodboard name"
     When I click on the "moodboard name cell" inside the "moodboard rows" containing the remembered "moodboard name"
     Then I should eventually be redirected to the "account-moodboard-detail" page
     And the "moodboard items" should contain the text "Vienna Stackable Side Chair"
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     And I delete every "moodboard rows" whose "moodboard name cell" starts with "Velstar Test Moodboard", using the "moodboard delete" and "confirm moodboard delete"
     Then the "moodboards table" should not contain the text "Velstar Test Moodboard"
 
@@ -100,6 +110,7 @@ Feature: Moodboards and quotes
     And I fill in the "moodboard name input" input field with a unique value starting with "Velstar Test Moodboard", remembering it as "moodboard name"
     And I click on the "Create Moodboard" button
     Then I should eventually be redirected to the "account-moodboard-detail" page
+    And I wait for the page to settle
     When I click on the "moodboard actions" button
     And I click on the "Edit Moodboard" button
     And I fill in the "edit moodboard name" input field with a unique value starting with "Velstar Test Moodboard Renamed", remembering it as "new moodboard name"
@@ -108,9 +119,11 @@ Feature: Moodboards and quotes
     And I reload the page
     Then the "moodboard title" should contain the remembered "new moodboard name"
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     Then the "moodboards table" should contain the remembered "new moodboard name"
     And the "moodboards table" should not contain the remembered "moodboard name"
     When I am on the "account-moodboards" page
+    And I wait for the page to settle
     And I delete every "moodboard rows" whose "moodboard name cell" starts with "Velstar Test Moodboard", using the "moodboard delete" and "confirm moodboard delete"
     Then the "moodboards table" should not contain the text "Velstar Test Moodboard"
 
@@ -120,6 +133,7 @@ Feature: Moodboards and quotes
     And I fill in the "moodboard name input" input field with a unique value starting with "Velstar Test Moodboard", remembering it as "moodboard name"
     And I click on the "Create Moodboard" button
     Then I should eventually be redirected to the "account-moodboard-detail" page
+    And I wait for the page to settle
     When I click on the "moodboard actions" button
     And I click on the "Delete Moodboard" button
     And I click on the "confirm moodboard delete" button

@@ -1,0 +1,4 @@
+{
+  "Customer Group Name": "[data-testid='customer-group-name']",
+  "page heading": "//h1"
+}

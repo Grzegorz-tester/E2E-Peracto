@@ -1,0 +1,9 @@
+{
+  "Product Name search": "input[placeholder='Product Name'] >> nth=0",
+  "Product SKU search": "input[placeholder='Product SKU'] >> nth=0",
+  "Promotion Code": "input[placeholder='Promotion Code']",
+  "Change Customer": "//button[normalize-space()='Change Customer']",
+  "select customer modal": "[data-testid='select-customer-modal']",
+  "Close select customer": "[data-testid='select-customer-modal'] [data-testid='button-action_cancel']",
+  "Back to Orders": "//a[normalize-space()='Back to Orders']"
+}

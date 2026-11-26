@@ -230,5 +230,9 @@
   "task-detail": {
     "route": "/tasks/:id",
     "regex": "^/tasks/[^/]+$"
+  },
+  "order-detail": {
+    "route": "/orders",
+    "regex": "^/orders/[0-9]+$"
   }
 }

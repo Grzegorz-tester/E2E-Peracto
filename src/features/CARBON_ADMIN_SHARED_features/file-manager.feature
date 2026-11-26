@@ -26,14 +26,7 @@ Feature: File Manager (CKFinder)
   # file and a real .png image) before promoting - all steps passed
   # unmodified, no tenant-specific branching needed.
 
-  Scenario: Opening the File Manager loads a working CKFinder file browser
-    Given I require a staging admin for this scenario
-    And I am navigating the page as a "admin" user
-    And I am on the "dashboard" page
-    When I open the File Manager
-    Then the File Manager should not list a file named "velstar-test-file-manager-upload.txt"
-
-
+  # "Opening the File Manager" scenario removed 2026-11-22: its steps are a strict subset of the upload scenario below.
   Scenario: Uploading a file through the File Manager adds it to the listing, and it can be deleted again
     Given I require a staging admin for this scenario
     And I am navigating the page as a "admin" user

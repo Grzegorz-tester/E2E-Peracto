@@ -26,6 +26,11 @@ Feature: Basket
     And I remember the text of "basket line total price" as "line total before"
     And I remember the text of "Order total" as "order total before"
 
+    # The "+" handler is bound by the page's main script, which can arrive
+    # seconds after the basket renders (6s+ on a slow prod, 2026-11-10).
+    # Clicked before that, "+" is a silent no-op and Update stays disabled
+    # (reproduced live on watco.co.uk; after a full load "+" works).
+    And I wait for the page to settle
     When I click on the "basket quantity increase" element
     Then the "Update basket" should be enabled
     When I click on the "Update basket" button

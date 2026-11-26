@@ -4,7 +4,8 @@ PizzaExpress Live: live-music venue and events storefront (Next.js, page data re
 
 ## Environments
 - `env/PIZZAEXPRESSLIVE_PROD.env` -> `https://www.pizzaexpresslive.com/` (PRODUCTION, the only storefront env). Strictly read-only: no bookings, no purchases, no form submissions. Renamed from the unsuffixed `PizzaExpressLive.env` on 2026-10-19, which had quietly been pointing at production.
-- No storefront staging env exists (as of 2026-10-24); `hosts.json` has only `production`.
+- `env/PIZZAEXPRESSLIVE_STAGING.env` -> `https://staging.pizzaexpresslive.pub/` (staging, added 2026-11-13 for PE-76, the Peracto 79 / Symfony 7.4 / PHP 8.4 upgrade). Talks to `staging-api.pizzaexpresslive.pub`; Spektrix iframe is `bookings.pizzaexpresslive.pub` (production uses `.com` for both). Same Cloudflare block on the Spektrix iframe as production.
+- Env-specific content: the API base URL check is split into a `@production-only` and a `@not-on-production` scenario; Spektrix iframe assertions check only the `/pizzaexpress/website/...` path so they pass on both.
 
 ## Running
 - Scenarios are tagged `@PizzaExpressLive_regression`, NOT `@regression`. Use the dedicated profile: `COMMON_CONFIG_FILE=env/PIZZAEXPRESSLIVE_PROD.env ./run_tests.sh PizzaExpressLive_regression`. The plain `regression` profile selects nothing here.
@@ -30,11 +31,18 @@ PizzaExpress Live: live-music venue and events storefront (Next.js, page data re
 ## Coverage and gaps
 - Covered (5 files): page rendering (home, carousel, What's On, venues, CMS pages, PDP), filters/views/search, navigation + Spektrix basket/account iframes + footer + mobile nav, `__NEXT_DATA__` API checks (event slug/sku/prices/attributes/availability, image 200), Spektrix booking (choose-seats iframe; waiting list and box office forms filled until Submit Enquiry enables, never submitted because it emails the venue box office).
 - Not covered: anything inside Spektrix (seats, login, checkout, payment). Revisit only if a non-headless or session-based Spektrix strategy is agreed.
-- Gap: no staging storefront, so nothing transactional can ever be automated here as things stand.
+- Staging baseline 2026-11-13: 32/35. The 3 reds are staging DATA, not test or site bugs: (1) search for "jazz" returns no results on staging (other terms do; staging search index or event data is thinner than prod, worth watching for PE-76's SPX-04); (2) Coming Soon carousel has too few items to scroll, both arrows disabled; (3) no staging event currently has a Contact box office button (nor does production as of 2026-11-13: 0 of the first 25 events, so this one is red on BOTH envs until such an event exists). Expected to go green once staging gets the prod data copy planned for PE-76; re-check then before changing the tests.
+- PE-76 gap scenarios (tag `@PE-76`, built 2026-11-13): `api-contracts.feature` (health, 401 without token, refresh endpoint, error format, hydra collection shape), `error-pages.feature` (404 status + page), `sitemap.feature`, `similar-events.feature` (staging-only fixture event with relations). API steps resolve against `API_BASE_URL` in the env file. Staging 18/19, production 17/18 (similar events is `@not-on-production`).
+- Known defect, pre-existing on BOTH envs (not PE-76): `/sitemaps/products.xml` lists events as `/products/<slug>`, which 404; events live at `/whats-on/<slug>`. Expected red in sitemap.feature. Sitemaps also serve `content-type: application/x-www-form-urlencoded` rather than XML (not asserted).
+- PE-76 watch item: the API returns `hydra:member`/`hydra:totalItems`; API Platform 4 drops the `hydra:` prefix by default. The menus shape scenario is the canary.
+- Staging allows form submissions, so the PE-76 validation-error checks (API-03, PHP-05) can be built here, never on production.
+
+- Time-of-day effect (CONFIRMED 2026-11-13): late in the evening the first What's On events are that night's shows, past cutoff with no dates (`childEvents` empty, no `#event-dates`). The "first event card whose X is present" step now dedupes links ignoring `#event-dates` and has a 90s budget; before that, an evening run failed 7 scenarios that pass in the morning.
+- 2026-11-22 dedupe: removed the view-toggle outline (venue/month outlines open every view), membership/faqs CMS rows and 3 of 4 footer rows. Staging 54 -> 46, prod 53 -> 45 (PizzaExpressLive_regression profile).
 
 ## Tips for extending
 - Tag new scenarios `@PizzaExpressLive_regression`.
 - Strip the outdated-browser banner first in any scenario that clicks near the top of the page.
 - Do not hard-code event names or months; they go stale.
 
-_Last reviewed: 2026-10-24. Sources: memory notes + feature file comments._
+_Last reviewed: 2026-11-13. Sources: memory notes + feature file comments._

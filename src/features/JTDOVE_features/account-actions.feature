@@ -12,6 +12,7 @@ Feature: Account actions
   # The profile page keeps serving the pre-save value for a while after a
   # successful save (confirmed live 2026-10-07), so persistence is checked
   # by reloading until it shows up rather than with a single reload.
+  @smoke
   Scenario: Saving the profile keeps the customer's details
     Given I am on the "account-profile" page
     And I wait for the page to settle
@@ -27,6 +28,7 @@ Feature: Account actions
     Then I reload the page until the "profile contact number" contains the remembered "original number", for up to 60 seconds
 
 
+  @smoke
   Scenario: A new delivery address can be added and deleted
     Given I am on the "account-address-book" page
     And I wait for the page to settle
@@ -46,6 +48,7 @@ Feature: Account actions
 
 
   # Manual regression case 143 (added 2026-10-22).
+  @smoke
   Scenario: An existing delivery address can be edited
     Given I am on the "account-address-book" page
     And I wait for the page to settle
@@ -73,6 +76,7 @@ Feature: Account actions
   # an in-page Change Password form rather than emailing a link (confirmed
   # live 2026-10-23). The password is never changed: the shared account
   # must keep its current one.
+  @smoke
   Scenario: Reset Password on the profile opens the change password form
     Given I am on the "account-profile" page
     And I wait for the page to settle

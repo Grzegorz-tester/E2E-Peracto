@@ -1,4 +1,4 @@
-@regression
+@regression @not-on-production
 Feature: Basket - promotional codes
 
   # Coverage gap found 2026-10-24: the basket's "Got a promotional code?"

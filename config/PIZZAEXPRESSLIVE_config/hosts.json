@@ -1,3 +1,4 @@
 {
+  "staging": "https://staging.pizzaexpresslive.pub/",
   "production": "https://www.pizzaexpresslive.com/"
 }

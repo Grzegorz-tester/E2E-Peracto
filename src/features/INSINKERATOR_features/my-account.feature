@@ -20,7 +20,9 @@ Feature: My account
 
   Scenario: User can submit the change-password form with the existing password, and it still works afterwards
     When I am on the "account-profile" page
-    And I click on the "Reset Password" element
+    # Retry: an early click before React hydrates is silently dropped
+    # (confirmed on prod 2026-11-10, clicked 0.6s after load, form never opened).
+    And I click on the "Reset Password" element, retrying until the "Existing Password" is displayed
     And I fill in the "Existing Password" input field with the "logged in" user's password
     And I fill in the "New Password" input field with the "logged in" user's password
     And I fill in the "Repeat New Password" input field with the "logged in" user's password

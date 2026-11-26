@@ -23,16 +23,13 @@ Feature: My Dove account area
     Given I am on the "account" page
     And I wait for the page to settle
     When I click on the "<item> menu item" element, retrying until redirected to the "<page>" page
+    # 2026-11-22: other rows removed, each target page is opened by its own scenario in this file or wishlist.feature.
     Examples:
       | item           | page                   |
       | Profile        | account-profile        |
-      | Address Book   | account-address-book   |
-      | Invoices       | account-invoices       |
-      | My Lists       | account-wishlist       |
-      | Make a Payment | account-make-a-payment |
-      | Dashboard      | account                |
 
 
+  @smoke
   Scenario: Profile shows the customer's details
     Given I am on the "account-profile" page
     And I wait for the page to settle
@@ -79,6 +76,7 @@ Feature: My Dove account area
 
 
   # Manual regression cases 134, 135, 137, 146-148 and 153 (added 2026-10-22).
+  @smoke
   Scenario: Dashboard shows the default delivery and billing addresses
     Given I am on the "account" page
     And I wait for the page to settle

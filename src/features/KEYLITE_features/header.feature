@@ -44,5 +44,8 @@ Feature: Header functionality
     And I dismiss the newsletter popup if present
     When I fill in the "header search bar" input field with "roof window"
     Then the "search results" should be displayed
+    # The hits container renders before the product hits arrive; the JS
+    # click counts matches once, so wait for an actual product hit first.
+    And the "first search result" should be displayed
     When I click on the "1st" "first search result" element via JavaScript
     Then the current URL should contain "/products/"

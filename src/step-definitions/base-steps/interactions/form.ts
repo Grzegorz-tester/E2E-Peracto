@@ -114,6 +114,24 @@ When(/^I fill in the "([^"]*)" input field with a unique email, remembering it a
     this.globalVariables[variableName] = value;
 });
 
+// A valid email with a "+" in the local part, for checking a form accepts
+// plus-addressing (Peracto Admin 12.x fixed a validator that rejected it;
+// Benchmarx BEN-233, 2026-11-19). Unique per run, stashed for later reuse.
+When(/^I fill in the "([^"]*)" input field with a unique plus-addressed email, remembering it as "([^"]*)"$/, async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+    const {
+        screen: {page},
+        globalConfig
+    } = this;
+
+    const value = `velstar+qa-${Date.now()}@velstar-test.co.uk`;
+    const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
+
+    await page.waitForSelector(elementIdentifier, { timeout: 15000 });
+    await enterValue(page, elementIdentifier, value);
+
+    this.globalVariables[variableName] = value;
+});
+
 // Same idea for a phone field that validates its format (so the "qa-<ts>"
 // value above won't do). Unique per run on purpose: a fixed test number
 // would equal whatever a previous run left behind if that run failed

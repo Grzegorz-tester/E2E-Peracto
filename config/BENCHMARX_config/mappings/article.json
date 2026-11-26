@@ -1,0 +1,7 @@
+{
+  "article content": "[data-testid='article-content']",
+  "article images": "[data-testid='article-content'] img",
+  "first article image": "[data-testid='article-content'] img >> nth=0",
+  "article internal links": "[data-testid='article-content'] a[href^='/']",
+  "article links": "[data-testid='article-content'] a[href^='/']"
+}

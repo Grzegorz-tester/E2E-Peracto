@@ -42,3 +42,20 @@ Feature: Register page
     Given I am on the "register" page
     When I click on the "Register submit button" button
     Then the "First name" input should be rejected as empty
+
+  # IND-729 case 311. CONFIRMED 2026-11-13 (staging): the site rejects it with
+  # a generic form-level alert ("Unable to register new user"), not a message
+  # against the email field. This asserts what the site does today: the
+  # registration is refused and the visitor stays on the form.
+  Scenario: Registering with an email that already has an account is refused
+    Given I am on the "register" page
+    And I wait for the page to settle
+    When I fill in the "First name" input field with "Velstar"
+    And I fill in the "Last name" input field with "Test"
+    And I fill in the "Register email" input field with the "logged in" user's email
+    And I fill in the "Register phone" input field with "07377777777"
+    And I fill in the "Register password" input field with "Testing123!"
+    And I fill in the "Confirm password" input field with "Testing123!"
+    And I click on the "Register submit button" button as the final real submission
+    Then the "register error alert" should contain the text "Unable to register new user"
+    And I should be redirected to the "register" page

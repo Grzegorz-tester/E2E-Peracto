@@ -5,5 +5,6 @@
   "product card price": "#results-container .card-fresh .card-fresh__price span.font-weight-bold",
   "second brand filter checkbox": ":nth-match([data-facet-name='brand'] label.bloomreach-refinement-list--label, 2)",
   "sort dropdown": "#category-sort-by-select",
-  "page 2 link": ".bloomreach-pagination--item__page:has-text(\"2\") a"
+  "page 2 link": ".bloomreach-pagination--item__page:has-text(\"2\") a",
+  "PLP results count": ":nth-match(.resultsCount-container, 1)"
 }

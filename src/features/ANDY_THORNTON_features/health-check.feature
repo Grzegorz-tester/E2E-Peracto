@@ -14,6 +14,13 @@ Feature: Health check
   # confirmed 2026-09-30), which a full production run of this feature may
   # trip.
 
+  # 2026-11-22: rows cut. Already loaded and asserted elsewhere: /contact-us (contact-us.feature),
+  # /contract-furniture and /pub-furniture (category-plp.feature), /articles/projects
+  # (articles.feature). Same CMS/listing template as a kept row: the other header CMS
+  # pages (kept /about), venue content pages (kept /hotel-furniture), News From The
+  # Workshop, and the footer CMS pages (kept /delivery-and-returns). Every header and
+  # footer link is still HTTP-checked by the two link scenarios at the end.
+
   Scenario Outline: The "<path>" page loads with its own heading
     Given I navigate directly to the path "<path>"
     Then the "page not found" should not be displayed
@@ -21,42 +28,17 @@ Feature: Health check
 
     Examples: Header and menu
       | path                        | heading                                           |
-      | /contact-us                 | How can we help?                                  |
-      | /contract-furniture         | Contract Furniture                                |
       | /by-venue                   | Choose By Venue                                   |
-      | /interior-fittings-antiques | Interior Fittings & Antiques                      |
-      | /architectural-metalwork    | ARCHITECTURAL METALWORK                           |
-      | /articles/projects          | Projects                                          |
       | /about                      | EXPERIENCE \| CHOICE \| SUPPORT                   |
-      | /bespoke-furniture          | BESPOKE FURNITURE                                 |
-      | /sales-support              | Let us help you with your next commercial project |
-      | /outdoor-furniture          | Outdoor Contract Furniture & More                 |
-      | /banquette-seating          | Banquette Seating                                 |
-      | /vintage-furniture          | Vintage Furniture                                 |
-      | /articles/news-from-the-workshop | News From The Workshop                       |
-      | /showroom                   | SPECIFICATION SHOWROOM                            |
 
     Examples: By venue
       | path                  | heading                      |
-      | /pub-furniture        | Pub Furniture                |
       | /hotel-furniture      | Hotel Furniture              |
-      | /cafe-furniture       | Café & Coffee Shop Furniture |
-      | /bar-furniture        | Bar Furniture                |
-      | /restaurant-furniture | Restaurant Furniture         |
 
     Examples: Footer
       | path                       | heading                                |
-      | /table-top-stains          | STAINS FOR TABLE TOPS                  |
-      | /choose-your-fabric        | CHOOSE YOUR FABRIC                     |
-      | /standard-furniture-stains | STANDARD FURNITURE STAINS              |
-      | /furniture-care            | CARE & MAINTENANCE OF FURNITURE        |
-      | /stainless-steel-care      | CARE & MAINTENANCE OF STAINLESS STEEL  |
       | /delivery-and-returns      | Delivery & Returns                     |
-      | /environmental-policy      | Environmental Policy                   |
       | /sitemap                   | Sitemap                                |
-      | /our-clients               | OUR CLIENTS                            |
-      | /privacy-policy            | Andy Thornton Ltd - Privacy Policy     |
-      | /terms-conditions          | Andy Thornton Ltd - Terms & Conditions |
 
     # /services redirects to the home page on both environments (confirmed
     # live 2026-09-30), and the two home pages have different headings.

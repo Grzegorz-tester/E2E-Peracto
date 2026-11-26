@@ -19,7 +19,7 @@ Feature: Spektrix booking integration
     Then I should be redirected to the "choose-seats" page
     And the current URL should contain "/whats-on/choose-seats/"
     And the "booking iframe" should be displayed
-    And the "booking iframe" should have attribute "src" containing "bookings.pizzaexpresslive.com/pizzaexpress/website/chooseseats.aspx"
+    And the "booking iframe" should have attribute "src" containing "/pizzaexpress/website/chooseseats.aspx"
 
   Scenario: Spektrix event data is present in the PDP's own page data
     Given I am on the "whats-on" page

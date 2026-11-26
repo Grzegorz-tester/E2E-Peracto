@@ -4,7 +4,7 @@
 // so a stale export can't flip the wrong case.
 //
 // Dry run by default; pass --apply to write. Needs QASE_API_TOKEN in .env.
-//   npx ts-node scripts/qase-mark-automated.ts <export.json> [--project WAT] [--apply]
+//   npx ts-node scripts/qase-mark-automated.ts <export.json> [--project WAT] [--only 1,2,3] [--apply]
 
 import fs from 'fs'
 import dotenv from 'dotenv'
@@ -18,9 +18,13 @@ const exportPath = args.find(a => !a.startsWith('--'))
 const apply = args.includes('--apply')
 const projectIdx = args.indexOf('--project')
 const project = projectIdx >= 0 ? args[projectIdx + 1] : 'WAT'
+// --only 1,2,3 limits the run to those case ids, for an export where only
+// some cases are covered by automation (e.g. JTDove's full regression suite).
+const onlyIdx = args.indexOf('--only')
+const only = onlyIdx >= 0 ? new Set(args[onlyIdx + 1].split(',').map(Number)) : null
 const token = process.env.QASE_API_TOKEN
 
-if (!exportPath) throw new Error('Usage: qase-mark-automated.ts <export.json> [--project WAT] [--apply]')
+if (!exportPath) throw new Error('Usage: qase-mark-automated.ts <export.json> [--project WAT] [--only 1,2,3] [--apply]')
 if (!token) throw new Error('QASE_API_TOKEN is not set (add it to .env)')
 
 type ExportSuite = { suites: ExportSuite[]; cases: { id: number; title: string }[] }
@@ -41,6 +45,7 @@ const qase = async (method: string, url: string, body?: object) => {
 
 const run = async () => {
     const cases = collectCases(JSON.parse(fs.readFileSync(exportPath, 'utf-8')).suites)
+        .filter(c => !only || only.has(c.id))
     let changed = 0, already = 0
     const problems: string[] = []
 

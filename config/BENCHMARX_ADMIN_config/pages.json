@@ -230,5 +230,13 @@
   "task-detail": {
     "route": "/tasks/:id",
     "regex": "^/tasks/[^/]+$"
+  },
+  "kitchens": {
+    "route": "/kitchens",
+    "regex": "^/kitchens$"
+  },
+  "kitchen-detail": {
+    "route": "/kitchens/:id",
+    "regex": "^/kitchens/[^/]+$"
   }
 }

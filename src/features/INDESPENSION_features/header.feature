@@ -39,7 +39,7 @@ Feature: Header functionality
       | page | icon               | redirection |
       | home | Branch Finder      | branches    |
       | home | Download Catalogue | catalogues  |
-      | home | Basket             | basket      |
+      # 2026-11-22: Basket row removed, covered by basket-interactions.feature (header Basket icon -> basket page).
 
 
   Scenario Outline: Verify search box functionality for existing products - "<product name>"
@@ -116,7 +116,9 @@ Feature: Header functionality
     # drawer link, confirmed in the first production runs).
     When I click on the "Menu" element, retrying until the "open menu drawer" is displayed
     And I click precisely on the "<menu element>" element
-    Then I should be redirected to the "<redirection>" page
+    # "eventually" (30s): on 1-5-0 (2026-11-16) Trailer Hire reached /to-hire
+    # just after the plain step's 15s, a slow navigation, not a broken link.
+    Then I should eventually be redirected to the "<redirection>" page
 
     # 2026-09-29: the drawer's items differ by environment (confirmed live):
     # staging has Offers (+ Services), production has News instead.
@@ -128,7 +130,7 @@ Feature: Header functionality
     Examples:
       | menu element  | redirection    |
       | Trailers      | trailers       |
-      | Trailer Parts | trailer-parts  |
+      # 2026-11-22: Trailer Parts row removed, same landing-hub template as Trailers (see shop-plp.feature). Used Trailers kept: it is the Algolia PLP.
       | Trailer Hire  | trailer-hire   |
       | Towbars       | towbars        |
       | Used Trailers | used-trailers  |

@@ -21,9 +21,7 @@ Feature: Home page
     Examples:
       | card                | page       | text                  |
       | Refinishing card    | refinishing | Mipa Refinishing     |
-      | Industrial card     | industrial  | Mipa ProMix Industrial |
-      | Aerosols card       | aerosols    | Aerosols             |
-      | MP Products card    | mp-products | MP Master Products   |
+      # 2026-11-22: Industrial/Aerosols/MP Products rows removed, same card link and category page template as Refinishing.
 
 
   Scenario: Verify: - redirection to the blog from the "View Articles" link

@@ -20,14 +20,12 @@ Feature: Resetting the password
     Then the "Email address" input should be rejected as empty
 
 
-  # KNOWN SITE ISSUE (confirmed live 2026-10-05): submitting a valid email
-  # POSTs /reset-password successfully (HTTP 200) but the page shows no
-  # confirmation at all - the form just sits there, so the customer can't
-  # tell whether anything happened. The shared Peracto component has a
-  # reset-password-form__success-text element for exactly this (other
-  # Peracto storefronts render it); JT Dove never does. Expected to stay red
-  # until that's fixed. Uses a Velstar-owned address so no real customer is
-  # emailed.
+  # Was red from 2026-10-05 as "no confirmation shown". Rechecked live
+  # 2026-11-23 on staging and 4-4-0: the page does show "Thank you! You
+  # should receive an email shortly...", in reset-password-form__success
+  # (the mapping had reset-password-form__success-text, which JT Dove doesn't
+  # render). Uses a Velstar-owned address so no real customer is emailed.
+  @smoke
   Scenario: Requesting a reset link confirms the request was sent
     Given I am on the "reset-password" page
     And I wait for the page to settle

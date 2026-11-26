@@ -15,6 +15,7 @@ Feature: Header search
     And the "first search category result" should contain the text "Plywood"
 
 
+  @smoke
   Scenario: Clicking a product suggestion opens its product page
     Given I am on the "home" page
     And I wait for the page to settle
@@ -62,6 +63,7 @@ Feature: Header search
       | the magnifier  | I click on the "search magnifier" element              |
 
 
+  @smoke
   Scenario: Search results page lists matching products
     Given I navigate directly to the path "/search?q=plywood"
     And I wait for the page to settle
@@ -72,6 +74,7 @@ Feature: Header search
 
 
   # Smoke case 201 (added 2026-10-23).
+  @smoke
   Scenario: Searching by SKU suggests the matching product
     Given I am on the "home" page
     And I wait for the page to settle
@@ -80,3 +83,41 @@ Feature: Header search
     Then the "first search result" should contain the text "Marine Plywood"
     When I click on the "first search result" element, retrying until redirected to the "pdp" page
     Then the "product SKU" should contain the text "310239"
+
+
+  # BEN-389 (Benchmarx Next.js 15, added 2026-11-22): search ignored ?q= and
+  # listed every product. Two terms must give different results, the term
+  # must survive a reload and page 2, and nonsense must find nothing.
+  Scenario: The search results page honours the search term
+    Given I navigate directly to the path "/search?q=plywood"
+    And I wait for the page to settle
+    Then the "category page title" should contain the text "plywood"
+    And I remember the text of "PLP hit count" as "plywood count"
+    When I navigate directly to the path "/search?q=cement"
+    And I wait for the page to settle
+    Then the "category page title" should contain the text "cement"
+    And the "PLP first product card title" should contain the text "Cement"
+    And the "PLP hit count" text should not equal the remembered "plywood count"
+    When I reload the page
+    And I wait for the page to settle
+    Then the "category page title" should contain the text "cement"
+    And the "PLP first product card title" should contain the text "Cement"
+
+
+  Scenario: Page 2 of search results keeps the search term
+    Given I navigate directly to the path "/search?q=plywood"
+    And I wait for the page to settle
+    And I remember the text of "PLP first product card title" as "first page product"
+    When I navigate directly to the path "/search?q=plywood&page=2"
+    And I wait for the page to settle
+    Then the "category page title" should contain the text "plywood"
+    And the "PLP hit count" should contain the text "of 38 products"
+    And the "PLP first product card title" text should not equal the remembered "first page product"
+
+
+  Scenario: A search for nonsense finds nothing
+    Given I navigate directly to the path "/search?q=zzzqqqx"
+    And I wait for the page to settle
+    Then the "category page title" should contain the text "Sorry, we can't find any results for"
+    And the "product card" should not be displayed
+

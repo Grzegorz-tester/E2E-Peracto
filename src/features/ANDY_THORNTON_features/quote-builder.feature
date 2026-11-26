@@ -24,11 +24,17 @@ Feature: Quote Builder
   #   the second the QUANTITY.
   #
   # @serial: the logged-in account's quotes are shared state.
+  #
+  # 2026-11-24: "Create a new Quote" clicked before hydration silently opens
+  # nothing, so every create retries until the dialog shows.
 
   Background:
     Given I am navigating the page as a "logged in" user
     And I click on the "Allow all cookies" button if present
     When I am on the "account-quotes" page
+    # 2026-11-24: without a settle the sweep ran before the rows rendered,
+    # found nothing and left "Velstar Test Quote" leftovers piling up.
+    And I wait for the page to settle
     And I delete every "quote rows" whose "quote name cell" starts with "Velstar Test Quote", using the "quote delete" and "confirm quote delete"
 
 
@@ -36,8 +42,7 @@ Feature: Quote Builder
   Scenario: The Quotes list is in the account navigation and shows its filters, table and create link
     When I am on the "account" page
     Then the "account nav Quotes link" should be displayed
-    When I click on the "account nav Quotes link" link
-    Then I should eventually be redirected to the "account-quotes" page
+    When I click on the "account nav Quotes link" link, retrying until redirected to the "account-quotes" page
     And the "quotes heading" should contain the text "Quotes"
     And the "quotes filters" should be displayed
     And the "quote name filter" should be displayed
@@ -47,7 +52,7 @@ Feature: Quote Builder
 
   # Cases 37 and 38
   Scenario: Creating a quote needs all three required fields, and opens its detail page with its controls
-    When I click on the "Create a new Quote" button
+    When I click on the "Create a new Quote" button, retrying until the "create quote dialog" is displayed
     Then the "create quote dialog" should be displayed
     And the "Create Quote" should not be enabled
     When I fill in the "create quote name" input field with a unique value starting with "Velstar Test Quote", remembering it as "quote name"
@@ -76,7 +81,7 @@ Feature: Quote Builder
 
   # Case 38: the VAT toggle is interactive.
   Scenario: The Show VAT in Total toggle switches on and off
-    When I click on the "Create a new Quote" button
+    When I click on the "Create a new Quote" button, retrying until the "create quote dialog" is displayed
     And I fill in the "create quote name" input field with a unique value starting with "Velstar Test Quote", remembering it as "quote name"
     And I fill in the "create quote customer name" input field with "Velstar Test"
     And I fill in the "create quote reference" input field with "VELSTAR-TEST"
@@ -91,7 +96,7 @@ Feature: Quote Builder
 
   # Case 39
   Scenario: Adding a section and a catalogue item, changing its quantity and saving persists after a reload
-    When I click on the "Create a new Quote" button
+    When I click on the "Create a new Quote" button, retrying until the "create quote dialog" is displayed
     And I fill in the "create quote name" input field with a unique value starting with "Velstar Test Quote", remembering it as "quote name"
     And I fill in the "create quote customer name" input field with "Velstar Test"
     And I fill in the "create quote reference" input field with "VELSTAR-TEST"
@@ -129,7 +134,7 @@ Feature: Quote Builder
 
   # Case 40
   Scenario: Generate Quote offers Open in New Tab and Download, and the download is a real PDF
-    When I click on the "Create a new Quote" button
+    When I click on the "Create a new Quote" button, retrying until the "create quote dialog" is displayed
     And I fill in the "create quote name" input field with a unique value starting with "Velstar Test Quote", remembering it as "quote name"
     And I fill in the "create quote customer name" input field with "Velstar Test"
     And I fill in the "create quote reference" input field with "VELSTAR-TEST"
@@ -153,7 +158,7 @@ Feature: Quote Builder
 
   # Cases 41 and 42
   Scenario: Duplicating a quote from the list, then deleting both
-    When I click on the "Create a new Quote" button
+    When I click on the "Create a new Quote" button, retrying until the "create quote dialog" is displayed
     And I fill in the "create quote name" input field with a unique value starting with "Velstar Test Quote", remembering it as "quote name"
     And I fill in the "create quote customer name" input field with "Velstar Test"
     And I fill in the "create quote reference" input field with "VELSTAR-TEST"

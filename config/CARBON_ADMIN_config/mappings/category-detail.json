@@ -2,5 +2,7 @@
   "Heading": "[data-testid='heading']",
   "Save": "[data-testid='save-form']",
   "Main Image": "[data-testid='main_images__input']",
-  "Browse Main Image": "[data-testid='button-resources_Main-Image']:has-text('Browse')"
+  "Browse Main Image": "[data-testid='button-resources_Main-Image']:has-text('Browse')",
+  "Category Description editor": "[data-testid='richtext-attribute-0'] .ck-editor__editable",
+  "Category Description bold text": "[data-testid='richtext-attribute-0'] .ck-editor__editable strong"
 }

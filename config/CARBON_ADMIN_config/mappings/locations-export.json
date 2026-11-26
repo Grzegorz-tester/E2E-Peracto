@@ -1,0 +1,5 @@
+{
+  "Export Locations": "//button[normalize-space()='Export Locations']",
+  "Export Location Types": "//button[normalize-space()='Export Location Types']",
+  "Export Location Features": "//button[normalize-space()='Export Location Features']"
+}

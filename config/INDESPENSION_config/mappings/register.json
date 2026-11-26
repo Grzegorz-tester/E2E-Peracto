@@ -6,5 +6,6 @@
   "Register password": "[data-testid='register-form__password-input']",
   "Confirm password": "[data-testid='register-form__confirm-password-input']",
   "Register submit button": "[data-testid='register-form__submit-button']",
-  "register form": "[data-testid='register-form']"
+  "register form": "[data-testid='register-form']",
+  "register error alert": "[data-testid='register-form__alert']"
 }

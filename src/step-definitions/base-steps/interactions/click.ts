@@ -346,7 +346,7 @@ When(
 // project with a similarly unpredictable listing->detail relationship.
 When(
   /^I open the first "([^"]*)" element whose "([^"]*)" is present on the destination page$/,
-  { timeout: 45000 },
+  { timeout: 90000 },
   async function (this: ScenarioWorld, listItemKey: ElementKey, confirmKey: ElementKey) {
     const {
       screen: { page },
@@ -364,7 +364,13 @@ When(
     const hrefs = await page.$$eval(listSelector, (els) =>
       els.map((el) => el.getAttribute("href")).filter((href): href is string => !!href)
     );
-    const uniqueHrefs = [...new Set(hrefs)];
+    // Dedupe ignoring the #fragment: a card often links to both "/x" and
+    // "/x#event-dates", and visiting the same page twice doubled the 8s
+    // per-page wait. CONFIRMED live on PizzaExpressLive production
+    // (2026-11-13, ~22:00): the first few events listed were that evening's
+    // shows, past cutoff with no dates left, so 3 events x 2 links x 8s blew
+    // the step's budget and failed 7 scenarios that pass in the morning.
+    const uniqueHrefs = [...new Set(hrefs.map((href) => href.split("#")[0]))];
 
     for (const href of uniqueHrefs) {
       const url = new URL(href, page.url()).toString();

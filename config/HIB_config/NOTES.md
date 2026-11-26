@@ -52,6 +52,7 @@ HIB bathroom furniture/lighting storefront (Peracto, Next.js front end, B2B "por
 - `@not-on-production`: whole of `checkout.feature`, `customer-flow.feature`, the 4 basket add outlines in `basket.feature`, the my-account Quick Order outline.
 - Deliberately never submitted: newsletter (MailerLite form UWRyi4 is the SAME live form on release and prod, lands on HIB's real marketing list), Customer Feedback (`sendAdminEmail: true`, emails real HIB staff), PLACE ORDER.
 - Gaps: profile save (reCAPTCHA), order history detail (no orders), address book edits (read-only account).
+- 2026-11-22 repetition cleanup: category-plp PLP and PLP->PDP outlines, home category cards and Products hub cards cut to one row each (same template/component); currency "toggle is visible" removed (header guest scenario checks it); reset-password-page.feature emptied (logging-in "Resetting password" makes the same checks); health-check lost 27 rows already asserted elsewhere or same category template (one category row kept). Kept: basket.feature quantity outline (asserts the Quantity selector value, my-account's journey doesn't) and currency's logged-in scenario (its 5s negative wait is stronger than header's instant check). Staging 181->123, release 180->122, prod 170->114.
 
 ## Tips for extending
 - Run against a narrowed path: `COMMON_CONFIG_FILE=env/HIB_STAGING.env FEATURE_PATH=src/features/HIB_features/<file>.feature ./run_tests.sh regression`.

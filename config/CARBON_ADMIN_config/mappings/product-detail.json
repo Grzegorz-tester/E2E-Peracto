@@ -13,5 +13,14 @@
   "Option Identifier": "[data-testid='options_item_0_identifier'] input",
   "Manage Variants": "[data-testid='button-manage-variants']",
   "Remove Option": "[data-testid='remove-option-entry-0']",
-  "Default Attribute Set Name": "Default"
+  "Default Attribute Set Name": "Default",
+  "Duplicate Product": "[data-testid='duplicate-product']",
+  "duplicate product modal": "[data-testid='duplicate-product-modal']",
+  "Close duplicate product": "[data-testid='duplicate-product-modal'] [data-testid='button-action_close']",
+  "delete product modal": "[data-testid='delete-product-modal']",
+  "Close delete product": "[data-testid='delete-product-modal'] [data-testid='button-action_close']",
+  "Manage Menu Item Relations": "[data-testid='button-manage-menu-item-relations']",
+  "menu item relations modal": "[data-testid='product-menu-item-relations'] [data-testid='showing-data-modal']",
+  "Cancel menu item relations": "[data-testid='product-menu-item-relations'] [data-testid='button-action_cancel']",
+  "Product Description editor": "[data-testid='richtext-attribute-description'] .ck-editor__editable, [data-testid='richtext-attribute-description'].ck-editor__editable"
 }

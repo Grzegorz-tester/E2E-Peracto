@@ -150,8 +150,11 @@ const smoke = `${common} --tags '${tagFilter('@smoke')}'`;
 const regression = `${common} --tags '${tagFilter('@regression')}'`;
 const carbon_regression = `${common} --tags '${tagFilter('@carbon_regression')}'`;
 const PizzaExpressLive_regression = `${common} --tags '${tagFilter('@PizzaExpressLive_regression')}'`;
+// On-demand scenarios kept out of regression because they depend on a slow
+// or unpredictable cache (JTDove footer menu, up to 15+ minutes).
+const menu_cache = `${common} --tags '${tagFilter('@menu-cache')}'`;
 
 
 console.log('\n🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 ✨ 🥒 \n');
 
-export {dev, smoke, regression, carbon_regression, PizzaExpressLive_regression};
+export {dev, smoke, regression, carbon_regression, PizzaExpressLive_regression, menu_cache};

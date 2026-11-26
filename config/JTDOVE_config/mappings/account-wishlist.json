@@ -23,5 +23,12 @@
   "wishlist created toast": "text=Your wishlist was created!",
   "Close wishlist dialog": "[role='dialog'] button:has(svg[data-icon='xmark']), [role='dialog'] button:has-text('Close')",
   "new wishlist dialog": "[role='dialog']:has-text('Create Wishlist')",
-  "wishlist table": "[data-testid='account-wishlists__content']"
+  "wishlist table": "[data-testid='account-wishlists__content']",
+  "wishlist pagination previous": "[data-testid='account-wishlists'] button:has(svg[data-icon='chevron-left'])",
+  "wishlist pagination next": "[data-testid='account-wishlists'] button:has(svg[data-icon='chevron-right'])",
+  "wishlist pagination indicator": "[data-testid='account-wishlists'] p:text-matches('^\\\\s*\\\\d+\\\\s*of\\\\s*\\\\d+\\\\s*$')",
+  "wishlist header row": "[data-testid='account-wishlists-header-row']",
+  "first wishlist created date": "[data-testid='account-wishlists-row-0-cell-createdAt']",
+  "first wishlist modified date": "[data-testid='account-wishlists-row-0-cell-modifiedAt']",
+  "first wishlist delete action": "[data-testid='account-wishlists-row-0-cell-delete']"
 }

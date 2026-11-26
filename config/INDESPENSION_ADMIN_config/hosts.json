@@ -1,4 +1,5 @@
 {
   "staging": "https://staging-peracto.indespension.pub",
+  "release_branch": "https://1-5-0-peracto.indespension.pub",
   "production": "https://peracto.indespension.co.uk"
 }

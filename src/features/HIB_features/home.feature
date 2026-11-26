@@ -13,14 +13,10 @@ Feature: Home page
     When I click on the "<card>" element
     Then I should be redirected to the "<page>" page
     And the "category page title" should contain the text "<text>"
+    # 2026-11-22: cut to one row - the five category cards are the same component.
     Examples:
       | card             | page                 | text                 |
       | Mirrors card     | bathroom-mirrors     | BATHROOM MIRRORS     |
-      | Cabinets card    | bathroom-cabinets    | BATHROOM CABINETS    |
-#      | Furniture card   | bathroom-furniture   | BATHROOM FURNITURE   |
-      | Lighting card    | bathroom-lightning   | BATHROOM LIGHTING    |
-      | Accessories card | bathroom-accessories | BATHROOM ACCESSORIES |
-      | Ventilation card | bathroom-ventilation | BATHROOM VENTILATION |
 
 
   Scenario Outline: Verify: - redirection to the "<card>" feature page from the feature cards

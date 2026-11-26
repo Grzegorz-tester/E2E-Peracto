@@ -203,6 +203,11 @@ Feature: Product Variant Creation and Deletion
     And I select the "No" option from the "Ugly Freight" react-select if present
     And I select the "Yes" option from the "Searchable in Storefront" react-select if present
     And I select the "Yes" option from the "Searchable in Quote Tool" react-select if present
+    # JTDove's "Core Only" attribute set has a required "Category" attribute
+    # (category-tags); without it Save 422s ("Value cannot be empty for the
+    # Required Attribute 'Category'") with no toast. Confirmed live on
+    # 4-4-0-peracto, 2026-11-23. No-op on tenants that don't map it.
+    And I select the "Adhesives" option from the "Product Category" react-select if present
     And I click precisely on the "Save" element
     Then the "success toast" should contain the text "Product successfully added!"
 

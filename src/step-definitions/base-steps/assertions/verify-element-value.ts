@@ -5,6 +5,7 @@ import { describeElement, getElementLocator } from "../../support-functions/web-
 import { expect } from "@playwright/test";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { getValue } from "../../support-functions/html-behaviour";
+import { scrollNearestScrollContainer } from "../../support-functions/virtual-scroll";
 
 // Every page.textContent(elementIdentifier) call below inside a waitFor poll
 // (and its matching describeActual) passes an explicit short timeout - same
@@ -310,12 +311,25 @@ When(
     const { screen: { page }, globalConfig } = this;
     const elementIdentifier = getElementLocator(page, elementKey, globalConfig);
     await page.waitForSelector(elementIdentifier, { state: "attached", timeout: 15000 });
-    const text = (await page.textContent(elementIdentifier))?.trim() ?? "";
-    const match = text.match(new RegExp(pattern));
-    if (!match) {
+    // Polls rather than reading once: some elements attach empty and fill
+    // in a moment later (confirmed live 2026-11-10 on every non-UK Watco
+    // market's PLP results count, "" on attach, "Viewing 1 - 24 of N" after).
+    const regex = new RegExp(pattern);
+    let text = "";
+    let match: RegExpMatchArray | null = null;
+    await waitFor(async () => {
+      text = (await page.textContent(elementIdentifier, { timeout: 1000 }).catch(() => null))?.trim() ?? "";
+      match = text.match(regex);
+      return match !== null;
+    }, {
+      expected: `"${elementKey}" (${elementIdentifier}) text to match the pattern "${pattern}"`,
+      describeActual: async () => `text was "${text}"`,
+    });
+    const found = match as RegExpMatchArray | null;
+    if (!found) {
       throw new Error(`"${elementKey}" (${elementIdentifier}) text "${text}" does not match the pattern "${pattern}".`);
     }
-    this.globalVariables[variableName] = match[1] ?? match[0];
+    this.globalVariables[variableName] = found[1] ?? found[0];
   }
 );
 
@@ -425,6 +439,9 @@ Then(
 
     await waitFor(async () => {
       const count = await page.locator(elementIdentifier).filter({ hasText: remembered }).count();
+      // A virtualised list only renders what's in view: sweep it while
+      // looking for a row that should be there (see virtual-scroll.ts).
+      if (count === 0 && !negate) await scrollNearestScrollContainer(page, elementIdentifier);
       return (count > 0) === !negate;
     }, {
       expected: `at least one "${elementKey}" (${elementIdentifier}) element to ${negate ? "not " : ""}contain the remembered "${variableName}" ("${remembered}")`,

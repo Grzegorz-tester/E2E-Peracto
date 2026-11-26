@@ -44,7 +44,7 @@ Feature: Branch Finder
     Examples:
       | letter |
       | A      |
-      | M      |
+      # 2026-11-22: M row removed, same letter-filter path as A.
       | All    |
 
   # CONFIRMED SITE CONFIG ISSUE (live, staging, 2026-09-29): Google Maps

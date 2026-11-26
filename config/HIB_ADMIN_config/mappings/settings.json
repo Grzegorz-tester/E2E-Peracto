@@ -1,1 +1,9 @@
-{}
+{
+  "SAP tab": "li.react-tabs__tab:text-is('SAP')",
+  "Recaptcha tab": "li.react-tabs__tab:text-is('Recaptcha')",
+  "selected settings panel": ".react-tabs__tab-panel--selected",
+  "Extra logs checkbox": ".react-tabs__tab-panel--selected [data-testid='label-values[extra_logs]']",
+  "Extra logs input": "input[id='values[extra_logs]']",
+  "Enable validation input": "input[id='values[enabled]']",
+  "Save settings": ".react-tabs__tab-panel--selected [data-testid='save-form']"
+}

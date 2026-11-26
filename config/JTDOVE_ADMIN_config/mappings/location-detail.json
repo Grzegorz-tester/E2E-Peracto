@@ -2,6 +2,8 @@
   "Name": "[data-testid='location-name']",
   "Identifier": "[data-testid='location-identifier']",
   "Alias": "[data-testid='location-alias']",
+  "Location Status": "[data-testid='location-status']",
+  "Location Page Status": "[data-testid='location-page-status']",
   "Address 1": "[data-testid='location-address1']",
   "Town City": "[data-testid='location-city']",
   "County State": "[data-testid='location-county']",

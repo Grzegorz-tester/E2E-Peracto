@@ -32,6 +32,8 @@ Feature: Menu side draw
       | guest     |
 
 
+  # 2026-11-22: Offers/News rows removed, both clicked through the same drawer
+  # by header.feature (Offers "View All" scenario on staging, News row on production).
   # 2026-09-29: items that only exist on one environment (confirmed live -
   # staging has Offers + Services, production has News instead). Before
   # the drawer-scoped selectors, "Offers"/"Services" silently passed on
@@ -48,21 +50,7 @@ Feature: Menu side draw
     @not-on-production
     Examples:
       | menu element |
-      | Offers       |
       | Services     |
 
-    @production-only
-    Examples:
-      | menu element |
-      | News         |
 
-
-  Scenario: Navigating from the side draw menu reaches the right page
-    Given I am on the "home" page
-    # Retry the Menu click until the drawer is really open (2026-09-29):
-    # on production an early click is sometimes swallowed before the header
-    # hydrates, leaving no drawer at all ("no element matched" for every
-    # drawer link, confirmed in the first production runs).
-    When I click on the "Menu" element, retrying until the "open menu drawer" is displayed
-    And I click on the "Towbars" element
-    Then I should be redirected to the "towbars" page
+  # 2026-11-22: "Navigating from the side draw menu" (Towbars) removed, same drawer click path as header.feature's menu outline Towbars row.

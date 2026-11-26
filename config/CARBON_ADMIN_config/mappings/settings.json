@@ -1,1 +1,19 @@
-{}
+{
+  "Uploads tab": "//li[@role='tab'][normalize-space()='Uploads']",
+  "Categories tab": "//li[@role='tab'][normalize-space()='Categories']",
+  "Products tab": "//li[@role='tab'][normalize-space()='Products']",
+  "Content Elements tab": "//li[@role='tab'][normalize-space()='Content Elements']",
+  "Sitemaps tab": "//li[@role='tab'][normalize-space()='Sitemaps']",
+  "Utilities tab": "//li[@role='tab'][normalize-space()='Utilities']",
+  "Notification tab": "//li[@role='tab'][normalize-space()='Notification']",
+  "Invoice tab": "//li[@role='tab'][normalize-space()='Invoice']",
+  "Locations tab": "//li[@role='tab'][normalize-space()='Locations']",
+  "Orders tab": "//li[@role='tab'][normalize-space()='Orders']",
+  "Shipping tab": "//li[@role='tab'][normalize-space()='Shipping']",
+  "Customer Groups tab": "//li[@role='tab'][normalize-space()='Customer Groups']",
+  "User Groups tab": "//li[@role='tab'][normalize-space()='User Groups']",
+  "Users tab": "//li[@role='tab'][normalize-space()='Users']",
+  "User registration tab": "//li[@role='tab'][normalize-space()='User registration']",
+  "Recaptcha tab": "//li[@role='tab'][normalize-space()='Recaptcha']",
+  "selected settings panel": ".react-tabs__tab-panel--selected"
+}

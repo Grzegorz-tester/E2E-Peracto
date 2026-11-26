@@ -38,28 +38,4 @@ Feature: User Creation and Deletion
   # action on the Edit User page confirms Peracto Admin invites/resets
   # rather than setting a password inline.
 
-  Scenario: Creating a new user and deleting it
-    Given I require a staging admin for this scenario
-    And I am navigating the page as a "admin" user
-    When I click precisely on the "Users" element
-    And I click precisely on the "All Users" element
-    And I click precisely on the "Add User" element
-    And I fill in the "User First Name" input field with "Velstar"
-    And I fill in the "User Last Name" input field with a unique value, remembering it as "new user last name"
-    And I fill in the "User Email" input field with a unique email, remembering it as "new user email"
-    And I fill in the "User Account Number" input field with a unique value if present
-    And I fill in the "User Company Name" input field with a unique value if present
-    And I click precisely on the "Save" element
-    And I wait for the save to complete
-    Then the "success toast" should be displayed
-
-    When I click precisely on the "Users" element
-    And I click precisely on the "All Users" element
-    And I fill in the "Email filter" input field with the remembered "new user email"
-    And I click precisely on the "Apply" element
-    And I click precisely on the "first item link" element
-    Then the "page heading" should contain the text "Edit User"
-
-    When I click precisely on the "Delete User" element
-    And I click precisely on the "Confirm Delete User" element
-    Then the "success toast" should be displayed
+  # Scenario "Creating a new user and deleting it" removed 2026-11-22: address-book-management.feature creates (Background) and deletes (end of outline) the same user with the same steps.

@@ -1,6 +1,6 @@
 # BENCHMARX_ADMIN automation notes
 
-Benchmarx's Peracto Admin. Runs the shared suite `src/features/CARBON_ADMIN_SHARED_features/` plus `src/features/BENCHMARX_ADMIN_features/` (empty, as of 2026-10-24). Config copied from `JTDOVE_ADMIN_config` on 2026-10-24. Storefront is a separate project: see `config/BENCHMARX_config/NOTES.md`. For quirks common to every Peracto Admin tenant, see `config/CARBON_ADMIN_config/NOTES.md`.
+Benchmarx's Peracto Admin. Runs the shared suite `src/features/CARBON_ADMIN_SHARED_features/` plus `src/features/BENCHMARX_ADMIN_features/` (`peracto-upgrade.feature`, added 2026-11-19 for BEN-233). Config copied from `JTDOVE_ADMIN_config` on 2026-10-24. Storefront is a separate project: see `config/BENCHMARX_config/NOTES.md`. For quirks common to every Peracto Admin tenant, see `config/CARBON_ADMIN_config/NOTES.md`.
 
 ## Environments
 - `env/BENCHMARX_ADMIN_STAGING.env` -> https://staging-peracto.benchmarx.pub. Free rein (create/edit/delete), `@mutates-admin-data` scenarios run.
@@ -24,10 +24,19 @@ Benchmarx's Peracto Admin. Runs the shared suite `src/features/CARBON_ADMIN_SHAR
 
 ## Coverage and gaps
 - Qase BEN-110 (content page), BEN-111 (image via file manager), BEN-112 (navigation item), BEN-113 (product create), BEN-114 (data presence) and BEN-115 (tasks) map onto the shared `content-creation`, `image-picker`/`file-manager`, `navigation-menu-items`, `product-management`, `tabs-contain-expected-data`/`first-item-redirects` and `tasks` features.
-- Gap: Benchmarx has a bespoke "User Generated Content" admin section (with its own Categories/Attributes) that feeds the storefront's /customer-kitchens gallery. Nothing covers it yet; a good first candidate for `BENCHMARX_ADMIN_features/`.
+- User Generated Content (nav "All User Generated Content" -> `/kitchens`, page IDs `kitchens`/`kitchen-detail`) feeds the storefront's /customer-kitchens gallery. Covered by `peracto-upgrade.feature` since 2026-11-19 (list, SKU filter, detail with its "You may also like" relations). Its Categories and Attributes nav items point at the same `/categories` and `/attributes` routes as Products.
 - Gap: each of BEN-110/112/113 also asks to verify the result on the storefront. The framework runs one host per project, so that cross-site check isn't automated yet. The QA case says "CKFinder"; the shared suite drives Peracto's File Manager image picker, so confirm it's the same thing.
 
 ## Tips for extending
 - Put Benchmarx-only admin scenarios in `src/features/BENCHMARX_ADMIN_features/` (already on `FEATURE_PATH`), never in the shared folder unless every tenant has the feature.
 
-_Last reviewed: 2026-10-24._
+## BEN-233 Peracto upgrade (API 71.3.0 -> 73 -> 81, Admin 12.1.0 -> v12.40), 2026-11-19
+- `peracto-upgrade.feature` covers what the shared suite doesn't: data floors at 1000 per page with no failed API call (Products 133, Pages 355, Articles 31, Locations 139, UGC 35, staging counts on 2026-11-19: raise them if content grows), a user saved with a plus-addressed email and +44 phone/mobile, Article Category locale saved and reopened, User Generated Content list/filter/detail.
+- Already covered by the shared suite: page search (list-filtering Pages by Name, PER3-156), article heading search (Articles by Heading, PER3-167), task triggering incl. the indexer (tasks.feature). Not coverable: order export filter (PER3-146), no orders on staging.
+- Written assuming the upgrade is on staging (release host unknown at the time); nothing on the API root or admin bundle shows a version.
+- CONFIRMED 2026-11-19: Pages at "1000 per page" requests itemsPerPage=1000, gets 200 rows back, and disables Next, so 155 of 355 pages can't be reached from that view (the API caps a page at 200; the admin doesn't know). Expected red.
+- The Edit User page shows saved details as a summary card: click "Edit user details" before reading the inputs.
+- Full staging run 2026-11-20: admin 104/106 (only the Pages cap above and the known sticky_bar Element), storefront 184/216 (30 CookieYes registered-URL console warnings, now on staging too; SKU search and stale Eton links known). No upgrade regressions found.
+- Ad hoc reruns: use `npx cucumber-js` with `JSON_REPORT_FILE=./reports/BENCHMARX_ADMIN_ADHOC/report.json`, not `run_tests.sh`, or the main report's PDF is deleted.
+
+_Last reviewed: 2026-11-19._

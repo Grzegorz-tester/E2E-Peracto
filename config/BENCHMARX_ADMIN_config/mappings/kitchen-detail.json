@@ -1,0 +1,5 @@
+{
+  "kitchen name": "[data-testid='kitchen-name']",
+  "kitchen SKU": "[data-testid='sku']",
+  "related kitchens": "tr[data-testid^='you_may_also_like_entry_']"
+}

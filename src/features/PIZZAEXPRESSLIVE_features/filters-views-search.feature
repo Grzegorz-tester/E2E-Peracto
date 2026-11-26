@@ -16,8 +16,8 @@ Feature: What's On filters, views and search
   # applied by the SAME comboboxes regardless of which view is active, but
   # each view renders results into a genuinely different container -
   # confirmed live the filter narrows correctly in each, but Grid/List
-  # share "results wrapper" while Calendar has no such element at all (see
-  # the View toggles scenario below), so asserting against the wrong one
+  # share "results wrapper" while Calendar has no such element at all,
+  # so asserting against the wrong one
   # for Calendar would silently check nothing.
   Scenario Outline: Venue filter narrows results in the "<view button>" view
     Given I am on the "whats-on" page
@@ -58,22 +58,7 @@ Feature: What's On filters, views and search
       | List view button     | results wrapper |
       | Calendar view button | calendar view   |
 
-  # Grid and List share the same results container (confirmed live), so
-  # both are checked the same way. Calendar is a genuinely different
-  # component with its own testid, not just a re-skinned card list
-  # (confirmed live: switching to it, "results wrapper" disappears
-  # entirely and a real day-of-week calendar grid renders instead) - an
-  # outline sharing one "results key" column across all three would have
-  # silently passed Calendar against the wrong element.
-  Scenario Outline: The "<view button>" view toggle renders event data
-    Given I am on the "whats-on" page
-    When I click on the "<view button>" element
-    Then the "<results key>" should be displayed
-    Examples:
-      | view button          | results key     |
-      | Grid view button     | results wrapper |
-      | List view button     | results wrapper |
-      | Calendar view button | calendar view   |
+  # 2026-11-22: "The <view button> view toggle renders event data" outline removed, the venue and month outlines above open every view and check its results container.
 
   # Confirmed live: the same undismissable "outdated browser" banner
   # documented in navigation-basket-auth-mobile.feature (fixed top, no

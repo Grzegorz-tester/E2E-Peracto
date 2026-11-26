@@ -88,3 +88,53 @@ Then(/^the price in "([^"]*)" should equal the remembered "([^"]*)" times (\d+)$
         describeActual: async () => `text was "${lastText?.trim() ?? "(could not read text)"}"`,
     });
 });
+
+// Checks a total against live price elements on the same page, e.g. an order
+// summary: the price in "order total" should equal "order subtotal" plus
+// "order shipping" minus "order discount" if present. Each term is an element
+// key; its absolute price is added or subtracted per the word before it, so a
+// discount rendered as "-£69.00" works with "minus". A term followed by
+// "if present" counts as 0 when the element isn't on the page (a discount row
+// only some orders have). CONFIRMED (Indespension prod, 2026-11-13): an order
+// with a promotion read Subtotal £138.00, Discount -£69.00, Shipping £6.00,
+// Total £75.00, which a plain subtotal + shipping check got wrong.
+Then(
+    /^the price in "([^"]*)" should equal ("[^"]*"(?: if present)?(?: (?:plus|minus) "[^"]*"(?: if present)?)*)$/,
+    async function (this: ScenarioWorld, totalKey: ElementKey, expression: string) {
+        const { screen: { page }, globalConfig } = this;
+        const terms = [...expression.matchAll(/(?:(plus|minus) )?"([^"]*)"( if present)?/g)].map(m => ({
+            sign: m[1] === "minus" ? -1 : 1,
+            key: m[2] as ElementKey,
+            optional: Boolean(m[3]),
+        }));
+
+        let breakdown = "";
+        let expected = 0;
+        let lastText: string | null = null;
+        await waitFor(async () => {
+            let sum = 0;
+            const parts: string[] = [];
+            for (const term of terms) {
+                const selector = getElementLocator(page, term.key, globalConfig);
+                const locator = page.locator(selector).first();
+                if (term.optional && (await locator.count()) === 0) {
+                    parts.push(`${term.key}: absent`);
+                    continue;
+                }
+                const text = await locator.textContent({ timeout: 1000 }).catch(() => null);
+                if (!text) return false;
+                const value = Math.abs(parsePrice(text));
+                sum += term.sign * value;
+                parts.push(`${term.sign < 0 ? "-" : "+"}${value.toFixed(2)} (${term.key})`);
+            }
+            expected = sum;
+            breakdown = parts.join(", ");
+            lastText = await page.textContent(getElementLocator(page, totalKey, globalConfig), { timeout: 1000 }).catch(() => null);
+            if (!lastText) return false;
+            return Math.abs(parsePrice(lastText) - sum) < 0.005;
+        }, {
+            expected: `"${totalKey}" to equal ${expression} = ${expected.toFixed(2)} [${breakdown}]`,
+            describeActual: async () => `text was "${(lastText as string | null)?.trim() ?? "(could not read text)"}"`,
+        });
+    },
+);

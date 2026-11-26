@@ -31,19 +31,15 @@ Feature: Category landing pages, venue pages and PLPs
     And the "Filter" should be displayed
     And the "Sort By" should be displayed
 
+    # 2026-11-22: cut to one row - all six Contract Furniture sub-categories use the same PLP template.
     Examples:
       | path                                        | heading         |
       | /category/contract-furniture/dining-chairs  | Dining Chairs   |
-      | /category/contract-furniture/lounge-seating | Lounge Seating  |
-      | /category/contract-furniture/benches        | Benches         |
-      | /category/contract-furniture/table-bases    | Table Bases     |
-      | /category/contract-furniture/complete-tables | Complete Tables |
-      | /category/contract-furniture/table-tops     | Table Tops      |
 
 
   # Only Pub Furniture has a product grid (confirmed live 2026-09-30, even
   # after scrolling); Hotel, Café, Bar and Restaurant are content-only pages
-  # (text and images), covered by health-check.feature instead.
+  # (text and images); health-check.feature keeps Hotel as their representative.
   Scenario Outline: The "<path>" venue page lists products, and a product opens its PDP
     When I navigate directly to the path "<path>"
     Then the "product card" should be displayed

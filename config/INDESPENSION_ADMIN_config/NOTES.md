@@ -5,10 +5,10 @@ Indespension's Peracto Admin. Runs the shared suite `src/features/CARBON_ADMIN_S
 Shared Peracto Admin quirks: see config/CARBON_ADMIN_config/NOTES.md
 
 ## Environments
-- `env/INDESPENSION_ADMIN_STAGING.env` -> `staging-peracto.indespension.pub`. Free rein (CRUD OK). `FEATURE_PATH` also globs `src/features/INDESPENSION_ADMIN_features/`, which is currently empty (Test Harnesses coverage was removed, see below).
+- `env/INDESPENSION_ADMIN_STAGING.env` -> `staging-peracto.indespension.pub`. Free rein (CRUD OK). `FEATURE_PATH` also globs `src/features/INDESPENSION_ADMIN_features/`, which holds `order-detail-and-status.feature` (IND-729 case 320, added 2026-11-13). Prod does not glob it.
 - `env/INDESPENSION_ADMIN_PROD.env` -> `peracto.indespension.co.uk`. Read-only: no create, edit or delete. Only the shared folder is in `FEATURE_PATH`; write scenarios are kept out by the production tag exclusion plus the "I require a staging admin" guard. 85/85 passed on first prod run (2026-09-29).
 - Both envs: `SCRIPT_TIMEOUT=35000`, `EXCLUDE_TAGS=@requires-redirects`.
-- No admin release env exists.
+- `env/INDESPENSION_ADMIN_RELEASE.env` -> `release_branch` in hosts.json, `1-5-0-peracto.indespension.pub` (added 2026-11-17; was TLS-dead on 2026-11-13). Treated as staging (CRUD OK), same `FEATURE_PATH` as staging, same `PROJECT=indespension_admin` so it uses the staging admin account. Verified 2026-11-17: logging-in + tabs-contain-expected-data 32/32. Pairs with the storefront's `env/INDESPENSION_RELEASE.env` (1-5-0). When the branch changes, update `release_branch` in hosts.json and the three URLs in the env file together.
 
 ## Test accounts and data
 - users.json type: `admin`.
@@ -29,15 +29,18 @@ Shared Peracto Admin quirks: see config/CARBON_ADMIN_config/NOTES.md
 - Password reset works under headless automation here (unlike some tenants with reCAPTCHA issues).
 
 ## Quirks and gotchas
+- View Order (`/orders/<id>`, reached via the reference link in the list) has no data-testids: `order-detail.json` anchors on card ids (`#items`, `#transactions`, `#order-status`) and row labels. Status picker is a `list` react-select; "Update Order Status" sends PUT /orders/<id> and toasts "Order status updated!". The scenario moves the first Processing order to Packing and back; a failed run can leave one order on Packing.
+- As of 2026-11-13 (pre-upgrade) the API still returns `hydra:member`/`hydra:totalItems`.
 - Test Harnesses: a menu group whose one page, "Carweb - Get Vehicle By VRM", calls `/test-harness/carweb-get-vehicle-by-vrm/<VRM>`. That endpoint is not deployed on the staging API (unauthenticated: 401 on real routes, 404 on this one, like a made-up route). Coverage was built then REMOVED at the user's request (2026-09-29). Don't re-add until devs deploy it and the user asks. Testids if re-adding: nav `nav-test-harnesses`, `nav-test-harnesses-carweb---get-vehicle-by-vrm`; page `vrm`, `submit`, `error-vrm`.
 - Running a dry run writes over `reports/INDESPENSION_ADMIN_STAGING/` (it overwrote a real report once, 2026-09-29).
 
 ## Coverage and gaps
 - Full shared suite minus Redirects filtering (about 120 scenarios on staging as of 2026-09-29).
 - Bespoke tabs beyond the shared set (e.g. Test Harnesses) are uncovered by design.
+- Order detail + status update: tenant-only for now, not checked on other tenants (candidate for the shared suite after `scripts/check-duplicate-admin-features.sh`).
 
 ## Tips for extending
 - A tenant-only tab goes in `src/features/INDESPENSION_ADMIN_features/` (already in the staging `FEATURE_PATH`), never in the shared folder.
 - Before promoting anything to the shared folder, run `scripts/check-duplicate-admin-features.sh`.
 
-_Last reviewed: 2026-10-24. Sources: memory notes + feature file comments._
+_Last reviewed: 2026-11-13. Sources: memory notes + feature file comments._

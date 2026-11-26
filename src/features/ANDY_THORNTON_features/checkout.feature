@@ -17,7 +17,12 @@ Feature: Checkout sign-in step
   Background:
     Given I am on the "pdp" page
     And I click on the "Allow all cookies" button if present
+    # 2026-11-24: an early click before hydration silently did nothing (empty
+    # basket), so let the PDP settle first. Not a retry: it could double-add.
+    And I wait for the page to settle
     When I click on the "Add to basket" button
+    # Waits for the add to commit (the "added to basket" panel) before leaving the PDP.
+    Then the "added to basket heading" should be displayed
     And I wait for the page to settle
     And I am on the "basket" page
     And I click on the "Checkout" button
@@ -28,9 +33,7 @@ Feature: Checkout sign-in step
     And the "Existing customer radio" should be displayed
     And the "Guest checkout radio" should be displayed
 
-  Scenario: Verify choosing Guest checkout reveals the guest email field
-    When I click on the "Guest checkout radio" button
-    Then the "Guest email" should be displayed
+  # 2026-11-22: "choosing Guest checkout reveals the guest email field" removed - the delivery address scenario below clicks the same radio and fills that field.
 
 
   # 2026-09-30: confirmed live - the guest delivery form keeps "Use this
@@ -38,7 +41,8 @@ Feature: Checkout sign-in step
   # postcode are all filled (no error text; the button state is the check).
   # Stops on the Delivery step, so no order is placed.
   Scenario: The guest delivery address can't be used until its required fields are filled
-    When I click on the "Guest checkout radio" button
+    # Retried: before hydration the radio click silently does nothing (2026-11-24).
+    When I click on the "Guest checkout radio" button, retrying until the "Guest email" is displayed
     And I fill in the "Guest email" input field with a unique guest email
     And I click on the "Continue as guest" button
     Then I should be redirected to the "checkout-delivery" page

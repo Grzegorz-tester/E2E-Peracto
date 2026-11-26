@@ -15,5 +15,6 @@
   "modal note to box office input": "[role=\"dialog\"] textarea[name=\"note-to-box-office\"]",
   "modal number of tickets dropdown": "[role=\"dialog\"] select[name=\"number-ticket-required\"]",
   "Submit Enquiry button": "[role=\"dialog\"] button:has-text(\"Submit Enquiry\")",
-  "modal confirmation message": "[role=\"dialog\"]:has-text(\"Thank you for your enquiry\")"
+  "modal confirmation message": "[role=\"dialog\"]:has-text(\"Thank you for your enquiry\")",
+  "similar events link": "xpath=//h2[normalize-space()='Similar Events']/following::a[starts-with(@href,'/whats-on/')]"
 }

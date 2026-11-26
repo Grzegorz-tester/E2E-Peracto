@@ -2,6 +2,7 @@
   "Sign Out": "[data-testid=\"utility-bar__sign-out-link\"]",
   "welcome message": "[data-testid=\"utility-bar__user-name\"]",
   "Menu": "[data-testid=\"brand-bar__menu-button\"]",
+  "navigation drawer links": "[data-testid^=\"navigation-drawer-sheet__current-tier-link-\"]",
   "product card": "[data-testid=\"product-card__link\"]",
   "Add to basket": ":nth-match([data-testid=\"product-add-to-basket__button\"]:visible, 1)",
   "added to basket confirmation": "[data-testid=\"product-added-to-basket__added-to-basket-heading\"]",

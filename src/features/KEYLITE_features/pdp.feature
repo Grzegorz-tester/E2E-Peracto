@@ -7,12 +7,19 @@ Feature: PDP details
   #   price that tracks the selection is a separate "Total:" figure
   #   (product-price__flat-roof-window-price), £0.00 until an option is
   #   actually clicked (same reason Add to basket starts disabled even
-  #   though a default lozenge shows selected - see basket.feature).
-  #   E.g. Electric Remote = £1,503.60, Manual = £1,252.80.
-  # - Visible lozenge order is Electric Remote, Electric Switch, Fixed
-  #   (Non-Opening), Manual, then the Kerb Type (PVC) - so "1st" / "4th"
-  #   below are Electric Remote / Manual. Every PDP element is duplicated
-  #   for mobile/desktop, hence the :visible scoping in pdp.json.
+  #   though a default lozenge shows selected - see basket-interactions.feature).
+  # - CHANGED by 2026-11-11 (staging and 2-1-0): Kerb Type now renders
+  #   ABOVE Opening Operation, and the opening options are Electric
+  #   Opening, Fixed, Manual Opening (Electric Remote/Switch are gone). So
+  #   visible lozenge order is PVC kerb, Electric Opening, Fixed, Manual
+  #   Opening: "2nd" / "4th" below are Electric Opening / Manual Opening.
+  #   "PDP selected opening operation" is scoped to that group's label,
+  #   since the plain selected-value selector now hits the kerb first.
+  #   Every PDP element is duplicated for mobile/desktop, hence :visible.
+  # - 2026-11-11: the "Total:" figure was replaced by an order summary
+  #   (product-order-summary__total, plus an operating-kit select for
+  #   opening variants); "PDP total" now points there. Notes below about
+  #   the old element are historical.
   # - "PDP total" is the amount <span> alone: the whole price element's
   #   text also includes every chosen option ("Size:500X500Opening
   #   Operation:Manual...Total:£1,252.80").
@@ -27,16 +34,22 @@ Feature: PDP details
   Scenario: Choosing a different opening operation updates the total, and the basket charges that total
     Then the "product name" should contain the text "ray.lux"
     And the "product thumbnails" should be displayed
-    When I click on the "1st" "variant lozenge options" element
+    When I click on the "2nd" "variant lozenge options" element
     And I wait for the page to settle
-    Then the "PDP selected options" should contain the text "Electric Remote"
+    Then the "PDP selected opening operation" should contain the text "Electric Opening"
     And the current URL should contain "opening_operation=electric"
-    When I remember the text of "PDP total" as "electric remote total"
+    When I remember the text of "PDP total" as "electric opening total"
     And I click on the "4th" "variant lozenge options" element
     And I wait for the page to settle
-    Then the "PDP selected options" should contain the text "Manual"
-    And the "PDP total" text should not equal the remembered "electric remote total"
-    When I remember the text of "PDP total" as "manual total"
+    Then the "PDP selected opening operation" should contain the text "Manual"
+    And the "PDP total" text should not equal the remembered "electric opening total"
+    # Opening variants now REQUIRE an operating kit choice (2026-11-11):
+    # Add to basket otherwise silently adds nothing and shows "Please choose
+    # an operating kit, or select 'No, I already have one'". "No" keeps the
+    # basket a single window line priced at the PDP total.
+    When I click on the "1st" "operating kit none option" element via JavaScript
+    And I wait for the page to settle
+    And I remember the text of "PDP total" as "manual total"
     And the "Add to basket" should be enabled
     And I click on the "Add to basket" button
     And I wait for the basket update to complete

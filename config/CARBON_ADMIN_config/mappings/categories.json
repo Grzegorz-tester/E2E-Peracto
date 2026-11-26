@@ -2,5 +2,8 @@
   "first item link": "a[data-testid='row-0-name']",
   "Add Category": "[data-testid='add-category']",
   "Name filter": "[data-testid='text-filter-name']",
-  "category name": "[data-testid$='-name'] a"
+  "category name": "[data-testid$='-name'] a",
+  "Export Category Data": "[data-testid='export-category-data']",
+  "category name header": "[data-testid='header-1']",
+  "category name links": "a[data-testid$='-name']"
 }

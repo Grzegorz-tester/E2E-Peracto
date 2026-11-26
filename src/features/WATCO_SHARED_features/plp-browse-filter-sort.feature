@@ -51,11 +51,15 @@ Feature: Product listing - browse, filter and sort
     Then I should be redirected to the "pdp" page
     And the "PDP title" text should equal the remembered "listed product title"
 
+  # Compares the "Viewing 1 - 24 of N" total, not the first card's title:
+  # the first card can legitimately belong to the filtered brand too
+  # (confirmed live on prod 2026-11-10: "Watco Concrex Flex" is first both
+  # before and after filtering to "Watco Specialist", 150 -> 25 products).
   Scenario: Filtering by brand changes the listed products
-    When I remember the text of "first product card title" as "title before filter"
+    When I remember the part of the "PLP results count" text matching the pattern "[\s\S]*\d[\s\S]*" as "count before filter"
     And I click on the "second brand filter checkbox" element
     Then the current URL should contain "filters="
-    And the "first product card title" text should not equal the remembered "title before filter"
+    And the "PLP results count" text should not equal the remembered "count before filter"
 
   Scenario: Sorting changes the listed products
     When I remember the text of "first product card title" as "title before sort"

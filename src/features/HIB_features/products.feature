@@ -8,16 +8,10 @@ Feature: Products page functionality
     Then the "<card>" should be displayed
     When I click on the "<card>" element
     Then I should be redirected to the "<category>" page
+    # 2026-11-22: cut to one row - the eight hub cards are the same component.
     Examples:
       | card             | category             |
       | Mirrors card     | bathroom-mirrors     |
-      | Cabinets card    | bathroom-cabinets    |
-      | Furniture card   | bathroom-furniture   |
-      | Basins card      | bathroom-basins      |
-      | Accessories card | bathroom-accessories |
-      | Ventilation card | bathroom-ventilation |
-      | Lighting card    | bathroom-lightning   |
-      | Brassware card   | bathroom-brassware   |
 
 
   Scenario: Filtering products, then clearing the filter with "Clear all"

@@ -1,5 +1,6 @@
 import { When, Then } from "@cucumber/cucumber";
 import path from "path";
+import { FrameLocator } from "playwright";
 import { ElementKey } from "../../../env/global";
 import { getElementLocator } from "../../support-functions/web-element-helper";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
@@ -35,6 +36,30 @@ When(/^I open the File Manager$/, async function (this: ScenarioWorld) {
         .waitFor({ state: "visible", timeout: 15000 });
 });
 
+// CKFinder opens on whichever resource type the backend lists first, and a
+// tenant can add its own restricted types. CONFIRMED live (INSINKERATOR_ADMIN
+// staging, 2026-11-11): it opens on "3D Models" (allowedExtensions: glb only),
+// so every .txt/.png upload came back "Uploaded files: 0 of 1" and never
+// appeared - it looked like staging slowness for two runs. The connector's
+// Init lists Files (txt, png, ...), Images and 3D Models. When the active
+// type is not one of the two standard ones, go up to the root ("/" crumb)
+// and open "Files". Tenants that already open on Files or Images are left
+// exactly as before.
+async function ensureStandardResourceType(fl: FrameLocator): Promise<void> {
+    const activeCrumb = fl.locator("a.ui-btn-active[data-ckf-path]").first();
+    if (!(await activeCrumb.count())) return;
+    const activePath = (await activeCrumb.getAttribute("data-ckf-path")) ?? "";
+    const resourceType = activePath.split(":")[0];
+    if (!resourceType || resourceType === "Files" || resourceType === "Images") return;
+
+    await fl.getByText("/", { exact: true }).first().click();
+    const filesEntry = fl.getByText("Files", { exact: true }).first();
+    if (!(await filesEntry.waitFor({ state: "visible", timeout: 15000 }).then(() => true).catch(() => false))) return;
+    await filesEntry.dblclick();
+    await fl.locator("a.ui-btn-active[data-ckf-path^='Files:']").first()
+        .waitFor({ state: "visible", timeout: 15000 });
+}
+
 // Fixture files live once under src/features/fixtures/, same convention as
 // the page-level "I upload the ... file to the ... input" step
 // (file-upload.ts) - reusable test data rather than duplicated per project.
@@ -43,6 +68,7 @@ When(/^I upload the "([^"]*)" file to the File Manager$/, async function (this: 
     const filePath = path.join(process.cwd(), "src/features/fixtures", fixtureFile);
     const fl = page.frameLocator("iframe");
 
+    await ensureStandardResourceType(fl);
     await fl.locator("[data-ckf-name='Upload']").click();
 
     const fileInput = fl.locator("input[type='file']");

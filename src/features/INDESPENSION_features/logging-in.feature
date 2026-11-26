@@ -16,14 +16,21 @@ Feature: Login Page and password reset
   # The same form submitted after hydration gets a normal server-action
   # response within ~1s, so each scenario waits for the page to settle
   # before touching the form.
-  @smoke
-  Scenario: Successful log in to the user's account
-    Given I am on the "login" page
+  #
+  # 2026-11-22: "Successful log in to the user's account" removed, the same form
+  # login (-> account page) opens logged-in-purchase-journey.feature (@smoke, all envs).
+
+
+  # IND-729 case 315: logging out must end the session, not just hide the
+  # header link - the account pages have to bounce back to login afterwards.
+  Scenario: Signing out ends the session and locks the account pages
+    Given I am navigating the page as a "logged in" user
     And I wait for the page to settle
-    When I fill in the "Email address" input field with the "logged in" user's email
-    And I fill in the "Password" input field with the "logged in" user's password
-    And I click on the "Sign In" button
-    Then I should be redirected to the "account" page
+    When I click on the "Sign Out button" button
+    Then the "Sign In button" should be displayed
+    And the "Sign Out button" should not be displayed
+    When I navigate directly to the path "/account/orders"
+    Then I should eventually be redirected to the "login" page
 
 
   Scenario: Unsuccessful log in with a wrong password for a real account

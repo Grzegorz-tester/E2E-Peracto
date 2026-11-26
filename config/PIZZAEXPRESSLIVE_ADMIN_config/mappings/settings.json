@@ -1,1 +1,5 @@
-{}
+{
+  "Utilities tab": "[role='tab']:text-is('Utilities')",
+  "Key Category Label": "[name='values[key_category_label]']",
+  "Save": "[data-testid='save-form']"
+}

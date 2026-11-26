@@ -5,6 +5,7 @@ Feature: Branch finder
   # <town>" plus Nordstrom Timber (Sunderland)), with an A-Z letter filter and
   # a postcode/town search box.
 
+  @smoke
   Scenario: Branch finder lists every branch
     Given I am on the "branches" page
     And I wait for the page to settle
@@ -12,6 +13,7 @@ Feature: Branch finder
     And I should see "21" "branch cards" displayed
 
 
+  @smoke
   Scenario: A branch page shows its opening hours and contact details
     Given I am on the "branches" page
     And I wait for the page to settle
@@ -26,16 +28,24 @@ Feature: Branch finder
     And the "other branches nearby" should be displayed
 
 
-  # KNOWN SITE ISSUE (confirmed live 2026-10-05): the letter filter keys on
-  # each branch's FULL name, so all 20 "JT Dove <town>" branches sit under
-  # "J" and every other letter except "N" (Nordstrom Timber) is disabled -
-  # "H" can't be used to find Hexham, Hawick or Hetton. Expected to stay red
-  # until the filter uses the town name.
-  Scenario: Filtering by a town's first letter shows that town's branches
+  # The letter filter keys on each branch's FULL name, so all 20 "JT Dove
+  # <town>" branches sit under "J", Nordstrom Timber under "N", and every
+  # other letter is disabled ("H" can't find Hexham). Reported as a defect
+  # 2026-10-05, but this is the CLIENT-APPROVED behaviour (confirmed by the
+  # user 2026-11-23) until it's reviewed. If the filter is changed to use the
+  # town name, rewrite this to click "H" and expect Hawick, Hetton, Hexham.
+  Scenario: The A-Z filter groups branches by the first letter of their full name
     Given I am on the "branches" page
     And I wait for the page to settle
-    When I click on the "H filter" element
-    Then the "branch cards" should all contain the text "JT Dove H"
+    Then the "J filter" should be enabled
+    And the "N filter" should be enabled
+    And the "H filter" should not be enabled
+    When I click on the "N filter" element
+    Then I should see "1" "branch cards" displayed
+    And the "branch cards" should all contain the text "Nordstrom Timber"
+    When I click on the "J filter" element
+    Then I should see "20" "branch cards" displayed
+    And the "branch cards" should all contain the text "JT Dove"
 
 
   # Manual regression case 109 (added 2026-10-22).
@@ -51,6 +61,7 @@ Feature: Branch finder
   # Google script not loaded", the same Maps-script failure seen on KOOL's
   # release branch finder. Expected to stay red until the Google Maps script
   # loads on staging.
+  @smoke
   Scenario: Searching for a town suggests matching places
     Given I am on the "branches" page
     And I wait for the page to settle

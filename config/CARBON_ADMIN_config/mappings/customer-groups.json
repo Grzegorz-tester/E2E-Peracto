@@ -1,0 +1,4 @@
+{
+  "first item link": "[data-testid='row-0-name'] a, a[data-testid='row-0-name']",
+  "Add Customer Group": "//a[normalize-space()='Add Customer Group'] | //button[normalize-space()='Add Customer Group']"
+}

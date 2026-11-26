@@ -51,5 +51,6 @@
   "About Us footer link": "[data-testid='main-footer'] a:has-text('About Us')",
   "Privacy Policy footer link": "[data-testid='main-footer'] a:has-text('Privacy Policy')",
   "Terms and Conditions footer link": "[data-testid='main-footer'] a:has-text('Terms and Conditions')",
-  "sitemap link": "[data-testid='stripped-footer__sitemap-link']"
+  "sitemap link": "[data-testid='stripped-footer__sitemap-link']",
+  "not found heading": "h1 >> visible=true"
 }

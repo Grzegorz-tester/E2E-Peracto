@@ -66,5 +66,8 @@
   "Redirects": "[data-testid='nav-configuration-redirects']",
   "Shipping Services": "[data-testid='nav-configuration-shipping-services']",
   "Tasks": "[data-testid='nav-configuration-tasks']",
-  "Countries": "[data-testid='nav-configuration-countries']"
+  "Countries": "[data-testid='nav-configuration-countries']",
+  "User Generated Content": "[data-testid='nav-user-generated-content']",
+  "All User Generated Content": "[data-testid='nav-user-generated-content-all-user-generated-content']",
+  "result count dropdown": "[data-testid='result-number-dropdown']"
 }

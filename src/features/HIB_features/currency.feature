@@ -9,10 +9,7 @@ Feature: Currency switching
     it (confirmed correct behaviour, 2026-09-29).
 
 
-  Scenario: Currency toggle is visible on the site
-    Given I am on the "home" page
-    And I dismiss the newsletter popup if present
-    Then the "currency picker" should be displayed
+  # 2026-11-22: "Currency toggle is visible" removed - header.feature's guest header scenario checks it on the home page.
 
 
   Scenario: Switching currency updates the PDP price and reverts back

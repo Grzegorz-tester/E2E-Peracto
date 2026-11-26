@@ -13,5 +13,13 @@
   "order total price": "[data-testid='basket-summary__total']",
   "order subtotal price": "[data-testid='basket-summary__subtotal']",
   "Go to Checkout": "[data-testid='basket-summary__checkout-button']",
-  "Continue shopping": "[data-testid='default-basket-content__continue-shopping-link']"
+  "Continue shopping": "[data-testid='default-basket-content__continue-shopping-link']",
+  "promo code toggle": "[data-testid='add-promotion-form__button']:has-text('Add a promotional code')",
+  "promo code input": "[data-testid='add-promotion-form__input']",
+  "promo code apply": "[data-testid='add-promotion-form__button']:has-text('Apply')",
+  "promo code form": "[data-testid='add-promotion-form']",
+  "applied promotion": "[data-testid='add-promotion-form__badge-0']",
+  "basket discount": "[data-testid='basket-summary__discount']",
+  "Blueline trailer basket line": "[data-testid='basket-card__name']:has-text('Blueline 14')",
+  "Marine trailer basket line": "[data-testid='basket-card__name']:has-text('Super Roller Coaster 10EX')"
 }

@@ -1,3 +1,14 @@
 {
-  "page heading": "h1 >> visible=true"
+  "page heading": "h1 >> visible=true",
+  "branch heading": "[data-testid='branch__heading']",
+  "branch address": "[data-testid='branch__address']",
+  "branch telephone": "[data-testid='branch__telephone']",
+  "branch email": "[data-testid='branch__email']",
+  "branch opening hours": "[data-testid='branch__opening-hours']",
+  "branch Monday hours": "[data-testid='branch__opening-hours--monday']",
+  "branch Sunday hours": "[data-testid='branch__opening-hours--sunday']",
+  "branch map marker": "[data-testid^='branch-map-marker__']",
+  "branch consultation button": "[data-testid='branch__consultation-button']",
+  "Enlarge map": "[data-testid='branch__enlarge-map']",
+  "Get directions": "[data-testid='branch__get-directions']"
 }

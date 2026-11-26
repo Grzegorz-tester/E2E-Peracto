@@ -1,12 +1,24 @@
 @PizzaExpressLive_regression
 Feature: API response verification
 
+  # Each storefront must talk to its own API: production -> api.pizzaexpresslive.com,
+  # staging -> staging-api.pizzaexpresslive.pub (confirmed live 2026-11-13). A staging
+  # storefront wired to the production API (or vice versa) is exactly what this catches.
+  @production-only
   Scenario: API base URL referenced correctly
     Given I am on the "whats-on" page
     When I open the first "event card link" element whose "Book Tickets heading" is present on the destination page
     Then I should be redirected to the "pdp" page
     And I read window.__NEXT_DATA__
     Then the page data should reference "api.pizzaexpresslive.com"
+
+  @not-on-production
+  Scenario: Staging API base URL referenced correctly
+    Given I am on the "whats-on" page
+    When I open the first "event card link" element whose "Book Tickets heading" is present on the destination page
+    Then I should be redirected to the "pdp" page
+    And I read window.__NEXT_DATA__
+    Then the page data should reference "staging-api.pizzaexpresslive.pub"
 
   Scenario: Product attributes present in page data
     Given I am on the "whats-on" page
@@ -35,7 +47,7 @@ Feature: API response verification
   # resource actually broken", so this scenario is scoped to JS errors.
   Scenario: No unexpected console errors across key pages
     Given I am on the "home" page
-    When I start monitoring console errors, ignoring messages matching "mailerlite|googletagmanager|spotify|bookings\.pizzaexpresslive\.com|Didomi|X-Frame-Options|Failed to load resource"
+    When I start monitoring console errors, ignoring messages matching "mailerlite|googletagmanager|spotify|bookings\.pizzaexpresslive\.(com|pub)|Didomi|X-Frame-Options|Failed to load resource"
     And I am on the "whats-on" page
     And I click on the "1st" "event card link" element
     Then I should be redirected to the "pdp" page

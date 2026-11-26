@@ -150,5 +150,13 @@
   "careers": {
     "route": "/careers",
     "regex": "^/careers$"
+  },
+  "account-order-detail": {
+    "route": "/account/orders",
+    "regex": "^/account/orders/[0-9]+$"
+  },
+  "velstar-not-found-test": {
+    "route": "/velstar-test-page-that-does-not-exist",
+    "regex": "^/(products/)?velstar-test-[a-z-]+-that-does-not-exist$"
   }
 }

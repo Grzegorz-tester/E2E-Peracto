@@ -1,4 +1,5 @@
 {
   "Add Product Variant": "[data-testid='add-product-variant']",
-  "Back to Product": "[data-testid='back-to-product']"
+  "Back to Product": "[data-testid='back-to-product']",
+  "first variant link": "a[data-testid='row-0-sku']"
 }

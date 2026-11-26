@@ -65,5 +65,6 @@
   "Redirects": "[data-testid='nav-configuration-redirects']",
   "Shipping Services": "[data-testid='nav-configuration-shipping-services']",
   "Tasks": "[data-testid='nav-configuration-tasks']",
-  "Countries": "[data-testid='nav-configuration-countries']"
+  "Countries": "[data-testid='nav-configuration-countries']",
+  "Logout": "[data-testid='logout']"
 }

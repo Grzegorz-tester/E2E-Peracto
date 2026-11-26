@@ -4,5 +4,6 @@
   "Label filter": "[data-testid='text-filter-label']",
   "Code filter": "[data-testid='text-filter-code']",
   "attribute label": "[data-testid$='-label'] a",
-  "attribute code": "td[data-testid$='-code']"
+  "attribute code": "td[data-testid$='-code']",
+  "Export Attribute Data": "[data-testid='export-attribute-data']"
 }

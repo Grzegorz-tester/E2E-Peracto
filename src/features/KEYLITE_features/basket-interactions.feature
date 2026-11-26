@@ -39,6 +39,8 @@ Feature: Basket interactions
     When I decrement the basket quantity and the total should update correctly
     Then the "quantity input" should equal the value "1"
 
+  # 2026-11-22: basket.feature (PDP add -> basket item shown, @smoke) removed, covered by the first half of this scenario; @smoke moved here.
+  @smoke
   Scenario: Removing the only item empties the basket
     Given I navigate directly to the path "/products/ray-lux-flat-glass-with-kerb"
     And I dismiss the newsletter popup if present

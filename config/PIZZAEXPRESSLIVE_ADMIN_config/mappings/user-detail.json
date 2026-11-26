@@ -4,5 +4,9 @@
   "User Email": "[data-testid='email']",
   "Save": "[data-testid='save-form']",
   "Delete User": "//a[text()='Delete User']",
-  "Confirm Delete User": "[data-testid='button-action_delete-user']"
+  "Confirm Delete User": "[data-testid='button-action_delete-user']",
+  "Edit customer button": "button.btn-link:has(svg[data-icon='edit'])",
+  "Account Status": "xpath=//label[@for='user.enabled']/ancestor::div[contains(@class,'form-group')][1]//div[contains(@class,'list__control')]",
+  "Roles": "xpath=//label[@for='user.roles']/ancestor::div[contains(@class,'form-group')][1]//div[contains(@class,'list__control')]",
+  "customer summary": "xpath=(//div[contains(@class,'card')])[1]"
 }

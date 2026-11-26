@@ -25,17 +25,21 @@ Feature: Account actions
 
   Scenario: Saving the profile's contact number persists after a reload, and can be restored
     When I am on the "account-profile" page
+    # Settle first: filled before hydration, React never registers the change
+    # and Save Changes stays disabled for good (confirmed live 2026-11-24).
+    And I wait for the page to settle
     And I remember the value of the "Contact number" input field as "original contact number"
     And I fill in the "Contact number" input field with a unique UK mobile number, remembering it as "new contact number"
     And I click on the "Save Changes" button
     Then the "profile alert" should contain the text "User successfully updated"
-    When I reload the page
-    Then the "Contact number" input field should have the remembered "new contact number"
+    # Straight after a save the API can briefly serve the previous number on
+    # reload (both directions seen live 2026-11-24; the save itself persists).
+    When I reload the page until the "Contact number" contains the remembered "new contact number", for up to 30 seconds
+    And I wait for the page to settle
     When I fill in the "Contact number" input field with the remembered "original contact number"
     And I click on the "Save Changes" button
     Then the "profile alert" should contain the text "User successfully updated"
-    When I reload the page
-    Then the "Contact number" input field should have the remembered "original contact number"
+    When I reload the page until the "Contact number" contains the remembered "original contact number", for up to 30 seconds
 
 
   Scenario: Adding, editing and removing a delivery address

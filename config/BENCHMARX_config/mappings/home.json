@@ -1,0 +1,7 @@
+{
+  "Browse True Handleless": "[data-testid='buttons-component'] a[href='/kitchen-ranges/true-handleless']",
+  "Browse J-Pull": "[data-testid='buttons-component'] a[href='/kitchen-ranges/j-pull']",
+  "Browse Slab": "[data-testid='buttons-component'] a[href='/kitchen-ranges/slab']",
+  "Browse Shaker": "[data-testid='buttons-component'] a[href='/kitchen-ranges/shaker']",
+  "Enter virtual showroom": "[data-testid='buttons-component'] a[href='/ideas-inspiration/virtual-showroom']"
+}

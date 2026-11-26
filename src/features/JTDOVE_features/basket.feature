@@ -20,6 +20,7 @@ Feature: Basket page
     And the "Go to checkout" should not be displayed
 
 
+  @smoke
   Scenario: A product added from the PDP is listed with its price and totals
     Given I am on the "test-product" page
     And I wait for the page to settle
@@ -37,6 +38,7 @@ Feature: Basket page
 
 
   # Smoke case 196 (added 2026-10-23).
+  @smoke
   Scenario: A quantity chosen on the PDP carries through to the basket
     Given I am on the "test-product" page
     And I wait for the page to settle

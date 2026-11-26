@@ -26,8 +26,12 @@ When(/^I start monitoring console errors, ignoring messages matching "([^"]*)"$/
         this.globalVariables["__consoleErrors"] = JSON.stringify(errors);
     };
 
+    // The source URL is appended because Chromium's resource-load errors
+    // ("Failed to load resource: ... 403") don't name the resource otherwise.
     page.on("console", (msg) => {
-        if (msg.type() === "error") record(msg.text());
+        if (msg.type() !== "error") return;
+        const source = msg.location()?.url;
+        record(source ? `${msg.text()} [${source}]` : msg.text());
     });
     page.on("pageerror", (err) => record(err.message));
 });

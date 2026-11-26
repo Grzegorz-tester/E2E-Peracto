@@ -65,5 +65,22 @@
   "Redirects": "[data-testid='nav-configuration-redirects']",
   "Shipping Services": "[data-testid='nav-configuration-shipping-services']",
   "Tasks": "[data-testid='nav-configuration-tasks']",
-  "Countries": "[data-testid='nav-configuration-countries']"
+  "Countries": "[data-testid='nav-configuration-countries']",
+  "Logout": "[data-testid='logout']",
+  "Text block": "[data-testid='text']",
+  "text block": "[data-testid='text-component']",
+  "last text block": "[data-testid='text-component'] >> nth=-1",
+  "last text block editor": "[data-testid='text-component'] >> nth=-1 >> .ck-editor__editable",
+  "Undo": "[data-testid='content-undo']",
+  "Redo": "[data-testid='content-redo']",
+  "Duplicate block": "[data-testid='selected-block-toolbar'] button:is([aria-label='Duplicate'],[title='Duplicate'])",
+  "Delete block": "[data-testid='selected-block-toolbar'] button:is([aria-label='Delete'],[title='Delete'])",
+  "Preview content": "[data-testid='content-preview']",
+  "Preview mobile": "[data-testid='content-preview-mobile']",
+  "Preview desktop": "[data-testid='content-preview-desktop']",
+  "Export content": "[data-testid='content-export']",
+  "Add blocks panel": "[data-testid='search-blocks-section']",
+  "editor block": ".ory-cell-leaf",
+  "Content settings toggle": "[data-testid='content-toggle-settings']",
+  "open content settings panel": "[data-testid='left-panel'].active"
 }

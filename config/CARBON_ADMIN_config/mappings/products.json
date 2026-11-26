@@ -5,5 +5,12 @@
   "SKU filter": "[data-testid='text-filter-sku']",
   "product name": "[data-testid$='-name'] a",
   "product SKU": "td[data-testid$='-sku']",
-  "Export Product Data": "[data-testid='export-product-data']"
+  "Export Product Data": "[data-testid='export-product-data']",
+  "next page": ".pagination button:text-is('Next')",
+  "last page": ".pagination button:text-is('Last')",
+  "active page": ".pagination .active",
+  "rows per page": "[data-testid='result-number-dropdown']",
+  "Manage Columns": "[data-testid='manage-columns-toggle']",
+  "Total Inventory column toggle": "[data-testid='checkbox-total-inventory']",
+  "Total Inventory column header": "//th[normalize-space()='Total Inventory']"
 }

@@ -24,7 +24,16 @@ Then(/^the "([^"]*)" accordion should allow only one section open at a time$/, a
     // auto-scroll margin - scrolling it into view explicitly first avoids
     // a click landing without effect.
     await triggers.nth(1).scrollIntoViewIfNeeded();
-    await triggers.nth(1).click();
-    await expect(triggers.nth(1)).toHaveAttribute("aria-expanded", "true");
+    // The accordion is server-rendered and visible well before React
+    // hydrates it; a click in that gap is silently dropped. Confirmed live
+    // (Insinkerator staging, 2026-11-10): clicks up to 1s after the trigger
+    // appeared did nothing, one at 3s worked. So re-click until it opens,
+    // checking first so a late-registering click isn't toggled back shut.
+    await expect(async () => {
+        if ((await triggers.nth(1).getAttribute("aria-expanded")) !== "true") {
+            await triggers.nth(1).click();
+        }
+        await expect(triggers.nth(1)).toHaveAttribute("aria-expanded", "true", { timeout: 1500 });
+    }).toPass({ timeout: 15000 });
     await expect(triggers.nth(0)).toHaveAttribute("aria-expanded", "false");
 });

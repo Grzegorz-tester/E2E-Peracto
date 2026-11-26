@@ -3,8 +3,6 @@ Feature: Side navigation drawer (mobile)
 
   # Manual regression case 219 (added 2026-10-22). The Menu button and its
   # drawer only render at mobile width; on desktop the button is hidden.
-  # Closing by clicking outside the drawer isn't covered: there's no generic
-  # step for it, and Escape/Close exercise the same close handler.
 
   Background:
     Given I am on the "home" page
@@ -30,6 +28,14 @@ Feature: Side navigation drawer (mobile)
     When I click on the "Menu button" element
     Then the "navigation drawer" should be displayed
     When I press the Escape key
+    Then the "navigation drawer" should not be displayed
+
+
+  # Added 2026-11-18 (case 219, re-exported JTDOVE-2026-11-18.json).
+  Scenario: The drawer closes when the page outside it is clicked
+    When I click on the "Menu button" element
+    Then the "navigation drawer" should be displayed
+    When I click outside the "navigation drawer"
     Then the "navigation drawer" should not be displayed
 
 

@@ -18,6 +18,8 @@ Watco UK admin: the LEGACY server-rendered Peracto (v6.1, Symfony + DataTables) 
 ## Coverage (2026-10-24: 21/21 passing live, first run; 2026-10-28 extended to every Super Admin section, see feature files)
 - logging-in (success, wrong password, unknown email, forgotten link), sections-load (Orders, Promotions, Users, Tasks, Q&A, Stockist settings, Permission resources), first-item-opens-detail (5 lists + order items), list-search (promo fixture, own user, storefront orders arrive, empty state).
 
+- 2026-11-22 dedupe: removed 13 sections-load.feature list rows (Promotions, Users, Tasks, Q&A, Products, Attributes, Shipping, Articles, Content templates, Forms, Form fields, Stockists, Redirects); first-item-opens-detail.feature opens the same lists and fails if a list has no first row. Orders row kept.
+
 ## Account role: Super Admin required (RESOLVED 2026-10-28)
 - With only Admin + User, Products, Categories, Attributes, Shipping, Store settings, Search settings, Import, Content, Articles, Templates, Form builder, Fields, Stockists, Settings, Redirects, Permissions and the banner pages were missing from the nav and served the "Uh oh, that's not good" page as a slow (~20-30s) HTTP 500, not a 403. An unknown /peracto URL gives a fast 404, so the routes do exist.
 - Fixed by giving the Test Automation account (user 30520) ROLE_SUPER_ADMIN. Only an existing Super Admin can grant it: Admin users don't see the option in the Roles dropdown. All those sections then load (200).

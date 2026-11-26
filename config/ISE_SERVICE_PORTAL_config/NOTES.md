@@ -46,6 +46,7 @@ All confirmed live 2026-10-06/07, all still open at the 2026-10-14 QA review (93
 - Open questions asserted as built (not red): Admin can open Users/Tasks (IWS-55 says intended); company has only name + Active (SoW SP.13 differs); single installed address for Warranty; Aquatherm export has 6 columns, not Aquatherm's 29.
 - Not built: complaint-code management (doesn't exist yet, SP.17 / IWS-49).
 - Pending scope changes (not deployed on staging as of 2026-10-14): IWS-62 (fault code removed from Diagnosis; the "F-134" selects in journeys/tasks will break and `fault-codes.feature` becomes obsolete), IWS-49, IWS-16 (Settings hub; sync/export move there), IWS-55, IWS-64 (Repaired/Replaced on Notes), IWS-65 (UK/ROI country select).
+- 2026-11-22 dedupe: login outline cut to the owner row (access-control's menu outline signs in all 5 roles), Owner-opens-Settings removed (settings.feature Background) and dashboard New job click removed (every job Background). 111 -> 105.
 
 ## Tips for extending
 - Row actions on lists: reuse `I click on the "X" inside the "Y" containing the remembered "Z"`.

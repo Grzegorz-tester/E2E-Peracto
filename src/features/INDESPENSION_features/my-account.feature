@@ -40,3 +40,24 @@ Feature: Operations in the user's account
     And I click on the "ORDERS" tab
     Then I should be redirected to the "account-orders" page
     And the "Orders table" should be displayed
+
+
+  # IND-729 case 304: historic orders created before the upgrade must still
+  # open with their lines, totals and VAT intact. Uses the newest order on the
+  # shared test account, so no order number is hard-coded.
+  Scenario: Opening a historic order shows its lines and consistent totals
+    Given I am navigating the page as a "logged in" user
+    When I am on the "account-orders" page
+    And I wait for the page to settle
+    And I remember the text of "first order number" as "order number"
+    And I click on the "first order row" element
+    Then I should be redirected to the "account-order-detail" page
+    And the "order reference" should contain the remembered "order number"
+    And the "order delivery address" should be displayed
+    And the "order delivery method" should be displayed
+    And the "order line name" should not equal text ""
+    And the "order VAT" should contain the text "VAT"
+    And the "order payment details" should be displayed
+    # The discount row only appears on orders that used a promotion. CONFIRMED
+    # 2026-11-13: the prod account's only order (000118) has one (-£69.00).
+    And the price in "order total" should equal "order subtotal" plus "order shipping" minus "order discount" if present

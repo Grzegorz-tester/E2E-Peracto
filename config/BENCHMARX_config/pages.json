@@ -38,5 +38,65 @@
   "sitemap": {
     "route": "/sitemap",
     "regex": "^/sitemap$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "request-a-brochure": {
+    "route": "/request-a-brochure",
+    "regex": "^/request-a-brochure$"
+  },
+  "blog": {
+    "route": "/articles/blog",
+    "regex": "^/articles/[^/]+$"
+  },
+  "article": {
+    "route": "/article/new-benchmarx-design-bude-range",
+    "regex": "^/article/.+$"
+  },
+  "accessories-and-appliances": {
+    "route": "/accessories-and-appliances",
+    "regex": "^/accessories-and-appliances$"
+  },
+  "joinery": {
+    "route": "/joinery",
+    "regex": "^/joinery$"
+  },
+  "accessories-subcategory": {
+    "route": "/accessories",
+    "regex": "^/(accessories|appliances|lighting|sinks-taps|worktops-splashbacks|doors-windows-joinery|flooring-and-underfloor-heating)(/[^/]+)?$"
+  },
+  "ideas-and-inspiration": {
+    "route": "/ideas-and-inspiration",
+    "regex": "^/ideas-and-inspiration$"
+  },
+  "trade-customers": {
+    "route": "/trade-customers",
+    "regex": "^/trade-customers(/.*)?$"
+  },
+  "contract-kitchen-solutions": {
+    "route": "/contract-kitchen-solutions",
+    "regex": "^/contract-kitchen-solutions$"
+  },
+  "big-savings-event": {
+    "route": "/big-savings-event",
+    "regex": "^/big-savings-event$"
+  },
+  "kitchen-finance": {
+    "route": "/kitchen-finance",
+    "regex": "^/kitchen-finance$"
+  },
+  "help-advice": {
+    "route": "/help-advice/why-choose-us",
+    "regex": "^/help-advice/.+$"
+  },
+  "ideas-inspiration-page": {
+    "route": "/ideas-inspiration/virtual-showroom",
+    "regex": "^/ideas-inspiration/.+$"
+  },
+  "content": {
+    "route": "/about-us",
+    "regex": "^/.+$"
   }
 }

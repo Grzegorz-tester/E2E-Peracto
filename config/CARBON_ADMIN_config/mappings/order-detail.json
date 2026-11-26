@@ -1,0 +1,14 @@
+{
+  "page heading": "//h1",
+  "Order Status section": "#order-status",
+  "Items section": "//h3[normalize-space()='Items']",
+  "Customer section": "//h3[normalize-space()='Customer']",
+  "History section": "//h3[normalize-space()='History']",
+  "Shipping section": "//h3[normalize-space()='Shipping']",
+  "Transactions section": "//h3[normalize-space()='Transactions']",
+  "Update Order Status": "//button[normalize-space()='Update Order Status']",
+  "Resend Confirmation Email": "[data-testid='orders-resend-confirmation-email']",
+  "Add Note": "//button[normalize-space()='Add Note']",
+  "note field": "textarea",
+  "Back to Orders": "//a[normalize-space()='Back to Orders']"
+}

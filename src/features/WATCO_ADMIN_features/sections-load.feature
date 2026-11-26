@@ -10,6 +10,7 @@ Feature: Admin sections load with real content
   # export pages (generate customer-data files) are deliberately left out
   # even though they're read-only in name.
 
+  # Rows removed 2026-11-22 (Promotions, Users, Tasks, Q&A, Products, Attributes, Shipping, Articles, Content templates, Forms, Form fields, Stockists, Redirects): first-item-opens-detail.feature opens the same lists and fails if a list has no first row.
   Scenario Outline: The <section> section loads with its list
     Given I am navigating the page as a "admin" user
     When I am on the "<page>" page
@@ -19,24 +20,11 @@ Feature: Admin sections load with real content
     Examples:
       | section          | page                 | heading   |
       | Orders           | orders               | Orders    |
-      | Promotions       | promotions           | Promotions |
-      | Users            | users                | Users     |
-      | Tasks            | tasks                | Tasks     |
-      | Q&A              | question-answer      | Q&A       |
       | Stockist settings | stockist-settings   | Settings  |
       | Permission resources | permission-resources | Resources |
-      | Products         | products             | Products  |
-      | Attributes       | attributes           | Attributes |
-      | Shipping         | shipping             | Shipping  |
       | Store settings   | store-settings       | Settings  |
       | Product imports  | product-imports      | Import    |
-      | Articles         | articles             | Articles  |
-      | Content templates | content-templates   | Content templates |
-      | Forms            | forms                | Forms     |
-      | Form fields      | form-fields          | Fields    |
-      | Stockists        | stockists            | Stockists |
       | Settings         | settings             | Settings  |
-      | Redirects        | redirects            | Redirects |
       | Store banner     | store-banner         | Store Banner Settings |
       | Announcement banner | announcement-banner | Announcement Banner Settings |
       | Dashboard banner | dashboard-banner     | Dashboard Banner Settings |

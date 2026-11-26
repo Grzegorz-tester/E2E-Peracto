@@ -1,4 +1,10 @@
 {
-  "logged in": { "email": "", "password": "" },
-  "guest": {}
+  "logged in": {
+    "email": "",
+    "password": ""
+  },
+  "guest": {},
+  "admin": {
+    "credentialsEnvPrefix": "HIB_ADMIN_ADMIN"
+  }
 }

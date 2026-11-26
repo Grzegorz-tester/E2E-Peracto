@@ -3,5 +3,14 @@
   "branch results": "[data-testid='branch-finder'] a[href^='/branches/']",
   "first branch result": "[data-testid='branch-finder'] a[href^='/branches/'] >> nth=0",
   "all branches list": "[data-testid='all-branches']",
-  "all branches links": "[data-testid='all-branches'] a[href^='/branches/']"
+  "all branches links": "[data-testid='all-branches'] a[href^='/branches/']",
+  "branch finder": "[data-testid='branch-finder']",
+  "branch finder map": "section:has([data-testid='branch-finder']) .gm-style",
+  "branch map markers": "section:has([data-testid='branch-finder']) .gm-style img[src*='/branch-finder/clusters/']",
+  "branch search button": "[data-testid='branch-finder'] button:has([data-icon='magnifying-glass'])",
+  "View all branches": "a[href='#all-branches'] >> visible=true",
+  "letter filter B": "[data-testid='branches_filter-bar_btn--b']",
+  "letter filter All": "[data-testid='branches_filter-bar_btn--All']",
+  "branch list links": "[data-testid='branches_section__branch'] >> visible=true",
+  "first branch list link": "[data-testid='branches_section__branch'] >> visible=true >> nth=0"
 }

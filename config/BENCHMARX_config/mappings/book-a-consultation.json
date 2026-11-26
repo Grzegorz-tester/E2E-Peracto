@@ -16,5 +16,6 @@
   "Email": "input[name='stepFour.email']",
   "Phone": "input[name='stepFour.phone']",
   "booking summary": "//*[@data-testid='multi-step-form-3__component']//h3[normalize-space()='Booking summary']/..",
-  "CONFIRM BOOKING": "[data-testid='multi-step-form__next']"
+  "CONFIRM BOOKING": "[data-testid='multi-step-form__next']",
+  "PREVIOUS": "[data-testid='multi-step-form__previous']"
 }

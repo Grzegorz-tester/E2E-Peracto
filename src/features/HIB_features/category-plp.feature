@@ -22,32 +22,12 @@ Feature: Category pages (PLP)
     And the "Sort By" should be displayed
     And the "breadcrumb" should be displayed
 
+    # 2026-11-22: cut to one row - every category uses the same PLP template; the
+    # other categories (and staging-only Fitted Furniture) are still linked from
+    # the menu/footer, and health-check.feature keeps one more category row.
     Examples:
       | path                                    |
       | /category/bathroom-mirrors              |
-      | /category/bathroom-cabinets             |
-      | /category/wall-hung-bathroom-units      |
-      | /category/bathroom-cloakroom-units      |
-      | /category/bathroom-floor-standing-units |
-      | /category/bathroom-washbasins           |
-      | /category/bathroom-brassware            |
-      | /category/bathroom-countertops          |
-      | /category/bathroom-handles              |
-      | /category/bathroom-back-to-wall-units   |
-      | /category/bathroom-tall-storage-units   |
-      | /category/bathroom-toilet               |
-      | /category/bathroom-basins               |
-      | /category/bathroom-accessories          |
-      | /category/bathroom-ventilation          |
-      | /category/bathroom-lighting             |
-
-    # Fitted Furniture exists on staging only - confirmed live 2026-10-15
-    # that www.hib.co.uk/category/bathroom-fitted-furniture is Page Not Found
-    # and nothing on production links to it.
-    @not-on-production
-    Examples: Staging-only categories
-      | path                                    |
-      | /category/bathroom-fitted-furniture     |
 
 
   Scenario Outline: Clicking a product on the "<path>" category opens its PDP
@@ -58,12 +38,10 @@ Feature: Category pages (PLP)
     And the "application error" should not appear within "5" seconds
     And the "product price" should contain the text "£"
 
+    # 2026-11-22: cut to one row - the PLP -> PDP click is the same component on every category.
     Examples:
       | path                               |
       | /category/bathroom-mirrors         |
-      | /category/wall-hung-bathroom-units |
-      | /category/bathroom-brassware       |
-      | /category/bathroom-lighting        |
 
 
   Scenario: The Bathroom Furniture hub lists its sub-categories, which lead on to a category page

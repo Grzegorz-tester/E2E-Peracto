@@ -1,0 +1,5 @@
+{
+  "CSV file": "input[type='file']",
+  "Upload File": "//button[normalize-space()='Upload File']",
+  "Back to Redirects": "//a[normalize-space()='Back to Redirects']"
+}

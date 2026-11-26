@@ -51,8 +51,7 @@ Feature: Page rendering
     Examples:
       | page       |
       | about-us   |
-      | membership |
-      | faqs       |
+      # 2026-11-22: membership/faqs rows removed, same content-page CMS template as about-us.
 
   # Not every event card leads to a page with a Book Tickets table - an
   # event that's already sold out/past its cutoff for every date (confirmed

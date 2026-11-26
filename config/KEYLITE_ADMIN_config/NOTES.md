@@ -6,7 +6,7 @@ Shared Peracto Admin quirks: see config/CARBON_ADMIN_config/NOTES.md
 
 ## Environments
 - `env/KEYLITE_ADMIN_STAGING.env` -> `https://staging-peracto.keyliteroofwindows.pub/` (staging, CRUD OK).
-- `env/KEYLITE_ADMIN_RELEASE.env` -> `https://2-0-1-peracto.keyliteroofwindows.pub/` (release, CRUD OK). Was temporarily rolled back to `2-0-0-peracto` from 2026-09-15 to 2026-09-27 at the user's request; now back on 2-0-1. Ask the user before moving it to another branch.
+- `env/KEYLITE_ADMIN_RELEASE.env` -> `https://2-1-0-peracto.keyliteroofwindows.pub/` (release, CRUD OK). Was temporarily rolled back to `2-0-0-peracto` from 2026-09-15 to 2026-09-27 at the user's request; back on 2-0-1 from 2026-09-27, moved to 2-1-0 on 2026-11-11 at the user's request. Ask the user before moving it to another branch.
 - No production admin env (as of 2026-10-24). No `EXCLUDE_TAGS`.
 
 ## Test accounts and data

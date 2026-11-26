@@ -51,11 +51,7 @@ Feature: Role-based access control
       | engineer  |
       | developer |
 
-  Scenario: The Owner can open Settings
-    Given I am navigating the page as a "owner" user
-    When I navigate directly to the path "/settings"
-    Then I should be redirected to the "settings" page
-    And a heading with the text "Settings" should be displayed
+  # 2026-11-22: "The Owner can open Settings" removed, settings.feature's Background does the same as Owner.
 
   Scenario Outline: A "<user>" user is denied the "<path>" page by direct URL
     Given I am navigating the page as a "<user>" user

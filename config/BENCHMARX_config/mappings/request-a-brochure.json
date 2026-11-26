@@ -1,0 +1,4 @@
+{
+  "brochure links": "[data-testid='content-page'] a[href*='3dissue.com']",
+  "brochure images": "[data-testid='content-page'] [data-testid='image-component'] img"
+}

@@ -11,5 +11,13 @@
   "kitchen inspiration": "[data-testid='kitchen-card']",
   "related products": "[data-testid='product-relations']",
   "related product cards": "[data-testid='product-relations'] [data-testid='product-card']",
-  "second thumbnail image": "[data-testid='product-media__thumbnail'] img >> visible=true >> nth=1"
+  "second thumbnail image": "[data-testid='product-media__thumbnail'] img >> visible=true >> nth=1",
+  "colour swatch links": "[data-testid='product-swatch-options'] a >> visible=true",
+  "rating": "[data-testid='rating'] >> visible=true",
+  "technical specification links": "[data-testid='technical-specification'] a",
+  "related product card links": "[data-testid='product-relations'] [data-testid='product-card__link']",
+  "first related product card": "[data-testid='product-relations'] [data-testid='product-card__link'] >> nth=0",
+  "first related product card name": "[data-testid='product-relations'] [data-testid='product-card__name'] >> nth=0",
+  "thumbnail next button": "[data-testid='product-media__thumbnail-next-button'] >> visible=true",
+  "first other colour swatch": "[data-testid='product-swatch-options'] a >> visible=true >> nth=0"
 }

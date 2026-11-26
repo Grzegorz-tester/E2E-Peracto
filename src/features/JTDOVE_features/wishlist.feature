@@ -32,37 +32,9 @@ Feature: Wishlists (My Lists)
     Then the "Wishlist names" should not contain the remembered "list name"
 
 
-  Scenario: A product can be saved to a new wishlist from the PDP
-    Given I am on the "account-wishlist" page
-    And I wait for the page to settle
-    And I clean up any leftover "qa-" wishlists
-    When I am on the "test-product" page
-    And I wait for the page to settle
-    And I click on the "Add to list" button
-    Then the "add to wishlist modal" should be displayed
-    When I click on the "Create a new wishlist link" element
-    And I fill in the "PDP new wishlist name input" input field with a unique value starting with "qa-", remembering it as "list name"
-    And I click on the "PDP create wishlist submit" button
-    And I wait for the save to complete
-    When I am on the "account-wishlist" page
-    And I wait for the page to settle
-    And I fill in the "Wishlist search input" input field with the remembered "list name"
-    And I wait for the search results to update
-    Then the "Wishlist names" should contain the remembered "list name"
-    When I click on the "first wishlist edit link" element, retrying until redirected to the "account-wishlist-detail" page
-    Then the "Wishlist lines" should contain the text "Marine Plywood Sheet (2440 x 1220 x 18mm)"
-    When I am on the "account-wishlist" page
-    And I wait for the page to settle
-    And I fill in the "Wishlist search input" input field with the remembered "list name"
-    And I wait for the search results to update
-    And I delete the row containing the remembered "list name" from the "Wishlist rows" table
-
-
-  Scenario: An existing wishlist's page lists its products
-    Given I navigate directly to the path "/account/wishlists/26"
-    And I wait for the page to settle
-    Then the "Wishlist lines" should be displayed
-    And the "ADD WISHLIST TO BASKET" should be displayed
+  # 2026-11-22: "A product can be saved to a new wishlist from the PDP" and
+  # "An existing wishlist's page lists its products" removed, covered by
+  # "A wishlist's lines can be updated and removed" and "A wishlist can be added to the basket".
 
 
   # Manual regression cases 158-174 (added 2026-10-22). Everything below
@@ -80,15 +52,7 @@ Feature: Wishlists (My Lists)
     Then the "new wishlist dialog" should not be displayed
 
 
-  Scenario: Wishlists can be searched by name and the search reset
-    Given I am on the "account-wishlist" page
-    And I wait for the page to settle
-    When I fill in the "Wishlist search input" input field with "Velstar Test"
-    And I wait for the search results to update
-    Then the "Wishlist names" should contain the text "Velstar Test Wishlist"
-    And the "Wishlist names" should not contain the text "Greg new wishlist"
-    When I click on the "Reset filters" button
-    Then the "wishlist table" should contain the text "Greg new wishlist"
+  # 2026-11-22: "Wishlists can be searched by name and the search reset" removed, covered by wishlist-pagination.feature "Searching narrows the paged list".
 
 
   # Quick Add (manual case 168) isn't automated: its suggestions are plain

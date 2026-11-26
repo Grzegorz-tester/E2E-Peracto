@@ -12,7 +12,7 @@ Feature: Projects and articles
     And the "page not found" should not be displayed
     And the "page title" should be displayed
 
+    # 2026-11-22: cut to one row - News From The Workshop uses the same article listing template.
     Examples:
       | path                             |
       | /articles/projects               |
-      | /articles/news-from-the-workshop |

@@ -1,5 +1,5 @@
 {
-  "release_branch": "",
+  "release_branch": "https://react-19-peracto.peracto3carbon.pub/",
   "staging": "https://staging-peracto.peracto3carbon.pub/",
   "dev": "http://localhost:3001"
 }

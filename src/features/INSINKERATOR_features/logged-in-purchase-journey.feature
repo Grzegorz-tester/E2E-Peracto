@@ -27,7 +27,9 @@ Feature: Logged-in purchase journey
     Then I should be redirected to the "account" page
 
     When I am on the "home" page
-    And I click on the "Menu" button
+    # Retry: the Menu button renders before React hydrates it and an early
+    # click is silently dropped (confirmed live 2026-11-10).
+    And I click on the "Menu" button, retrying until the "navigation drawer links" is displayed
     And I choose the "Shop" category from the menu
     Then the "product card" should be displayed
 

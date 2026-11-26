@@ -48,6 +48,9 @@
   "sort by options": "[role='option']",
   "Price low to high option": "[role='option']:has-text('Price - low to high')",
   "Price high to low option": "[role='option']:has-text('Price - high to low')",
+  "Featured option": "[role='option']:has-text('Featured')",
+  "Name A-Z option": "[role='option']:has-text('Name - A-Z')",
+  "Name Z-A option": "[role='option']:has-text('Name - Z-A')",
   "PLP pagination": "[data-testid='algolia-pagination']",
   "PLP pagination next": "[data-testid='algolia-pagination__next-button']",
   "PLP pagination page 2": "[data-testid='algolia-pagination__page-1']",
@@ -139,5 +142,7 @@
   "disabled branch select": "[role='dialog'] button:has-text('Select this branch'):disabled",
   "Opayo decline message": "text=The Authorisation has been declined by the bank",
   "Opayo Cancel": "a:has-text('Cancel'), button:has-text('Cancel')",
-  "Opayo card choices": "button[name='cardselected']"
+  "Opayo card choices": "button[name='cardselected']",
+  "content page body": "main",
+  "velstar test footer link": "[data-testid='main-footer__desktop-menu'] a:has-text('Velstar Test Footer')"
 }

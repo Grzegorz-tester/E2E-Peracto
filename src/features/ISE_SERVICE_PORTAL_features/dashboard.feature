@@ -21,9 +21,7 @@ Feature: Dashboard job list
     And the "first job card" should be displayed
     And the "pagination" should contain the text "Page 1 of"
 
-  Scenario: The New job button opens the job form
-    When I click on the "New job" link
-    Then I should be redirected to the "job-new" page
+  # 2026-11-22: "The New job button opens the job form" removed, every job-*.feature Background clicks New job -> job-new.
 
   Scenario: Pagination moves to the next page of jobs
     When I click on the "Next page" link

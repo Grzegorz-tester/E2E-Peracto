@@ -49,6 +49,8 @@ Feature: PDP content and navigation
     When I click on the "quantity plus" button
     Then the "quantity input" should equal the value "2"
     When I click on the "Add to basket" button
+    # Waits for the add to commit (the "added to basket" panel) before leaving the PDP.
+    Then the "added to basket heading" should be displayed
     And I wait for the page to settle
     And I am on the "basket" page
     Then the "basket item name" should contain the text "Vienna Stackable Side Chair"

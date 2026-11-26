@@ -179,6 +179,10 @@
     "route": "/content/edit/article/",
     "regex": "^/content/edit/article/$"
   },
+  "content-element-new": {
+    "route": "/content/edit/element/",
+    "regex": "^/content/edit/element/$"
+  },
   "get-product": {
     "route": "/test-harnesses/get-product",
     "regex": "^/test-harnesses/get-product$"

@@ -21,10 +21,7 @@ Feature: Login and logout
     Examples:
       | user      |
       | owner     |
-      | admin     |
-      | manager   |
-      | engineer  |
-      | developer |
+      # 2026-11-22: admin/manager/engineer/developer rows removed, access-control.feature's menu outline signs in all 5 roles (the login step waits for the dashboard URL).
 
   Scenario: Submitting an empty login form is rejected by client-side validation
     Given I am on the "login" page

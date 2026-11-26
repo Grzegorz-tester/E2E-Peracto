@@ -8,11 +8,7 @@ Feature: Operations in the user's account
   # Orders are all genuinely correct as guessed. Profile and Moodboards
   # needed real fixes, see their own scenarios below.
 
-  Scenario: Check the presence of Dashboard elements
-    Given I am navigating the page as a "logged in" user
-    When I am on the "account" page
-    And I click on the "Dashboard tab" tab
-    Then I should be redirected to the "account" page
+  # 2026-11-22: Dashboard tab scenario removed - the account page is loaded by account-actions.feature and quote-builder-access.feature.
 
   # CONFIRMED SITE BUG (live, production/www.andythornton.com,
   # 2026-09-14): clicking "Profile tab" doesn't navigate anywhere - the
@@ -26,11 +22,7 @@ Feature: Operations in the user's account
     And I click on the "Profile tab" tab
     Then I should be redirected to the "account-profile" page
 
-  Scenario: Check the presence of Address book elements
-    Given I am navigating the page as a "logged in" user
-    When I am on the "account" page
-    And I click on the "Address book tab" tab
-    Then I should be redirected to the "account-address-book" page
+  # 2026-11-22: Address book tab scenario removed - account-actions.feature's address scenarios load that page on every environment.
 
   Scenario: Check the presence of Orders elements
     Given I am navigating the page as a "logged in" user

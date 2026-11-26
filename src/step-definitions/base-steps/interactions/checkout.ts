@@ -639,7 +639,20 @@ When(/^I pay with the "([^"]*)" Opayo test card$/, { timeout: 90000 }, async fun
         throw new Error(`Unknown Opayo test card "${cardName}". Add it to payment-test-cards.ts.`);
     }
 
-    await page.waitForURL(/opayo/, { timeout: 30000 });
+    // If the merchant site never hands over to Opayo it usually shows why
+    // (e.g. JTDove's "unable to check the status of your account" when its
+    // ERP is down), so put that on-page error in the failure, not a bare
+    // timeout.
+    try {
+        await page.waitForURL(/opayo/, { timeout: 30000 });
+    } catch (err) {
+        const alerts = await page
+            .locator("[role='alert']:visible, [class*='danger']:visible, [class*='error']:visible")
+            .allInnerTexts()
+            .catch(() => [] as string[]);
+        const shown = [...new Set(alerts.map((t) => t.replace(/\s+/g, " ").trim()).filter(Boolean))].join(" | ");
+        throw new Error(`Never reached Opayo within 30s (still on ${page.url()}).${shown ? ` The page shows: ${shown}` : ""}`);
+    }
     const cardTypeButton = page.locator('button[name="cardselected"]').filter({ hasText: new RegExp(`^\\s*${card.cardType}\\s*$`) }).first();
     await withActionDiagnostics(
         `to click the Opayo "${card.cardType}" card type`,

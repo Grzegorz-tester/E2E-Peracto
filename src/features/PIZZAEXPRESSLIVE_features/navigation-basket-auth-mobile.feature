@@ -28,12 +28,12 @@ Feature: Navigation, basket, account and mobile
   Scenario: Basket page loads the Spektrix basket iframe
     Given I am on the "basket" page
     Then the "booking iframe" should be displayed
-    And the "booking iframe" should have attribute "src" containing "bookings.pizzaexpresslive.com/pizzaexpress/website/Basket2.aspx"
+    And the "booking iframe" should have attribute "src" containing "/pizzaexpress/website/Basket2.aspx"
 
   Scenario: Account page loads the Spektrix account iframe
     Given I am on the "account" page
     Then the "booking iframe" should be displayed
-    And the "booking iframe" should have attribute "src" containing "bookings.pizzaexpresslive.com/pizzaexpress/website/secure/MyAccount.aspx"
+    And the "booking iframe" should have attribute "src" containing "/pizzaexpress/website/secure/MyAccount.aspx"
 
   Scenario Outline: Footer renders on the "<page>" page
     Given I am on the "<page>" page
@@ -43,9 +43,7 @@ Feature: Navigation, basket, account and mobile
     Examples:
       | page       |
       | home       |
-      | whats-on   |
-      | about-us   |
-      | membership |
+      # 2026-11-22: whats-on/about-us/membership rows removed, same global desktop footer as home.
 
   # The source test case also expects a basket icon directly in the mobile
   # header, alongside the hamburger/logo/account icon - not confirmed live:

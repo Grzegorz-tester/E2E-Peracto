@@ -86,7 +86,7 @@ Feature: Basket shipping and Click & Collect rules
   # Manual cases 119 and 213/214 (smoke). Places a REAL order on staging
   # every run (Opayo sandbox card, no money moves), with Velstar details
   # throughout.
-  @places-real-order
+  @places-real-order @smoke
   Scenario: A guest can check out a basket mixing JT Dove delivery, courier and Click & Collect
     Given I require staging for this scenario
     And I am on the "test-product" page
@@ -145,3 +145,20 @@ Feature: Basket shipping and Click & Collect rules
     And the "page content" should contain the text "Marine Plywood Sheet (2440 x 1220 x 18mm)"
     And the "page content" should contain the text "Scruffs Trade Neck Warmer"
     And the "page content" should contain the text "Yellow Building Sand"
+    # Smoke cases 213/214: the order reached Peracto admin, paid, with the
+    # right lines (admin API; a paid order is "successful", an abandoned or
+    # declined one stays "pending").
+    When I remember the part of the "order reference" text matching the pattern "\d{6}" as "order reference"
+    And I authenticate against the API as the "admin" user
+    And I GET the API path "/orders?reference={{order reference}}"
+    Then the response status should be 200
+    And the response JSON at "hydra:totalItems" should equal "1"
+    And the response JSON at "hydra:member[0].status" should equal "successful"
+    And the response JSON at "hydra:member[0].email" should equal the remembered "guest email"
+    And the response JSON at "hydra:member[0].lines" should contain an entry whose "item.sku" is "310239" and whose "shippingServiceType" is "delivery"
+    And the response JSON at "hydra:member[0].lines" should contain an entry whose "item.sku" is "203734" and whose "shippingServiceType" is "courier"
+    And the response JSON at "hydra:member[0].lines" should contain an entry whose "item.sku" is "351725" and whose "shippingServiceType" is "click_and_collect"
+    And the response JSON at "hydra:member[0].shippingServiceLocationName" should be present
+    # Case 119: the courier line's delivery charge was calculated at checkout.
+    And the response JSON at "hydra:member[0].shippingTotalAfterDiscountExcTax" should be present
+    And the response JSON at "hydra:member[0].shippingTotalAfterDiscountExcTax" should not equal "0"

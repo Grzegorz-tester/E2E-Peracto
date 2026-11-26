@@ -40,16 +40,7 @@ Feature: Basket page
     And the "order total price" should contain the text "36.69"
 
 
-  Scenario: Removing a product empties the basket
-    Given I am navigating the page as a "logged in" user
-    And I am on the "test-product" page
-    And I click on the "EACH UOM" element
-    And I click on the "Add to basket" button
-    And I click on the "Checkout" element
-    Then I should be redirected to the "basket" page
-    And I wait for the page to settle
-    When I click on the "Remove items" element
-    Then the "no items message" should be displayed
+  # 2026-11-22: "Removing a product empties the basket" removed, both promo code scenarios below end with Remove items -> no items message.
 
 
   # 2026-09-25: every promotion MIPA itself runs on staging (the same

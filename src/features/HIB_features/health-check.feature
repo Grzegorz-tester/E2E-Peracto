@@ -29,6 +29,13 @@ Feature: Health check
   # created in staging admin the same day (article category 8, title "Our
   # blog", path "blog"), now passing.
 
+  # 2026-11-22: rows removed where another scenario already loads and asserts the page:
+  # /products (products.feature), /swatch-samples (swatch-samples.feature),
+  # /contact-us and /customer-feedback-form (enquiry-forms.feature),
+  # /inspiration, /about, /articles/news and /support (header.feature menu items),
+  # /bathroom-furniture and /category/bathroom-mirrors (category-plp.feature).
+  # Only one other category row is kept, as every category uses the same template.
+
   Scenario Outline: The "<path>" page loads with its own content
     Given I navigate directly to the path "<path>"
     Then the "application error" should not appear within "5" seconds
@@ -39,18 +46,11 @@ Feature: Health check
       | path                   | heading                                                   |
       | /samples               | Request Swatch Sample                                     |
       | /brochure              | Brochures                                                 |
-      | /products              | BATHROOM PRODUCTS                                         |
-      | /inspiration           | Inspiration                                               |
-      | /about                 | hib. Corporate Film                                       |
-      | /swatch-samples        | Swatches                                                  |
-      | /articles/news         | News                                                      |
       | /careers               | Join Our Growing Family Tree: Explore Your Career at hib. |
 
     Examples: Footer
       | path                             | heading                         |
-      | /contact-us                      | Contact Us                      |
       | /guarantee                       | Our Guarantee                   |
-      | /customer-feedback-form          | Customer Feedback Form          |
       | /articles/blog                   | Our blog                        |
       | /environmental-policy            | ENVIRONMENTAL POLICY            |
       | /modern-slavery-statement        | Modern Slavery Statement        |
@@ -59,21 +59,6 @@ Feature: Health check
 
     Examples: Category pages (menu draw and footer)
       | path                                   | heading                       |
-      | /category/bathroom-mirrors             | BATHROOM MIRRORS              |
-      | /category/bathroom-cabinets            | BATHROOM CABINETS             |
-      | /category/wall-hung-bathroom-units     | BATHROOM WALL HUNG UNITS      |
-      | /category/bathroom-cloakroom-units     | BATHROOM CLOAKROOM UNITS      |
-      | /category/bathroom-floor-standing-units | BATHROOM FLOOR STANDING UNITS |
-      | /category/bathroom-washbasins          | BATHROOM WASHBASINS           |
-      | /category/bathroom-brassware           | BATHROOM BRASSWARE            |
-      | /category/bathroom-countertops         | BATHROOM COUNTERTOPS          |
-      | /category/bathroom-handles             | BATHROOM HANDLES              |
-      | /category/bathroom-back-to-wall-units  | BATHROOM BACK TO WALL UNITS   |
-      | /category/bathroom-tall-storage-units  | BATHROOM TALL STORAGE UNITS   |
-      | /category/bathroom-toilet              | BATHROOM TOILETS              |
-      | /category/bathroom-basins              | BATHROOM BASINS               |
-      | /category/bathroom-accessories         | BATHROOM ACCESSORIES          |
-      | /category/bathroom-ventilation         | BATHROOM VENTILATION          |
       | /category/bathroom-lighting            | BATHROOM LIGHTING             |
 
     # Same pages, different heading text per environment: staging's CMS
@@ -84,17 +69,12 @@ Feature: Health check
     Examples: Staging headings
       | path                                | heading                         |
       | /specifiers-developers              | SPECIFIERS & DEVELOPERS         |
-      | /support                            | SUPPORT                         |
       | /awards-affiliations                | AWARDS & AFFILIATIONS           |
       | /corporate-social-responsibility    | CORPORATE SOCIAL RESPONSIBILITY |
-      | /bathroom-furniture                 | BATHROOM FURNITURE              |
-      | /category/bathroom-fitted-furniture | BATHROOM FITTED FURNITURE       |
 
     @production-only
     Examples: Production headings
       | path                             | heading                         |
       | /specifiers-developers           | Specifiers & Developers         |
-      | /support                         | Support                         |
       | /awards-affiliations             | Awards & Affiliations           |
       | /corporate-social-responsibility | Corporate Social Responsibility |
-      | /bathroom-furniture              | Bathroom Furniture              |

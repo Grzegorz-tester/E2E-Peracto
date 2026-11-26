@@ -11,7 +11,12 @@ Feature: Basket page
   Background:
     Given I am on the "pdp" page
     And I click on the "Allow all cookies" button if present
+    # 2026-11-24: an early click before hydration silently did nothing (empty
+    # basket), so let the PDP settle first. Not a retry: it could double-add.
+    And I wait for the page to settle
     When I click on the "Add to basket" button
+    # Waits for the add to commit (the "added to basket" panel) before leaving the PDP.
+    Then the "added to basket heading" should be displayed
     And I wait for the page to settle
     And I am on the "basket" page
     Then the "basket item" should be displayed

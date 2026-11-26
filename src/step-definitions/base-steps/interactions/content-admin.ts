@@ -4,6 +4,7 @@ import { getElementLocator } from "../../support-functions/web-element-helper";
 import { enterValue, getValue } from "../../support-functions/html-behaviour";
 import { waitFor } from "../../support-functions/wait-for-behaviour";
 import { ElementKey } from "../../../env/global";
+import { scrollNearestScrollContainer } from "../../support-functions/virtual-scroll";
 
 // Peracto Admin's Content > Pages/Articles both auto-generate their slug
 // from this one title field on blur (confirmed live, MIPA_ADMIN staging,
@@ -102,7 +103,26 @@ When(/^I delete the content row containing the stored content title$/, async fun
 
     const row = page.locator(rowIdentifier).filter({ hasText: title });
     await row.waitFor({ state: "visible", timeout: 15000 });
-    await row.locator(checkboxIdentifier).check({ force: true });
+    // CONFIRMED (INSINKERATOR_ADMIN staging, 2026-11-11): after the name
+    // filter is applied, the list can still re-render once more - the row
+    // was found at row-3 (unfiltered position), the tick landed, then the
+    // re-render dropped it ("Clicking the checkbox did not change its
+    // state") and the test category was left behind. Retry until it holds.
+    const checkbox = row.locator(checkboxIdentifier);
+    let lastError: unknown;
+    for (let attempt = 0; attempt < 5; attempt++) {
+        try {
+            await checkbox.check({ force: true, timeout: 5000 });
+            await page.waitForTimeout(500);
+            if (await checkbox.isChecked()) { lastError = undefined; break; }
+        } catch (error) {
+            lastError = error;
+        }
+        await page.waitForTimeout(1000);
+    }
+    if (lastError || !(await checkbox.isChecked())) {
+        throw lastError ?? new Error(`Row checkbox for "${title}" would not stay checked after 5 attempts`);
+    }
     await page.click(deleteIdentifier);
 
     // Confirmed live: this modal's own markup is duplicated in the DOM (a
@@ -135,6 +155,17 @@ When(/^I remove the stored content title from the "([^"]*)" navigation menu$/, a
     const confirmIdentifier = getElementLocator(page, "Confirm Remove Item", globalConfig);
 
     const row = page.locator(rowIdentifier).filter({ hasText: title });
+    // The menu tree is virtualised on Peracto Admin v13 (see virtual-scroll.ts).
+    await waitFor(async () => {
+        if (await row.count()) return true;
+        await scrollNearestScrollContainer(page, rowIdentifier);
+        return false;
+    }, {
+        wait: 500,
+        expected: `a "${elementKey}" (${rowIdentifier}) row containing "${title}"`,
+        describeActual: async () => `${await page.locator(rowIdentifier).count()} row(s) rendered, none containing it`,
+    });
+    await row.scrollIntoViewIfNeeded();
     await row.waitFor({ state: "visible", timeout: 15000 });
     await row.locator(removeButtonIdentifier).click();
     await page.waitForSelector(confirmIdentifier, { state: "visible", timeout: 10000 });

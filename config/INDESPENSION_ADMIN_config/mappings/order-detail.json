@@ -1,0 +1,11 @@
+{
+  "order id": "//span[starts-with(normalize-space(),'Order ID:')]/span",
+  "order item name": "#items table >> nth=0 >> tbody tr >> nth=0 >> td >> nth=1",
+  "order paid by customer": "//div[@id='items']//tr[td[normalize-space()='Paid by customer']]/td[3]",
+  "order transaction amount": "//div[@id='transactions']//tr[td[normalize-space()='Transaction Amount:']]/td[2]",
+  "order shipping address": "//div[@id='customer']//*[normalize-space()='Shipping Address']",
+  "order shipping service": "//div[@id='shipping']//tr[td[normalize-space()='Service:']]/td[2]",
+  "Order Status select": "#order-status .list__control",
+  "selected order status": "#order-status .list__single-value",
+  "Update Order Status": "#order-status button:has-text('Update Order Status')"
+}

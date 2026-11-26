@@ -279,6 +279,15 @@ Feature: Creating and Deleting Categories, Attributes, Attribute Groups, Attribu
     And I fill in the "Name" input field with a unique test title
     And I fill in the "Identifier" input field with a unique value
     And I fill in the "Alias" input field with a unique value
+    # JTDove's Location form has two required react-selects the shared
+    # scenario didn't fill: "Status" (Open / Closed / Opening Soon / Closing
+    # Down, defaults to "Please Select") and "Location Page", which DISPLAYS
+    # "Active" by default but still fails "Location Page is a required field"
+    # until it is picked explicitly. Either one blocks Save with no toast
+    # (confirmed live on staging and 4-4-0-peracto, 2026-11-23). No-op on
+    # tenants that don't map these keys.
+    And I select the "Open" option from the "Location Status" react-select if present
+    And I select the "Active" option from the "Location Page Status" react-select if present
     And I fill in the "Address 1" input field with "1 Test Street"
     And I fill in the "Town City" input field with "Test City"
     And I fill in the "County State" input field with "Test County"

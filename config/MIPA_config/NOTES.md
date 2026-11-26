@@ -44,6 +44,7 @@ MIPA Paints trade storefront (refinishing/industrial paints and coatings), Next.
 - Never clicked on purpose: Make a Payment (takes real payment), enquiry form Submit (emails MIPA staff), off-site enquiry tile forms.
 - Not covered: valid order-number search (date-filtered, brittle), CSV "compress to closest UOM" (needs an admin setting), restrictions (`restrictions.feature.disabled` is an empty stub).
 - The order-placing scenarios are not tagged `@places-real-order`; there is no MIPA prod env today, but tag them before adding one.
+- 2026-11-22 dedupe: removed the broken reset-password-page.feature (covered by logging-in's Resetting password), the logged-in Basket icon row, 3 of 4 home category card rows and the standalone remove-from-basket scenario (both promo scenarios end with remove). 81 -> 75. Sitemap's brochures load check kept (menu-draw only checks the URL).
 
 ## Tips for extending
 - MIPA and MIPA_RELEASE share this config folder, so a fix applies to both.

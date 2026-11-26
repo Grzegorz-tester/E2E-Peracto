@@ -33,7 +33,7 @@ Feature: Admin Tabs Contain Expected Data
   # item below clicks its parent group(s) first for exactly this reason -
   # don't drop those steps thinking they're redundant.
   #
-  # Top-level items (Promotions, Locations, Orders) have no parent group and
+  # Top-level items (e.g. Orders) have no parent group and
   # don't need this. Dashboard and Settings are excluded from the
   # data-outlines below and covered by their own scenarios instead - neither
   # is a list page at all (no table, so the row-or-empty-message check
@@ -46,6 +46,7 @@ Feature: Admin Tabs Contain Expected Data
   Background:
     Given I am navigating the page as a "admin" user
 
+  # Rows removed 2026-11-22 (Promotions, Locations, every Products/Content/Users/Configuration list except Navigation and Countries, User Groups, Product Variants, Attributes and Forms lists): first-item-redirects.feature opens the same lists with the same tags and fails when a list shows neither rows nor its empty state.
   Scenario Outline: The "<nav item>" top-level tab loads with its expected heading and real content or a genuine empty state
     When I click precisely on the "<nav item>" element
     Then I should be redirected to the "<page id>" page
@@ -54,8 +55,6 @@ Feature: Admin Tabs Contain Expected Data
 
     Examples:
       | nav item   | page id    | heading    |
-      | Promotions | promotions | Promotions |
-      | Locations  | locations  | Locations  |
       | Orders     | orders     | Orders     |
 
   Scenario Outline: The "<parent>" > "<nav item>" tab loads with its expected heading and real content or a genuine empty state
@@ -67,58 +66,8 @@ Feature: Admin Tabs Contain Expected Data
 
     Examples:
       | parent        | nav item           | page id            | heading            |
-      | Products      | All Products       | products           | Products           |
-      | Products      | Categories         | categories         | Categories         |
-      | Content       | Pages              | pages              | Pages              |
-      | Content       | Articles           | articles           | Articles           |
-      | Content       | Article Categories | article-categories | Article Categories |
-      | Content       | Templates          | templates          | Templates          |
-      | Content       | Elements           | elements           | Elements           |
-      | Content       | Element Areas      | element-areas      | Element Areas      |
-      | Users         | All Users          | users              | Users              |
       | Configuration | Navigation         | navigation         | Navigation         |
-      | Configuration | Redirects          | redirects          | Redirects          |
-      | Configuration | Shipping Services  | shipping-services  | Shipping Services  |
-      | Configuration | Tasks              | tasks              | Tasks              |
       | Configuration | Countries          | countries          | Countries          |
-
-    # Split into its own tagged Examples block (2026-09-10) - confirmed live
-    # Andy Thornton's admin genuinely has no "User Groups" tab under Users
-    # (only "All Users"), per the user directly. Every other Peracto Admin
-    # tenant using this shared suite already has "User Groups" mapped and
-    # passing, so this stays in the shared suite rather than being removed
-    # outright - see src/index.ts's EXCLUDE_TAGS mechanism and CLAUDE.md's
-    # "a tenant is missing a tab the shared suite expects" guidance.
-    @user-groups
-    Examples:
-      | parent | nav item    | page id     | heading     |
-      | Users  | User Groups | user-groups | User Groups |
-
-    # Split into its own tagged Examples block (2026-09-16) - confirmed live
-    # Lamona's admin (release branch 2-8-0) genuinely has no "Product
-    # Variants" tab under Products - see the matching note in
-    # first-item-redirects.feature for the live DOM confirmation.
-    @product-variants
-    Examples:
-      | parent   | nav item         | page id  | heading          |
-      | Products | Product Variants | variants | Product Variants |
-
-  Scenario Outline: The "<grandparent>" > "<parent>" > "<nav item>" tab loads with its expected heading and real content or a genuine empty state
-    When I click precisely on the "<grandparent>" element
-    And I click precisely on the "<parent>" element
-    And I click precisely on the "<nav item>" element
-    Then I should be redirected to the "<page id>" page
-    And the "page heading" should contain the text "<heading>"
-    And the "table row" should be displayed or the "no results message" should be displayed
-
-    Examples:
-      | grandparent | parent     | nav item         | page id          | heading          |
-      | Products    | Attributes | All Attributes   | attributes       | Attributes       |
-      | Products    | Attributes | Attribute Groups | attribute-groups | Attribute Groups |
-      | Products    | Attributes | Attribute Sets   | attribute-sets   | Attribute Sets   |
-      | Content     | Forms      | All Forms        | forms            | Forms            |
-      | Content     | Forms      | Form Fields      | form-fields      | Form Fields      |
-      | Content     | Forms      | Form Submissions | form-submissions | Form Submissions |
 
   Scenario: The Dashboard tab loads with its own recent-orders widget rather than a list table
     Then the "page heading" should contain the text "Dashboard"

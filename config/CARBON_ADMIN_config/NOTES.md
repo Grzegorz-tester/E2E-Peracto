@@ -4,12 +4,15 @@ Carbon Admin: the Peracto 3 "Carbon" boilerplate admin. It is the reference tena
 
 ## Environments
 - `env/CARBON_ADMIN_STAGING.env` -> https://staging-peracto.peracto3carbon.pub. Free rein (CRUD). `PARALLEL=1`, `RETRY=1`, `SCRIPT_TIMEOUT=20000`, no `EXCLUDE_TAGS`.
-- `hosts.json` also has `dev` (http://localhost:3001, local Peracto) and an empty `release_branch`. No production env.
+- `env/CARBON_ADMIN_RELEASE.env` -> https://react-19-peracto.peracto3carbon.pub (added 2026-11-25 for PER3-279, Peracto Admin v13 / React 19). Uses the SAME staging API (staging-api.peracto3carbon.pub) as staging, so it's staging data: CRUD OK, and the two envs must not run write suites at the same time.
+- `hosts.json` also has `dev` (http://localhost:3001, local Peracto). No production env.
 
 ## Test accounts and data
 - `users.json` type `admin` -> `CARBON_ADMIN_ADMIN_EMAIL`/`_PASSWORD`. A Velstar staff login does NOT exist on this tenant ("Username could not be found"); use the dedicated Carbon admin account in `.env`.
 - The shared admin account's address book already holds many unrelated addresses (26 on 2026-08-31): address scenarios locate rows by remembered marker, never by position.
 - Carbon has zero Templates (as of 2026-09-18), so Templates CRUD is unverifiable here.
+- Element id 144 "Velstar Test Element (automation fixture - do not delete)" seeded 2026-11-25: Carbon had zero Elements, so editing-content.feature's Element scenario failed on both envs. Don't delete it.
+- `velstar-test-redirect-import.csv` (fixtures) imports `/velstar-test-import-redirect`; peracto-upgrade.feature deletes it again. A leftover row means a failed run: delete it by hand.
 
 ## Known site defects (expected red)
 - Products list first-row link (`row-0-name`) renders with a 0x0 bounding box: no real click can land on it (a dispatched click works). Carbon only; KOOL/Indespension are fine. `first-item-redirects.feature` (2026-08-19).
@@ -70,8 +73,23 @@ Applies to every tenant whose `FEATURE_PATH` includes the shared folder (Carbon,
 **Known tenant-specific reds in shared files (see each feature's comments)**
 - MIPA: "Default" Attribute Set 422; Inactive tasks 500. Keylite 2-0-1: saving existing attribute groups/sets 400 (id sent as IRI). Andy Thornton staging: shipping service 34 422. PizzaExpressLive: content save dropdown never opens. Carbon: see above.
 
+- 2026-11-22 dedupe: removed user-management.feature's create/delete scenario (address-book-management.feature's Background and outline end create and delete the same user), file-manager.feature's "Opening the File Manager" scenario (subset of the upload scenario) and 22 tabs-contain-expected-data.feature rows whose list first-item-redirects.feature already opens with the same tags (it fails on a list with neither rows nor an empty state). Orders, Navigation, Countries, Dashboard and Settings stay in tabs-contain.
+
+## PER3-279: Peracto Admin v13 (React 16 -> 19) on the release env
+Coverage: `src/features/CARBON_ADMIN_features/peracto-upgrade.feature` (73 scenarios, Carbon-only until v13 reaches other tenants; promote then and copy the new mapping keys/files). Live findings 2026-11-25, release vs staging (same API):
+- Nav, routes, list data, exports, imports, pagination/sort, settings tabs, modals all behave identically.
+- Content editor UI was redesigned (labelled toolbar, Add blocks / Block settings panel, click-to-add, per-block toolbar with Move/Add/Duplicate/Delete). On a new page the left settings panel covers the canvas; close it (`content-toggle-settings`) before clicking blocks.
+- Navigation menu trees now sit in their own 576px scroll box and are virtualised (react-sortable-tree): only ~13 rows exist in the DOM, and a just-added item is appended at the end until a reload re-sorts it. The "should appear in" assertion and the menu-removal step now sweep the scroll box (`support-functions/virtual-scroll.ts`).
+- Login error class changed `text-danger` -> `!text-danger`; every admin tenant's login.json now uses `contains(@class,'text-danger')`.
+- reCAPTCHA on the release host: "Invalid domain for site key", so Forgotten Password returns "Recaptcha token not in header" there (staging fine). Env config, not code: the host needs adding to the reCAPTCHA key.
+- `features.uploads` is off on Carbon, so the hardened upload file-type check (pdf/txt/png/jpg/jpeg only) can't be exercised here.
+- Order export needs a Start and End date (Download disabled until both set); filename `order_export_<from>_to_<to>.csv`. Pick list Download builds `<yyyymmdd>_PICK_SHEET.pdf` in the browser. Imports are async (worker), typically under a minute.
+- "Every task's play button": cleanup_old_import_data AND cleanup_old_data give no toast on both envs (pre-existing).
+- Product "Manage Menu Item Relations" opens nothing and sends no request on both envs (pre-existing, not PER3-279).
+- A new page's default "Edit me!" content only becomes a `text-component` once saved, so block counts differ before and after a reload.
+
 ## Tips for extending
 - Build and verify new shared admin scenarios on Carbon staging first, then roll mappings out to all tenants.
 - New tenant: copy `pages.json` + all `mappings/*.json` from this folder (not a customised tenant), then fix gaps found on the first live run.
 
-_Last reviewed: 2026-10-24. Sources: memory notes + feature file comments._
+_Last reviewed: 2026-11-25. Sources: memory notes + feature file comments._

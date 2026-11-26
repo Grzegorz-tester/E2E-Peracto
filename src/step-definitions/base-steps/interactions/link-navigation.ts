@@ -174,3 +174,21 @@ When(/^I click on the "([^"]*)" (?:link|element) via its href on this origin$/, 
 
     await page.goto(rewritten.toString(), { timeout: 45000 });
 });
+
+// Clicks the one "X" whose text contains a value remembered earlier in the
+// scenario (e.g. a uniquely named link an API step just created), when other
+// elements share the same mapping - JTDove's cached footer can still list a
+// previous run's "Velstar Test Footer" link (2026-11-19).
+When(
+    /^I click on the "([^"]*)" (?:link|element) containing the remembered "([^"]*)"$/,
+    async function (this: ScenarioWorld, elementKey: ElementKey, variableName: string) {
+        const { screen: { page }, globalConfig } = this;
+        const remembered = this.globalVariables[variableName];
+        if (remembered === undefined) {
+            throw new Error(`No remembered value "${variableName}" - remember it before this step.`);
+        }
+        const target = page.locator(getElementLocator(page, elementKey, globalConfig)).filter({ hasText: remembered }).first();
+        await expect(target, `a "${elementKey}" containing "${remembered}"`).toBeVisible({ timeout: 15000 });
+        await target.click();
+    }
+);

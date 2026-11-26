@@ -39,6 +39,15 @@
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/ANDY_THORNTON_ADMIN_PROD.env ./run_tests.sh regression
 
+# ---- Benchmarx ----
+# COMMON_CONFIG_FILE=env/BENCHMARX_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/BENCHMARX_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/BENCHMARX_ADMIN_STAGING.env ./run_tests.sh regression
+# Admin Peracto upgrade checks only (BEN-233):
+# COMMON_CONFIG_FILE=env/BENCHMARX_ADMIN_STAGING.env FEATURE_PATH=src/features/BENCHMARX_ADMIN_features/peracto-upgrade.feature ./run_tests.sh regression
+# Forms only (real Velstar Test submissions):
+# COMMON_CONFIG_FILE=env/BENCHMARX_RELEASE.env FEATURE_PATH=src/features/BENCHMARX_features/forms.feature ./run_tests.sh regression
+
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
 # COMMON_CONFIG_FILE=env/CARBON_ADMIN_STAGING.env ./run_tests.sh regression
 
@@ -54,6 +63,7 @@
 # COMMON_CONFIG_FILE=env/INDESPENSION_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_RELEASE.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_PROD.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/INDESPENSION_ADMIN_PROD.env ./run_tests.sh regression
 
@@ -68,6 +78,15 @@
 # ---- JTDove ----
 # COMMON_CONFIG_FILE=env/JTDOVE_STAGING.env ./run_tests.sh regression
 # COMMON_CONFIG_FILE=env/JTDOVE_ADMIN_STAGING.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/JTDOVE_RELEASE.env ./run_tests.sh regression
+# COMMON_CONFIG_FILE=env/JTDOVE_ADMIN_RELEASE.env ./run_tests.sh regression
+# Smoke only:
+# COMMON_CONFIG_FILE=env/JTDOVE_STAGING.env ./run_tests.sh smoke
+# COMMON_CONFIG_FILE=env/JTDOVE_RELEASE.env ./run_tests.sh smoke
+# Kerridge-dependent features only (C&C stock, invoices, logged-in payment):
+# COMMON_CONFIG_FILE=env/JTDOVE_STAGING.env FEATURE_PATH="src/features/JTDOVE_features/{basket,basket-shipping-and-collection,logged-in-purchase-journey,payments,my-account,pdp-product-rules,pdp-content-and-navigation,logged-in-delivery-checkout}.feature" ./run_tests.sh regression
+# Footer menu link from admin (case 208, NOT in regression: menu cache can take 15+ minutes):
+# COMMON_CONFIG_FILE=env/JTDOVE_STAGING.env FEATURE_PATH=src/features/JTDOVE_features/admin-navigation-on-storefront.feature ./run_tests.sh menu_cache
 
 # ---- Keylite ----
 # COMMON_CONFIG_FILE=env/KEYLITE_STAGING.env ./run_tests.sh regression
@@ -251,6 +270,21 @@
 # save-toast bug documented above needs rechecking there before assuming
 # it's still present.
 
+# ---- Benchmarx ----
+# BENCHMARX_RELEASE targets 3-6-0.benchmarx.pub (since 2026-11-23; was
+# next-15.benchmarx.pub for BEN-379, the Next.js 15 upgrade). Run the storefront suite on STAGING and RELEASE and
+# compare: anything green on staging and red on release is a regression.
+# forms.feature really submits the enquiry and newsletter forms with "Velstar
+# Test" data; they land in the TEST Peracto admin (confirmed 2026-11-12).
+# Bookings are never confirmed (real Acuity calendars). Details in
+# config/BENCHMARX_config/NOTES.md.
+# BENCHMARX_ADMIN_STAGING targets staging-peracto.benchmarx.pub (CRUD OK) and
+# runs the shared admin suite plus BENCHMARX_ADMIN_features/peracto-upgrade.feature
+# (BEN-233: API 71.3.0 -> 73, Admin 12.1.0 -> v12.40). Last full run 2026-11-20:
+# 104/106, both reds known (Pages capped at 200 rows at 1000/page, sticky_bar
+# Element). No admin release or prod env. Details in
+# config/BENCHMARX_ADMIN_config/NOTES.md.
+
 # ---- Carbon Admin (the shared admin suite's boilerplate source project) ----
 # Two rounds of new shared coverage built and live-verified here 2026-09-18
 # (Carbon Admin is the natural place to build new shared Peracto Admin
@@ -357,11 +391,16 @@
 # API (prod-api.hib.pub/orders) returns 500 after ~29s, so the list never loads.
 
 # ---- JTDove ----
-# Feature files were previously untagged for regression; now tagged @regression
-# in line with the rest of the projects. NOTE: env/JTDOVE_STAGING.env is missing
-# USERS_CONFIG_PATH and config/JTDOVE_config/users.json doesn't exist yet, so
-# any scenario needing a logged-in user will fail World setup until that's
-# added - unrelated to tagging, flagging separately.
+# Feature files are tagged @regression (smoke cases also @smoke). The users
+# config gap noted here earlier was fixed 2026-10-05.
+# JTDOVE_RELEASE targets 4-4-0.jtdove.pub (admin 4-4-0-peracto), treated as
+# staging, and uses the staging API and Algolia index. Run STAGING and RELEASE
+# and compare for the Peracto/API/Next.js upgrades. The suite also carries the
+# Benchmarx Next.js 15 bug checks (BEN-389 to 402, added 2026-11-22).
+# Stock, invoices and logged-in payment come from Kerridge: if C&C, Invoices
+# and logged-in checkout go red together, check the Kerridge connection first
+# (rerun with the Kerridge-dependent command above once it's back).
+# Details in config/JTDOVE_config/NOTES.md.
 
 # ---- Keylite ----
 # Storefront+admin scaffolded 2026-09-06 but never added to this reference

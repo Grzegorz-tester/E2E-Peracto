@@ -43,11 +43,7 @@ Feature: Footer newsletter sign-up, company details and social links
     Examples:
       | icon                    |
       | Facebook footer icon    |
-      | Twitter footer icon     |
-      | Instagram footer icon   |
-      | TikTok footer icon      |
-      | YouTube footer icon     |
-      | LinkedIn footer icon    |
+      # 2026-11-22: Twitter/Instagram/TikTok/YouTube/LinkedIn rows removed, same display-only check as Facebook.
 
   Scenario Outline: The "<link>" footer link redirects to the correct page
     When I click on the "<link>" element
@@ -56,4 +52,4 @@ Feature: Footer newsletter sign-up, company details and social links
     Examples:
       | link                             | page           |
       | Privacy Policy footer link       | privacy-policy |
-      | Terms and Conditions footer link | terms-and-conditions |
+      # 2026-11-22: Terms and Conditions row removed, same footer link and CMS template as Privacy Policy.

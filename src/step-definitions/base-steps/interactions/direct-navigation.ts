@@ -1,5 +1,6 @@
 import { Given, When } from "@cucumber/cucumber";
 import { ScenarioWorld } from "../../setup/world";
+import { interpolate } from "../assertions/verify-api-response";
 
 // For a URL that pagesConfig's fixed-route-per-pageId model can't express -
 // a specific catalog item reached only via UI browsing elsewhere (e.g. a
@@ -8,8 +9,10 @@ import { ScenarioWorld } from "../../setup/world";
 // "I am on the ... page" (PageId-based, resolves through pagesConfig) - this
 // is the escape hatch for the cases that don't fit that model, not a
 // replacement for it.
+// {{name}} in the path is replaced by a remembered value (e.g. a slug an
+// API step just created).
 Given(/^I navigate directly to the path "([^"]*)"$/, async function (this: ScenarioWorld, urlPath: string) {
-    await navigateToPath(this, urlPath);
+    await navigateToPath(this, interpolate(this, urlPath));
 });
 
 // For a URL only known at runtime (e.g. a record's detail page reached by

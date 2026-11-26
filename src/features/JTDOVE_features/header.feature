@@ -27,11 +27,10 @@ Feature: Header functionality
     And I wait for the page to settle
     When I click on the "<item>" element, retrying until redirected to the "<page>" page
     Then the "category page title" should be displayed
+    # 2026-11-22: Roofing/Kitchens rows removed, same category-landing template as Building Materials.
     Examples:
       | item                         | page             |
       | Building Materials menu item | category-landing |
-      | Roofing menu item            | category-landing |
-      | Kitchens menu item           | category-landing |
       | Special Offers menu item     | special-offers   |
 
 
@@ -41,8 +40,8 @@ Feature: Header functionality
     When I click on the "<link>" element, retrying until redirected to the "<page>" page
     Examples:
       | link            | page       |
+      # 2026-11-22: Branches row removed, covered by "Header links navigate client-side" below.
       | Sign In         | login      |
-      | Branches        | branches   |
       | Basket          | basket     |
       | Contact Us link | contact-us |
       | Call your local branch link | branches |
@@ -76,12 +75,7 @@ Feature: Header functionality
 
 
   # Manual regression cases 20, 26, 27, 38 and 39 (added 2026-10-22).
-  Scenario: Clicking the logo returns to the home page
-    Given I am on the "plywood" page
-    And I wait for the page to settle
-    When I click on the "header logo" element, retrying until redirected to the "home" page
-
-
+  # 2026-11-22: "Clicking the logo returns to the home page" removed, covered by "Header links navigate client-side" below.
   Scenario: The site serves its favicon
     Given I am on the "home" page
     And I wait for the page to settle
@@ -114,3 +108,19 @@ Feature: Header functionality
     And the "PLP first product card" should contain the text "Inc."
     When I click on the "VAT toggle" element
     Then the "PLP first product card price" text should equal the remembered "ex vat price"
+
+
+  # BEN-394 (Benchmarx Next.js 15, added 2026-11-22): header links did a full
+  # document reload instead of client-side navigation. Confirmed 2026-11-22
+  # that staging soft-navigates once hydrated.
+  Scenario: Header links navigate client-side without a full page reload
+    Given I am on the "home" page
+    And I wait for the page to settle
+    When I mark the current document so a full page reload can be detected
+    And I click on the "Branches" link
+    Then I should eventually be redirected to the "branches" page
+    And the page should not have been fully reloaded since it was marked
+    When I click on the "header logo" link
+    Then I should eventually be redirected to the "home" page
+    And the page should not have been fully reloaded since it was marked
+

@@ -1,0 +1,5 @@
+{
+  "first item link": "[data-testid='row-0-kitchen'] a",
+  "SKU filter": "[data-testid='text-filter-sku']",
+  "kitchen sku": "td[data-testid$='-sku']"
+}

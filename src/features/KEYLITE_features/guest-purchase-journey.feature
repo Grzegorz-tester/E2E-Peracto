@@ -85,7 +85,12 @@ Feature: Guest purchase journey
     And the "review product price" should be displayed
     And the "review current address" should contain the text "SW1A 2AA"
 
-    When I click on the "1st" "Pay now" element via JavaScript
+    # NEW 2026-11-11 (2-1-0): a required "I have read and understood the
+    # delivery, offloading and handling requirements" checkbox (a Radix
+    # button[role=checkbox], stored as basket.handlingAcknowledged) gates
+    # Pay now - without it the Braintree Drop-in never loads.
+    When I check the "handling acknowledgement checkbox", retrying until it is checked
+    And I click on the "1st" "Pay now" element via JavaScript
     And I pay with the "Visa 3DS frictionless" Braintree test card
     Then I should eventually be redirected to the "checkout-thank-you" page
     And the "thank you content" should contain the text "Thank you for your order"
