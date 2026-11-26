@@ -35,8 +35,15 @@ Feature: Accessories PLP
     And the "hits heading" should be displayed
     And the "hit count" should be displayed
     And the "product card" should be displayed
+    # BEN-401: 11 products per batch, same as live (2026-11-26).
+    And I should see "11" "product card" displayed
 
     When I click on the "Filter & Sort" button
+    # BEN-400: the same 3 sort options as live (2026-11-26).
+    Then I should see "3" "sort by options" displayed
+    And the "sort by panel" should contain the text "Relevance"
+    And the "sort by panel" should contain the text "Price: Low to High"
+    And the "sort by panel" should contain the text "Price: High to Low"
     And I apply the first facet filter and validate the result count updates
     And I close the filter drawer
     And I load more results and validate the count increases

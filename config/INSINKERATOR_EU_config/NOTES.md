@@ -40,7 +40,9 @@ InSinkErator EU multi-market storefront (Peracto, locale-prefixed routes such as
 - Comparatively stable site when not WAF-blocked (contrast HIB).
 
 ## Coverage and gaps
-- 16 feature files: health check, logging in, my account, basket (incl. PROMO10), guest + logged-in purchase, accessories PLP, PDP content, configurator, mid-session country switch, Poland non-ecommerce journey, product registration, warranty finder, search drawer, sitemap redirects, footer newsletter.
+- 19 feature files: health check, logging in, my account, basket (incl. PROMO10), guest + logged-in purchase, accessories PLP, shop PLP (mobile filters), PDP content, configurator, mid-session country switch, Poland non-ecommerce journey, product registration, warranty finder, search drawer (+ direct /search?q= load and reload), sitemap redirects, footer newsletter, navigation (no full reload), global layout (console errors).
+- Benchmarx BEN-379 (Next 15 / React 19) regressions mapped here 2026-11-26: BEN-389 search-drawer.feature, BEN-390 global-layout.feature, BEN-392 warranty-finder.feature (not-found lookup = server action), BEN-393 + BEN-400 + BEN-401 accessories-plp.feature (load more, 3 sort options, 11 per batch), BEN-394 navigation.feature, BEN-395 footer-newsletter-signup.feature, BEN-402 shop-plp.feature. BEN-391 N/A (no store finder). All 11 scenarios passed first time on staging 2026-11-26.
+- Console baseline on staging (ignored in global-layout.feature): CSP "[Report Only]" violations, "Failed to load resource" (missing flag SVGs, a tracking script SSL error), reCAPTCHA "requestStorageAccess". Anything else is new.
 - Purchase journeys, product registration and the newsletter submit are NOT tagged `@places-real-order` / `@completes-registration` / `@submits-real-form`. Harmless while there is no EU prod env; tag them before adding one.
 - No production env, no release env.
 
@@ -50,5 +52,6 @@ InSinkErator EU multi-market storefront (Peracto, locale-prefixed routes such as
 - Keep failing loudly on real site bugs (NaN prices) rather than tolerating them.
 - Fixes here usually apply to UK too (shared testids); check `config/INSINKERATOR_config/NOTES.md`.
 - The 2026-09-05 fixes were also written up for porting to a sibling plain-Playwright repo (memory note `project_insinkerator_eu_2026-09-05_fixes`).
+- 2026-11-22 duplicate trim: removed product-registration.feature en-gb successful submit; warranty-finder.feature submits the same /en-gb form with the same success check before its lookup.
 
-_Last reviewed: 2026-10-24. Sources: memory notes + feature file comments._
+_Last reviewed: 2026-11-26. Sources: memory notes + feature file comments._

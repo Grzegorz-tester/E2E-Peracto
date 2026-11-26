@@ -90,5 +90,21 @@
   "product-registration": {
     "route": "/en-gb/product-registration",
     "regex": "^/[a-z]{2}(-[a-z]{2})?/product-registration$"
+  },
+  "showroom-collection": {
+    "route": "/showroom-collection",
+    "regex": "^/showroom-collection$"
+  },
+  "about-us": {
+    "route": "/about-us",
+    "regex": "^/about-us$"
+  },
+  "contact-us": {
+    "route": "/contact-us",
+    "regex": "^/contact-us$"
+  },
+  "faq": {
+    "route": "/faq",
+    "regex": "^/faq$"
   }
 }

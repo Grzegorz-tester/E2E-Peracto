@@ -8,5 +8,6 @@
   "filter drawer close button": "[role=\"dialog\"]:has-text(\"Filters\") >> role=button[name=\"Close\"]",
   "load more button": "[data-testid=\"algolia-infinite-pagination__load-more\"]",
   "current items count": "[data-testid=\"algolia-infinite-pagination__current-items\"]",
-  "total items count": "[data-testid=\"algolia-infinite-pagination__total-items\"]"
+  "total items count": "[data-testid=\"algolia-infinite-pagination__total-items\"]",
+  "sort by panel": ":nth-match([data-testid=\"algolia-sort-by\"]:visible, 1)"
 }

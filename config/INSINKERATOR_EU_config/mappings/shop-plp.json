@@ -1,0 +1,9 @@
+{
+  "hits heading": "[data-testid=\"algolia-hits-heading\"]",
+  "Filter & Sort": ":nth-match([data-testid=\"algolia-facet-drawer__open-button\"]:visible, 1)",
+  "filter drawer": "[role=\"dialog\"]:has-text(\"Filters\")",
+  "Sink Flange filter": "[role=\"dialog\"] label:has-text(\"Sink Flange\")",
+  "filter drawer close button": "[role=\"dialog\"]:has-text(\"Filters\") >> role=button[name=\"Close\"]",
+  "applied filter chip": "[data-testid^=\"algolia-current-refinements-horizontal__item-\"]:visible",
+  "Clear all filters": "[data-testid=\"algolia-clear-refinements\"]:visible"
+}

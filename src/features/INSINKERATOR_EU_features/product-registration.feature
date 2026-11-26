@@ -30,10 +30,7 @@ Feature: Product registration
     When I fill in a freshly generated product registration except "placeOfPurchase", remembering it as "incomplete registration"
     Then the "Submit" should not be enabled
 
-  Scenario: A fully completed en-gb registration submits successfully
-    When I fill in a freshly generated product registration, remembering it as "engb registration"
-    And I click on the "Submit" button
-    Then the "success icon" should be displayed
+  # 2026-11-22: en-gb successful submit removed, covered by warranty-finder.feature's freshly registered product scenario.
 
   Scenario: A fully completed de registration submits successfully
     Given I navigate directly to the path "/de/product-registration"

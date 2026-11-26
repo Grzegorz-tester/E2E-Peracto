@@ -31,3 +31,19 @@ Feature: Header search drawer
     Then I should be redirected to the "search-results" page
     And the "search hits heading" should be displayed
     And the "search result names" should all contain the text "sink"
+
+  # Covers Benchmarx BEN-389 (Next 15: /search?q=<term> ignored the term and
+  # listed every product), re-checked on this site 2026-11-26. The scenario
+  # above only reaches the results page through the drawer; this loads the
+  # URL directly and reloads it. Live 2026-11-26: 'Showing results for
+  # "nickel" (12)'. The country modal shows again after a reload.
+  Scenario: Opening and reloading a search URL keeps the search term
+    Given I navigate directly to the path "/search?q=nickel"
+    And I click on the "Accept cookies" button if present
+    And I click on the "Select Portugal" button if present
+    Then the "search hits heading" should contain the text "Showing results for "nickel""
+    And the "product card" should be displayed
+    When I reload the page
+    And I click on the "Select Portugal" button if present
+    Then the "search hits heading" should contain the text "Showing results for "nickel""
+    And the "product card" should be displayed

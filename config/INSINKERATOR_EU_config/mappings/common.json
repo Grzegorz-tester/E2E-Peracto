@@ -36,5 +36,13 @@
   "search drawer recommended products": "[data-testid=\"navigation-drawer-sheet__recommended-products\"]",
   "search drawer results": "[data-testid=\"algolia-autocomplete-hit-product__name\"]",
   "search drawer no results message": "[data-testid=\"algolia-autocomplete-hits__no-results\"]",
-  "search drawer close button": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"]) >> role=button[name=\"Close\"]"
+  "search drawer close button": "[role=\"dialog\"]:has([data-testid=\"algolia-autocomplete\"]) >> role=button[name=\"Close\"]",
+
+  "header logo": ":nth-match([data-testid=\"brand-bar__logo-link\"]:visible, 1)",
+  "Showroom Collection link": "[data-testid=\"utility-bar__showroom-collection-link\"]",
+  "About Us link": "[data-testid=\"utility-bar__about-us-link\"]",
+  "Contact Us link": "[data-testid=\"utility-bar__contact-us-link\"]",
+  "footer Warranty Finder link": "footer a[href$=\"/warranty-finder\"]",
+  "footer FAQ link": "footer a[href$=\"/faq\"]",
+  "footer Accessories link": "footer a[href$=\"/category/accessories\"]"
 }
